@@ -2134,7 +2134,7 @@
     },
     {
       "path": "src/ui/document-site/site.css",
-      "sha256": "940b858f0e70a49fe7508184f876b5b52e48ff4abcae1dd163f2e67a105e3a7f"
+      "sha256": "09fb59313d5d72a0e841974852d7dc032222cac98777a885ddb94f66a90441fa"
     },
     {
       "path": "src/ui/document-site/preferences.js",
@@ -4851,8 +4851,8 @@
     },
     {
       "path": "site.css",
-      "bytes": 7281,
-      "sha256": "940b858f0e70a49fe7508184f876b5b52e48ff4abcae1dd163f2e67a105e3a7f"
+      "bytes": 7566,
+      "sha256": "09fb59313d5d72a0e841974852d7dc032222cac98777a885ddb94f66a90441fa"
     },
     {
       "path": "site.js",

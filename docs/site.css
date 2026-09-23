@@ -40,9 +40,13 @@
   /* The actual conversation template keeps its title, toolbar and navigation. */
   .site-demo[data-page="reader"] { display:grid; grid-template-columns:minmax(0,1fr) 240px; grid-template-rows:minmax(0,1fr); position:relative; }
   .site-demo .reader-main { grid-column:1; grid-row:1; position:relative; min-width:0; min-height:0; }
+  .site-demo .reader-conversation-main { grid-template-columns:minmax(0,1fr); grid-template-rows:max-content auto minmax(0,1fr); }
+  .site-demo .reader-conversation-toolbar { height:auto; min-height:48px; min-width:0; flex-wrap:wrap; padding:8px 24px; gap:8px; }
+  .site-demo .reader-toolbar-options { flex-wrap:wrap; min-width:0; gap:6px; }
+  .site-demo .reader-current-search { max-width:100%; }
   .site-demo .reader-navigation { grid-column:2; grid-row:1; position:relative; min-width:0; height:100%; background:var(--reader-right); z-index:30; }
   .site-demo .reader-conversation-navigation { height:100%; }
-  .site-demo .reader-message-column { max-width:100%; }
+  .site-demo .reader-message-column { max-width:calc(100% - 32px); transform:none; }
   .site-demo .reader-conversation-title-content { width:100%; }
   .site-demo .reader-conversation-facts { flex-wrap:wrap; }
   @media (max-width:1100px) {
@@ -82,8 +86,7 @@
     .site-page .standard-reading { padding-inline:20px; }
     .site-demo[data-page="reader"] { grid-template-columns:minmax(0,1fr); }
     .site-demo .reader-navigation { display:none; }
-    .site-demo .reader-conversation-main { grid-template-rows:max-content auto minmax(0,1fr); }
-    .site-demo .reader-conversation-toolbar { height:auto; min-height:48px; flex-wrap:wrap; padding:8px; gap:6px; }
+    .site-demo .reader-conversation-toolbar { padding:8px; gap:6px; }
     .site-demo .reader-toolbar-options { margin-left:0; }
     .site-demo .reader-conversation-summary-row { flex-wrap:wrap; }
     .site-demo .reader-conversation-title-content { padding-inline:16px; }
