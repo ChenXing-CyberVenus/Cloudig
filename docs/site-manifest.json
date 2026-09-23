@@ -806,11 +806,11 @@
     },
     {
       "path": "src/ui/shell/pages/document/content/bookmark-en.json",
-      "sha256": "03daa8bfda46f6caaac55ac6157805a82b9a0ad6471e6659b3ca85b377dc703b"
+      "sha256": "54e5c04862ae6915249935330aa30c333bb3f9927b67dbfcf01f9c886fcb10f5"
     },
     {
       "path": "src/ui/shell/pages/document/content/bookmark-zh-CN.json",
-      "sha256": "3c8b1b08860dc885f6380d40cf074e72ed5a63dae106d7535ef69d7ea0c3699b"
+      "sha256": "a1e7fa01fc29d154acab379fa085a80d6437b05a0444bae2d8c53348caf27827"
     },
     {
       "path": "src/ui/shell/pages/document/content/examples.json",
@@ -4356,13 +4356,13 @@
     },
     {
       "path": "pages/document/content/bookmark-en.json",
-      "bytes": 13634,
-      "sha256": "4bbff0a20cba2525321fc780c7e3acac71ef4b20561d2b9e15011be69c743b4c"
+      "bytes": 11390,
+      "sha256": "7749232d29e88fd21b24455ecd2b1e4ebf3416dbb9f1262465de597457b8c917"
     },
     {
       "path": "pages/document/content/bookmark-zh-CN.json",
-      "bytes": 11772,
-      "sha256": "05ae15aec719cb54ef20a7a94ea5c50d2a991c400cbd7aa411d3a50eef1f33ea"
+      "bytes": 10221,
+      "sha256": "4cf190470216c521afe647f8f95eb476c7002953d1fe8c57a9c6eb481b7ff961"
     },
     {
       "path": "pages/document/content/examples.json",
