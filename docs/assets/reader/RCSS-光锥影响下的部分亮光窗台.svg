@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1303 51">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#drop-shadow-2);
+      }
+
+      .cls-2 {
+        filter: url(#drop-shadow-1);
+      }
+
+      .cls-3 {
+        fill: #555960;
+      }
+
+      .cls-4 {
+        fill: #d3af95;
+      }
+    </style>
+    <filter id="drop-shadow-1" x="0" y="0" width="1303" height="51" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="2"/>
+      <feGaussianBlur result="blur" stdDeviation="5"/>
+      <feFlood flood-color="#000" flood-opacity=".6"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="drop-shadow-2" x="528" y="0" width="468" height="51" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="2"/>
+      <feGaussianBlur result="blur-2" stdDeviation="5"/>
+      <feFlood flood-color="#000" flood-opacity=".6"/>
+      <feComposite in2="blur-2" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g>
+    <g id="_光锥影响下的部分亮光窗台">
+      <g class="cls-2">
+        <rect class="cls-3" x="15.33" y="13.08" width="1272" height="20"/>
+      </g>
+      <g class="cls-1">
+        <rect class="cls-4" x="543.21" y="13.08" width="437.76" height="20"/>
+      </g>
+    </g>
+  </g>
+</svg>

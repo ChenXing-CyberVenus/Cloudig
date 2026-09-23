@@ -1,0 +1,53 @@
+@layer pages {
+  .license-document { background: linear-gradient(122deg, #d3af95, #edc68f 45%, #ceb19c 78%, #9fafaa); grid-template-rows: auto minmax(0, 1fr) auto; }
+  :root[data-theme="star-night"] .license-document { background: linear-gradient(122deg, #332536, #282735 55%, #242b35); }
+  .license-reading { max-width: 1000px; margin-inline: auto; padding: 32px clamp(28px, 5cqw, 72px) 48px; font-size: 16px; line-height: 1.95; }
+  /* The shared Standard frontispiece owns order, width and typography. */
+  .license-hero .license-art-star-night { display: none; }
+  :root[data-theme="star-night"] .license-hero .license-art-dawn { display: none; }
+  :root[data-theme="star-night"] .license-hero .license-art-star-night { display: block; }
+  .license-frontispiece h1 { overflow-wrap: anywhere; }
+  .license-byline { line-height: 1.9; }
+  .license-section-heading { display: flex; align-items: center; gap: 13px; font-size: 23px; font-weight: 600; color: var(--standard-accent); margin: 24px 0; }
+  .license-section-heading > span { margin-left: auto; font-size: 16px; color: var(--standard-muted); font-weight: 400; }
+  .license-section-heading img { width: 30px; height: 30px; object-fit: contain; }
+  .license-value-toggle { padding: 3px; margin: -3px; border: 0; background: transparent; display: grid; place-items: center; cursor: pointer; }
+  .license-value-toggle:hover img { transform: scale(1.08); }
+  .license-core-section { border-top: 1px solid var(--standard-rule); }
+  .license-original { font-size: 16px; overflow-wrap: anywhere; }
+  .license-original p { margin: 24px 0; }
+  .license-original h3 { margin: 44px 0 18px; font-size: 24px; font-weight: 600; line-height: 1.6; color: var(--standard-accent); }
+  .license-original h3:first-child { margin-top: 30px; font-size: 18px; color: var(--standard-muted); font-weight: 400; }
+  .license-original h4 { margin: 36px 0 16px; font-size: 20px; font-weight: 600; line-height: 1.7; color: var(--standard-accent); }
+  .license-original .license-opening { font-size: 22px; line-height: 1.85; color: var(--standard-accent); margin: 20px 0 28px; }
+  .license-original ol { padding-left: 1.6em; margin-block: 24px; }
+  .license-original li { padding-left: .35em; margin: 14px 0; }
+  .license-original li::marker { color: var(--standard-accent); }
+  .license-notices { margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--standard-rule); }
+  .license-notices > p { color: var(--standard-muted); margin: 20px 0 28px; }
+  .license-notices h3 { font-size: 20px; font-weight: 600; margin: 36px 0 18px; }
+  .license-notice-original { border-block: 1px solid var(--standard-rule); padding: 16px 0; }
+  .license-notice-original > summary { cursor: pointer; display: flex; justify-content: space-between; color: var(--standard-accent); list-style: none; }
+  .license-notice-original h1 { font-size: 20px; margin: 24px 0; }
+  .license-notice-original p { margin-block: 22px; }
+  .license-text-button { font: inherit; font-size: 16px; border: 0; background: transparent; padding: 7px 8px; border-radius: 5px; color: var(--standard-accent); cursor: pointer; }
+  .license-text-button:hover { background: var(--standard-inset); }
+  .license-text-button:disabled { opacity: .65; cursor: progress; }
+  .license-document button:focus-visible { outline: 2px solid var(--standard-accent); outline-offset: 3px; }
+  .license-component { border-bottom: 1px solid var(--standard-rule); }
+  .license-component summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 18px 0; cursor: pointer; list-style: none; }
+  .license-component-name { font-weight: 600; overflow-wrap: anywhere; }
+  .license-component-name small { font-size: 16px; font-weight: 400; color: var(--standard-muted); margin-left: 5px; }
+  .license-component-license { grid-column: 1; color: var(--standard-muted); overflow-wrap: anywhere; }
+  .license-disclosure { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--standard-accent); }
+  .license-component[open] .license-disclosure { transform: rotate(180deg); }
+  .license-component h4 { font-size: 16px; margin: 20px 0; color: var(--standard-accent); overflow-wrap: anywhere; }
+  .license-component pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; margin: 20px 0 32px; color: var(--standard-copy); }
+  .license-colophon { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 24px; border-top: 1px solid var(--standard-rule); margin-top: 48px; color: var(--standard-muted); }
+  .license-status { margin: 0; font-size: 16px; line-height: 1.6; color: var(--standard-accent); padding: 0 24px; }
+  .license-status:not(:empty) { border-top: 1px solid var(--standard-rule); padding-block: 8px; }
+  .license-bar .standard-controls { flex-wrap: wrap; gap: 7px; }
+  .license-bar .standard-controls > button { white-space: nowrap; }
+  .license-document summary::-webkit-details-marker { display: none; }
+  .license-document summary:focus-visible { outline: 2px solid var(--standard-accent); outline-offset: 3px; }
+}

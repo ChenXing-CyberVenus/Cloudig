@@ -1,0 +1,1066 @@
+{
+  "schema": "cloudig/asset-sources/1.0.0",
+  "assets": [
+    {
+      "output": "welcome/Back-Light-start-1920.png",
+      "source": "阅读器美术素材/Cloudig-Image/Back-Light-start-1920.png",
+      "source_sha256": "1075fbb19fc93c9ce2adb92d37cd936e512ef082a3c20efd78d527a6b76b377e",
+      "transform": "copy",
+      "output_sha256": "1075fbb19fc93c9ce2adb92d37cd936e512ef082a3c20efd78d527a6b76b377e"
+    },
+    {
+      "output": "welcome/Back-Light-1920.png",
+      "source": "阅读器美术素材/Cloudig-Image/Back-Light-1920.png",
+      "source_sha256": "5c102e729fc995907d5b4beed84f71540b1381c1859368ac33f9591711d8234c",
+      "transform": "copy",
+      "output_sha256": "5c102e729fc995907d5b4beed84f71540b1381c1859368ac33f9591711d8234c"
+    },
+    {
+      "output": "welcome/Back-Abyss-1920.png",
+      "source": "阅读器美术素材/Cloudig-Image/Back-Abyss-1920.png",
+      "source_sha256": "3fb127678479259d5a20862fb5413abed4a0dc2522026cf1270366312506c3d3",
+      "transform": "copy",
+      "output_sha256": "3fb127678479259d5a20862fb5413abed4a0dc2522026cf1270366312506c3d3"
+    },
+    {
+      "output": "welcome/Back-Horizon-1920.png",
+      "source": "阅读器美术素材/Cloudig-Image/Back-Horizon-1920.png",
+      "source_sha256": "006a677edb766d659c064d262d0fb92412a7b81d55bf554f1b9afcd97bba6f01",
+      "transform": "copy",
+      "output_sha256": "006a677edb766d659c064d262d0fb92412a7b81d55bf554f1b9afcd97bba6f01"
+    },
+    {
+      "output": "welcome/OsisLogo-Main-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Main-1024.png",
+      "source_sha256": "d5952d30156c5f5c3ba30905cfbe1f3594097f1dae3fc0eb7c7b6169c8969ae6",
+      "transform": "copy",
+      "output_sha256": "d5952d30156c5f5c3ba30905cfbe1f3594097f1dae3fc0eb7c7b6169c8969ae6"
+    },
+    {
+      "output": "welcome/OsisLogo-Cloudig-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Cloudig-1024.png",
+      "source_sha256": "97293bfea08bda347bb4d2d765dea6380855add62548bae9d99c0f5c08bd0d35",
+      "transform": "copy",
+      "output_sha256": "97293bfea08bda347bb4d2d765dea6380855add62548bae9d99c0f5c08bd0d35"
+    },
+    {
+      "output": "welcome/Cloudig-Logo-Title-Slogan.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Cloudig-Logo-Title-Slogan.svg",
+      "source_sha256": "71b8650d369e6c1bcee5387000cc432b8cc31de7a77fc5f1a5396e6ec5a9fb4a",
+      "transform": "clean-svg",
+      "output_sha256": "322059aad4f7e0bc6f2a28f84d26cd55d578a8e7fb5ed74ec4def8600785a892"
+    },
+    {
+      "output": "welcome/OsisLogo-Simple.svg",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Simple.svg",
+      "source_sha256": "0ca6d20e0bd4d7bc0c86098f70b659c74df25207ecf4619ae51f5aa1f95f95c1",
+      "transform": "clean-svg",
+      "output_sha256": "f2e92444492f5feeda423405c5b214cfc5b4018961d4375563137633bb61b5a1"
+    },
+    {
+      "output": "welcome/OsisLogo-Simple-Mono-Purple.svg",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Simple-Mono-Purple.svg",
+      "source_sha256": "49f94f8dbcffa14873a59f058b1b7c9a22271f8df8c5bfb8f89c8fdf3aad4676",
+      "transform": "clean-svg",
+      "output_sha256": "67f5c9838f0952441b73638925326a2a4a109b9003b95e3f99bb5594a91403c4"
+    },
+    {
+      "output": "welcome/OsisLogo-Simple-Mono-Orange.svg",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Simple-Mono-Orange.svg",
+      "source_sha256": "4ead61bb44caf09ccd95441607f19b0fe41219038501142aa366e24dacb7d853",
+      "transform": "clean-svg",
+      "output_sha256": "7df75254aac6bad79c2a3e099600f8e8672749cf369d6a73287a9705f788e537"
+    },
+    {
+      "output": "welcome/Cover-PhotoFrame-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Cover-PhotoFrame-Dawn.svg",
+      "source_sha256": "1f9025c9c508cea43b7f2bd430bab6889b6a9c80e2b363d2b0a479c41e192bb1",
+      "transform": "clean-svg",
+      "output_sha256": "4dc03965de9c0eea9c6ead98ad6ebafb6f08ac11bcc7333d21a78c0aacda54da"
+    },
+    {
+      "output": "welcome/Cover-PhotoFrame-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Cover-PhotoFrame-StarNight.svg",
+      "source_sha256": "6a670a8b1916c005b7fef60bb07ea298192a29cc0e7d7d5bc68d0c8f2912e55c",
+      "transform": "clean-svg",
+      "output_sha256": "750db0a4219ca45b4232520901066c5cb0f236c49af95b7ecb173d28d19efe0e"
+    },
+    {
+      "output": "reader/OsisLogo-Cloudig-RedBackWhiteAbyss.svg",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Cloudig-RedBackWhiteAbyss.svg",
+      "source_sha256": "b1ba5c286fe5f4306a56d5153f22197589171250ae015ffd0101882d2e579aea",
+      "transform": "clean-svg",
+      "output_sha256": "37b6376f3272a021920aa0f22c15c68ce630d4f788412db3c7d51b6444df8d53"
+    },
+    {
+      "output": "reader/OsisLogo-Cloudig-PurpleBackOrangeAbyss.svg",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Cloudig-PurpleBackOrangeAbyss.svg",
+      "source_sha256": "4e05b9cfaf823311ca2ffde65589bab1da98f6d86cd912e8c34f9f55609184ef",
+      "transform": "clean-svg",
+      "output_sha256": "8ced63365942c1352d71f334c9e2393abea9929b48112d4f7154501538ca7e52"
+    },
+    {
+      "output": "reader/Cloudig-Title-Chinese-Grey-Dark-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/Cloudig-Title-Chinese-Grey-Dark-1024.png",
+      "source_sha256": "61e8d0fb5b577db2407b6c46f08abe452244c998e2925fc6c4268d837b651ad3",
+      "transform": "copy",
+      "output_sha256": "61e8d0fb5b577db2407b6c46f08abe452244c998e2925fc6c4268d837b651ad3"
+    },
+    {
+      "output": "reader/Cloudig-Title-Chinese-Grey-Light-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/Cloudig-Title-Chinese-Grey-Light-1024.png",
+      "source_sha256": "8065e90cb2a24d893ec5c587df993b265b91c57adcf4a042af03f003d6683a89",
+      "transform": "copy",
+      "output_sha256": "8065e90cb2a24d893ec5c587df993b265b91c57adcf4a042af03f003d6683a89"
+    },
+    {
+      "output": "reader/Cloudig-Slogan-Chinese-Grey-Dark-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/Cloudig-Slogan-Chinese-Grey-Dark-1024.png",
+      "source_sha256": "8576a1c1178a281b474d6afcb8b3b7606d0fb0c2923910ce9e50abf36ed4c3ef",
+      "transform": "copy",
+      "output_sha256": "8576a1c1178a281b474d6afcb8b3b7606d0fb0c2923910ce9e50abf36ed4c3ef"
+    },
+    {
+      "output": "reader/Cloudig-Slogan-Chinese-Grey-Light-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/Cloudig-Slogan-Chinese-Grey-Light-1024.png",
+      "source_sha256": "0dd5f153a7b963089203988835b2f20259401dad10c9f3692f4ca1394e8d10a7",
+      "transform": "copy",
+      "output_sha256": "0dd5f153a7b963089203988835b2f20259401dad10c9f3692f4ca1394e8d10a7"
+    },
+    {
+      "output": "reader/Cloudig-Slogan-English-Grey-Dark-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/Cloudig-Slogan-English-Grey-Dark-1024.png",
+      "source_sha256": "7768fcb58a897543c934fddccb97dd2688262a6a5b0f32c41dbdc9f356b81751",
+      "transform": "copy",
+      "output_sha256": "7768fcb58a897543c934fddccb97dd2688262a6a5b0f32c41dbdc9f356b81751"
+    },
+    {
+      "output": "reader/Cloudig-Slogan-English-Grey-Light-1024.png",
+      "source": "阅读器美术素材/Cloudig-Image/Cloudig-Slogan-English-Grey-Light-1024.png",
+      "source_sha256": "5763eb2b995c9aa8986fd7964b99467562a9d4452178cda9c7cfe7afd72483c7",
+      "transform": "copy",
+      "output_sha256": "5763eb2b995c9aa8986fd7964b99467562a9d4452178cda9c7cfe7afd72483c7"
+    },
+    {
+      "output": "reader/Waiting-Sun.gif",
+      "source": "阅读器美术素材/Cloudig-Image/Waiting-Sun.gif",
+      "source_sha256": "2904f9f8174bb6f4a730b1ec6858ce3989432fb3021ccb89e6367f1e522138b3",
+      "transform": "copy",
+      "output_sha256": "2904f9f8174bb6f4a730b1ec6858ce3989432fb3021ccb89e6367f1e522138b3"
+    },
+    {
+      "output": "reader/OsisLogo-Simple-Mono-Red.svg",
+      "source": "阅读器美术素材/Cloudig-Image/OsisLogo-Simple-Mono-Red.svg",
+      "source_sha256": "a6a221957fc1803ff1fc9d802277a9b6d4e699553101e4d34639c3bd763c51b8",
+      "transform": "clean-svg",
+      "output_sha256": "d411b4d98669e268f8bab60c47efbe726e6592e5d0b0b7800589decf07dbea16"
+    },
+    {
+      "output": "reader/Conversation-Title-Back-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Conversation-Title-Back-Dawn.svg",
+      "source_sha256": "36eaea3ea57f8b6e9ea763197cb1df31662bff6c00dd3459d06e3855ef541340",
+      "transform": "stretch-title-background",
+      "output_sha256": "5be5a6528b828edd268f5ed559d59bcfffa53aaf17a692a6b3b77a4dce0e1244"
+    },
+    {
+      "output": "reader/Conversation-Title-Back-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Conversation-Title-Back-StarNight.svg",
+      "source_sha256": "138f1174e405545ab4ee05824ebf04f19fca94706c9ad254a2121dc26f7ee1de",
+      "transform": "stretch-title-background",
+      "output_sha256": "cc05994d43e3f885e480e8bac4a3308fb224dd10732125ad983b5537d2a6d1da"
+    },
+    {
+      "output": "reader/ToolBar-Pattern-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/ToolBar-Pattern-Dawn.svg",
+      "source_sha256": "e135fb4f2db4c83cc6d17c50c7291114c3b1138f6db7e756094af915268dfd34",
+      "transform": "clean-svg",
+      "output_sha256": "e3bb0b4c6d27ebc29c14339a5f7e6b4a6137d3515d417636ab688620ff23c83c"
+    },
+    {
+      "output": "reader/ToolBar-Pattern-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/ToolBar-Pattern-StarNight.svg",
+      "source_sha256": "87ff4e1651a5dac8ff66b06fc44622e15a0ae7023a80c7d59aa05c85e0b2b8b4",
+      "transform": "clean-svg",
+      "output_sha256": "76e0debf9867af09bc9f5fe5d066f120a018edfa094c1db3005b50fbac3ec500"
+    },
+    {
+      "output": "reader/Button-Name-Flower.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Button-Name-Flower.svg",
+      "source_sha256": "257ad0e06d1d4352ac9c836d6b5b79f00d00b55f8ea3d12bbbd162551e9aeb1a",
+      "transform": "clean-svg",
+      "output_sha256": "002b699e3f773fb3216bb5391dd6054a780c49f5d20df48cfad378f2d9a280f1"
+    },
+    {
+      "output": "reader/Button-Time-Clock.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Button-Time-Clock.svg",
+      "source_sha256": "d78ea03ec2103ae3815df7164af0332fea7aa71dd07cf56fa62ebe1177666106",
+      "transform": "clean-svg",
+      "output_sha256": "ae5f697c6204f16662420f6d3759ca8572849dd6e47e647e954fa431299f6f3d"
+    },
+    {
+      "output": "reader/Button-Time-LightCone.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Button-Time-LightCone.svg",
+      "source_sha256": "c852ef4504fa0c20e5e6bb6592ee0d112c25ea011850725ea1a2129a276f7fef",
+      "transform": "clean-svg",
+      "output_sha256": "fa123b326d809d5b657acd3bf3ade7c89929d5212aa71a76bdfa55b788c543ce"
+    },
+    {
+      "output": "reader/Button-Time-Tea.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Button-Time-Tea.svg",
+      "source_sha256": "d69bebaad945b4bdfaa8a8fa69aeba1641f40e8b5811e3e31112a20a708e5f02",
+      "transform": "clean-svg",
+      "output_sha256": "2036694fb43a86a77d4efc790c0fb956d8475ada238cfc050110f4b34d5564cf"
+    },
+    {
+      "output": "reader/Pushpin-Red.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Pushpin-Red.svg",
+      "source_sha256": "255209f3e0c07d37fcf3e23005ebe4ad1a0f3c317468ca1440a9708eb1d45a9c",
+      "transform": "clean-svg",
+      "output_sha256": "f10af12ab703e8e0424f181fcee0541aacac810eb347a30f85926892625dc9e7"
+    },
+    {
+      "output": "reader/Pushpin-Purple.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Pushpin-Purple.svg",
+      "source_sha256": "bb1a2a0f11e2e2f0e0b683cbd4653942380e8f1fe32dae2860dcacd7c2e604b4",
+      "transform": "clean-svg",
+      "output_sha256": "453688fa863a50157c08a711822cb30aaa263d0b2047aac9ca75416693df81e2"
+    },
+    {
+      "output": "reader/Title-Paper-Selected-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-Selected-Dawn.svg",
+      "source_sha256": "aa148ed1ca965cd19cbd557677761c4561fc96f01c72baeb06263139eb781280",
+      "transform": "clean-svg",
+      "output_sha256": "09a80156a54a7005d94cdf4fb51d3f6c67f81c6ebd94f983a7d79db1677a507d"
+    },
+    {
+      "output": "reader/Title-Paper-Selected-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-Selected-StarNight.svg",
+      "source_sha256": "ea96bebbeeff32a9134103fb4b890700ba54279f4f76e5dc6beb1d0dbd2736d6",
+      "transform": "clean-svg",
+      "output_sha256": "1f74d6ea3abc7c4779369b568d05665286b17d1d3716a4d7d0d99ffdaa2bf117"
+    },
+    {
+      "output": "reader/Title-Paper-UnSelected-Dawn-01.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-UnSelected-Dawn-01.svg",
+      "source_sha256": "7fed308b27a27c2f2413f4f1dc7601bbb02b29d946896f1467b9ced57122c52f",
+      "transform": "clean-svg",
+      "output_sha256": "bb88e4fe0235313672df234b65da44b2f5c046ca263b2b1d673b136ce3d2c8d1"
+    },
+    {
+      "output": "reader/Title-Paper-UnSelected-Dawn-02.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-UnSelected-Dawn-02.svg",
+      "source_sha256": "3aba933a678a73116ef5c4bb94abb85feabe91123f8cba6472e355368034e899",
+      "transform": "clean-svg",
+      "output_sha256": "0ad2ba0b57372dc2024bc0428444c4a4a3df582ab9091027b8828ea30a304daa"
+    },
+    {
+      "output": "reader/Title-Paper-UnSelected-StarNight-01.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-UnSelected-StarNight-01.svg",
+      "source_sha256": "261c5238f8b7d358186a1f14eb0f9d38f9fc3afa6510a83db7030d4c6aa63465",
+      "transform": "clean-svg",
+      "output_sha256": "f081122f6b456a73a4dc6937755a459438a69051e011b68fabd51fbb5ae4ec51"
+    },
+    {
+      "output": "reader/Title-Paper-UnSelected-StarNight-02.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-UnSelected-StarNight-02.svg",
+      "source_sha256": "6c7cb76fa6a5d09c0bf85518a9e3c935cf8093803c99fb5cd939703d5c7a3388",
+      "transform": "clean-svg",
+      "output_sha256": "9763722a0d35a33b018b06a2451fc91875f49b7ef0128fe6a0b5e1d778a14a5c"
+    },
+    {
+      "output": "reader/SmallButterfly-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/SmallButterfly-Dawn.svg",
+      "source_sha256": "2b200ac4d647d54c794d4b421c4f80041bf6ac0553e5ded85bb1800994ae24ed",
+      "transform": "clean-svg",
+      "output_sha256": "9b1687dc6599489eb0ce9c90d4486e45db521f862753c40f9d14ccaa56795e6d"
+    },
+    {
+      "output": "reader/SmallButterfly-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/SmallButterfly-StarNight.svg",
+      "source_sha256": "2663c8084c50a0f3e375bb9030f954f72369b8a50bc009f3f8b895bda00226a1",
+      "transform": "clean-svg",
+      "output_sha256": "6286b04da416b453a2cb6250870b0723497e76f23c3615f22b880f2e11d7d580"
+    },
+    {
+      "output": "reader/DecBook-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DecBook-Dawn.svg",
+      "source_sha256": "4f777e381ab00825da1571b8dfa042a0e075d94f5289e859725d9d4214c06725",
+      "transform": "clean-svg",
+      "output_sha256": "59a612e3a3e9054b7e9f7ae8ba9894872a13d5ed1198224bf887a4d0fa0251be"
+    },
+    {
+      "output": "reader/DecBook-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DecBook-StarNight.svg",
+      "source_sha256": "b8cd43bb951882f03e81603b7fe9dee5f1a890b83bd4bd182a835a48fdf02180",
+      "transform": "clean-svg",
+      "output_sha256": "c35c7475b302eab2bfaa83540423208113b7748ab77585200cc6ef1978905e1d"
+    },
+    {
+      "output": "reader/Windbell-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Windbell-Dawn.svg",
+      "source_sha256": "d4ab3de3c8821ced0177026cf8ecac730ec815dec0161464835a3ecbff9cc654",
+      "transform": "clean-svg",
+      "output_sha256": "ae4fe0a5331e537d90cfc866e2a7bace87b59fc78859425e368d170df766883d"
+    },
+    {
+      "output": "reader/Windbell-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Windbell-StarNight.svg",
+      "source_sha256": "b860199b05e390e54ecc68d948309d5c300470795656fdec67900fc8a089b29e",
+      "transform": "clean-svg",
+      "output_sha256": "3c63ee387e940517de861450d6f4f17ac2b2574b2cd0725c19b0a43e7ad02bb1"
+    },
+    {
+      "output": "reader/DocBack-Clip.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-Clip.svg",
+      "source_sha256": "688c9ebed8b541441fbc33e5269c1f66fe89e64f4f136bd50129799d696c0201",
+      "transform": "clean-svg",
+      "output_sha256": "3d2c7d754e14089cd76d37dcd377f8bba61b6458785e2964a0c0abff9d69a5d7"
+    },
+    {
+      "output": "reader/DocBack-Dawn-Backboard.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-Dawn-Backboard.svg",
+      "source_sha256": "d3ea6dcf3296d3bea9b8f89543a210282641370107661492d46a9efa36e6d1d3",
+      "transform": "clean-svg",
+      "output_sha256": "0f1a439cc19df2b862428e7ab519dff83f0a143d4b31132694366ac79c3f52ec"
+    },
+    {
+      "output": "reader/DocBack-Dawn-Cloud01.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-Dawn-Cloud01.svg",
+      "source_sha256": "1c9c3f95dcabb2f704d50255ba8039d1f0a66449e13eb0dfb2c0ad2b29014733",
+      "transform": "clean-svg",
+      "output_sha256": "58b79587e687d3a39e0e38d224441ce3011e1c98e68c4a16aca6e99893637b53"
+    },
+    {
+      "output": "reader/DocBack-Dawn-Cloud02.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-Dawn-Cloud02.svg",
+      "source_sha256": "cd4c1c48a138b9c376c85722f859d6bc65e10e73c34eba0acff3e9b37b084a5b",
+      "transform": "clean-svg",
+      "output_sha256": "ab56234c9e95524c2a333596d942483df28b6b0e696e2a4d80e43291f1dce8c2"
+    },
+    {
+      "output": "reader/DocBack-Dawn-Paper-Content.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-Dawn-Paper-Content.svg",
+      "source_sha256": "219eb687f89dec62e530810a0168946a24a0fe474e869564541b91136b5658fa",
+      "transform": "clean-svg",
+      "output_sha256": "04caf5286ab10187f0e218493d794c003d0114fdfe5dcbba0bddb630e86d2f90"
+    },
+    {
+      "output": "reader/DocBack-Dawn-Paper-Title.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-Dawn-Paper-Title.svg",
+      "source_sha256": "ca36124151deb99bf0238a0ad6a80779c0546bf11bfb820ddde7a0e5ee20f6a2",
+      "transform": "clean-svg",
+      "output_sha256": "d0bc180091767e5826923a2d277f359389c6b22e3725f566eaba912c0d3e76e8"
+    },
+    {
+      "output": "reader/DocBack-StarNight-Backboard.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-StarNight-Backboard.svg",
+      "source_sha256": "f3f9cdfbc3aa1c573226ace8ec7daeab28c2f932f709ddeb88545dfe48d60da3",
+      "transform": "clean-svg",
+      "output_sha256": "4261583541901764560544936a2c29b559021ad4bc83deb1488e1689c48affe3"
+    },
+    {
+      "output": "reader/DocBack-StarNight-Cloud01.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-StarNight-Cloud01.svg",
+      "source_sha256": "230f70b82920502e4f1c88ba6ec51d9d1f733bfdb7ae7e13bc275eedac98d967",
+      "transform": "clean-svg",
+      "output_sha256": "ade1dcd0103ee683b60d54ae4fb39e14ace8025921543b63b8f856357e4f1359"
+    },
+    {
+      "output": "reader/DocBack-StarNight-Cloud02.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-StarNight-Cloud02.svg",
+      "source_sha256": "11cd0f8bfc6a95eaaf66f9c04a59c032f8ff57223fa7cc854d89e3d3c982f376",
+      "transform": "clean-svg",
+      "output_sha256": "0d9532ceda81bac30dc9bca9d6b465c4886ba8c75d679581747ecf99366ca63e"
+    },
+    {
+      "output": "reader/DocBack-StarNight-Paper-Content.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-StarNight-Paper-Content.svg",
+      "source_sha256": "72c65eadcaeed6f427bab2c874e9270967a157a8a0eeb84e60dac970d9dd3e4c",
+      "transform": "clean-svg",
+      "output_sha256": "92b6114e17065e69710e677c343e83838802adfd37a2fdba61f98a205006a8d2"
+    },
+    {
+      "output": "reader/DocBack-StarNight-Paper-Title.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-StarNight-Paper-Title.svg",
+      "source_sha256": "6e2ee6901d56f4e543ddc61d5d69ef899642750dddecf4e325fee7688beb0622",
+      "transform": "clean-svg",
+      "output_sha256": "fd19750c1f4a3389bec713eedce7ce7e14d7b6e03a1c7dbd9d5957c86afe930b"
+    },
+    {
+      "output": "reader/DocBack-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-Dawn.svg",
+      "source_sha256": "e01f92e3eae03ee5194e00577816f905c503324182feaadc66a7eebaeeb5540b",
+      "transform": "copy",
+      "output_sha256": "e01f92e3eae03ee5194e00577816f905c503324182feaadc66a7eebaeeb5540b"
+    },
+    {
+      "output": "reader/DocBack-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/DocBack-StarNight.svg",
+      "source_sha256": "c7d9cff341f3a0a303a77a7b4e99b0be7e60600d947bfcf801ca177bd10ce963",
+      "transform": "copy",
+      "output_sha256": "c7d9cff341f3a0a303a77a7b4e99b0be7e60600d947bfcf801ca177bd10ce963"
+    },
+    {
+      "output": "reader/ChenXing-Avatar.png",
+      "source": "阅读器美术素材/Cloudig-Image/ChenXing-Avatar.png",
+      "source_sha256": "f3ca9af4288f3adbc900c136ca40acedaa13fed43b5d1c95712c059cfabbdd5f",
+      "transform": "copy",
+      "output_sha256": "f3ca9af4288f3adbc900c136ca40acedaa13fed43b5d1c95712c059cfabbdd5f"
+    },
+    {
+      "output": "reader/RCSD-百叶窗.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-百叶窗.svg",
+      "source_sha256": "c59d2204aa34e24906ae36bed012137e4a0ee4492b7f60c2a5c15e8746874e87",
+      "transform": "clean-svg",
+      "output_sha256": "0da813c88bf21970ea0c4fe8b5b9f694fab7f82c317087d49ae002228af704d1"
+    },
+    {
+      "output": "reader/RCSD-破晓窗户.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-破晓窗户.svg",
+      "source_sha256": "a50ce6020172a53bf5a8100640c8223caa6ada529f19c3d3b67082dc426d758f",
+      "transform": "clean-svg",
+      "output_sha256": "f6ad6c1e236fa8c41711941e6f0f131d79591afa082cc465221fcfa76455c968"
+    },
+    {
+      "output": "reader/RCSD-窗台.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-窗台.svg",
+      "source_sha256": "e6cab7aa9d73e564b01ffe70b0aab4c6e161ee1fb4d896d6320d8376943f3499",
+      "transform": "clean-svg",
+      "output_sha256": "969819119009ef315a76df5ceaadfd34c385b457f1c23e239f343f58389acf94"
+    },
+    {
+      "output": "reader/RCSD-墙面装饰.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-墙面装饰.svg",
+      "source_sha256": "18d5d1c76dd533e8b25c1c64739fafacdfdaa7bf320874cdb3592f6bbcf12393",
+      "transform": "clean-svg",
+      "output_sha256": "2290a34b983369f372fb25b72383c81a36ead4b2d3108eb1d43fa925e86bfc56"
+    },
+    {
+      "output": "reader/RCSD-墙面架子.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-墙面架子.svg",
+      "source_sha256": "d8c180c72ae3292a5e8214034acb36125fdb494c7acf2bc44b1a0fa5a1d04915",
+      "transform": "clean-svg",
+      "output_sha256": "2c38c63fa8ed97e6d74136da859a77f6324c56e1f591af7d343e061c05df00b7"
+    },
+    {
+      "output": "reader/RCSD-思考者小雕塑.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-思考者小雕塑.svg",
+      "source_sha256": "c2f90b43c4049e09ebfd20386b1c5a0535dd6f3bb0f38e3c3421571d1e440c27",
+      "transform": "clean-svg",
+      "output_sha256": "02c55a3b9f73dd3b181cb6d0b93637c6644d12693ffd03ac4fc15ed05d6a8e48"
+    },
+    {
+      "output": "reader/RCSD-桌面与杂物.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-桌面与杂物.svg",
+      "source_sha256": "4357cc83fe1b5b9daf0dfe3cba17a328fad94274e9f4556fe28a5fe0e75e75dd",
+      "transform": "clean-svg",
+      "output_sha256": "62b4b5fbacc952931d37ff9e5528f1b762491184104674358438add7dc05bcdd"
+    },
+    {
+      "output": "reader/RCSD-花.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-花.svg",
+      "source_sha256": "359554935a40b9424801b859863638b99c021c63462d18f6bb17074324c827f6",
+      "transform": "clean-svg",
+      "output_sha256": "3abd0e86d8f99f9a22b9b6444bfe75ca637be9248c3dcfc12ac2f51235a18498"
+    },
+    {
+      "output": "reader/RCSD-肥肥相片.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-肥肥相片.svg",
+      "source_sha256": "0b644fdfb2baecf87a6c716aafbe807a7726ca98da60475d5a21f1cff3b10eb2",
+      "transform": "clean-svg",
+      "output_sha256": "5278d6931a382fa3914cf3d886f9cfce1e91e5eefc63d2c8c2b917bb2aab1c0d"
+    },
+    {
+      "output": "reader/RCSD-肥肥相框.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSD-肥肥相框.svg",
+      "source_sha256": "0efc26ccaf07513ebf4bb88f4038e235de81d1306e6e252c9a92b0c4c227b331",
+      "transform": "clean-svg",
+      "output_sha256": "cc9efe9468a5383a2663ec4b548c33046dabbd8d8f3619d4a526f140c746b715"
+    },
+    {
+      "output": "reader/Reader-Cover-Computer-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Reader-Cover-Computer-Dawn.svg",
+      "source_sha256": "2a7003e84115b26137fba62d541f21ef27470494547898a2bb9b1112ad3df1a1",
+      "transform": "clean-svg",
+      "output_sha256": "d5222369aeff5bcef5da6b03d20a51dfbdff0c8060753b25f57d649c52d938e3"
+    },
+    {
+      "output": "reader/RCSS-星夜窗户.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-星夜窗户.svg",
+      "source_sha256": "065bba35396f685bbd44c402231eed0c9f41e4c7893ca149e001cbd73266091d",
+      "transform": "clean-svg",
+      "output_sha256": "2ae204818f9bb959e35ef811c86fe97d7675407408265ad9ea55d8d6b340d687"
+    },
+    {
+      "output": "reader/RCSS-星夜.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-星夜.svg",
+      "source_sha256": "fe6325536f50cc1f930ca77c174d793d7af620491fe9992ae75ef5a5fce8e76e",
+      "transform": "clean-svg",
+      "output_sha256": "7eaa6a1bffceabb706cd284c349c291c7abd61b1412d428e73026f66c8643fe0"
+    },
+    {
+      "output": "reader/RCSS-时光建筑群.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-时光建筑群.svg",
+      "source_sha256": "fce1193cb56cd9b6b928cd3c8d35716fec77e779aa7da0b5255f357b6738c7d0",
+      "transform": "clean-svg",
+      "output_sha256": "86909dd00d4e27a6033eb2b1095cf98d05ad8eb315b1da02e2007592a5b8d4d0"
+    },
+    {
+      "output": "reader/RCSS-窗台植物.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-窗台植物.svg",
+      "source_sha256": "7d462c0704ef07be2c172a7c96a7d1563158863cddf08ed09aa551a61a1e4b3b",
+      "transform": "clean-svg",
+      "output_sha256": "ca47525d19a696a90990549ea3cd3de4c1108e3e9534f2e5e2f9b09e714205a0"
+    },
+    {
+      "output": "reader/RCSS-桌面与电脑-黑灯.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-桌面与电脑-黑灯.svg",
+      "source_sha256": "134fcf532a8ca9baf7e84751bc8260f12f62e6d0d274647d0be5b5e7e6a3e1cb",
+      "transform": "clean-svg",
+      "output_sha256": "58b3f6d0e1e0e7122e3f6bf92bc45e811247780eceec6ed4551c7f84c86e4cf3"
+    },
+    {
+      "output": "reader/RCSS-光锥.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-光锥.svg",
+      "source_sha256": "0000fc564ffe1175e2a3c6cf53ab7ccd3652e664c2aaf4266c14820b988d0eee",
+      "transform": "clean-svg",
+      "output_sha256": "bcb452b4f5e0c1161e8c662742fc852c6a08c766b578170c33c5c6e56b0d6ecb"
+    },
+    {
+      "output": "reader/RCSS-光锥蒙版下的桌面与电脑.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-光锥蒙版下的桌面与电脑.svg",
+      "source_sha256": "cbf07b7e2ae26aa55815779dc0795e7e913d2eb08f42fe9902eaa9feef22a5af",
+      "transform": "copy",
+      "output_sha256": "cbf07b7e2ae26aa55815779dc0795e7e913d2eb08f42fe9902eaa9feef22a5af"
+    },
+    {
+      "output": "reader/RCSS-部分光锥影响下的屏幕.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-部分光锥影响下的屏幕.svg",
+      "source_sha256": "106af2e305f784be1ce33d61e5fc876704f3cdc1e6b4ac9ee68e2a735f5b3ab3",
+      "transform": "copy",
+      "output_sha256": "106af2e305f784be1ce33d61e5fc876704f3cdc1e6b4ac9ee68e2a735f5b3ab3"
+    },
+    {
+      "output": "reader/RCSS-窗帘.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-窗帘.svg",
+      "source_sha256": "63576d5aedccba29aa85b84af9f483e860e88da25b6193eef4e431b06aae880b",
+      "transform": "clean-svg",
+      "output_sha256": "7e34502aa870fe6225160e45fb2339ed3dea8f7e77b5c105295049401cf02c5c"
+    },
+    {
+      "output": "reader/RCSS-黑灯窗台.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-黑灯窗台.svg",
+      "source_sha256": "bcca675e1b2ead177e4129443e8e0497b1c9720a6623811aa406108523c1ace2",
+      "transform": "clean-svg",
+      "output_sha256": "e1328891b45abb951f3140b35b47284a680102ce63237016d817e57b20b9bfd7"
+    },
+    {
+      "output": "reader/RCSS-亮灯窗台.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-亮灯窗台.svg",
+      "source_sha256": "9e57e7354f4d16b2d4e37bf35b159469449685d77be0614339061d3db2d0d73e",
+      "transform": "clean-svg",
+      "output_sha256": "3daf2b4268e2b4d298e8e24d73737cca09566b90879a0b1e434f99c968052ee4"
+    },
+    {
+      "output": "reader/RCSS-光锥影响下的部分亮光窗台.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RCSS-光锥影响下的部分亮光窗台.svg",
+      "source_sha256": "27d83b4dc745110ff798e2711a85d30f225bdb82df15068c5f6e6989e578e31b",
+      "transform": "clean-svg",
+      "output_sha256": "96934474f88baa42b48c2713ebc9b817341972b93a2e868fca93fffe472a527e"
+    },
+    {
+      "output": "archiver/Phoenix.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Phoenix.svg",
+      "source_sha256": "f5005e4a3d44403391bda4e7945995ade3e39956a9a9078892135534eb98ca29",
+      "transform": "clean-svg",
+      "output_sha256": "64fec29a9208f261ae1ba05cfbbc8e0647f2e9640ecc37f17e61b722e88db954"
+    },
+    {
+      "output": "archiver/Rocket.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Rocket.svg",
+      "source_sha256": "0f1b93db51af8cc515c3717cdb69db10c907dc80e4434bedf9919fede15128f0",
+      "transform": "clean-svg",
+      "output_sha256": "951ebca94401a0952ba7b39bbba3da80ad41e32054fc05bc38568c0e2b7652dd"
+    },
+    {
+      "output": "archiver/Ship.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Ship.svg",
+      "source_sha256": "286f4cfadfbcbbd56a2e85b4086d65759c1a408517d33cee51c14bbaede2361f",
+      "transform": "clean-svg",
+      "output_sha256": "b6a062aa924f8a4be87138d72ff7134e1409e2873fc70b3343046667cf5a1661"
+    },
+    {
+      "output": "archiver/SailboatWithShadow.svg",
+      "source": "阅读器美术素材/Cloudig-Image/SailboatWithShadow.svg",
+      "source_sha256": "bce0cafbcc5a715a650fb01bccc8fce5918554b1b6cbbe33fdda5a125e2a3829",
+      "transform": "clean-svg",
+      "output_sha256": "b23eedb538db48c2647972da31f64d51a640aad1c1c702829e7717098b576c39"
+    },
+    {
+      "output": "archiver/RockStage.svg",
+      "source": "阅读器美术素材/Cloudig-Image/RockStage.svg",
+      "source_sha256": "a597c447133a6f46ac2a7fdf4d4bc7c1225e9abb51239a3be82bad819ec797ae",
+      "transform": "clean-svg",
+      "output_sha256": "b87156bcf705d984d572dcad0162d42b65503a256efe57a2965289faa080bff3"
+    },
+    {
+      "output": "archiver/Astronaut.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Astronaut.svg",
+      "source_sha256": "e8c0d25582792889cb23b4e88644d7466ef409dded6af483f7b6112cca7a629f",
+      "transform": "clean-svg",
+      "output_sha256": "fdf4f9a8b96021d9f5450fe250f952a3a4bf60450ddc3352b61090f73eb7ca9b"
+    },
+    {
+      "output": "archiver/Sunflower.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Sunflower.svg",
+      "source_sha256": "7a6534e50255e42536bd4985b1d8253dcb68e1caaaddd786c67d14bad3f769ff",
+      "transform": "clean-svg",
+      "output_sha256": "f91e54dfa15e96582f04ab9fae54b1722a1c5717be5a567f43b1298f81553ca0"
+    },
+    {
+      "output": "archiver/PinkGreenTrees.svg",
+      "source": "阅读器美术素材/Cloudig-Image/PinkGreenTrees.svg",
+      "source_sha256": "f798d1466b0f66f3f261199df128584b7cfdfdca7c845a6e60787f56a423cad7",
+      "transform": "clean-svg",
+      "output_sha256": "40c60d8b605009ee084686fae68e39a7b3a33ba8bcbb19e46c00f4ffc8a7a73e"
+    },
+    {
+      "output": "archiver/GirlInForest.svg",
+      "source": "阅读器美术素材/Cloudig-Image/GirlInForest.svg",
+      "source_sha256": "fca154c6579d0ff3201ffcab0e909a2a4f96b7502d63f46f7a8f1f0bd7c3a732",
+      "transform": "clean-svg",
+      "output_sha256": "b46b5c50ee33b539f10e90bb0fb1f98f662959829773ad5b50348e7e4a8dc955"
+    },
+    {
+      "output": "archiver/WildTree.svg",
+      "source": "阅读器美术素材/Cloudig-Image/WildTree.svg",
+      "source_sha256": "83b97d8bae321ee4c69247890890ca3bf899402a3407408a733cdb0d83bf6849",
+      "transform": "clean-svg",
+      "output_sha256": "fc8d8217460c8f8abfb5360e9bc5dc84dbd92ba20965b9afeabb66f914bdd605"
+    },
+    {
+      "output": "archiver/Wave-Blue.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Wave-Blue.svg",
+      "source_sha256": "8bd6c84ec578e0894da3ba9f490d75b07761d72031153fb5027e01058bf85bec",
+      "transform": "clean-svg",
+      "output_sha256": "f0648b155b2e664579c3f2866ac1b0d5a20325da5b92736c816db1a250029eae"
+    },
+    {
+      "output": "archiver/Wave-Green.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Wave-Green.svg",
+      "source_sha256": "7abb46405691d04110347db194d8cd8a469c1bcd992bc901e982afc0e78a3c40",
+      "transform": "clean-svg",
+      "output_sha256": "928716e048c1d663931e28e23ac8736271803fc82c5e6adc2628c836809c9c22"
+    },
+    {
+      "output": "archiver/Village-Dusk.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Village-Dusk.svg",
+      "source_sha256": "577629b2bbfc2646237525e86de7e6de72b8922bc6f8aec77ae65b577412249b",
+      "transform": "clean-svg",
+      "output_sha256": "6eaad3726b00ff7be9143b99024cf0daee9b9500c84b034900b22c6fdd79e278"
+    },
+    {
+      "output": "archiver/Village-Night.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Village-Night.svg",
+      "source_sha256": "8b1d28d02f5f5d42153bb23c2d6a31f0a1d89df90211be77db3bbbcb9f3178af",
+      "transform": "clean-svg",
+      "output_sha256": "d55c85d8feb2045a60ef822a7d4876c0e617fe3efe8b3b64ba2c4191c01c9e4e"
+    },
+    {
+      "output": "archiver/TitleDec-Explosion.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TitleDec-Explosion.svg",
+      "source_sha256": "abd0d61bc480fbc0d1cdafb2cf05853dc3fb07eacef8a0719560e97354da0914",
+      "transform": "clean-svg",
+      "output_sha256": "a26201f56f8f63f43f4a666430c384a6f427fc63c321874b52acbe840ae4e5a7"
+    },
+    {
+      "output": "archiver/TitleDec-Garden.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TitleDec-Garden.svg",
+      "source_sha256": "7af3253b60299932b0bba49d39ac6ce2204271b94d15e9a1606a74d5d9f1baad",
+      "transform": "clean-svg",
+      "output_sha256": "281eb251e66934e3b3b1d885639aaf0bd38d84b167a4afa684095b1ce8acca34"
+    },
+    {
+      "output": "archiver/TitleDec-Homeland.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TitleDec-Homeland.svg",
+      "source_sha256": "75aff37eea6af3af701c9a5f1c4850277d308153f7ad2ac2e33cba5b89a2a65e",
+      "transform": "clean-svg",
+      "output_sha256": "1fd6a0f0e74b4f6ae7db8488833aa3c1875105d2a05054b337b6dd2151f7ffdf"
+    },
+    {
+      "output": "archiver/TitleDec-Pompeii.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TitleDec-Pompeii.svg",
+      "source_sha256": "5016f805741d716a7924df2409493ed48470bb390bff15e646b156ac766e5d90",
+      "transform": "clean-svg",
+      "output_sha256": "6ac11009311739e3d96299026e01a7cce90e54d864f0b3ed140d4993887429f3"
+    },
+    {
+      "output": "archiver/Cock.svg",
+      "source": "AIChatArchive/ui/assets/archiver/Cock.svg",
+      "source_sha256": "ad375c409b6dfee7216c77283bef52c3a13aaf2b8c6d8b32df57bd7db522f118",
+      "upstream": "阅读器美术素材/Cloudig-Image/Cock.svg",
+      "upstream_sha256": "350a329142a4673b5381a0113a0ebcdb3c48566d0e3789eff2c02b5946d1af9c",
+      "transform": "rooster-detail-motion",
+      "motion_source": "AIChatArchive/src/ui/shell/pages/archiver/rooster-motion.css",
+      "motion_sha256": "b6d1d59881220d19d522df544a148f54df5bb1974d5e3b4a9fe1bb3a5b61e427",
+      "output_sha256": "ab97003ff8981d5237ac4c3bb664c52f4817c17383067cbde4c967b2162c396f"
+    },
+    {
+      "output": "editor/EditorBack-Tao.svg",
+      "source": "阅读器美术素材/Cloudig-Image/EditorBack-Tao.svg",
+      "source_sha256": "221e44b083f6bdc121911a7e60ed6ff967ecefa47489803c30285d046e4d9ef6",
+      "transform": "copy",
+      "output_sha256": "221e44b083f6bdc121911a7e60ed6ff967ecefa47489803c30285d046e4d9ef6"
+    },
+    {
+      "output": "editor/EditorBack-Drawer.svg",
+      "source": "阅读器美术素材/Cloudig-Image/EditorBack-Drawer.svg",
+      "source_sha256": "96ce75bfee45fe360334783c7d4085eaedb321e9813b6c93dea3235acc049057",
+      "transform": "copy",
+      "output_sha256": "96ce75bfee45fe360334783c7d4085eaedb321e9813b6c93dea3235acc049057"
+    },
+    {
+      "output": "editor/ContentTimeTitleBack-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/ContentTimeTitleBack-Dawn.svg",
+      "source_sha256": "b80cc87f51786dd294a5a86e34e6cb9c987f2e6f86b4159072d3b2ae38da2601",
+      "transform": "copy",
+      "output_sha256": "b80cc87f51786dd294a5a86e34e6cb9c987f2e6f86b4159072d3b2ae38da2601"
+    },
+    {
+      "output": "editor/ContentTimeTitleBack-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/ContentTimeTitleBack-StarNight.svg",
+      "source_sha256": "cf1a3b2bb12de5c041db4acef6cbe1f5c431ae461381746738d9e014bf0ee877",
+      "transform": "copy",
+      "output_sha256": "cf1a3b2bb12de5c041db4acef6cbe1f5c431ae461381746738d9e014bf0ee877"
+    },
+    {
+      "output": "editor/TimeCloud-Blue.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TimeCloud-Blue.svg",
+      "source_sha256": "efa7a1f88deea9cc26c07ed5e2c54b2ace9fe2f39e575ba91d8d6bdb4ced506d",
+      "transform": "copy",
+      "output_sha256": "efa7a1f88deea9cc26c07ed5e2c54b2ace9fe2f39e575ba91d8d6bdb4ced506d"
+    },
+    {
+      "output": "editor/TimeCloud-DarkGrey.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TimeCloud-DarkGrey.svg",
+      "source_sha256": "feed20d949b9cf45775cb9e01e2bb6f990029f53c00dedf8f2c64cd06f346c6d",
+      "transform": "copy",
+      "output_sha256": "feed20d949b9cf45775cb9e01e2bb6f990029f53c00dedf8f2c64cd06f346c6d"
+    },
+    {
+      "output": "editor/TimeCloud-LightGrey.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TimeCloud-LightGrey.svg",
+      "source_sha256": "2a7146d0be09f5f44a3dd31db934e149d2c0386c2157a4d2c5dd367c6384322b",
+      "transform": "copy",
+      "output_sha256": "2a7146d0be09f5f44a3dd31db934e149d2c0386c2157a4d2c5dd367c6384322b"
+    },
+    {
+      "output": "editor/TimeCloud-Red.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TimeCloud-Red.svg",
+      "source_sha256": "283bcb4f2887a2e3151e6fdf4da15b376cc141f1af6cbae5ad618d84b066dac3",
+      "transform": "copy",
+      "output_sha256": "283bcb4f2887a2e3151e6fdf4da15b376cc141f1af6cbae5ad618d84b066dac3"
+    },
+    {
+      "output": "editor/TimeLOGO-Sovereign.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TimeLOGO-Sovereign.svg",
+      "source_sha256": "a1b46920b3b2bb87d1c48fdff325426e936e683f32a1dfce699cceea10439019",
+      "transform": "copy",
+      "output_sha256": "a1b46920b3b2bb87d1c48fdff325426e936e683f32a1dfce699cceea10439019"
+    },
+    {
+      "output": "editor/TimeLOGO-Terran.svg",
+      "source": "阅读器美术素材/Cloudig-Image/TimeLOGO-Terran.svg",
+      "source_sha256": "792575729bbcc2e5ede8d056dc4c3187e4842a5c19cb7657f4f44d1e0a3f6101",
+      "transform": "copy",
+      "output_sha256": "792575729bbcc2e5ede8d056dc4c3187e4842a5c19cb7657f4f44d1e0a3f6101"
+    },
+    {
+      "output": "editor/Title-Paper-Editor-Dawn.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-Editor-Dawn.svg",
+      "source_sha256": "f665b28854ed1daf211ea5057c3d3ab76c8a5e852c7f15dce800e6218b302d3d",
+      "transform": "stretch-menu-paper",
+      "output_sha256": "4fbc80929116db77875dd42db1dc00c15a2de3cf98d272fdcd58713cdef3c04d"
+    },
+    {
+      "output": "editor/Title-Paper-Editor-StarNight.svg",
+      "source": "阅读器美术素材/Cloudig-Image/Title-Paper-Editor-StarNight.svg",
+      "source_sha256": "9f4eb09c7dc0ffae0ed0b455086897de6d621aeffc1d407e8afa58df55422c04",
+      "transform": "stretch-menu-paper",
+      "output_sha256": "07b87c1294f89726df2f954f7b107ced07b0183c853390a3ea47dbea99c8f5aa"
+    },
+    {
+      "output": "reader/AllDirectory-Selected-Dawn.svg",
+      "source": "AIChatArchive/reader/assets/cover/AllDirectory-Selected-Dawn.svg",
+      "source_sha256": "91a61bfa555f442ffd33e79a20593d19407aa488b6264ea268f77b797f3a9ae7",
+      "upstream": "阅读器美术素材/Cloudig-Image/AllDirectory-Selected-Dawn.svg",
+      "upstream_sha256": "bca13a8a0eb840aa497644adbf5c753aaa15ce69862d3c940b6181a858480c11",
+      "transform": "accepted-derivative",
+      "output_sha256": "91a61bfa555f442ffd33e79a20593d19407aa488b6264ea268f77b797f3a9ae7"
+    },
+    {
+      "output": "reader/AllDirectory-Selected-StarNight.svg",
+      "source": "AIChatArchive/reader/assets/cover/AllDirectory-Selected-StarNight.svg",
+      "source_sha256": "164f4e980faf8baa1ba0d231522c57bccbfea0f803698f0be4af1a3304b35d69",
+      "upstream": "阅读器美术素材/Cloudig-Image/AllDirectory-Selected-StarNight.svg",
+      "upstream_sha256": "78b40337814c9f19cefb000545920aa575433e182491501e66e64128f381743e",
+      "transform": "accepted-derivative",
+      "output_sha256": "164f4e980faf8baa1ba0d231522c57bccbfea0f803698f0be4af1a3304b35d69"
+    },
+    {
+      "output": "reader/AllDirectory-UnSelected-Dawn.svg",
+      "source": "AIChatArchive/reader/assets/cover/AllDirectory-UnSelected-Dawn.svg",
+      "source_sha256": "176567caafd5d2a9c81ed5d1885dc1377342e82cdee71a1bbec3d701171a7c20",
+      "upstream": "阅读器美术素材/Cloudig-Image/AllDirectory-UnSelected-Dawn.svg",
+      "upstream_sha256": "955e16376f72bb259be13410ed9f41229c725d5629f69ba0c83ad91af10a6e53",
+      "transform": "accepted-derivative",
+      "output_sha256": "176567caafd5d2a9c81ed5d1885dc1377342e82cdee71a1bbec3d701171a7c20"
+    },
+    {
+      "output": "reader/AllDirectory-UnSelected-StarNight.svg",
+      "source": "AIChatArchive/reader/assets/cover/AllDirectory-UnSelected-StarNight.svg",
+      "source_sha256": "ab9b7c15b3875ccfa035071b5492ca0d0ead84b01a007c812969f53dd8c8df67",
+      "upstream": "阅读器美术素材/Cloudig-Image/AllDirectory-UnSelected-StarNight.svg",
+      "upstream_sha256": "3e0d9c59ce2df198831e315af19ded1f9b07fe1eb6021e2e50379f2604f42c53",
+      "transform": "accepted-derivative",
+      "output_sha256": "ab9b7c15b3875ccfa035071b5492ca0d0ead84b01a007c812969f53dd8c8df67"
+    },
+    {
+      "output": "reader/Directory-Selected-Dawn-01.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-Dawn-01.svg",
+      "source_sha256": "4ba934709abcbbab7ae660a4bfbe0dd0b81ff589b1c5621fc6cd583f2daaeaba",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-Dawn-01.svg",
+      "upstream_sha256": "52e84a9d6962618f58a3cbf94cfd573e119c1eb34882ec17e1be2b0592831b00",
+      "transform": "accepted-derivative",
+      "output_sha256": "4ba934709abcbbab7ae660a4bfbe0dd0b81ff589b1c5621fc6cd583f2daaeaba"
+    },
+    {
+      "output": "reader/Directory-Selected-Dawn-02.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-Dawn-02.svg",
+      "source_sha256": "1a196373b791aeb014b0a71926cf792fcd4341ae2b0bc00e36cdaa0f26e0d7c7",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-Dawn-02.svg",
+      "upstream_sha256": "f4c59e2e2f786f763364bc5d8a9e12a5ef96e44b68422346d6b1e01b64b2d59e",
+      "transform": "accepted-derivative",
+      "output_sha256": "1a196373b791aeb014b0a71926cf792fcd4341ae2b0bc00e36cdaa0f26e0d7c7"
+    },
+    {
+      "output": "reader/Directory-Selected-Dawn-03.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-Dawn-03.svg",
+      "source_sha256": "5b827f73e1e85f40892af675adfde43154c741d0fe1fb9eb278caf632f55e7ee",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-Dawn-03.svg",
+      "upstream_sha256": "0a27ab8e89c2a93ec5f3831a84a855d8a202341ee6f04b9281839ad43442d6b9",
+      "transform": "accepted-derivative",
+      "output_sha256": "5b827f73e1e85f40892af675adfde43154c741d0fe1fb9eb278caf632f55e7ee"
+    },
+    {
+      "output": "reader/Directory-Selected-Dawn-04.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-Dawn-04.svg",
+      "source_sha256": "7d1e7c1a7b9e25f297f7904659bf9eecc4f59a3a490feca85469179fa1b91ee3",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-Dawn-04.svg",
+      "upstream_sha256": "378e1bb183a337316c6a55e6886dc1bf05f3581e1e4250b4da0a0e91ad253a51",
+      "transform": "accepted-derivative",
+      "output_sha256": "7d1e7c1a7b9e25f297f7904659bf9eecc4f59a3a490feca85469179fa1b91ee3"
+    },
+    {
+      "output": "reader/Directory-Selected-StarNight-01.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-StarNight-01.svg",
+      "source_sha256": "bf93cc00f3df961393d8d356a73f24c11a777142c68ef1bdb86c424a9fea8976",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-StarNight-01.svg",
+      "upstream_sha256": "1af455fd6a703a0645f894234008ac7d7e4d067b8511800e0feb8d4bf42a350d",
+      "transform": "accepted-derivative",
+      "output_sha256": "bf93cc00f3df961393d8d356a73f24c11a777142c68ef1bdb86c424a9fea8976"
+    },
+    {
+      "output": "reader/Directory-Selected-StarNight-02.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-StarNight-02.svg",
+      "source_sha256": "b1df5af61af19b10222917e6fddc362a8029304ab33c785fc8345dc945469364",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-StarNight-02.svg",
+      "upstream_sha256": "5730933ec323cfa1e34db32d17c39a28fa92c8b2d395cc427c72d5fea9c8a531",
+      "transform": "accepted-derivative",
+      "output_sha256": "b1df5af61af19b10222917e6fddc362a8029304ab33c785fc8345dc945469364"
+    },
+    {
+      "output": "reader/Directory-Selected-StarNight-03.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-StarNight-03.svg",
+      "source_sha256": "7038ff4df1453225a91d7196ac34dca17fc344854c7edec2873b06b3a9cbec98",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-StarNight-03.svg",
+      "upstream_sha256": "fbc087dfc3d1382b9978b4b6a55f2a4444d3d3454b72a65180a60f376381a0c6",
+      "transform": "accepted-derivative",
+      "output_sha256": "7038ff4df1453225a91d7196ac34dca17fc344854c7edec2873b06b3a9cbec98"
+    },
+    {
+      "output": "reader/Directory-Selected-StarNight-04.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-Selected-StarNight-04.svg",
+      "source_sha256": "df05bd9f68ab9cd454272ef0ad8dca01b1cdad96140e21ecd9b5ae485f6d21da",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-Selected-StarNight-04.svg",
+      "upstream_sha256": "2b7d80f11e84b6e8ac8ac149ebe8fa75b2beee8e8f701e70924610ade34e5a92",
+      "transform": "accepted-derivative",
+      "output_sha256": "df05bd9f68ab9cd454272ef0ad8dca01b1cdad96140e21ecd9b5ae485f6d21da"
+    },
+    {
+      "output": "reader/Directory-UnSelected-Dawn-01.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-UnSelected-Dawn-01.svg",
+      "source_sha256": "73cb17dcc43e986acc3d16099bb9df249a3474a4920fff7322488b04da655b61",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-UnSelected-Dawn-01.svg",
+      "upstream_sha256": "47f213000ea0bd9ece0b99a070ff2810d719e82b5a31b9c28d1d822a2fc31c0b",
+      "transform": "accepted-derivative",
+      "output_sha256": "73cb17dcc43e986acc3d16099bb9df249a3474a4920fff7322488b04da655b61"
+    },
+    {
+      "output": "reader/Directory-UnSelected-Dawn-02.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-UnSelected-Dawn-02.svg",
+      "source_sha256": "900fad9d71c6975c40501fdf1faacaa2a06271cfd37cca7c99e42e64d92e2fb3",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-UnSelected-Dawn-02.svg",
+      "upstream_sha256": "4012019c5c43b964d41f55a8716dfb268d492483b83c6b5788fc837f2706148c",
+      "transform": "accepted-derivative",
+      "output_sha256": "900fad9d71c6975c40501fdf1faacaa2a06271cfd37cca7c99e42e64d92e2fb3"
+    },
+    {
+      "output": "reader/Directory-UnSelected-StarNight-01.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-UnSelected-StarNight-01.svg",
+      "source_sha256": "c5c9cb5307bf6b938ae2b1a3edf23581f7e028f02e8bcf6c5f3aec543c99647c",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-UnSelected-StarNight-01.svg",
+      "upstream_sha256": "1f90650a24c3145835f036ac85f7a08d799f5b61c99f6a94f16950858f15ee7b",
+      "transform": "accepted-derivative",
+      "output_sha256": "c5c9cb5307bf6b938ae2b1a3edf23581f7e028f02e8bcf6c5f3aec543c99647c"
+    },
+    {
+      "output": "reader/Directory-UnSelected-StarNight-02.svg",
+      "source": "AIChatArchive/reader/assets/cover/Directory-UnSelected-StarNight-02.svg",
+      "source_sha256": "4820c9c65069310946ff2db5677a93fb2ac54ba28910e88d7c74f0a696798681",
+      "upstream": "阅读器美术素材/Cloudig-Image/Directory-UnSelected-StarNight-02.svg",
+      "upstream_sha256": "589f83a61af637a17d417bc80bf150cdeeec179d854c3825a89b81193b4a0fd8",
+      "transform": "accepted-derivative",
+      "output_sha256": "4820c9c65069310946ff2db5677a93fb2ac54ba28910e88d7c74f0a696798681"
+    },
+    {
+      "output": "reader/ThreeBird-Dawn.svg",
+      "source": "AIChatArchive/reader/assets/cover/ThreeBird-Dawn.svg",
+      "source_sha256": "ede75fe1856a181b563abe7bfd0a645bcdd082f77952b45aa58dab74df78f4c3",
+      "upstream": "阅读器美术素材/Cloudig-Image/ThreeBird-Dawn.svg",
+      "upstream_sha256": "8c55d8a4cd6271ce3108c6842a587874176ba4fefe75799c3461aeb67c1b3947",
+      "transform": "accepted-derivative",
+      "output_sha256": "ede75fe1856a181b563abe7bfd0a645bcdd082f77952b45aa58dab74df78f4c3"
+    },
+    {
+      "output": "reader/ThreeBird-StarNight.svg",
+      "source": "AIChatArchive/reader/assets/cover/ThreeBird-StarNight.svg",
+      "source_sha256": "d2b181f0cb78ab57e8e1aaefcaff61d709f59890020f81287de9b46b96872e35",
+      "upstream": "阅读器美术素材/Cloudig-Image/ThreeBird-StarNight.svg",
+      "upstream_sha256": "bb802f64464cff5d66a08af32bd5aec590921d85083e8c76175965a5215476ab",
+      "transform": "accepted-derivative",
+      "output_sha256": "d2b181f0cb78ab57e8e1aaefcaff61d709f59890020f81287de9b46b96872e35"
+    },
+    {
+      "output": "reader/RCSD-爬相框的猫.svg",
+      "source": "AIChatArchive/reader/assets/cover/RCSD-爬相框的猫.svg",
+      "source_sha256": "a31498b9bf45dcf13138a09d317c05d0ddb1a1e6045ae8dbd89439a4a3994c84",
+      "upstream": "阅读器美术素材/Cloudig-Image/RCSD-爬相框的猫.svg",
+      "upstream_sha256": "7880e11f049f7108f2109e6bc5689c95c17b351eea4b66750235af56cdae5f20",
+      "transform": "accepted-derivative",
+      "output_sha256": "a31498b9bf45dcf13138a09d317c05d0ddb1a1e6045ae8dbd89439a4a3994c84"
+    },
+    {
+      "output": "reader/RCSS-鹦鹉.svg",
+      "source": "AIChatArchive/reader/assets/cover/RCSS-鹦鹉.svg",
+      "source_sha256": "33062bc4fce566a3e0b465f8c91cb9637765d2b39c7bde6b8fb397ca672b36b8",
+      "upstream": "阅读器美术素材/Cloudig-Image/RCSS-鹦鹉.svg",
+      "upstream_sha256": "73acc9947529456e50d91da1dd3971b13a78a36fb8d49ade9636a094791df8a9",
+      "transform": "accepted-derivative",
+      "output_sha256": "33062bc4fce566a3e0b465f8c91cb9637765d2b39c7bde6b8fb397ca672b36b8"
+    },
+    {
+      "output": "reader/Dawn-Window-Foreground.png",
+      "source": "AIChatArchive/reader/assets/cover/Dawn-Window-Foreground.png",
+      "source_sha256": "30bf31b4e40b38f1c96aa03d4796c75fae3c591b96f3067f40f366e346566a5d",
+      "upstream": "阅读器美术素材/Cloudig-Image/Cloudig-Reader-Cover-Scene-Dawn.png + RCSD-破晓窗户.svg",
+      "upstream_sha256": "184a6ec8063d85acecca9d4f40360356d895d5ec09c025e937ff3dca6fe47097+a50ce6020172a53bf5a8100640c8223caa6ada529f19c3d3b67082dc426d758f",
+      "transform": "accepted-window-foreground",
+      "output_sha256": "30bf31b4e40b38f1c96aa03d4796c75fae3c591b96f3067f40f366e346566a5d"
+    },
+    {
+      "output": "platforms/platform-chatgpt.svg",
+      "source": "阅读器美术素材/AI-Icon/openai.svg",
+      "source_sha256": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186",
+      "transform": "clean-svg",
+      "output_sha256": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186"
+    },
+    {
+      "output": "platforms/platform-claude.svg",
+      "source": "阅读器美术素材/AI-Icon/claude-color.svg",
+      "source_sha256": "f59a4df4ec4c414f04e3697bff037e270702ceadc5f8d50f8c3df28d926b3fa8",
+      "transform": "clean-svg",
+      "output_sha256": "41f97213faf9c00f763e8fc5e968f109fb389934e262221388390249b8d8f74f"
+    },
+    {
+      "output": "platforms/platform-gemini.svg",
+      "source": "阅读器美术素材/AI-Icon/gemini-color.svg",
+      "source_sha256": "8ab0a9bafec11f7e69bcb9fc4ffd8f1bc927d1ddcbbb6ff36dee5ae8b5a9d602",
+      "transform": "clean-svg",
+      "output_sha256": "8ab0a9bafec11f7e69bcb9fc4ffd8f1bc927d1ddcbbb6ff36dee5ae8b5a9d602"
+    },
+    {
+      "output": "platforms/platform-grok.svg",
+      "source": "阅读器美术素材/AI-Icon/grok.svg",
+      "source_sha256": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95",
+      "transform": "clean-svg",
+      "output_sha256": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95"
+    },
+    {
+      "output": "platforms/platform-deepseek.svg",
+      "source": "阅读器美术素材/AI-Icon/deepseek-color.svg",
+      "source_sha256": "233b3a4bf5dbefc3a5c7384bf32af474ed6b0f40e84c1283f752dc971c5bc999",
+      "transform": "clean-svg",
+      "output_sha256": "7dc8059a3136d5f7af17693be9dc9826b30d5ef89eabd190af54e6e1607b0cc9"
+    },
+    {
+      "output": "platforms/platform-doubao.png",
+      "source": "阅读器美术素材/AI-Icon/04_豆包.png",
+      "source_sha256": "f379110c25f32af7fa4b4dd87bf2e55f03bf06f237819ab8c72a6c9eda3a448a",
+      "transform": "copy",
+      "output_sha256": "f379110c25f32af7fa4b4dd87bf2e55f03bf06f237819ab8c72a6c9eda3a448a"
+    },
+    {
+      "output": "platforms/platform-qwen.svg",
+      "source": "阅读器美术素材/AI-Icon/qwen-color.svg",
+      "source_sha256": "77f5768c66d08ce1d3d14e73373975c1bc0454be88c81523ddd0ffd7e2974029",
+      "transform": "clean-svg",
+      "output_sha256": "77f5768c66d08ce1d3d14e73373975c1bc0454be88c81523ddd0ffd7e2974029"
+    },
+    {
+      "output": "platforms/platform-chatglm.svg",
+      "source": "阅读器美术素材/AI-Icon/qingyan-color.svg",
+      "source_sha256": "fc4c9dc628acbfdc18626fd04ae3192f049faf894ad2e342c84338f6ecfe7741",
+      "transform": "clean-svg",
+      "output_sha256": "fc4c9dc628acbfdc18626fd04ae3192f049faf894ad2e342c84338f6ecfe7741"
+    },
+    {
+      "output": "platforms/platform-yuanbao.svg",
+      "source": "阅读器美术素材/AI-Icon/yuanbao-color.svg",
+      "source_sha256": "522b9c3ee6f4136b3dd2f5e844a2273b6d599ae614329dbcaf96c74375b0fdd5",
+      "transform": "clean-svg",
+      "output_sha256": "522b9c3ee6f4136b3dd2f5e844a2273b6d599ae614329dbcaf96c74375b0fdd5"
+    },
+    {
+      "output": "platforms/platform-zai.svg",
+      "source": "阅读器美术素材/AI-Icon/zai.svg",
+      "source_sha256": "e748cb5108ce37b116d7a5ba97d37e0ae97eadf6849b0de11afb248e244a01e1",
+      "transform": "clean-svg",
+      "output_sha256": "e748cb5108ce37b116d7a5ba97d37e0ae97eadf6849b0de11afb248e244a01e1"
+    },
+    {
+      "output": "platforms/platform-kimi.svg",
+      "source": "阅读器美术素材/AI-Icon/kimi-color.svg",
+      "source_sha256": "74a7292aeb0220445d14c5d397d75760e2e8c6ed6a9e5fe4f3023471bf62a9ff",
+      "transform": "clean-svg",
+      "output_sha256": "74a7292aeb0220445d14c5d397d75760e2e8c6ed6a9e5fe4f3023471bf62a9ff"
+    },
+    {
+      "output": "platforms/platform-mistral.svg",
+      "source": "阅读器美术素材/AI-Icon/mistral-color.svg",
+      "source_sha256": "722f74b289d95486b43662fe24fa883b333701296f618406cd0ed502299170b6",
+      "transform": "clean-svg",
+      "output_sha256": "722f74b289d95486b43662fe24fa883b333701296f618406cd0ed502299170b6"
+    }
+  ]
+}

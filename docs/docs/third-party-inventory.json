@@ -1,0 +1,1330 @@
+{
+  "schema": "cloudig/third-party-inventory/1.0.0",
+  "scope": "runtime components and packages present in the Engine or Renderer bundle metafiles",
+  "runtime_components": [
+    {
+      "id": "Node.js",
+      "version": "24.18.0",
+      "declared_license": "Node.js license and bundled third-party notices",
+      "license_files": [
+        {
+          "name": "LICENSE.node.txt",
+          "bytes": 160552,
+          "sha256": "d9c4eeda951d6d08f4aa1316b61aafcf67e6da5f79b18f8edeb56fa6abdc038c"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft .NET Windows Desktop Runtime",
+      "version": "10.0.10",
+      "declared_license": "MIT and bundled third-party notices",
+      "license_files": [
+        {
+          "name": "LICENSE.dotnet.txt",
+          "bytes": 9519,
+          "sha256": "7f6839a61ce892b79c6549e2dc5a81fdbd240a0b260f8881216b45b7fda8b45d"
+        },
+        {
+          "name": "ThirdPartyNotices.dotnet.txt",
+          "bytes": 78887,
+          "sha256": "deb4427a295e1ed474b0d81c5a0d972c1b550b9a715cda939cdfa9236b1b418f"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Web.WebView2 SDK",
+      "version": "1.0.4078.44",
+      "declared_license": "BSD-3-Clause and bundled notices",
+      "license_files": [
+        {
+          "name": "LICENSE.webview2.txt",
+          "bytes": 1487,
+          "sha256": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55"
+        },
+        {
+          "name": "NOTICE.webview2.txt",
+          "bytes": 3894,
+          "sha256": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90"
+        }
+      ]
+    }
+  ],
+  "npm_packages": [
+    {
+      "name": "@braintree/sanitize-url",
+      "version": "7.1.2",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/braintree/sanitize-url.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1066,
+          "sha256": "0984740e0c3d725c8044dec7edcefe1dbce180ef5a7bc710c251e19607000158"
+        }
+      ]
+    },
+    {
+      "name": "@iconify/utils",
+      "version": "3.1.4",
+      "declared_license": "MIT",
+      "repository": "https://github.com/iconify/iconify.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "license.txt",
+          "bytes": 1083,
+          "sha256": "a86793ac023162ce98b91899601c15f6712f44943163c4f92a0a4bf89152b3bf"
+        }
+      ]
+    },
+    {
+      "name": "@mermaid-js/parser",
+      "version": "1.2.1",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mermaid-js/mermaid.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1077,
+          "sha256": "d374061c40bfb6f99c5033290caefda97a9b3e7e477e5ee02f487143ef2177e8"
+        }
+      ]
+    },
+    {
+      "name": "@upsetjs/venn.js",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/upsetjs/venn.js.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1106,
+          "sha256": "6a3508febf2cfccfee96597394543a6154a4bb0b1f91f28404be42c09e9fcb54"
+        }
+      ]
+    },
+    {
+      "name": "ajv",
+      "version": "8.20.0",
+      "declared_license": "MIT",
+      "repository": "ajv-validator/ajv",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1090,
+          "sha256": "a05350a88e318e4f5f2c2a1ff1e2e88daa4dd38e6e78b71cccae422bdc762cc3"
+        }
+      ]
+    },
+    {
+      "name": "cose-base",
+      "version": "1.0.3",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/iVis-at-Bilkent/cose-base.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1081,
+          "sha256": "5fb3cf4a14c3c5af6e473a192df8bca10c77754e3a0c6492c79fb92a76a5478a"
+        }
+      ]
+    },
+    {
+      "name": "cose-base",
+      "version": "2.2.0",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/iVis-at-Bilkent/cose-base.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1081,
+          "sha256": "5fb3cf4a14c3c5af6e473a192df8bca10c77754e3a0c6492c79fb92a76a5478a"
+        }
+      ]
+    },
+    {
+      "name": "cytoscape-cose-bilkent",
+      "version": "4.1.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/cytoscape/cytoscape.js-cose-bilkent.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1084,
+          "sha256": "440fc58a56a12814e417d2b341da89b050da052dc75bdb235607d37ec5fe74ef"
+        }
+      ]
+    },
+    {
+      "name": "cytoscape-fcose",
+      "version": "2.2.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/iVis-at-Bilkent/cytoscape.js-fcose.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1079,
+          "sha256": "2837634f403949215760fcdd2fa1ed0c64875d02099ecc8318c704b852f1421d"
+        }
+      ]
+    },
+    {
+      "name": "cytoscape",
+      "version": "3.34.2",
+      "declared_license": "MIT",
+      "repository": "https://github.com/cytoscape/cytoscape.js.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1082,
+          "sha256": "eb319c6e6f233607f71e8e2f450391751883cfc0eeb3ca7ef574c13d1d9c2203"
+        },
+        {
+          "name": "license-update.mjs",
+          "bytes": 1416,
+          "sha256": "4a5a644717fc90d678e8fbbc537a08452d0566726710eef47b196abd6363e635"
+        }
+      ]
+    },
+    {
+      "name": "d3-array",
+      "version": "2.12.1",
+      "declared_license": "BSD-3-Clause",
+      "repository": "https://github.com/d3/d3-array.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1475,
+          "sha256": "0747bebeb06b10954913149be9b9a8bdf6fad3e6fdcbd9f9524e7a94c13d2cea"
+        }
+      ]
+    },
+    {
+      "name": "d3-array",
+      "version": "3.2.4",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-array.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4"
+        }
+      ]
+    },
+    {
+      "name": "d3-axis",
+      "version": "3.0.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-axis.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-brush",
+      "version": "3.0.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-brush.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-chord",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-chord.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-color",
+      "version": "3.1.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-color.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884"
+        }
+      ]
+    },
+    {
+      "name": "d3-contour",
+      "version": "4.0.2",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-contour.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e51cba0e4fa1d8c078e15319868f2b90188f413f9ce9dac1043b62db32901e93"
+        }
+      ]
+    },
+    {
+      "name": "d3-delaunay",
+      "version": "6.0.4",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-delaunay.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 757,
+          "sha256": "582c3022bd01942336095f92b58a90b1be624dc547d987555c6c956512dd24c1"
+        }
+      ]
+    },
+    {
+      "name": "d3-dispatch",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-dispatch.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-drag",
+      "version": "3.0.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-drag.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-dsv",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-dsv.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "7842a82012622e5a37bfe4f6c1b67cd3bae6350716b5bf87f36cea0bdc1319dc"
+        }
+      ]
+    },
+    {
+      "name": "d3-ease",
+      "version": "3.0.1",
+      "declared_license": "BSD-3-Clause",
+      "repository": "https://github.com/d3/d3-ease.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1504,
+          "sha256": "b989d9085148d21ff64a75e14462aefa06b2589a55553b07b1460c70081c7d08"
+        }
+      ]
+    },
+    {
+      "name": "d3-fetch",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-fetch.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "ffdc17dc9040006bddeb891c95bfbb492e86d6bc64a4a4233666febab1be35e0"
+        }
+      ]
+    },
+    {
+      "name": "d3-force",
+      "version": "3.0.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-force.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-format",
+      "version": "3.1.2",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-format.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "2a6d2d5f32ba0b755ddbc1c833f766e30cdbe6ebe9a6d4e3e24427721f0b63d3"
+        }
+      ]
+    },
+    {
+      "name": "d3-geo",
+      "version": "3.1.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-geo.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1857,
+          "sha256": "3e3edc1224eec9c39cd26491a21304a62883c1e5b6a65c5283ccc7a6cc94baee"
+        }
+      ]
+    },
+    {
+      "name": "d3-hierarchy",
+      "version": "3.1.2",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-hierarchy.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-interpolate",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-interpolate.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-path",
+      "version": "1.0.9",
+      "declared_license": "BSD-3-Clause",
+      "repository": "https://github.com/d3/d3-path.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1475,
+          "sha256": "b8265327ab678f554800e71188b1cc6b1ff57522e292d2b1c0be66f27cf328b6"
+        }
+      ]
+    },
+    {
+      "name": "d3-path",
+      "version": "3.1.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-path.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "a09b0d6d76e768fca2085fad05743ee81ddd11946bcda160a3cf5e1081a479aa"
+        }
+      ]
+    },
+    {
+      "name": "d3-polygon",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-polygon.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-quadtree",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-quadtree.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-random",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-random.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-sankey",
+      "version": "0.12.3",
+      "declared_license": "BSD-3-Clause",
+      "repository": "https://github.com/d3/d3-sankey.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1471,
+          "sha256": "2bf785e778d67a4f5266cffcd4f2cc5bb98cde73791666e7efeb8002ba32dfa5"
+        }
+      ]
+    },
+    {
+      "name": "d3-scale-chromatic",
+      "version": "3.1.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-scale-chromatic.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1423,
+          "sha256": "0986d93944902cca9af86824b6a641b4b7c2d10602fc510c433a8bcd443919fe"
+        }
+      ]
+    },
+    {
+      "name": "d3-scale",
+      "version": "4.0.2",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-scale.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-selection",
+      "version": "3.0.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-selection.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-shape",
+      "version": "1.3.7",
+      "declared_license": "BSD-3-Clause",
+      "repository": "https://github.com/d3/d3-shape.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1475,
+          "sha256": "7eea8533ea92bd8c32a901e89ecb0305890905bb12711449565ddff96891146d"
+        }
+      ]
+    },
+    {
+      "name": "d3-shape",
+      "version": "3.2.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-shape.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884"
+        }
+      ]
+    },
+    {
+      "name": "d3-time-format",
+      "version": "4.1.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-time-format.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-time",
+      "version": "3.1.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-time.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884"
+        }
+      ]
+    },
+    {
+      "name": "d3-timer",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-timer.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-transition",
+      "version": "3.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-transition.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3-zoom",
+      "version": "3.0.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3-zoom.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+        }
+      ]
+    },
+    {
+      "name": "d3",
+      "version": "7.9.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/d3/d3.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 731,
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4"
+        }
+      ]
+    },
+    {
+      "name": "dagre-d3-es",
+      "version": "7.0.14",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/tbo47/dagre-es.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 1328,
+          "sha256": "d01eb84ccce437dbf5fd40853bceea0f287930920acea066597a4a25ead63858"
+        }
+      ]
+    },
+    {
+      "name": "dayjs",
+      "version": "1.11.23",
+      "declared_license": "MIT",
+      "repository": "https://github.com/iamkun/dayjs.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1072,
+          "sha256": "5faab7526d055651be3aab769d58897be6bd91f3d39d137f25f12dba1b31d5dc"
+        }
+      ]
+    },
+    {
+      "name": "delaunator",
+      "version": "5.1.0",
+      "declared_license": "ISC",
+      "repository": "https://github.com/mapbox/delaunator.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 738,
+          "sha256": "0b348fff56384b43dbb37593906904e56d0f9deb51eae590d4dc6d427fbf1808"
+        }
+      ]
+    },
+    {
+      "name": "dompurify",
+      "version": "3.4.14",
+      "declared_license": "(MPL-2.0 OR Apache-2.0)",
+      "repository": "git://github.com/cure53/DOMPurify.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "name": "LICENSE-MPL",
+          "bytes": 16726,
+          "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+        }
+      ]
+    },
+    {
+      "name": "entities",
+      "version": "8.0.0",
+      "declared_license": "BSD-2-Clause",
+      "repository": "https://github.com/fb55/entities.git",
+      "consumers": [
+        "engine",
+        "parser_worker",
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1260,
+          "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164"
+        }
+      ]
+    },
+    {
+      "name": "es-toolkit",
+      "version": "1.52.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/toss/es-toolkit.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1077,
+          "sha256": "51f3674294d988d89dbebd31273baaeb3c697a15482d9699b14d1fded2e132a7"
+        },
+        {
+          "name": "NOTICE",
+          "bytes": 1698,
+          "sha256": "11ee5e3bce9b0a4dde7f73811caf98978e710228d891c3111ad8ef8d7d2a916f"
+        }
+      ]
+    },
+    {
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/epoberezkin/fast-deep-equal.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1074,
+          "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a"
+        }
+      ]
+    },
+    {
+      "name": "fast-uri",
+      "version": "3.1.6",
+      "declared_license": "BSD-3-Clause",
+      "repository": "git+https://github.com/fastify/fast-uri.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1813,
+          "sha256": "b010b0dfdfdb23d7396e03b82cd4621fc9bb8f95d6b0aea70b9c24e12074c786"
+        }
+      ]
+    },
+    {
+      "name": "fastdom",
+      "version": "1.0.12",
+      "declared_license": "MIT",
+      "repository": "git://github.com/wilsonpage/fastdom.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "README.md#License",
+          "bytes": 1093,
+          "sha256": "258e8ff35f4866cf3a53c8855667af5ee7840a816aa000fcc0d388520e2787d7"
+        }
+      ]
+    },
+    {
+      "name": "highlight.js",
+      "version": "11.11.1",
+      "declared_license": "BSD-3-Clause",
+      "repository": "git://github.com/highlightjs/highlight.js.git",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1514,
+          "sha256": "6c081431591d9df696c82dc598fe1423765b8a299b200ed00b281afd0f64c490"
+        }
+      ]
+    },
+    {
+      "name": "internmap",
+      "version": "1.0.1",
+      "declared_license": "ISC",
+      "repository": "https://github.com/mbostock/internmap.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 726,
+          "sha256": "9ea8903938dab5f12c4572d60725069bec2d1b0dc3bcc210b09bae946a5ebb1f"
+        }
+      ]
+    },
+    {
+      "name": "internmap",
+      "version": "2.0.3",
+      "declared_license": "ISC",
+      "repository": "https://github.com/mbostock/internmap.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 726,
+          "sha256": "9ea8903938dab5f12c4572d60725069bec2d1b0dc3bcc210b09bae946a5ebb1f"
+        }
+      ]
+    },
+    {
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/epoberezkin/json-schema-traverse.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1074,
+          "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a"
+        }
+      ]
+    },
+    {
+      "name": "katex",
+      "version": "0.16.47",
+      "declared_license": "MIT",
+      "repository": "https://github.com/KaTeX/KaTeX.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1107,
+          "sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3"
+        }
+      ]
+    },
+    {
+      "name": "katex",
+      "version": "0.18.5",
+      "declared_license": "MIT",
+      "repository": "https://github.com/KaTeX/KaTeX.git",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1107,
+          "sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3"
+        }
+      ]
+    },
+    {
+      "name": "khroma",
+      "version": "2.1.0",
+      "declared_license": null,
+      "repository": "github:fabiospampinato/khroma",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "license",
+          "bytes": 1105,
+          "sha256": "66b333b0f66759a0b710459e03f7029abe17f4358114a128d2c972e642961b49"
+        }
+      ]
+    },
+    {
+      "name": "layout-base",
+      "version": "1.0.2",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/iVis-at-Bilkent/layout-base.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1069,
+          "sha256": "eabb762d8a95109a39c9be3247325529a5239a7aca327d909c3ccdc41f3a06bf"
+        }
+      ]
+    },
+    {
+      "name": "layout-base",
+      "version": "2.0.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/iVis-at-Bilkent/layout-base.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1069,
+          "sha256": "eabb762d8a95109a39c9be3247325529a5239a7aca327d909c3ccdc41f3a06bf"
+        }
+      ]
+    },
+    {
+      "name": "linkify-it",
+      "version": "6.1.0",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/markdown-it/linkify-it.git",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1058,
+          "sha256": "95e3f7f0e81e9b4940cdfaa1956aaff5e4dfd2fb1565041e7c78eb9a606f23e3"
+        }
+      ]
+    },
+    {
+      "name": "lodash-es",
+      "version": "4.18.1",
+      "declared_license": "MIT",
+      "repository": "lodash/lodash",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1952,
+          "sha256": "f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc"
+        }
+      ]
+    },
+    {
+      "name": "markdown-it-texmath",
+      "version": "1.0.0",
+      "declared_license": "MIT",
+      "repository": "git://github.com/goessner/markdown-it-texmath.git",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "license.txt",
+          "bytes": 1096,
+          "sha256": "655a4d5721dabe668d3ef640d5587d44534d370e7dc256d4f33740278dc710d5"
+        }
+      ]
+    },
+    {
+      "name": "markdown-it",
+      "version": "15.0.1",
+      "declared_license": "MIT",
+      "repository": "markdown-it/markdown-it",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1073,
+          "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473"
+        }
+      ]
+    },
+    {
+      "name": "marked",
+      "version": "16.4.2",
+      "declared_license": "MIT",
+      "repository": "git://github.com/markedjs/marked.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 2942,
+          "sha256": "8e3a3f82f59a60958f56ca08f445647c32a4733dc7ca6c2c46f6eb898471ab9c"
+        }
+      ]
+    },
+    {
+      "name": "mdurl",
+      "version": "2.1.0",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/markdown-it/mdurl.git",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 2303,
+          "sha256": "6b6a356c4337e2446841f30f3cdf7e7023af8c5260b5e347c0f987b9f6aa2644"
+        }
+      ]
+    },
+    {
+      "name": "mermaid",
+      "version": "11.17.2",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mermaid-js/mermaid",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1089,
+          "sha256": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80"
+        }
+      ]
+    },
+    {
+      "name": "parse5",
+      "version": "8.0.1",
+      "declared_license": "MIT",
+      "repository": "git://github.com/inikulin/parse5.git",
+      "consumers": [
+        "engine",
+        "parser_worker",
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1109,
+          "sha256": "8c535800331e1e4439835555b3f9edc7fe9dee2fab0d8bbbd5a982e8b8343d4d"
+        }
+      ]
+    },
+    {
+      "name": "punycode.js",
+      "version": "2.3.1",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mathiasbynens/punycode.js.git",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE-MIT.txt",
+          "bytes": 1077,
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        }
+      ]
+    },
+    {
+      "name": "robust-predicates",
+      "version": "3.0.3",
+      "declared_license": "Unlicense",
+      "repository": "https://github.com/mourner/robust-predicates.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1210,
+          "sha256": "88d9b4eb60579c191ec391ca04c16130572d7eedc4a86daa58bf28c6e14c9bcd"
+        }
+      ]
+    },
+    {
+      "name": "roughjs",
+      "version": "4.6.6",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/pshihn/rough.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1068,
+          "sha256": "dca9a392272606ac748ac0976a2a1133f14eef841c27beaa51a844d53c56a09d"
+        }
+      ]
+    },
+    {
+      "name": "stylis",
+      "version": "4.4.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/thysultan/stylis.js",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1078,
+          "sha256": "88c579c6ee44b41137a21321190d177982e5b17d4fa1b83a4a2e3ea325a8fc9a"
+        }
+      ]
+    },
+    {
+      "name": "ts-dedent",
+      "version": "2.3.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/tamino-martinius/node-ts-dedent.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1073,
+          "sha256": "eff13095d9d762c3bd9dda74370c81e2130c28f2691bc455603abf973bac25b9"
+        }
+      ]
+    },
+    {
+      "name": "uc.micro",
+      "version": "3.0.0",
+      "declared_license": "MIT",
+      "repository": "markdown-it/uc.micro",
+      "consumers": [
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "bytes": 1077,
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        }
+      ]
+    },
+    {
+      "name": "uuid",
+      "version": "14.0.2",
+      "declared_license": "MIT",
+      "repository": "https://github.com/uuidjs/uuid.git",
+      "consumers": [
+        "mermaid_layout"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 1109,
+          "sha256": "beaa6b04fb82e41dd2ad679e19e27953afb5999b1abbb455b6564e78ebfeb332"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "runtime_components": 3,
+    "npm_packages": 78,
+    "license_texts": 86
+  }
+}

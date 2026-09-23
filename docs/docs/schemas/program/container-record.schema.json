@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/container-record/1.0.0",
+  "title": "Cloudig rebuildable container record projection 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "selector",
+    "ordinal",
+    "offset",
+    "length",
+    "item_sha256",
+    "title",
+    "messages"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/container-record/1.0.0"
+    },
+    "selector": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+    },
+    "ordinal": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "offset": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "length": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "item_sha256": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+    },
+    "title": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+    },
+    "created_at": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+    },
+    "updated_at": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+    },
+    "messages": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "branches": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "fork_points": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "orphan_parents": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

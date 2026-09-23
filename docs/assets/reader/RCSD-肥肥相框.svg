@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 320.78 245.55">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_新建渐变色板_1-2);
+      }
+
+      .cls-2 {
+        fill: url(#_新建渐变色板_1-4);
+      }
+
+      .cls-3 {
+        fill: url(#_新建渐变色板_1);
+      }
+
+      .cls-4 {
+        filter: url(#drop-shadow-1);
+      }
+
+      .cls-5 {
+        fill: url(#_新建渐变色板_1-3);
+      }
+    </style>
+    <filter id="drop-shadow-1" x="-8.88" y="-8.34" width="352" height="276" filterUnits="userSpaceOnUse">
+      <feOffset dx="7" dy="7"/>
+      <feGaussianBlur result="blur" stdDeviation="5"/>
+      <feFlood flood-color="#000" flood-opacity=".5"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="_新建渐变色板_1" x1="312.08" y1="257.9" x2="309.82" y2="-43.68" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b78862"/>
+      <stop offset=".51" stop-color="#c19c80"/>
+      <stop offset="1" stop-color="#b78862"/>
+    </linearGradient>
+    <linearGradient id="_新建渐变色板_1-2" x1="0" y1="10.22" x2="320.78" y2="10.22" xlink:href="#_新建渐变色板_1"/>
+    <linearGradient id="_新建渐变色板_1-3" x1="0" y1="235.18" x2="320.78" y2="235.18" xlink:href="#_新建渐变色板_1"/>
+    <linearGradient id="_新建渐变色板_1-4" x1="9.55" y1="257.45" x2="9.55" y2="-37.84" xlink:href="#_新建渐变色板_1"/>
+  </defs>
+  <g>
+    <g id="_肥肥相框" class="cls-4">
+      <polygon class="cls-3" points="301.19 20.43 301.19 224.81 320.78 245.55 320.78 0 301.19 20.43"/>
+      <polygon class="cls-1" points="301.19 20.43 320.78 0 0 0 19.1 20.43 301.19 20.43"/>
+      <polygon class="cls-5" points="19.1 224.81 0 245.55 320.78 245.55 301.19 224.81 19.1 224.81"/>
+      <polygon class="cls-2" points="19.1 20.43 0 0 0 245.55 19.1 224.81 19.1 20.43"/>
+    </g>
+  </g>
+</svg>

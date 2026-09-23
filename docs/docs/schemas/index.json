@@ -1,0 +1,83 @@
+{
+  "cloudig_standard": "1.0",
+  "schemas": [
+    {
+      "file": "records/common.schema.json",
+      "source": "src/core/records/schemas/common.schema.json",
+      "id": "https://cloudig.local/records/common/1.0.0",
+      "sha256": "12e90ead02f75dfc343de00bee11a3da67e813437398f9baea440e06164fe2be"
+    },
+    {
+      "file": "records/library.schema.json",
+      "source": "src/core/records/schemas/library.schema.json",
+      "id": "https://cloudig.local/records/library/1.0.0",
+      "sha256": "e0e1767ec42b358d6759f298de928d24f2d76ca084cbc38e025ef1160dea0590"
+    },
+    {
+      "file": "records/identity.schema.json",
+      "source": "src/core/records/schemas/identity.schema.json",
+      "id": "https://cloudig.local/records/identity/1.0.0",
+      "sha256": "ea747fe989e61d4b16ca99659624b4e63a5a103db6bfebdba33acfe4ced82fe5"
+    },
+    {
+      "file": "records/identity-settings.schema.json",
+      "source": "src/core/records/schemas/identity-settings.schema.json",
+      "id": "https://cloudig.local/records/identity-settings/1.0.0",
+      "sha256": "9ba84c53f0d73451b9715675a619c0ec5c3d823edbfa8680bedab707cd555e8b"
+    },
+    {
+      "file": "records/conversation.schema.json",
+      "source": "src/core/records/schemas/conversation.schema.json",
+      "id": "https://cloudig.local/records/conversation/1.0.0",
+      "sha256": "5e7ef5039aaa1c4513f7edece8b0de21566aa7c4f0baf6805321459353e231e9"
+    },
+    {
+      "file": "records/mark.schema.json",
+      "source": "src/core/records/schemas/mark.schema.json",
+      "id": "https://cloudig.local/records/mark/1.0.0",
+      "sha256": "1b9ae400f2a0cf2e8f83dcfcfa7ad8213dd36c1bdf88cac3ccac14f6b16146ce"
+    },
+    {
+      "file": "records/content-time.schema.json",
+      "source": "src/core/records/schemas/content-time.schema.json",
+      "id": "https://cloudig.local/records/content-time/1.0.0",
+      "sha256": "c03482f0f687b5846f798594a6c94a57715676b2f33a5de395af36bcbaf753a4"
+    },
+    {
+      "file": "records/content-time-order.schema.json",
+      "source": "src/core/records/schemas/content-time-order.schema.json",
+      "id": "https://cloudig.local/records/content-time-order/1.0.0",
+      "sha256": "afc8f16a40101474b9f1e4509001d40e4732271afe79f79c1e29458710fe60eb"
+    },
+    {
+      "file": "program/common.schema.json",
+      "source": "src/core/contracts/schemas/common.schema.json",
+      "id": "https://cloudig.local/schema/common/1.0.0",
+      "sha256": "957fbfdb8f18b14ddd9a680bc7f255ecc9f19fa5e0979faf2725135137463770"
+    },
+    {
+      "file": "program/container-record.schema.json",
+      "source": "src/core/contracts/schemas/container-record.schema.json",
+      "id": "https://cloudig.local/schema/container-record/1.0.0",
+      "sha256": "085f1c73cf67ea8732853c6a2df3047d98d4ceca08abbc491bccc9eb24a41b3a"
+    },
+    {
+      "file": "program/system-log.schema.json",
+      "source": "src/core/contracts/schemas/system-log.schema.json",
+      "id": "https://cloudig.local/schema/system-log/1.0.0",
+      "sha256": "326548fcf10b770f5f6567fb3c1a1e7b2b2441889f166aece657e4760ef024b4"
+    },
+    {
+      "file": "program/record-transaction.schema.json",
+      "source": "src/adapters/storage/record-transaction.schema.json",
+      "id": "https://cloudig.local/internal/record-transaction/1.0.0",
+      "sha256": "eb2f178029c0deac27c03da0d1829d396a9db6d1ffbbee3159a1977383275c99"
+    },
+    {
+      "file": "program/record-recycle.schema.json",
+      "source": "src/adapters/library-data/record-recycle.schema.json",
+      "id": "https://cloudig.local/internal/recycle/1.0.0",
+      "sha256": "809338389ddbc9954877d3699d0207fa88f36aa64e10b6537ced1eb47e757e8f"
+    }
+  ]
+}

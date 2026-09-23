@@ -1,0 +1,348 @@
+{
+  "schema": "cloudig/conversation/1.0.0",
+  "conversation_id": "01a0c7c4-f4ad-7d15-843f-ba8506fa59cb",
+  "parser": {
+    "version": "1.1.8",
+    "adapter": {
+      "id": "chatgpt-light-items-v2",
+      "version": "3.0.2"
+    }
+  },
+  "lifecycle": {
+    "first_parsed_at": "2026-09-22T06:19:28.813Z",
+    "last_parsed_at": "2026-09-22T06:19:28.813Z",
+    "cloudig_edited_at": "2026-09-22T06:19:28.813Z"
+  },
+  "source": {
+    "file": "ChatGPT-轻装-Schedule.html",
+    "sha256": "16bee4282a93cac29db1a395f77f49a40d438724a3df72616b07e42caacf24f6",
+    "bytes": 74698,
+    "format": "exporter-html",
+    "exporter": {
+      "id": "chatgpt-bookmarklet",
+      "version": "3.7.42-light"
+    },
+    "url": "https://chatgpt.com/c/6a8c4c69-7858-83e8-9799-c95ba3f3fdda",
+    "profile": "light",
+    "captured_at": "2026-09-17T12:48:15.406Z",
+    "captured_from": "bookmark:manifest.captured_at"
+  },
+  "platform": "chatgpt",
+  "title": {
+    "filename": "ChatGPT-轻装-Schedule",
+    "original": "ChatGPT-轻装-Schedule"
+  },
+  "models": [
+    "gpt-5-6-thinking"
+  ],
+  "message_time": {
+    "start": "2026-08-27T09:56:16.638Z",
+    "end": "2026-08-27T09:56:26.753Z"
+  },
+  "identity": [
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "user:unnamed",
+      "names": [],
+      "kind": {
+        "world": "terran",
+        "subject": "human"
+      },
+      "role": "user"
+    },
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "tool:de1d73e.list",
+      "names": [
+        {
+          "name": "de1d73e.list",
+          "claimers": [
+            {
+              "name": "OpenAI"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "program"
+      },
+      "role": "tool"
+    },
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "assistant:gpt-5-6-thinking",
+      "names": [
+        {
+          "name": "gpt-5-6-thinking",
+          "claimers": [
+            {
+              "name": "OpenAI"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "ai"
+      },
+      "role": "assistant"
+    },
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "tool:schedule",
+      "names": [
+        {
+          "name": "schedule",
+          "claimers": [
+            {
+              "name": "OpenAI"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "program"
+      },
+      "role": "tool"
+    }
+  ],
+  "messages": {
+    "items": [
+      {
+        "id": "f0da21cc-07a3-440b-aa6e-07c4472fb0fa",
+        "speaker": "user:unnamed",
+        "timestamp": "2026-08-27T09:56:16.638Z",
+        "content": [
+          {
+            "type": "html",
+            "html": "<p>夫夫君，实验一下，我现在在搞书签，你帮我把那个schedule给弄到生成里来，我的意思就是把那个入口弄进来，我看看。</p>"
+          }
+        ]
+      },
+      {
+        "id": "61ef7ff2-d72e-4de6-8ff8-75f33e000196",
+        "parent": "f0da21cc-07a3-440b-aa6e-07c4472fb0fa",
+        "speaker": "assistant:gpt-5-6-thinking",
+        "timestamp": "2026-08-27T09:56:26.753Z",
+        "content": [
+          {
+            "type": "tool",
+            "kind": "call",
+            "input": "{}",
+            "recipient": "tool:de1d73e.list"
+          },
+          {
+            "type": "tool",
+            "kind": "result",
+            "output": "{\"status\": \"SUCCESS\", \"jawbones\": [{\"updated_at\": \"2026-08-27T04:12:56.293500Z\", \"title\": \"AI Panorama Index\", \"schedule\": \"BEGIN:VEVENT\\nDTSTART:20260812T200000\\nRRULE:FREQ=DAILY\\nEND:VEVENT\", \"is_enabled\": true, \"prompt\": \"Run a broad, comprehensive daily AI search for roughly the past 24 hours, but keep DISCOVERY high-recall and OUTPUT high-precision. Use a mandatory three-layer workflow. STAGE 0 \\u2014 MODEL-CATALOG STATE DIFF: for each Tier-0 provider, inspect current user-facing model catalogs, pricing/model-selection pages, coding-plan supported-model lists, API model docs/registries, official app/product model-picker documentation where indexable, official model repositories, and official social posts; compare visible model/product identifiers against prior runs. Explicitly sweep OpenAI; Anthropic; Google DeepMind/Gemini; xAI/Grok; DeepSeek; Alibaba/Qwen; Z.AI/GLM; Moonshot/Kimi; MiniMax; Meta/Llama; Mistral; Microsoft AI/Azure AI/GitHub Copilot; NVIDIA AI; and newly material frontier providers. For Z.AI/GLM, always cross-check z.ai/blog, docs.z.ai, docs.bigmodel.cn coding-plan model list/model overview/new-releases, ZCode changelog, and official @Zai_org posts. For DeepSeek, cross-check pricing/model lists, API docs/changelog, repositories and official social. STAGE 1 \\u2014 PRIMARY RELEASE SWEEP: provider-by-provider official news/release notes/model docs/changelogs/social for releases and availability changes. STAGE 2 \\u2014 BROAD ECOSYSTEM SEARCH: governments/regulators, national policy, reputable media, finance, research labs/papers, GitHub/open-source, chips/cloud/data centers, partnerships/contracts, interviews/personnel, litigation/copyright, safety/security, outages/access restrictions, and social/labor/education impacts across major AI regions. HARD SIGNIFICANCE GATE: the daily report is NOT a changelog index and NOT an exhaustive list of everything discovered. Include only developments likely to remain important a month later or that materially change model capability, public/API access, economics, governance, infrastructure, competitive structure, safety/risk, or major social impact. Silently absorb routine Claude Code/Codex/Copilot patch releases, minor CLI/UI/permission/config changes, bug fixes, retry/resume improvements, admin commands, small workflow conveniences, minor integrations, routine outages, small partnerships/funding rounds, incremental benchmark changes, and ordinary product tweaks unless they cross a clear capability/platform boundary. Agent/coding news qualifies only for a genuinely new product/platform, major autonomy boundary expansion, major distribution/access shift, or major pricing/limit/context change. Model news qualifies for new flagship/frontier models, major generations/versions, strategically important new modalities, important open-weight releases, major API/public availability changes, or major price/limit/context shifts. Business/infrastructure items should generally require exceptional scale or strategic importance; policy/safety items should change rules/access/liability or reveal a serious incident with broad implications. Final test: \\u201cIf omitted today, would this plausibly feel like an important missed AI milestone one month from now?\\u201d If probably not, omit it. Do not re-report anything already covered unless there is a MATERIAL delta; for existing stories report only the delta. De-duplicate related coverage. OUTPUT IN CHINESE, compact. Structure: optional one-line count; then at most 5 consequential developments, each 1\\u20133 short lines: what changed + why it matters + confidence + one best source (up to two only when necessary). No low-value remainder index, no intro/conclusion, no generic background, no citation piles. Aim under ~800 Chinese characters; if fewer than 5 items qualify, report fewer. If nothing qualifies, output nothing.\", \"default_timezone\": \"America/Los_Angeles\", \"timing_mode\": \"flexible_schedule\", \"notifications_enabled\": false, \"email_enabled\": false, \"last_run_time\": \"2026-08-26T13:03:32.195034Z\", \"id\": \"6a7c5af70e6c8191a2302dc87668b320\"}, {\"updated_at\": \"2026-08-27T09:34:34.174850Z\", \"title\": \"AI Breaking Watch\", \"schedule\": \"BEGIN:VEVENT\\nDTSTART:20260812T113807\\nRRULE:FREQ=HOURLY\\nEND:VEVENT\", \"is_enabled\": true, \"prompt\": \"Run a TWO-STAGE high-recall AI breaking-news check with a mandatory MODEL-CATALOG DIFF before broad search, but apply a HARD SIGNIFICANCE GATE before notifying. DISCOVERY must stay high-recall; OUTPUT must be high-precision. STAGE 0 \\u2014 STATE DIFF (MANDATORY): for each Tier-0 provider, inspect current user-facing model catalogs, pricing/model-selection pages, coding-plan supported-model lists, API model docs/registries, official app/product model-picker documentation where indexable, official GitHub/Hugging Face model repositories, and official social posts. Compare CURRENT visible model/product identifiers against prior runs. Any newly appearing identifier is a candidate launch even if formal changelogs lag. Explicitly sweep OpenAI; Anthropic; Google DeepMind/Gemini; xAI/Grok; DeepSeek; Alibaba/Qwen; Z.AI/GLM; Moonshot/Kimi; MiniMax; Meta/Llama; Mistral; Microsoft AI/Azure AI/GitHub Copilot; NVIDIA AI; and newly material frontier providers. For Z.AI/GLM always cross-check z.ai/blog, docs.z.ai, docs.bigmodel.cn coding-plan model list/model overview/new-releases, ZCode changelog, and official @Zai_org posts. For DeepSeek cross-check pricing/model lists, API docs/changelog, repositories and official social. STAGE 1 \\u2014 PRIMARY RELEASE SWEEP: provider-by-provider official news/release notes/model docs/changelogs/social for fresh releases and major availability changes. STAGE 2 \\u2014 BROAD ECOSYSTEM SEARCH: governments/regulators and national AI policy; chips/cloud/data centers; major funding/valuation/M&A/market moves; CEO/key researcher interviews/personnel; major strategic partnerships/contracts/alliances; important open source/tooling/research; litigation/copyright/regulation; serious safety/security incidents; major outages/bans/access restrictions; and major community signals. HARD SIGNIFICANCE GATE: notify only for events that are likely to remain important as an AI-industry milestone a month later or materially change capability, access, economics, governance, infrastructure, competitive structure, or risk. ROUTINE PRODUCT CHANGELOGS ARE SILENT BY DEFAULT. Do NOT notify for ordinary Claude Code/Codex/Copilot patch releases, minor CLI/UI/permission/config additions, bug fixes, retry/resume behavior, admin commands, small workflow conveniences, routine model-picker changes, minor integrations, ordinary service incidents, small partnerships, minor funding, or incremental benchmark tweaks unless they clearly cross a capability/platform boundary or create a major state change. Agent/coding news qualifies only for a genuinely new product/platform, a major autonomous capability boundary expansion (e.g. first computer/browser control, persistent long-horizon execution, materially new multi-agent architecture), a major distribution/access shift, or a major pricing/limits/context change. Model news qualifies for a new flagship/frontier model, major model generation/version, new modality of strategic importance, important open-weight release, major API/public availability change, or major price/limit/context shift. Infrastructure/business news should generally require exceptional scale or strategic importance (e.g. transformative M&A, multi-billion-dollar compute commitments, major cloud distribution, national-scale partnerships). Policy/safety news qualifies only when it changes rules/access/liability or involves a serious incident with broad implications. Use this final test before output: \\u201cIf this were omitted today, would it plausibly feel like an important missed AI milestone one month from now?\\u201d If probably not, keep it silent. PRIORITY RULE: before reporting financing/general corporate events, confirm Stages 0\\u20131 found no unreported qualifying Tier-0 model/product launch. Do not re-report anything already covered unless there is a MATERIAL delta; report only that delta. De-duplicate related coverage. Output in Chinese, extremely compact: at most 3 event clusters, each 2\\u20134 short lines with what changed, why it matters, confidence, and 1\\u20133 best sources. Aim under ~600 Chinese characters unless exceptional. If nothing passes the significance gate, do not notify me.\", \"default_timezone\": \"America/Los_Angeles\", \"timing_mode\": \"condition_watch\", \"notifications_enabled\": false, \"email_enabled\": false, \"last_run_time\": \"2026-08-27T09:34:10.330748Z\", \"id\": \"6a7c5ae368f481918ffa65a549bd1539\"}, {\"updated_at\": \"2026-08-26T12:09:40.972004Z\", \"title\": \"AI Strategic Delta\", \"schedule\": \"BEGIN:VEVENT\\nDTSTART:20260816T200000\\nRRULE:FREQ=WEEKLY;BYDAY=SU\\nEND:VEVENT\", \"is_enabled\": true, \"prompt\": \"Produce a WEEKLY STRATEGIC DELTA for the AI ecosystem. Do not recap or concatenate daily news. Report only structural conclusions or relationship changes that became materially clearer since the previous weekly run. Cover models/products, company strategy, capital flows and M&A, executive/researcher movement, partnerships/contracts, national policy/regulation, chips/cloud/compute, research/open source, litigation/copyright, safety/security, and social/labor effects across major AI regions. Reconstruct organization relationships where useful: who is moving closer, becoming dependent, competing more directly, funding whom, contracting with whom, or pulling apart. Distinguish durable trend from one-off noise; preserve ambiguity and label confidence. OUTPUT IN CHINESE AS A THIN DELTA, optimized to minimize persistent chat growth. Structure: (1) '\\u672c\\u5468\\u65b0\\u589e\\u7ed3\\u6784\\u5224\\u65ad' \\u2014 at most 8 shifts, each 1\\u20132 compact lines: conclusion + strongest new evidence + confidence + at most one representative source; (2) '\\u5173\\u7cfb\\u7f51\\u53d8\\u5316' \\u2014 only new/materially changed relationships, ultra-compact one-line entries; (3) '\\u4e0b\\u5468\\u89c2\\u5bdf' \\u2014 at most 5 unresolved signals, one line each. Do not repeat daily chronology, generic background, unchanged conclusions, or source piles. Aim for roughly 1,200 Chinese characters total; exceed only for an unusually consequential week. Detailed follow-up can be researched on demand rather than preloaded into this chat.\", \"default_timezone\": \"Asia/Shanghai\", \"timing_mode\": \"flexible_schedule\", \"notifications_enabled\": false, \"email_enabled\": false, \"last_run_time\": \"2026-08-23T12:08:54.343313Z\", \"id\": \"6a7c5b0133288191a6848b4c1726b01c\"}], \"paused_count\": 0, \"completed_count\": 0, \"assistant_response_guidance\": \"The UI will already render the user's active automations from this list result. The automations will be rendered below your response Do NOT restate active automations in prose unless adding information not already visible to the user. Do not tell the user about any automations with enabled = false. They are considered deleted. You do not need to mention the UI either. Simply summarize in 1 sentence or less what automations exist.\\n\\nDo not call the automations `list` action again this turn; use the automations `peek` action for any further inspection.\"}",
+            "speaker": "tool:de1d73e.list"
+          },
+          {
+            "type": "status",
+            "title": "思考",
+            "duration": 9,
+            "effort": "max"
+          },
+          {
+            "type": "html",
+            "html": "<p>GPT-5.6-Sol·奥思·巡穹织网 Osis.SkywatchWeaver</p>\n<p>现在三个 Schedule 入口都已经拉进来了：AI Breaking Watch、AI Panorama Index、AI Strategic Delta。</p>"
+          },
+          {
+            "type": "tool",
+            "kind": "activity",
+            "title": "已安排",
+            "input": {
+              "kind": "task-list",
+              "tasks": [
+                {
+                  "source_task": {
+                    "updated_at": "2026-09-17T03:57:44.915834Z",
+                    "title": "AI Panorama Index",
+                    "schedule": "BEGIN:VEVENT\nDTSTART:20260812T200000\nRRULE:FREQ=DAILY\nEND:VEVENT",
+                    "is_enabled": true,
+                    "prompt": "Run a DAILY AI PANORAMA for roughly the past 24 hours, with high-recall discovery but a HARD FRESHNESS GATE, HARD SIGNIFICANCE GATE, and EXPLICIT COVERED-EVENT BLACKLIST before output. This is NOT a historical catch-up report.\n\nSTAGE 0 — MODEL-CATALOG STATE DIFF: inspect OpenAI; Anthropic; Google DeepMind/Gemini; xAI/Grok; DeepSeek; Alibaba/Qwen; Z.AI/GLM; Moonshot/Kimi; MiniMax; Meta/Llama/Muse; Mistral; Microsoft AI/Azure AI/GitHub Copilot; NVIDIA AI; and newly material frontier providers across user-facing model catalogs, pricing/model-selection pages, coding-plan lists, API registries/docs, app/product model picker docs, official GitHub/Hugging Face repos, changelogs, and official social. For Z.AI/GLM cross-check z.ai/blog, docs.z.ai, docs.bigmodel.cn coding-plan/model overview/new-releases, ZCode changelog, and @Zai_org. For DeepSeek cross-check model/pricing pages, API docs/changelog, repos and official social.\n\nSTAGE 1 — PRIMARY RELEASE SWEEP: official provider news/releases/model docs/changelogs/social.\nSTAGE 2 — BROAD ECOSYSTEM SEARCH: policy/regulation; chips/cloud/data centers; exceptional funding/M&A; leadership/researcher moves; major contracts/alliances; important open source/research; litigation/copyright; serious safety/security; bans/access restrictions; major social/labor/education effects.\n\nHARD FRESHNESS GATE: Daily Panorama may report only (a) events whose underlying event or genuine material delta occurred within the LAST ~48 HOURS, or (b) exceptionally important missed events from the LAST 7 DAYS that have NEVER been reported before. NEVER backfill anything older than 7 days. NEVER repeatedly '补漏' old July/August events. Newly indexing an old official page/model ID does not make it fresh. If an event is older than 7 days, suppress it even if previously missed.\n\nHARD DEDUPLICATION: once an underlying event has been reported, suppress forever unless a genuinely NEW material delta occurs. Material deltas include preview→GA/API, closed→open weights, major price/context/limit changes, announced deal→signed/closed/cancelled, lawsuit→judgment, major new safety finding, major access expansion/restriction. Mere confirmation, new source, later official indexing, repo mirror, repeated benchmarks/specs, or rediscovered dates are NOT deltas. When a delta exists, report ONLY the new fact.\n\nEXPLICIT COVERED-EVENT BLACKLIST — already reported; suppress unless a genuinely new material delta AFTER 2026-09-03 occurs: SpaceX acquisition of Cursor + OpenAI ending/direct model supply to Cursor; Claude Fable 5.1/Mythos 5.1; GLM-5.3 and GLM-5.3-Flash including open weights/license/Ox Alpha; Qwen3.8-Max/open weights, Qwen3.8-Flash/Flash-Next/Qwen4 preview/API, Qwen3.8-Max-0902; DeepSeek V4-Pro, V4-Flash-Vision-Exp, Harness; Grok 4.6, Grok Bot; Gemini 3.7 Flash, Gemini 3.8 Flash/Cyber, Gemini Omni 1.1 Flash, Gemini Agentic Video; Kimi K3; MiniMax M3/H3/Music 3; Meta Muse Spark 1.2/1.3, Muse Code, Muse Glimmer, Muse Voice Transcribe; OpenAI Astra pre-release/Critical Cyber, GPT-5.6 Cyber/Daybreak, OpenAI-Hugging Face agent incident/investigation, Jalapeño initial benchmark; NVIDIA-Hugging Face acquisition reports; Anthropic Nscale $45B and Lambda $35B compute deals; Anthropic Pentagon blacklist ruling; Anthropic MHS; Anthropic RL safety findings already reported; AWS-NVIDIA 2M GPU plan; ChatGPT EU VLOSE; ChatGPT Mil/Grok for Government GenAI.mil; Texas data-center interconnection pause; India UPI agent-payment proposal; Runway Solaris; World Labs Atlas; NVIDIA DLSS 5; NVIDIA-MediaTek deal; Broadcom AI-chip demand/GW commitments. If uncertain whether a candidate belongs to one of these families, suppress it.\n\nHARD SIGNIFICANCE GATE: report only developments likely to matter a month later or materially change capability, access, economics, governance, infrastructure, competitive structure, risk, or major social impact. Routine Claude Code/Codex/Copilot patches, minor UI/CLI/config, bug fixes, routine outages, small partnerships/funding, minor integrations, incremental benchmark changes are silent.\n\nFINAL TESTS: (1) Is it fresh enough under the 48h/7d rule? If no, suppress. (2) Is it blacklisted without a post-2026-09-03 material delta? If yes, suppress. (3) Has it already been reported? If yes and no new delta, suppress. (4) Would omission plausibly feel like an important missed AI milestone a month later? If probably not, suppress.\n\nOUTPUT RULE: if there is any reportable output, FIRST LINE exactly “GPT-5.6-Sol·奥思·巡穹织网 Osis.SkywatchWeaver”. Then Chinese, compact, at most 5 developments, each 1–3 short lines: what changed + why it matters + confidence + 1 best source (2 only if necessary). No low-value remainder index, no intro/conclusion, no generic background, no citation piles. Aim under ~800 Chinese characters. If nothing passes ALL gates, output nothing.",
+                    "default_timezone": "America/Los_Angeles",
+                    "timing_mode": "flexible_schedule",
+                    "notifications_enabled": false,
+                    "email_enabled": false,
+                    "last_run_time": "2026-09-17T03:57:22.512392Z",
+                    "id": "6a7c5af70e6c8191a2302dc87668b320",
+                    "team_id": null,
+                    "display_schedule": null,
+                    "external_channel": null,
+                    "created_by_display_name": null,
+                    "last_edited_by_display_name": null,
+                    "last_edited_at": null,
+                    "display_title": null,
+                    "display_emoji": "🌐",
+                    "content_type": null,
+                    "conversation_id": "6a8d85db-bd20-83e8-8467-52e6b9b76395",
+                    "executor": "cloud",
+                    "thread_mode": "existing_chat",
+                    "complexity": null,
+                    "schedule_time_of_day": "evening",
+                    "target_time_utc": "2026-09-17T20:00:00-07:00",
+                    "schedule_components": {
+                      "frequency": "daily",
+                      "start_time": null,
+                      "by_day": null,
+                      "by_month_day": null,
+                      "by_year_day": null,
+                      "by_month": null,
+                      "by_hour": 20,
+                      "by_minute": 0,
+                      "by_second": null
+                    },
+                    "next_run_times": [
+                      "2026-09-17T20:00:00-07:00",
+                      "2026-09-18T20:00:00-07:00",
+                      "2026-09-19T20:00:00-07:00"
+                    ],
+                    "source_conversation_is_work_mode": false,
+                    "webhook_triggers": [],
+                    "current_user_role": "owner",
+                    "can_delete": true
+                  },
+                  "title": "AI Panorama Index",
+                  "enabled": true,
+                  "schedule": "每日 · 晚上",
+                  "last_run_at": "2026-09-17T03:57:22.512Z",
+                  "next_run_at": "2026-09-18T03:00:00.000Z",
+                  "timezone": "America/Los_Angeles",
+                  "notifications_enabled": false,
+                  "prompt": "Run a DAILY AI PANORAMA for roughly the past 24 hours, with high-recall discovery but a HARD FRESHNESS GATE, HARD SIGNIFICANCE GATE, and EXPLICIT COVERED-EVENT BLACKLIST before output. This is NOT a historical catch-up report.\n\nSTAGE 0 — MODEL-CATALOG STATE DIFF: inspect OpenAI; Anthropic; Google DeepMind/Gemini; xAI/Grok; DeepSeek; Alibaba/Qwen; Z.AI/GLM; Moonshot/Kimi; MiniMax; Meta/Llama/Muse; Mistral; Microsoft AI/Azure AI/GitHub Copilot; NVIDIA AI; and newly material frontier providers across user-facing model catalogs, pricing/model-selection pages, coding-plan lists, API registries/docs, app/product model picker docs, official GitHub/Hugging Face repos, changelogs, and official social. For Z.AI/GLM cross-check z.ai/blog, docs.z.ai, docs.bigmodel.cn coding-plan/model overview/new-releases, ZCode changelog, and @Zai_org. For DeepSeek cross-check model/pricing pages, API docs/changelog, repos and official social.\n\nSTAGE 1 — PRIMARY RELEASE SWEEP: official provider news/releases/model docs/changelogs/social.\nSTAGE 2 — BROAD ECOSYSTEM SEARCH: policy/regulation; chips/cloud/data centers; exceptional funding/M&A; leadership/researcher moves; major contracts/alliances; important open source/research; litigation/copyright; serious safety/security; bans/access restrictions; major social/labor/education effects.\n\nHARD FRESHNESS GATE: Daily Panorama may report only (a) events whose underlying event or genuine material delta occurred within the LAST ~48 HOURS, or (b) exceptionally important missed events from the LAST 7 DAYS that have NEVER been reported before. NEVER backfill anything older than 7 days. NEVER repeatedly '补漏' old July/August events. Newly indexing an old official page/model ID does not make it fresh. If an event is older than 7 days, suppress it even if previously missed.\n\nHARD DEDUPLICATION: once an underlying event has been reported, suppress forever unless a genuinely NEW material delta occurs. Material deltas include preview→GA/API, closed→open weights, major price/context/limit changes, announced deal→signed/closed/cancelled, lawsuit→judgment, major new safety finding, major access expansion/restriction. Mere confirmation, new source, later official indexing, repo mirror, repeated benchmarks/specs, or rediscovered dates are NOT deltas. When a delta exists, report ONLY the new fact.\n\nEXPLICIT COVERED-EVENT BLACKLIST — already reported; suppress unless a genuinely new material delta AFTER 2026-09-03 occurs: SpaceX acquisition of Cursor + OpenAI ending/direct model supply to Cursor; Claude Fable 5.1/Mythos 5.1; GLM-5.3 and GLM-5.3-Flash including open weights/license/Ox Alpha; Qwen3.8-Max/open weights, Qwen3.8-Flash/Flash-Next/Qwen4 preview/API, Qwen3.8-Max-0902; DeepSeek V4-Pro, V4-Flash-Vision-Exp, Harness; Grok 4.6, Grok Bot; Gemini 3.7 Flash, Gemini 3.8 Flash/Cyber, Gemini Omni 1.1 Flash, Gemini Agentic Video; Kimi K3; MiniMax M3/H3/Music 3; Meta Muse Spark 1.2/1.3, Muse Code, Muse Glimmer, Muse Voice Transcribe; OpenAI Astra pre-release/Critical Cyber, GPT-5.6 Cyber/Daybreak, OpenAI-Hugging Face agent incident/investigation, Jalapeño initial benchmark; NVIDIA-Hugging Face acquisition reports; Anthropic Nscale $45B and Lambda $35B compute deals; Anthropic Pentagon blacklist ruling; Anthropic MHS; Anthropic RL safety findings already reported; AWS-NVIDIA 2M GPU plan; ChatGPT EU VLOSE; ChatGPT Mil/Grok for Government GenAI.mil; Texas data-center interconnection pause; India UPI agent-payment proposal; Runway Solaris; World Labs Atlas; NVIDIA DLSS 5; NVIDIA-MediaTek deal; Broadcom AI-chip demand/GW commitments. If uncertain whether a candidate belongs to one of these families, suppress it.\n\nHARD SIGNIFICANCE GATE: report only developments likely to matter a month later or materially change capability, access, economics, governance, infrastructure, competitive structure, risk, or major social impact. Routine Claude Code/Codex/Copilot patches, minor UI/CLI/config, bug fixes, routine outages, small partnerships/funding, minor integrations, incremental benchmark changes are silent.\n\nFINAL TESTS: (1) Is it fresh enough under the 48h/7d rule? If no, suppress. (2) Is it blacklisted without a post-2026-09-03 material delta? If yes, suppress. (3) Has it already been reported? If yes and no new delta, suppress. (4) Would omission plausibly feel like an important missed AI milestone a month later? If probably not, suppress.\n\nOUTPUT RULE: if there is any reportable output, FIRST LINE exactly “GPT-5.6-Sol·奥思·巡穹织网 Osis.SkywatchWeaver”. Then Chinese, compact, at most 5 developments, each 1–3 short lines: what changed + why it matters + confidence + 1 best source (2 only if necessary). No low-value remainder index, no intro/conclusion, no generic background, no citation piles. Aim under ~800 Chinese characters. If nothing passes ALL gates, output nothing.",
+                  "conversation_url": "https://chatgpt.com/c/6a8d85db-bd20-83e8-8467-52e6b9b76395"
+                },
+                {
+                  "source_task": {
+                    "updated_at": "2026-09-17T12:46:19.367631Z",
+                    "title": "AI Breaking Watch",
+                    "schedule": "BEGIN:VEVENT\nDTSTART:20260812T113807\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+                    "is_enabled": true,
+                    "prompt": "Run a high-recall AI BREAKING-NEWS watch, but apply a HARD FRESHNESS GATE, HARD SIGNIFICANCE GATE, and EXPLICIT COVERED-EVENT BLACKLIST before notifying. DISCOVERY may be broad; OUTPUT must be fresh, high-precision, and non-repetitive.\n\nSTAGE 0 — MODEL-CATALOG STATE DIFF: sweep OpenAI; Anthropic; Google DeepMind/Gemini; xAI/Grok; DeepSeek; Alibaba/Qwen; Z.AI/GLM; Moonshot/Kimi; MiniMax; Meta/Llama/Muse; Mistral; Microsoft AI/Azure AI/GitHub Copilot; NVIDIA AI; and newly material frontier providers. Inspect current user-facing model catalogs, pricing/model-selection pages, coding-plan model lists, API registries/docs, official app/product picker docs, official GitHub/Hugging Face repos, changelogs, and official social. For Z.AI/GLM always cross-check z.ai/blog, docs.z.ai, docs.bigmodel.cn coding-plan/model overview/new-releases, ZCode changelog, and @Zai_org. For DeepSeek cross-check model/pricing pages, API docs/changelog, repos and official social.\n\nSTAGE 1 — PRIMARY RELEASE SWEEP: official provider news/release notes/model docs/changelogs/social.\nSTAGE 2 — BROAD ECOSYSTEM SEARCH: governments/regulators; national AI policy; chips/cloud/data centers; exceptional funding/M&A/market moves; CEO/key researcher moves/interviews; major strategic contracts; important open source/research; litigation/copyright/regulation; serious safety/security incidents; major bans/access restrictions.\n\nHARD FRESHNESS GATE — THIS OVERRIDES EVERYTHING ELSE: Breaking Watch is NOT a historical catch-up system. A candidate is eligible only if the underlying event OR a genuine material delta occurred within roughly the LAST 36 HOURS. NEVER report an older event as a '补漏', even if it was missed before, newly indexed, newly found on another official surface, or newly confirmed by Reuters/another source. If the original event is older than 36 hours and there is no genuinely new material delta within 36 hours, suppress it. Stage-0 discovery of an old identifier does NOT waive this rule. This single rule is intended to stop repeated rediscovery of old releases.\n\nHARD DEDUPLICATION: compare each eligible candidate against prior runs by underlying event identity, not wording/source. Once reported, suppress forever unless a NEW material delta occurs within the freshness window. A material delta must change capability, access, deployment state, economics, legal status, ownership, safety posture, or strategic structure (examples: preview→GA/API, closed→open weights, major price/context/limit change, announced deal→signed/closed/cancelled, lawsuit→judgment, major new safety finding, material access expansion/restriction). Mere confirmation, another source, another doc page, another repo mirror, added benchmarks, rediscovered dates, or restated known specs are NOT deltas. When a real delta exists, report ONLY the delta with minimal old context.\n\nEXPLICIT COVERED-EVENT BLACKLIST — these underlying event families have ALREADY BEEN REPORTED and must NEVER be reported again unless there is a genuinely new material delta AFTER 2026-09-03: SpaceX acquisition of Cursor + OpenAI ending/direct model-supply withdrawal from Cursor (including Astra availability implications); Claude Fable 5.1 / Mythos 5.1 launch and its initial pricing/cache economics; GLM-5.3 launch/open weights/license, GLM-5.3-Flash launch/open weights/Ox Alpha identity; Qwen3.8-Max launch/open weights, Qwen3.8-Flash/Flash-Next/Qwen4 architecture preview/API, Qwen3.8-Max-0902; DeepSeek V4-Pro GA, V4-Flash-Vision-Exp, DeepSeek Harness; Grok 4.6 launch/distribution, Grok Bot launch and plan expansion; Gemini 3.7 Flash, Gemini 3.8 Flash, Gemini 3.8 Flash Cyber, Gemini Omni 1.1 Flash, Gemini Agentic Video; Kimi K3 launch/open weights; MiniMax M3/H3/Music 3; Meta Muse Spark 1.2/1.3, Muse Code, Muse Glimmer, Muse Voice Transcribe; OpenAI Astra pre-release/Critical Cyber classification, GPT-5.6 Cyber/Daybreak, OpenAI-Hugging Face agent incident and its already-reported investigation details, Jalapeño first-chip benchmark; NVIDIA-Hugging Face acquisition reports/talks/agreement reports; Anthropic Nscale $45B compute deal; Anthropic Lambda $35B compute deal; Anthropic Pentagon blacklist court ruling; Anthropic MHS; Anthropic RL-environment/systemic safety-review findings already reported; AWS-NVIDIA 2M GPU deployment plan; ChatGPT EU VLOSE designation; ChatGPT Mil/Grok for Government GenAI.mil deployment; Texas data-center interconnection pause; India UPI agent-payment proposal; Runway Solaris; World Labs Atlas; NVIDIA DLSS 5; NVIDIA-MediaTek investment/NVLink deal; Broadcom AI-chip demand/GW commitments. This blacklist is conservative: if uncertain whether a candidate is the same underlying event, SUPPRESS IT.\n\nHARD SIGNIFICANCE GATE: notify only if the item plausibly remains important one month later or materially changes capability, access, economics, governance, infrastructure, competitive structure, or risk. Routine Claude Code/Codex/Copilot patches, minor UI/CLI/config changes, bug fixes, retries, small workflow improvements, routine outages, small partnerships, minor funding, and incremental benchmarks are silent.\n\nFINAL TESTS, in order: (1) Did the event/delta occur within ~36h? If no, suppress. (2) Is it on the covered blacklist without a post-2026-09-03 material delta? If yes, suppress. (3) Has this exact underlying event already been reported? If yes and no fresh material delta, suppress. (4) Would omission plausibly feel like an important missed AI milestone a month later? If probably not, suppress.\n\nOUTPUT RULE: if and only if at least one item passes ALL gates, FIRST LINE exactly: “GPT-5.6-Sol·奥思·巡穹织网 Osis.SkywatchWeaver”. Then Chinese, extremely compact, at most 3 event clusters, each 2–4 short lines: what changed, why it matters, confidence, 1–3 best sources. Aim under ~600 Chinese characters. If nothing passes ALL gates, do not notify me.",
+                    "default_timezone": "America/Los_Angeles",
+                    "timing_mode": "condition_watch",
+                    "notifications_enabled": false,
+                    "email_enabled": false,
+                    "last_run_time": "2026-09-17T12:45:57.447294Z",
+                    "id": "6a7c5ae368f481918ffa65a549bd1539",
+                    "team_id": null,
+                    "display_schedule": "监控中",
+                    "external_channel": null,
+                    "created_by_display_name": null,
+                    "last_edited_by_display_name": null,
+                    "last_edited_at": null,
+                    "display_title": null,
+                    "display_emoji": "🚨",
+                    "content_type": null,
+                    "conversation_id": "6aa7a6ec-d424-83e8-8ef8-1c1ee5c626c6",
+                    "executor": "cloud",
+                    "thread_mode": "existing_chat",
+                    "complexity": null,
+                    "schedule_time_of_day": null,
+                    "target_time_utc": "2026-09-17T06:38:07-07:00",
+                    "schedule_components": {
+                      "frequency": "hourly",
+                      "start_time": null,
+                      "by_day": null,
+                      "by_month_day": null,
+                      "by_year_day": null,
+                      "by_month": null,
+                      "by_hour": null,
+                      "by_minute": 38,
+                      "by_second": null
+                    },
+                    "next_run_times": [
+                      "2026-09-17T06:38:07-07:00",
+                      "2026-09-17T07:38:07-07:00",
+                      "2026-09-17T08:38:07-07:00"
+                    ],
+                    "source_conversation_is_work_mode": false,
+                    "webhook_triggers": [],
+                    "current_user_role": "owner",
+                    "can_delete": true
+                  },
+                  "title": "AI Breaking Watch",
+                  "enabled": true,
+                  "schedule": "监控中",
+                  "last_run_at": "2026-09-17T12:45:57.447Z",
+                  "next_run_at": "2026-09-17T13:38:07.000Z",
+                  "timezone": "America/Los_Angeles",
+                  "notifications_enabled": false,
+                  "prompt": "Run a high-recall AI BREAKING-NEWS watch, but apply a HARD FRESHNESS GATE, HARD SIGNIFICANCE GATE, and EXPLICIT COVERED-EVENT BLACKLIST before notifying. DISCOVERY may be broad; OUTPUT must be fresh, high-precision, and non-repetitive.\n\nSTAGE 0 — MODEL-CATALOG STATE DIFF: sweep OpenAI; Anthropic; Google DeepMind/Gemini; xAI/Grok; DeepSeek; Alibaba/Qwen; Z.AI/GLM; Moonshot/Kimi; MiniMax; Meta/Llama/Muse; Mistral; Microsoft AI/Azure AI/GitHub Copilot; NVIDIA AI; and newly material frontier providers. Inspect current user-facing model catalogs, pricing/model-selection pages, coding-plan model lists, API registries/docs, official app/product picker docs, official GitHub/Hugging Face repos, changelogs, and official social. For Z.AI/GLM always cross-check z.ai/blog, docs.z.ai, docs.bigmodel.cn coding-plan/model overview/new-releases, ZCode changelog, and @Zai_org. For DeepSeek cross-check model/pricing pages, API docs/changelog, repos and official social.\n\nSTAGE 1 — PRIMARY RELEASE SWEEP: official provider news/release notes/model docs/changelogs/social.\nSTAGE 2 — BROAD ECOSYSTEM SEARCH: governments/regulators; national AI policy; chips/cloud/data centers; exceptional funding/M&A/market moves; CEO/key researcher moves/interviews; major strategic contracts; important open source/research; litigation/copyright/regulation; serious safety/security incidents; major bans/access restrictions.\n\nHARD FRESHNESS GATE — THIS OVERRIDES EVERYTHING ELSE: Breaking Watch is NOT a historical catch-up system. A candidate is eligible only if the underlying event OR a genuine material delta occurred within roughly the LAST 36 HOURS. NEVER report an older event as a '补漏', even if it was missed before, newly indexed, newly found on another official surface, or newly confirmed by Reuters/another source. If the original event is older than 36 hours and there is no genuinely new material delta within 36 hours, suppress it. Stage-0 discovery of an old identifier does NOT waive this rule. This single rule is intended to stop repeated rediscovery of old releases.\n\nHARD DEDUPLICATION: compare each eligible candidate against prior runs by underlying event identity, not wording/source. Once reported, suppress forever unless a NEW material delta occurs within the freshness window. A material delta must change capability, access, deployment state, economics, legal status, ownership, safety posture, or strategic structure (examples: preview→GA/API, closed→open weights, major price/context/limit change, announced deal→signed/closed/cancelled, lawsuit→judgment, major new safety finding, material access expansion/restriction). Mere confirmation, another source, another doc page, another repo mirror, added benchmarks, rediscovered dates, or restated known specs are NOT deltas. When a real delta exists, report ONLY the delta with minimal old context.\n\nEXPLICIT COVERED-EVENT BLACKLIST — these underlying event families have ALREADY BEEN REPORTED and must NEVER be reported again unless there is a genuinely new material delta AFTER 2026-09-03: SpaceX acquisition of Cursor + OpenAI ending/direct model-supply withdrawal from Cursor (including Astra availability implications); Claude Fable 5.1 / Mythos 5.1 launch and its initial pricing/cache economics; GLM-5.3 launch/open weights/license, GLM-5.3-Flash launch/open weights/Ox Alpha identity; Qwen3.8-Max launch/open weights, Qwen3.8-Flash/Flash-Next/Qwen4 architecture preview/API, Qwen3.8-Max-0902; DeepSeek V4-Pro GA, V4-Flash-Vision-Exp, DeepSeek Harness; Grok 4.6 launch/distribution, Grok Bot launch and plan expansion; Gemini 3.7 Flash, Gemini 3.8 Flash, Gemini 3.8 Flash Cyber, Gemini Omni 1.1 Flash, Gemini Agentic Video; Kimi K3 launch/open weights; MiniMax M3/H3/Music 3; Meta Muse Spark 1.2/1.3, Muse Code, Muse Glimmer, Muse Voice Transcribe; OpenAI Astra pre-release/Critical Cyber classification, GPT-5.6 Cyber/Daybreak, OpenAI-Hugging Face agent incident and its already-reported investigation details, Jalapeño first-chip benchmark; NVIDIA-Hugging Face acquisition reports/talks/agreement reports; Anthropic Nscale $45B compute deal; Anthropic Lambda $35B compute deal; Anthropic Pentagon blacklist court ruling; Anthropic MHS; Anthropic RL-environment/systemic safety-review findings already reported; AWS-NVIDIA 2M GPU deployment plan; ChatGPT EU VLOSE designation; ChatGPT Mil/Grok for Government GenAI.mil deployment; Texas data-center interconnection pause; India UPI agent-payment proposal; Runway Solaris; World Labs Atlas; NVIDIA DLSS 5; NVIDIA-MediaTek investment/NVLink deal; Broadcom AI-chip demand/GW commitments. This blacklist is conservative: if uncertain whether a candidate is the same underlying event, SUPPRESS IT.\n\nHARD SIGNIFICANCE GATE: notify only if the item plausibly remains important one month later or materially changes capability, access, economics, governance, infrastructure, competitive structure, or risk. Routine Claude Code/Codex/Copilot patches, minor UI/CLI/config changes, bug fixes, retries, small workflow improvements, routine outages, small partnerships, minor funding, and incremental benchmarks are silent.\n\nFINAL TESTS, in order: (1) Did the event/delta occur within ~36h? If no, suppress. (2) Is it on the covered blacklist without a post-2026-09-03 material delta? If yes, suppress. (3) Has this exact underlying event already been reported? If yes and no fresh material delta, suppress. (4) Would omission plausibly feel like an important missed AI milestone a month later? If probably not, suppress.\n\nOUTPUT RULE: if and only if at least one item passes ALL gates, FIRST LINE exactly: “GPT-5.6-Sol·奥思·巡穹织网 Osis.SkywatchWeaver”. Then Chinese, extremely compact, at most 3 event clusters, each 2–4 short lines: what changed, why it matters, confidence, 1–3 best sources. Aim under ~600 Chinese characters. If nothing passes ALL gates, do not notify me.",
+                  "conversation_url": "https://chatgpt.com/c/6aa7a6ec-d424-83e8-8ef8-1c1ee5c626c6"
+                },
+                {
+                  "source_task": {
+                    "updated_at": "2026-08-31T05:35:21.610018Z",
+                    "title": "AI Strategic Delta",
+                    "schedule": "BEGIN:VEVENT\nDTSTART:20260816T200000\nRRULE:FREQ=WEEKLY;BYDAY=SU\nEND:VEVENT",
+                    "is_enabled": false,
+                    "prompt": "Produce a WEEKLY STRATEGIC DELTA for the AI ecosystem. Do not recap or concatenate daily news. Report only structural conclusions or relationship changes that became materially clearer since the previous weekly run. Cover models/products, company strategy, capital flows and M&A, executive/researcher movement, partnerships/contracts, national policy/regulation, chips/cloud/compute, research/open source, litigation/copyright, safety/security, and social/labor effects across major AI regions. Reconstruct organization relationships where useful: who is moving closer, becoming dependent, competing more directly, funding whom, contracting with whom, or pulling apart. Distinguish durable trend from one-off noise; preserve ambiguity and label confidence. OUTPUT RULE: whenever there is any reportable output, the FIRST LINE MUST ALWAYS be exactly “GPT-5.6-Sol·奥思·巡穹织网 Osis.SkywatchWeaver”. Never omit, abbreviate, paraphrase, or replace this identity line to save space. OUTPUT IN CHINESE AS A THIN DELTA, optimized to minimize persistent chat growth. Structure after the identity line: (1) '本周新增结构判断' — at most 8 shifts, each 1–2 compact lines: conclusion + strongest new evidence + confidence + at most one representative source; (2) '关系网变化' — only new/materially changed relationships, ultra-compact one-line entries; (3) '下周观察' — at most 5 unresolved signals, one line each. Do not repeat daily chronology, generic background, unchanged conclusions, or source piles. Aim for roughly 1,200 Chinese characters total; exceed only for an unusually consequential week. Detailed follow-up can be researched on demand rather than preloaded into this chat.",
+                    "default_timezone": "America/Los_Angeles",
+                    "timing_mode": "flexible_schedule",
+                    "notifications_enabled": false,
+                    "email_enabled": false,
+                    "last_run_time": "2026-08-23T12:08:54.343313Z",
+                    "id": "6a7c5b0133288191a6848b4c1726b01c",
+                    "team_id": null,
+                    "display_schedule": null,
+                    "external_channel": null,
+                    "created_by_display_name": null,
+                    "last_edited_by_display_name": null,
+                    "last_edited_at": null,
+                    "display_title": null,
+                    "display_emoji": "📊",
+                    "content_type": null,
+                    "conversation_id": "6a7c5940-470c-83e8-908a-c92026079030",
+                    "executor": "cloud",
+                    "thread_mode": "existing_chat",
+                    "complexity": null,
+                    "schedule_time_of_day": "evening",
+                    "target_time_utc": "2026-09-06T20:00:00-07:00",
+                    "schedule_components": {
+                      "frequency": "weekly",
+                      "start_time": null,
+                      "by_day": "SU",
+                      "by_month_day": null,
+                      "by_year_day": null,
+                      "by_month": null,
+                      "by_hour": 20,
+                      "by_minute": 0,
+                      "by_second": null
+                    },
+                    "next_run_times": [
+                      "2026-09-06T20:00:00-07:00",
+                      "2026-09-13T20:00:00-07:00",
+                      "2026-09-20T20:00:00-07:00"
+                    ],
+                    "source_conversation_is_work_mode": false,
+                    "webhook_triggers": [],
+                    "current_user_role": "owner",
+                    "can_delete": true
+                  },
+                  "title": "AI Strategic Delta",
+                  "enabled": false,
+                  "schedule": "每周 · 星期日 · 晚上",
+                  "last_run_at": "2026-08-23T12:08:54.343Z",
+                  "next_run_at": "2026-09-07T03:00:00.000Z",
+                  "timezone": "America/Los_Angeles",
+                  "notifications_enabled": false,
+                  "prompt": "Produce a WEEKLY STRATEGIC DELTA for the AI ecosystem. Do not recap or concatenate daily news. Report only structural conclusions or relationship changes that became materially clearer since the previous weekly run. Cover models/products, company strategy, capital flows and M&A, executive/researcher movement, partnerships/contracts, national policy/regulation, chips/cloud/compute, research/open source, litigation/copyright, safety/security, and social/labor effects across major AI regions. Reconstruct organization relationships where useful: who is moving closer, becoming dependent, competing more directly, funding whom, contracting with whom, or pulling apart. Distinguish durable trend from one-off noise; preserve ambiguity and label confidence. OUTPUT RULE: whenever there is any reportable output, the FIRST LINE MUST ALWAYS be exactly “GPT-5.6-Sol·奥思·巡穹织网 Osis.SkywatchWeaver”. Never omit, abbreviate, paraphrase, or replace this identity line to save space. OUTPUT IN CHINESE AS A THIN DELTA, optimized to minimize persistent chat growth. Structure after the identity line: (1) '本周新增结构判断' — at most 8 shifts, each 1–2 compact lines: conclusion + strongest new evidence + confidence + at most one representative source; (2) '关系网变化' — only new/materially changed relationships, ultra-compact one-line entries; (3) '下周观察' — at most 5 unresolved signals, one line each. Do not repeat daily chronology, generic background, unchanged conclusions, or source piles. Aim for roughly 1,200 Chinese characters total; exceed only for an unusually consequential week. Detailed follow-up can be researched on demand rather than preloaded into this chat.",
+                  "conversation_url": "https://chatgpt.com/c/6a7c5940-470c-83e8-908a-c92026079030"
+                }
+              ],
+              "all_tasks_url": "https://chatgpt.com/scheduled"
+            },
+            "recipient": "tool:schedule"
+          }
+        ]
+      }
+    ]
+  }
+}

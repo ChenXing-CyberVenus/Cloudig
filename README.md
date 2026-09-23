@@ -4,6 +4,8 @@
 
 把多个 AI 平台上的对话带回自己的电脑，整理为可阅读、编辑、保存与再利用的作品。
 
+**[在线文档与平台范例](https://chenxing-cybervenus.github.io/Cloudig/)** · 破晓／星夜双主题，中英文。
+
 ## 下载
 
 **[下载 V1.0 东方既白 DawnGlow · Windows x64（安装器 r1）](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.0/Cloudig-1.0.0-Setup-r1.exe)**
@@ -38,6 +40,8 @@
 **Beautiful presentation. Conversations across AI platforms. Organized collections. A distinctive Schema system.**
 
 Cloudig brings conversations from multiple AI platforms to your own computer, where you can read, organize, annotate and reuse them.
+
+**[Documentation & platform examples](https://chenxing-cybervenus.github.io/Cloudig/)** · Dawn / StarNight themes, Chinese / English.
 
 **[Download V1.0 DawnGlow · Windows x64 (installer r1)](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.0/Cloudig-1.0.0-Setup-r1.exe)**
 

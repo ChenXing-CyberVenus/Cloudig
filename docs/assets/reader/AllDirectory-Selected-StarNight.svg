@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 74.53">
+  <defs>
+    <style>
+      .cls-2 {
+        fill: #ffa92e;
+      }
+
+      .cls-3 {
+        fill: #a4c67a;
+      }
+
+      .cls-4 {
+        fill: #f7e28b;
+      }
+
+      .cls-5 {
+        fill: #ced7db;
+      }
+
+      .cls-7 {
+        fill: #5125a5;
+      }
+
+      .cls-8 {
+        fill: #72c9ef;
+      }
+
+      .cls-9 {
+        fill: #faef95;
+      }
+
+      .cls-10 {
+        fill: #e6e6e6;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="AllDirectory-Selected-StarNight">
+      <g>
+        <rect class="cls-8" x="58.17" y="8.2" width="38.76" height="34.71" transform="translate(41.46 98.8) rotate(-82)"/>
+        <rect class="cls-9" x="75.49" y="9.45" width="6.84" height="21.66" transform="translate(47.84 95.59) rotate(-82)"/>
+        <rect class="cls-4" x="36.45" y="2.43" width="37.88" height="42.3" transform="translate(-2.74 7.94) rotate(-8)"/>
+        <rect class="cls-5" x="42.09" y="14.09" width="23.64" height="7.46" transform="translate(-1.96 7.68) rotate(-8)"/>
+        <polygon class="cls-3" points="5.19 49.96 38.53 48.33 36.97 10.65 3.64 12.28 5.19 49.96"/>
+        <rect class="cls-10" x="10.26" y="21.34" width="21.48" height="6.78" transform="translate(-1.09 .97) rotate(-2.58)"/>
+      </g>
+      <g>
+        <rect class="cls-7" y="45.11" width="100" height="29.43"/>
+        <rect class="cls-2" y="38.53" width="100" height="6.57"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg preserveAspectRatio="none" id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 77.11 131.91">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #5125a5;
+      }
+
+      .cls-2 {
+        fill: #7e5eff;
+      }
+
+      .cls-3 {
+        fill: #5c5d5d;
+      }
+    </style>
+  </defs>
+  <g id="_图层_2-2" data-name="图层 2">
+    <g>
+      <rect id="_背景" data-name="背景" class="cls-2" y="7.1" width="77.11" height="124.81"/>
+      <g id="_上部装饰" data-name="上部装饰">
+        <rect class="cls-1" x="4.34" y="25.69" width="14.18" height="1.01"/>
+        <rect class="cls-1" x="22.42" y="25.69" width="14.18" height="1.01"/>
+        <rect class="cls-1" x="40.51" y="25.69" width="14.18" height="1.01"/>
+        <rect class="cls-1" x="58.59" y="25.69" width="14.18" height="1.01"/>
+        <circle class="cls-3" cx="17.29" cy="20.1" r="3.75"/>
+        <circle class="cls-3" cx="59.82" cy="20.1" r="3.75"/>
+        <circle class="cls-3" cx="38.55" cy="20.1" r="3.75"/>
+        <path class="cls-1" d="M17.29,0v16.36c1.55,0,2.88.94,3.45,2.28h.66V0h-4.11Z"/>
+        <path class="cls-1" d="M59.82,0v16.36c1.55,0,2.88.94,3.45,2.28h.66V0h-4.11Z"/>
+        <path class="cls-1" d="M38.55,0v16.36c1.55,0,2.88.94,3.45,2.28h.66V0h-4.11Z"/>
+        <rect class="cls-2" x="15.23" width="4.11" height="18.64"/>
+        <rect class="cls-2" x="36.5" width="4.11" height="18.64"/>
+        <rect class="cls-2" x="57.76" width="4.11" height="18.64"/>
+        <circle class="cls-2" cx="17.29" cy="18.64" r="2.06"/>
+        <circle class="cls-2" cx="38.55" cy="18.64" r="2.06"/>
+        <circle class="cls-2" cx="59.82" cy="18.64" r="2.06"/>
+      </g>
+    </g>
+  </g>
+</svg>

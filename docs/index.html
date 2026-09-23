@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dawn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="采云 Cloudig：书签指南、使用说明、平台范例、采云标准、历史与未来。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>采云 Cloudig · 文档</title>
+  <link rel="icon" href="./assets/welcome/OsisLogo-Simple.svg" type="image/svg+xml">
+  <script src="./preferences.js"></script>
+  <link rel="stylesheet" href="./shell.css">
+  <link rel="stylesheet" href="./pages/document/document.css">
+  <link rel="stylesheet" href="./pages/document/history.css">
+  <link rel="stylesheet" href="./pages/document/license.css">
+  <link rel="stylesheet" href="./pages/document/bookmarks.css">
+  <link rel="stylesheet" href="./pages/document/features.css">
+  <link rel="stylesheet" href="./pages/reader/reader.css">
+  <link rel="stylesheet" href="./pages/reader/conversation.css">
+  <link rel="stylesheet" href="./runtime/conversation-renderer.css">
+  <link rel="stylesheet" href="./site.css">
+</head>
+<body>
+  <a class="site-skip" href="#site-reading">跳到正文 / Skip to content</a>
+  <header class="site-header">
+    <a class="site-brand" href="#standard" data-site-topic="standard"><img src="./assets/welcome/OsisLogo-Simple.svg" alt=""><span>采云 <b>Cloudig</b></span><small>V1.0 · DawnGlow</small></a>
+    <div class="site-actions">
+      <button type="button" data-site-theme></button>
+      <button type="button" data-site-language></button>
+      <a class="cloudig-button cloudig-button-filled site-download" href="https://github.com/ChenXing-CyberVenus/Cloudig/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" data-site-download>下载采云 ↗</a>
+    </div>
+  </header>
+  <div class="site-layout">
+    <aside class="site-sidebar">
+      <p class="site-eyebrow">CLOUDIG · DOCUMENTATION</p>
+      <h1 data-site-heading>从云端带走<br>在此地长存</h1>
+      <nav aria-label="功能文档 / Documentation" data-site-navigation></nav>
+      <footer><a href="https://github.com/ChenXing-CyberVenus/Cloudig" target="_blank" rel="noopener noreferrer">GitHub ↗</a><span>晨星.CyberVenus × 奥思 Osis</span></footer>
+    </aside>
+    <main id="site-reading" class="site-reading" tabindex="-1" aria-live="off"></main>
+  </div>
+  <div class="site-error" role="alert" hidden><span></span><button type="button" data-site-retry>重试 / Retry</button><button type="button" data-site-dismiss aria-label="关闭 / Close">×</button></div>
+  <template id="reader-conversation-template">
+    <section class="reader-conversation-main" data-reader-conversation-main aria-label="对话正文">
+      <header class="reader-conversation-title">
+          <img class="reader-conversation-title-pattern reader-theme-dawn" src="/Cloudig/assets/reader/Conversation-Title-Back-Dawn.svg" alt="">
+          <img class="reader-conversation-title-pattern reader-theme-star-night" src="/Cloudig/assets/reader/Conversation-Title-Back-StarNight.svg" alt="">
+          <div class="reader-conversation-title-content">
+            <div class="reader-conversation-summary-row">
+            <div class="reader-conversation-tags">
+              <span class="reader-conversation-platform-logo"><img data-reader-conversation-platform-logo alt=""></span>
+              <span class="reader-conversation-platform-tag" data-reader-conversation-platform></span>
+              <span class="reader-conversation-model-tags" data-reader-conversation-models></span>
+            </div>
+            <div class="reader-conversation-title-actions">
+              <button class="cloudig-button cloudig-button-outline reader-export-markdown" type="button" data-action="export-markdown" data-i18n="reader.exportMarkdown">导出Markdown</button>
+              <button class="cloudig-button cloudig-button-filled reader-edit-conversation" type="button" data-action="edit-conversation" data-i18n="reader.editConversation">编辑</button>
+            </div>
+            </div>
+            <h1 data-reader-conversation-title></h1>
+            <p class="reader-conversation-facts">
+              <span data-reader-content-time></span>
+              <span data-reader-captured-time></span>
+              <span data-reader-message-count></span>
+            </p>
+          </div>
+      </header>
+
+      <div class="reader-conversation-toolbar">
+          <form class="reader-current-search" data-reader-current-search>
+            <input type="search" maxlength="256" autocomplete="off" data-reader-current-search-input data-i18n-placeholder="reader.currentSearchPlaceholder" placeholder="在当前会话中搜索">
+            <button type="submit" data-i18n-title="reader.search" title="搜索" aria-label="搜索"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 5 5"></path></svg></button>
+            <button type="button" data-reader-current-search-clear data-i18n-title="reader.clearSearch" title="清除搜索" aria-label="清除搜索" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
+          </form>
+          <button class="reader-search-step" type="button" data-reader-search-next aria-label="下一条搜索结果">→</button>
+          <button class="reader-search-step" type="button" data-reader-search-previous aria-label="上一条搜索结果">←</button>
+          <span class="reader-search-count" data-reader-search-count hidden></span>
+
+          <div class="reader-toolbar-options">
+            <div class="reader-toolbar-menu">
+              <button class="reader-toolbar-menu-entry" type="button" data-i18n="reader.expandThoughtsTools">展开思考与工具</button>
+              <div class="reader-toolbar-menu-panel">
+                <label><input type="checkbox" data-reader-session="expand-reasoning"><i></i><span data-i18n="reader.expandReasoning">展开思考</span></label>
+                <label><input type="checkbox" data-reader-session="expand-tools"><i></i><span data-i18n="reader.expandTools">展开工具</span></label>
+                <label><input type="checkbox" data-reader-session="expand-references"><i></i><span data-i18n="reader.expandReferences">展开参考</span></label>
+              </div>
+            </div>
+            <div class="reader-toolbar-menu">
+              <button class="reader-toolbar-menu-entry" type="button" data-i18n="reader.hideThoughtsTools">隐藏思考与工具</button>
+              <div class="reader-toolbar-menu-panel">
+                <label><input type="checkbox" data-reader-session="hide-reasoning"><i></i><span data-i18n="reader.hideReasoning">隐藏思考</span></label>
+                <label><input type="checkbox" data-reader-session="hide-tools"><i></i><span data-i18n="reader.hideTools">隐藏工具</span></label>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <article class="reader-conversation-scroll" data-reader-conversation-scroll data-scroll-region>
+        <div class="reader-message-column" data-reader-message-column>
+          <div data-reader-renderer></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="reader-conversation-navigation" data-reader-conversation-navigation aria-label="对话消息导航">
+      <header class="reader-return-cover">
+        <img class="reader-return-birds reader-theme-dawn" src="/Cloudig/assets/reader/ThreeBird-Dawn.svg" alt="">
+        <img class="reader-return-birds reader-theme-star-night" src="/Cloudig/assets/reader/ThreeBird-StarNight.svg" alt="">
+        <button class="cloudig-button cloudig-button-outline reader-return-cover-button" type="button" data-route-target="reader-cover" data-i18n="reader.returnCover">返回封面</button>
+        <img class="reader-return-book reader-theme-dawn" src="/Cloudig/assets/reader/DecBook-Dawn.svg" alt="">
+        <img class="reader-return-book reader-theme-star-night" src="/Cloudig/assets/reader/DecBook-StarNight.svg" alt="">
+        <span class="reader-return-rail" aria-hidden="true"></span>
+      </header>
+      <div class="reader-navigation-controls">
+        <div class="reader-navigation-filters">
+          <label><input type="checkbox" data-reader-navigation="user" checked><i></i><span data-i18n="reader.navUser">用户</span></label>
+          <label><input type="checkbox" data-reader-navigation="assistant" checked><i></i><span data-i18n="reader.navAssistant">智能</span></label>
+          <label><input type="checkbox" data-reader-navigation="process"><i></i><span data-i18n="reader.navProcess">过程</span></label>
+        </div>
+        <div class="reader-navigation-directions" aria-label="消息导航方向">
+          <button type="button" data-reader-navigation-jump="first" aria-label="最前一条">⇤</button>
+          <button type="button" data-reader-navigation-jump="previous" aria-label="上一条">↓</button>
+          <button type="button" data-reader-navigation-jump="next" aria-label="下一条">↑</button>
+          <button type="button" data-reader-navigation-jump="last" aria-label="最后一条">⇥</button>
+        </div>
+      </div>
+      <ol class="reader-navigation-list" data-reader-navigation-list data-scroll-region></ol>
+    </section>
+  </template>
+  <script defer src="./runtime/conversation-renderer.js"></script>
+  <script type="module" src="./site.js"></script>
+</body>
+</html>

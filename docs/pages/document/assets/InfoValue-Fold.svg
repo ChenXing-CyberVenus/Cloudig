@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 250.09 256">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #d48035;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
+        isolation: isolate;
+      }
+
+      .cls-1, .cls-5 {
+        opacity: .7;
+      }
+
+      .cls-10 {
+        fill: url(#_未命名的渐变_5);
+      }
+
+      .cls-2 {
+        fill: #d2d4ef;
+        opacity: .58;
+      }
+
+      .cls-3 {
+        fill: #252053;
+        opacity: .8;
+      }
+
+      .cls-11 {
+        fill: none;
+        stroke: rgba(196, 221, 240, .76);
+        stroke-miterlimit: 4.03;
+        stroke-width: 1.31px;
+      }
+
+      .cls-4 {
+        fill: #372366;
+        opacity: .54;
+      }
+
+      .cls-12 {
+        fill: url(#_未命名的渐变_6);
+      }
+
+      .cls-13 {
+        fill: url(#_未命名的渐变_3);
+      }
+
+      .cls-5 {
+        fill: #34346d;
+      }
+
+      .cls-6 {
+        fill: #b9a3de;
+        opacity: .55;
+      }
+
+      .cls-14 {
+        fill: url(#_未命名的渐变_19);
+      }
+
+      .cls-7 {
+        fill: #fff7d3;
+        opacity: .74;
+      }
+
+      .cls-8 {
+        fill: #285897;
+        opacity: .5;
+      }
+
+      .cls-15 {
+        fill: url(#_未命名的渐变_4);
+      }
+
+      .cls-16 {
+        fill: url(#_未命名的渐变_18);
+      }
+
+      .cls-9 {
+        fill: #fff1aa;
+        opacity: .75;
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_19" data-name="未命名的渐变 19" x1="33.13" y1="173.28" x2="296.9" y2="-114.91" gradientTransform="translate(-44.74 150.67) scale(1.01 -1.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#435489"/>
+      <stop offset="1" stop-color="#271e5d"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_18" data-name="未命名的渐变 18" x1="99.65" y1="202.75" x2="272.56" y2="47.42" gradientTransform="translate(-44.74 150.67) scale(1.01 -1.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a4e4f5"/>
+      <stop offset=".5" stop-color="#538ccf"/>
+      <stop offset="1" stop-color="#515aac"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_3" data-name="未命名的渐变 3" x1="215.71" y1="129.72" x2="288.98" y2="-96.92" gradientTransform="translate(-44.74 150.67) scale(1.01 -1.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6ac2e7"/>
+      <stop offset=".5" stop-color="#4473bc"/>
+      <stop offset="1" stop-color="#39397f"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_4" data-name="未命名的渐变 4" x1="45.14" y1="-1.4" x2="263.97" y2="-121.56" gradientTransform="translate(-44.74 150.67) scale(1.01 -1.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a17cc6"/>
+      <stop offset=".5" stop-color="#694dab"/>
+      <stop offset="1" stop-color="#42327c"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_5" data-name="未命名的渐变 5" x1="18.68" y1="112.15" x2="134.93" y2="-81.28" gradientTransform="translate(-44.74 150.67) scale(1.01 -1.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#baa3e0"/>
+      <stop offset=".5" stop-color="#877bc5"/>
+      <stop offset="1" stop-color="#505fa8"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_6" data-name="未命名的渐变 6" x1="143.41" y1="54.88" x2="193.24" y2="-3.73" gradientTransform="translate(-44.74 150.67) scale(1.01 -1.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff1a7"/>
+      <stop offset=".5" stop-color="#ffbe4f"/>
+      <stop offset="1" stop-color="#d77731"/>
+    </linearGradient>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="InfoValue-Fold">
+      <g id="FoldA_体积底边" data-name="FoldA 体积底边">
+        <polygon class="cls-3" points="0 5.91 250.09 5.91 250.09 256 0 256 0 5.91"/>
+      </g>
+      <g id="FoldA_底纸" data-name="FoldA 底纸">
+        <polygon class="cls-14" points="0 0 250.09 0 250.09 250.09 0 250.09 0 0"/>
+      </g>
+      <g id="FoldA_四片折面" data-name="FoldA 四片折面">
+        <polygon class="cls-16" points="3.94 3.94 246.15 3.94 125.05 122.09 3.94 3.94"/>
+        <polygon class="cls-13" points="246.15 3.94 246.15 246.15 128 125.05 246.15 3.94"/>
+        <polygon class="cls-15" points="246.15 246.15 3.94 246.15 125.05 128 246.15 246.15"/>
+        <polygon class="cls-10" points="3.94 246.15 3.94 3.94 122.09 125.05 3.94 246.15"/>
+      </g>
+      <g id="FoldA_折边" data-name="FoldA 折边">
+        <polygon class="cls-2" points="4.92 4.92 126.03 118.15 120.12 128.98 4.92 11.82 4.92 4.92"/>
+        <polygon class="cls-8" points="245.17 4.92 132.92 126.03 122.09 120.12 238.28 4.92 245.17 4.92"/>
+        <polygon class="cls-4" points="245.17 245.17 126.03 132.92 130.95 122.09 245.17 238.28 245.17 245.17"/>
+        <polygon class="cls-6" points="4.92 245.17 118.15 124.06 128 129.97 11.82 245.17 4.92 245.17"/>
+      </g>
+      <g id="FoldA_菱心" data-name="FoldA 菱心">
+        <polygon class="cls-5" points="125.05 95.51 157.54 128 125.05 160.49 92.55 128 125.05 95.51"/>
+        <polygon class="cls-12" points="125.05 92.55 157.54 125.05 125.05 157.54 92.55 125.05 125.05 92.55"/>
+        <polygon class="cls-9" points="125.05 92.55 125.05 123.08 92.55 125.05 125.05 92.55"/>
+        <polygon class="cls-1" points="125.05 123.08 157.54 125.05 125.05 157.54 125.05 123.08"/>
+        <polygon class="cls-7" points="125.05 92.55 128.98 102.4 118.15 110.28 125.05 92.55"/>
+      </g>
+      <g id="FoldA_外缘高光" data-name="FoldA 外缘高光">
+        <path class="cls-11" d="M.98,250.09V.98h249.11"/>
+      </g>
+    </g>
+  </g>
+</svg>

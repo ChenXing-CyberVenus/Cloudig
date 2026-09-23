@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/internal/record-transaction/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "cloudig/record-transaction/1.0.0"
+    },
+    "operation_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "recovery_order": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "state": {
+      "enum": [
+        "prepared",
+        "installing",
+        "completed"
+      ]
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "enum": [
+              "write",
+              "delete"
+            ]
+          },
+          "exists": {
+            "type": "boolean"
+          },
+          "expected_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "after_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "action",
+          "exists"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "exists": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "expected_sha256"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "expected_sha256"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "write"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "after_sha256"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "after_sha256"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "relocations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "to", "kind", "identity"],
+        "properties": {
+          "from": { "type": "string", "minLength": 1 },
+          "to": { "type": "string", "minLength": 1 },
+          "kind": { "enum": ["file", "directory", "empty_directory"] },
+          "identity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["device", "inode"],
+            "properties": {
+              "device": { "type": "string", "pattern": "^[0-9]+$" },
+              "inode": { "type": "string", "pattern": "^[1-9][0-9]*$" }
+            }
+          },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "reads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "expected"
+        ]
+      }
+    }
+  },
+  "anyOf": [
+    { "properties": { "changes": { "type": "array", "minItems": 1 } } },
+    { "required": ["relocations"] }
+  ],
+  "required": [
+    "schema",
+    "operation_id",
+    "recovery_order",
+    "created_at",
+    "state",
+    "changes",
+    "reads"
+  ]
+}

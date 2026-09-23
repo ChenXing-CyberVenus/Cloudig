@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 74.53">
+  <defs>
+    <style>
+      .cls-2 {
+        fill: #e99b9b;
+      }
+
+      .cls-3 {
+        fill: #ced7db;
+      }
+
+      .cls-5 {
+        fill: #eae3c0;
+      }
+
+      .cls-6 {
+        fill: #c7b299;
+      }
+
+      .cls-7 {
+        fill: #72c9ef;
+      }
+
+      .cls-8 {
+        fill: #faef95;
+      }
+
+      .cls-9 {
+        fill: #d3af95;
+      }
+
+      .cls-10 {
+        fill: #e6e6e6;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="AllDirectory-UnSelected-Dawn">
+      <g>
+        <rect class="cls-7" x="58.17" y="8.2" width="38.76" height="34.71" transform="translate(41.46 98.8) rotate(-82)"/>
+        <rect class="cls-8" x="75.49" y="9.45" width="6.84" height="21.66" transform="translate(47.84 95.59) rotate(-82)"/>
+        <rect class="cls-2" x="36.45" y="2.43" width="37.88" height="42.3" transform="translate(-2.74 7.94) rotate(-8)"/>
+        <rect class="cls-3" x="42.09" y="14.09" width="23.64" height="7.46" transform="translate(-1.96 7.68) rotate(-8)"/>
+        <rect class="cls-6" x="4.63" y="10.84" width="34.41" height="38.44" transform="translate(-1.33 1.01) rotate(-2.58)"/>
+        <rect class="cls-10" x="10.26" y="21.34" width="21.48" height="6.78" transform="translate(-1.09 .97) rotate(-2.58)"/>
+      </g>
+      <g>
+        <rect class="cls-9" y="45.11" width="100" height="29.43"/>
+        <rect class="cls-5" y="38.53" width="100" height="6.57"/>
+      </g>
+    </g>
+  </g>
+</svg>
