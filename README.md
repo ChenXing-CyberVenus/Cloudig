@@ -8,7 +8,7 @@
 
 ## 下载
 
-**[下载 V1.0 东方既白 DawnGlow · Windows x64（安装器 r1）](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.0/Cloudig-1.0.0-Setup-r1.exe)**
+**[下载 V1.0.1 东方既白 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.1/Cloudig-1.0.1-Setup.exe)**
 
 安装时选择自己可写的文件夹。采云安装后仍是一份完整的便携目录：关闭程序后，复制整个目录就是备份，移走整个目录就是搬家。没有卸载器；删除目录也会删除其中的资料，请先备份。
 
@@ -43,7 +43,7 @@ Cloudig brings conversations from multiple AI platforms to your own computer, wh
 
 **[Documentation & platform examples](https://chenxing-cybervenus.github.io/Cloudig/)** · Dawn / StarNight themes, Chinese / English.
 
-**[Download V1.0 DawnGlow · Windows x64 (installer r1)](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.0/Cloudig-1.0.0-Setup-r1.exe)**
+**[Download V1.0.1 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.1/Cloudig-1.0.1-Setup.exe)**
 
 Choose a writable folder. The installed application remains portable: close Cloudig and copy the entire folder to back it up or move it. There is no uninstaller. Deleting the folder also deletes the data inside it, so back up first.
 
