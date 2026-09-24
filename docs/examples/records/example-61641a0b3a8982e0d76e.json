@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c5-0e69-780b-9ac8-362e7994dad2",
+  "conversation_id": "01a0d1a2-d00a-761c-96d1-aabb44f48cde",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "mistral-full-v1",
-      "version": "3.0.4"
+      "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:35.401Z",
-    "last_parsed_at": "2026-09-22T06:19:35.401Z",
-    "cloudig_edited_at": "2026-09-22T06:19:35.401Z"
+    "first_parsed_at": "2026-09-24T04:18:23.370Z",
+    "last_parsed_at": "2026-09-24T04:18:23.370Z",
+    "cloudig_edited_at": "2026-09-24T04:18:23.370Z"
   },
   "source": {
     "file": "Mistral-全量.html",

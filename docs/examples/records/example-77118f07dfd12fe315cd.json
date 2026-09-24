@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c4-f5b8-7e8c-b1b5-3be1a26c7d2d",
+  "conversation_id": "01a0d1a2-b634-7589-b23d-996cda5e7dc2",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "claude-full-capture-v1",
-      "version": "3.0.4"
+      "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:29.080Z",
-    "last_parsed_at": "2026-09-22T06:19:29.080Z",
-    "cloudig_edited_at": "2026-09-22T06:19:29.080Z"
+    "first_parsed_at": "2026-09-24T04:18:16.756Z",
+    "last_parsed_at": "2026-09-24T04:18:16.756Z",
+    "cloudig_edited_at": "2026-09-24T04:18:16.756Z"
   },
   "source": {
     "file": "Claude-全量-Chat.html",

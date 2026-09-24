@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c5-155f-7932-821e-d542f2c88cc9",
+  "conversation_id": "01a0d1a2-d683-74fc-aa3d-0d949f70b320",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "zai-full-v1",
-      "version": "3.0.3"
+      "version": "3.0.4"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:37.183Z",
-    "last_parsed_at": "2026-09-22T06:19:37.183Z",
-    "cloudig_edited_at": "2026-09-22T06:19:37.183Z"
+    "first_parsed_at": "2026-09-24T04:18:25.027Z",
+    "last_parsed_at": "2026-09-24T04:18:25.027Z",
+    "cloudig_edited_at": "2026-09-24T04:18:25.027Z"
   },
   "source": {
     "file": "Z.ai-全量.html",

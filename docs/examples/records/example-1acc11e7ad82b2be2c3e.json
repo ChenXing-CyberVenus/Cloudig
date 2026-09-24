@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c5-034e-7d9d-851e-aa2ce9c99daf",
+  "conversation_id": "01a0d1a2-c3b4-7554-ad5b-f1d12dfb7048",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "gemini-light-dom-v2",
-      "version": "3.0.3"
+      "version": "3.0.4"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:32.558Z",
-    "last_parsed_at": "2026-09-22T06:19:32.558Z",
-    "cloudig_edited_at": "2026-09-22T06:19:32.558Z"
+    "first_parsed_at": "2026-09-24T04:18:20.212Z",
+    "last_parsed_at": "2026-09-24T04:18:20.212Z",
+    "cloudig_edited_at": "2026-09-24T04:18:20.212Z"
   },
   "source": {
     "file": "Gemini-轻装.html",

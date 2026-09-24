@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c5-029e-75e6-a19b-04a71c554bcb",
+  "conversation_id": "01a0d1a2-c300-7150-823b-e61aaa263c6b",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "gemini-full-v1",
-      "version": "3.0.3"
+      "version": "3.0.4"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:32.382Z",
-    "last_parsed_at": "2026-09-22T06:19:32.382Z",
-    "cloudig_edited_at": "2026-09-22T06:19:32.382Z"
+    "first_parsed_at": "2026-09-24T04:18:20.032Z",
+    "last_parsed_at": "2026-09-24T04:18:20.032Z",
+    "cloudig_edited_at": "2026-09-24T04:18:20.032Z"
   },
   "source": {
     "file": "Gemini-全量.html",

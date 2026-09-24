@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c4-ee8d-74ae-b510-156fcd9c2f0c",
+  "conversation_id": "01a0d1a2-af10-7c7d-8950-d6e7bb271545",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "chatgpt-full-v1",
-      "version": "3.0.2"
+      "version": "3.0.3"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:27.245Z",
-    "last_parsed_at": "2026-09-22T06:19:27.245Z",
-    "cloudig_edited_at": "2026-09-22T06:19:27.245Z"
+    "first_parsed_at": "2026-09-24T04:18:14.928Z",
+    "last_parsed_at": "2026-09-24T04:18:14.928Z",
+    "cloudig_edited_at": "2026-09-24T04:18:14.928Z"
   },
   "source": {
     "file": "ChatGPT-全量-Chat.html",

@@ -33,6 +33,8 @@
 
 晨星 ChenXing.CyberVenus 与奥思 Osis 共同创作。
 
+**如果采云帮到你，请GitHub点一个Star，谢谢。**
+
 ---
 
 ## English

@@ -814,7 +814,7 @@
     },
     {
       "path": "src/ui/shell/pages/document/content/examples.json",
-      "sha256": "3c06ebbddbc89bb863714ce4e00f3d8e66cb2fc3656e434a57c19afdb88ef150"
+      "sha256": "b231a1d6e3a70dd4074e21355d5277c475713732fdf39bff1eb95bb233bc036f"
     },
     {
       "path": "src/ui/shell/pages/document/content/features-en.json",
@@ -1825,308 +1825,308 @@
       "sha256": "4244321b0e98be26096f31461634d70bee0d07a1a165e09c9620e965edb6bb66"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/ChatGLM-全量.html",
+      "path": "artifacts/v1-document-examples/html/ChatGLM-全量.html",
       "sha256": "e081d478476608ffbb9058923bb86c46298d1777b8259dc909b93b66034eb572"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-4fac1e82a07c0e962764.json",
-      "sha256": "6c7caaaa8e85bf671cccff09b3713f517ae93d1638a461e705224c137db916c3"
+      "path": "artifacts/v1-document-examples/records/example-4fac1e82a07c0e962764.json",
+      "sha256": "e0f40188bd6f8a4a60e26f979688405ac43f8af704b2b5aa40d0c8bdad331234"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/ChatGLM-轻装.html",
+      "path": "artifacts/v1-document-examples/html/ChatGLM-轻装.html",
       "sha256": "3b80911cb2fdd60c7e99cdad79e454e77dcc2f09270585e45ccfebfb7098e38e"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-6dd365137e337fa6968f.json",
-      "sha256": "e81e2b84574472b20092a6b2ef128b17a4732a982262bbd826ab16c5721056d6"
+      "path": "artifacts/v1-document-examples/records/example-6dd365137e337fa6968f.json",
+      "sha256": "488ab2c6764be480374b9b1b0d83aee8fbb72f54c43fabe90fe0fc5634eec25d"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/ChatGPT-全量-Chat.html",
+      "path": "artifacts/v1-document-examples/html/ChatGPT-全量-Chat.html",
       "sha256": "583a04677143ca19d641c24a731c6a9c4bcc8eec610629681ba82c671c2abfc1"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-e9ebb759665302885471.json",
-      "sha256": "c5882b7eab404ca45dfc296641a5452da408d7756d9a19409484ffcc9eb54bae"
+      "path": "artifacts/v1-document-examples/records/example-e9ebb759665302885471.json",
+      "sha256": "464dfb9bd9421c2e7aea7110bbfc8c6206bcb3015b7e4c5a99343723253704e6"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/ChatGPT-整树-Chat.html",
+      "path": "artifacts/v1-document-examples/html/ChatGPT-整树-Chat.html",
       "sha256": "f3e7db0a9a5153bed8b44c5f70b9171ef2b3b03aea1c969996270f877e7870af"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-db43215446236624ebc4.json",
-      "sha256": "8e5ea627cceb1d11ef8a72694b8507e0f40c215327b4d68cdca36cf6cb275b5d"
+      "path": "artifacts/v1-document-examples/records/example-db43215446236624ebc4.json",
+      "sha256": "bf4a9103361ce0cc62005cdfeb29289434b9a0fcc256dfaccb610608ed56cb62"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/ChatGPT-轻装-Chat.html",
+      "path": "artifacts/v1-document-examples/html/ChatGPT-轻装-Chat.html",
       "sha256": "61117a7916c0e40235123873c6e519163b7cabcb9885d79760c162f6bcbbd85c"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-2ab3449e9edff4bd33bf.json",
-      "sha256": "3a406fac4ceb2a13accc4235cc86078b8c1dba429acab422a5aeb4e110acd65a"
+      "path": "artifacts/v1-document-examples/records/example-2ab3449e9edff4bd33bf.json",
+      "sha256": "280253c293347d89583860d0b0cccfdbd7a52563ef12b07d2b68bb7ee60977b3"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/ChatGPT-轻装-Schedule.html",
+      "path": "artifacts/v1-document-examples/html/ChatGPT-轻装-Schedule.html",
       "sha256": "16bee4282a93cac29db1a395f77f49a40d438724a3df72616b07e42caacf24f6"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-ed0034e9e4c4c307f1a9.json",
-      "sha256": "7fd8965e4c727c4aa575e3610dccd5ed66e2989a25b88e4461636576d40a4fac"
+      "path": "artifacts/v1-document-examples/records/example-ed0034e9e4c4c307f1a9.json",
+      "sha256": "14ad36fc3b8ceacde3a8faa0cd5fae683ffdfd4ecc66918198ac9538810cf420"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Claude-全量-Chat.html",
+      "path": "artifacts/v1-document-examples/html/Claude-全量-Chat.html",
       "sha256": "25019d96419cd56d19f9fedc58592ac4001e8131391d1f5e8e962141d802a1c4"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-77118f07dfd12fe315cd.json",
-      "sha256": "52e5a7acc6b732606bf520b04d0bd843a5ef47ca08cbd119aa60f16c7504a11c"
+      "path": "artifacts/v1-document-examples/records/example-77118f07dfd12fe315cd.json",
+      "sha256": "9ed29f79576ba3454363fc8f41e4c791382c4bb26e70cfdbd92df91e4de06366"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Claude-全量-Cowork.html",
+      "path": "artifacts/v1-document-examples/html/Claude-全量-Cowork.html",
       "sha256": "65a100edbe1e61247a45e9c3c936649127a9593e1a3705f34c006fbfc338473b"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-22b6862f799872aeff0b.json",
-      "sha256": "f8ecf65a14c419005546871f9d11fecc27408dfbdabe1bbefadc8e740ca95f78"
+      "path": "artifacts/v1-document-examples/records/example-22b6862f799872aeff0b.json",
+      "sha256": "4bfa1f50c90cd0f31414bc06a9d2312d6dd92997ed70cd9b843cce5a637469e8"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Claude-整树-Chat.html",
+      "path": "artifacts/v1-document-examples/html/Claude-整树-Chat.html",
       "sha256": "3a649c4f6c32523c8e5685cc1a5557f859a8774d546299b2665848cdf153245f"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-6d033a6e9ad7225bcb2b.json",
-      "sha256": "fcd8f4bd2ffc46c2782cac9b7e57203c9c5ee4c0f1679b2648c647773f600946"
+      "path": "artifacts/v1-document-examples/records/example-6d033a6e9ad7225bcb2b.json",
+      "sha256": "38c7714cbc48caf189440fc427fac9864b1d002e5052e492105e109d06a32e9d"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Claude-轻装-Chat.html",
+      "path": "artifacts/v1-document-examples/html/Claude-轻装-Chat.html",
       "sha256": "1b69caf2c487a30264f5f79cbcad70f63dce71fd72ff82225171008903389173"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-5d288bb7df9acb10e8f3.json",
-      "sha256": "2d073495ace252a4d070bba1ba1bbbd8ca6ae481a2529616d93145caad538439"
+      "path": "artifacts/v1-document-examples/records/example-5d288bb7df9acb10e8f3.json",
+      "sha256": "4cf2903ec2cbdaf71eed99855a7206522b8a0ecd841fb9f432d16a62cd016b67"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Claude-轻装-Cowork.html",
+      "path": "artifacts/v1-document-examples/html/Claude-轻装-Cowork.html",
       "sha256": "dc885735c894eea0e93142d4fd66623884a04d590d5caaf9a3cc09027594d708"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-501f193d4dda7566fef8.json",
-      "sha256": "94f8a7f9ff0267bfd920f26acff1bab9e107fb867d1e59e9e2ce3c402a33bd3c"
+      "path": "artifacts/v1-document-examples/records/example-501f193d4dda7566fef8.json",
+      "sha256": "7bc2a83e633424c22ee072a6cce780c6e22aca3efad5fe34e1e9243abf9ea733"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/DeepSeek-全量-快速模式.html",
+      "path": "artifacts/v1-document-examples/html/DeepSeek-全量-快速模式.html",
       "sha256": "30bc48b746519c8cb11ed5d3a17e217fa02b79529d890b2283ed7d2a138c07e6"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-bb13bbcfa8c0dc4ba064.json",
-      "sha256": "e1bd58448f2d2bf69fd312c92387bfdd496f134fed7cbb16bcf61d83a8926bda"
+      "path": "artifacts/v1-document-examples/records/example-bb13bbcfa8c0dc4ba064.json",
+      "sha256": "47233c01a986bef9306b5901763081058535f2d026cc3abef7a29c76392cef82"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/DeepSeek-全量-识图模式.html",
+      "path": "artifacts/v1-document-examples/html/DeepSeek-全量-识图模式.html",
       "sha256": "d17e9f4373f676ae92083aa3e7d9fc128e7a61a183391638e856891d8ec8c658"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-2fc54d3f267c2e5491b8.json",
-      "sha256": "ddba15ccbf696281727446d156f71143280aa2a445b66b482faa83719755a0fb"
+      "path": "artifacts/v1-document-examples/records/example-2fc54d3f267c2e5491b8.json",
+      "sha256": "ca63d4741c5256426a966d499f1ae47e42576e350dee0a53965f95dedc92d6fc"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/DeepSeek-整树-快速模式.html",
+      "path": "artifacts/v1-document-examples/html/DeepSeek-整树-快速模式.html",
       "sha256": "5e4b977304349d6f1222fb831d28ad77cfb6d11257589ff1067dbf46a16625f8"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-e0973add01ecf780f72c.json",
-      "sha256": "d7bb33d79b57aeba29891cc5cc7382d98f195540d393697ac724b6c2dd470fc3"
+      "path": "artifacts/v1-document-examples/records/example-e0973add01ecf780f72c.json",
+      "sha256": "cab3539c9746b46b944cfbe908b8a59c8ec9a3da3f253fd1fb46a4d5d5b748e2"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/DeepSeek-整树-识图模式.html",
+      "path": "artifacts/v1-document-examples/html/DeepSeek-整树-识图模式.html",
       "sha256": "2f3a5029f9035a42d5e13c7b4eb522818efb26bf462b0b9bee0dc629b9656959"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-47fb79f20431a6f23f59.json",
-      "sha256": "90c33c055d2a700a637e3833a4e15bd1075791239560a759dec5452e223f3862"
+      "path": "artifacts/v1-document-examples/records/example-47fb79f20431a6f23f59.json",
+      "sha256": "ceec4f954f4d0869b64052877c1bfb053022f31304592d541a97acf040453713"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/DeepSeek-轻装-快速模式.html",
+      "path": "artifacts/v1-document-examples/html/DeepSeek-轻装-快速模式.html",
       "sha256": "d527e3462ed200aae2d9bbda9c40879431d12980f72f6bd737fa888f3f1bc40a"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-3403c715595db0281fba.json",
-      "sha256": "c17b2988593425f12d25f6d7595dbfc5737108c76fce89dedf72ad81072051cf"
+      "path": "artifacts/v1-document-examples/records/example-3403c715595db0281fba.json",
+      "sha256": "d0225a2a4736238b2b57b0be3d3ba39b545d11d45228e7f0e328484e835d3bc4"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/DeepSeek-轻装-识图模式.html",
+      "path": "artifacts/v1-document-examples/html/DeepSeek-轻装-识图模式.html",
       "sha256": "b4f7c4b22691c7efb25e7386898cd958ef6c220226021a98029c480cff32433b"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-11f2cae949a04d44507e.json",
-      "sha256": "77ab6308902eadc69e6b481477740911f113b7317d89ec4ea2e0b38714873d03"
+      "path": "artifacts/v1-document-examples/records/example-11f2cae949a04d44507e.json",
+      "sha256": "97e2dd3c11ea5f0b7528333fc7e17de1a781ea673c5d11596bdae897dd1a6b0e"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Gemini-全量.html",
+      "path": "artifacts/v1-document-examples/html/Gemini-全量.html",
       "sha256": "b471e030a2fb66bbc53513f259d50d7094c82b36542b36d58d4da517cc607d8b"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-77918affc5c0d037190d.json",
-      "sha256": "8d1958da343f6a75acba01f444f8386288fbe42d5dc5275314bf487bdda1f974"
+      "path": "artifacts/v1-document-examples/records/example-77918affc5c0d037190d.json",
+      "sha256": "3c9cb1988e114b31b05c242700c3cd28c089ac07c805bf7ffd65de22ee644b24"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Gemini-轻装.html",
+      "path": "artifacts/v1-document-examples/html/Gemini-轻装.html",
       "sha256": "218937515b35b6a063ad83aa7cdf54f149dbeb1e894d933c39ae5cc0c80c34a5"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-1acc11e7ad82b2be2c3e.json",
-      "sha256": "2dd93b676919d765bfca0a617e6dafdb9a044c2a1f542bb067397eaea9b0963d"
+      "path": "artifacts/v1-document-examples/records/example-1acc11e7ad82b2be2c3e.json",
+      "sha256": "b7db3cab3faa452581ecb543fbddb2215eca3d1ddd429c4f66a40b575c6d3520"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Grok-全量.html",
+      "path": "artifacts/v1-document-examples/html/Grok-全量.html",
       "sha256": "097b446c1465be3c33e28ced7e0a9a8d92700c6a06794ee2a1525fe704de218f"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-44b4a7853d37bb47859b.json",
-      "sha256": "d4e7f311e9716c5ddf120a5b7942fc3ff8f4d5e0f2d7ee09cc2dbcd808a5a359"
+      "path": "artifacts/v1-document-examples/records/example-44b4a7853d37bb47859b.json",
+      "sha256": "934eaf0f399b5541bfe82b8f588d2f5f7618709bf210a3b1a703433e33e2d399"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Grok-整树.html",
+      "path": "artifacts/v1-document-examples/html/Grok-整树.html",
       "sha256": "b8b09231cc78c4388b29fb9b6978207c34e27e00eb980795e2034f4d21b9f26a"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-dedb24d02aa247f0c829.json",
-      "sha256": "8d386cd0b321d6f43b1b30a2750595e0fbdb5d5ce65de491126551a98f975e33"
+      "path": "artifacts/v1-document-examples/records/example-dedb24d02aa247f0c829.json",
+      "sha256": "16457740fdc4553251359ff1756e6d071d3ccb82734f48d7f4665d36a5c8b58c"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Grok-轻装.html",
+      "path": "artifacts/v1-document-examples/html/Grok-轻装.html",
       "sha256": "22b2c6ce85860493f81046736e9ecfeba5438b387fc8533379d1f064f072fd0f"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-fece00eb8a5b900a213b.json",
-      "sha256": "83fcf0ed05cd262bb6ca57ffa3dcc22ebe7aefe2905016ba83cbf6bf451099e1"
+      "path": "artifacts/v1-document-examples/records/example-fece00eb8a5b900a213b.json",
+      "sha256": "d49164ec082cdf04511364192aae4532f098e2fc6396ed4b207fb72fd34b1e36"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Kimi-全量.html",
+      "path": "artifacts/v1-document-examples/html/Kimi-全量.html",
       "sha256": "b7ae1e8c7f88c4233a18dac7189b28758b3322e9c930115088058579f5bede79"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-0d7840758f698ae4bb33.json",
-      "sha256": "9d461e3e3bf7d5c6be8ebbb8650e673f7201436376483280274440f7f8941b7f"
+      "path": "artifacts/v1-document-examples/records/example-0d7840758f698ae4bb33.json",
+      "sha256": "a625f9ce2fd1177c4a984842a03ab50d422bcdb72057a520633a4900fe36cc83"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Kimi-整树.html",
+      "path": "artifacts/v1-document-examples/html/Kimi-整树.html",
       "sha256": "53a65cdc7d477262be37b4ce8244ab912f6d62cdfd4de545dad1863703bb6f01"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-25d8e8141b67817978f3.json",
-      "sha256": "7260925010211ede54b01211bf49cefdcc2d7363750a86f58399c5a7fd26905d"
+      "path": "artifacts/v1-document-examples/records/example-25d8e8141b67817978f3.json",
+      "sha256": "651202f785abd1fc618f3ad4cb5d480a4e8a1cd6ed23a9e6758a7367bbdd1325"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Kimi-轻装.html",
+      "path": "artifacts/v1-document-examples/html/Kimi-轻装.html",
       "sha256": "7d391ddce9d342c839426a467a11971f39f814d2892d91bda799e63de5eb88b7"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-316684318191af4b9e9e.json",
-      "sha256": "11fff3b94d931ad9a8d4981baeb89a10d821885d71b464bc04f325beedebb042"
+      "path": "artifacts/v1-document-examples/records/example-316684318191af4b9e9e.json",
+      "sha256": "879c244188dabe77be5e6da1e386796d9089cc78f304076a9922aa5eab8bea67"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Mistral-全量.html",
+      "path": "artifacts/v1-document-examples/html/Mistral-全量.html",
       "sha256": "8f346689e23183f15e920e0b8c72acdff019706eedabbb1b32da508e24ede205"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-61641a0b3a8982e0d76e.json",
-      "sha256": "bfb627e5b3eef7faa85916a40643f40fe04f42edbafeec373fceaf3e7502d118"
+      "path": "artifacts/v1-document-examples/records/example-61641a0b3a8982e0d76e.json",
+      "sha256": "dc413c5bc42a677ef599488100f31c864385430314fc5b0103944a190057928e"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Mistral-整树.html",
+      "path": "artifacts/v1-document-examples/html/Mistral-整树.html",
       "sha256": "5ea5f039b46d2c4c56c787cea1c8c6aa15db58e921c5a42776124978aef8718b"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-522109a1e01ea8ef1e50.json",
-      "sha256": "2aef199e65d4996dac540c5822da67f1da494630ca0a49a35afd90dca634edd8"
+      "path": "artifacts/v1-document-examples/records/example-522109a1e01ea8ef1e50.json",
+      "sha256": "1b801e322539ce0723d563f88052e83e5196f96dace9d1be34bb53e73bff2b22"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Mistral-轻装.html",
+      "path": "artifacts/v1-document-examples/html/Mistral-轻装.html",
       "sha256": "cb772cd54c2b589059ba4df59d7b1d289a6ac2c626867907bd77f22f7678e7da"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-ba3e6d99882b534b550a.json",
-      "sha256": "21bde03961482b53184084c8574903c90f116163ae009950afe77582cc47924d"
+      "path": "artifacts/v1-document-examples/records/example-ba3e6d99882b534b550a.json",
+      "sha256": "d74142f94e2abde070005e5131b9f1833938d204c0e85c86b6539ef7f98a43b3"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Qwen-全量.html",
+      "path": "artifacts/v1-document-examples/html/Qwen-全量.html",
       "sha256": "32b312eb51e85adffcbeb0a60b05d4cff442035582f0988590d75c0e1c6d9add"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-baf2b5dd2e674ba385c8.json",
-      "sha256": "bf014892b61d03dfe8aa5020aa985ca9e94a09426206b14b7ca27171a23d63f3"
+      "path": "artifacts/v1-document-examples/records/example-baf2b5dd2e674ba385c8.json",
+      "sha256": "1f8158a689173b178ca8ca571d61a1ad66e539c1d96e891c64b1815c1c18c41e"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Qwen-整树.html",
+      "path": "artifacts/v1-document-examples/html/Qwen-整树.html",
       "sha256": "350a457ea44182a52ad911238912959f620b97cf63528bd8fcdd349525eb29e4"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-444de426830fbb04cf1d.json",
-      "sha256": "fd25377cea61ac9afece928d65b55688ca5be0256e50c4a49188c4e7999714f9"
+      "path": "artifacts/v1-document-examples/records/example-444de426830fbb04cf1d.json",
+      "sha256": "6086210fca242da203154162f2dfb0bf7483d446c903e54d26f406a3e0a5eb67"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Qwen-轻装.html",
+      "path": "artifacts/v1-document-examples/html/Qwen-轻装.html",
       "sha256": "3ab7772e26b58764668628691990b1029f410ae89b75e93206f0fc2f9097e9c6"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-79864ea5d24fa52c0e31.json",
-      "sha256": "52143af73ccdf56b07489be64d56d981d77e5e14c93d7d8e0386c2e1becf4194"
+      "path": "artifacts/v1-document-examples/records/example-79864ea5d24fa52c0e31.json",
+      "sha256": "dabe25c1911924b82b377d0680d555e07de3296a5c7a247544d46fab1e822f66"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Z.ai-全量.html",
+      "path": "artifacts/v1-document-examples/html/Z.ai-全量.html",
       "sha256": "b46bb19d035a7970b0d18ea4e90f653d957212da1def1e1b9e09c18d837a3b63"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-1b4a99be82f394e361e7.json",
-      "sha256": "a27cd36f9e944b4f1b93453765bec19c02a9bcd5cdc484d2fbeab1591d6fef09"
+      "path": "artifacts/v1-document-examples/records/example-1b4a99be82f394e361e7.json",
+      "sha256": "b52b0171313087c092da6959b64383dd30f044afc48a05628d6abffce9266cd2"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Z.ai-整树.html",
+      "path": "artifacts/v1-document-examples/html/Z.ai-整树.html",
       "sha256": "07b99a55f0d2d1d30eb9c7dd589994ec103df8e8333f1c5c50586600f87a5a39"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-6fc582a50c2469ba0395.json",
-      "sha256": "8815bfee8d4b7e9881033c702babc599ce598b8845eab1af6606710d24390a34"
+      "path": "artifacts/v1-document-examples/records/example-6fc582a50c2469ba0395.json",
+      "sha256": "5b51cd3d059c235f4abd52774dc183d13b9e748a8daef84f358c5930a2906dd5"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/Z.ai-轻装.html",
+      "path": "artifacts/v1-document-examples/html/Z.ai-轻装.html",
       "sha256": "4fbd9f2e103de3415bcf2b8513867b69d9f55f30384640458fc337d034ff0a73"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-193184c0f8b4f0b0dab2.json",
-      "sha256": "4e8eb34c66296f750c9466035c0b1f55007903fb98820f5ede7eb5091335e2b1"
+      "path": "artifacts/v1-document-examples/records/example-193184c0f8b4f0b0dab2.json",
+      "sha256": "07348e7e91c81011d395bb4f656f5465ee5212c4c603dce4281837bdee3318b8"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/腾讯元宝-全量.html",
+      "path": "artifacts/v1-document-examples/html/腾讯元宝-全量.html",
       "sha256": "a95666eca8c95659c1fa32f11d023b8bbbe191544528044d732bfcea40f1bd07"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-85b6281bd781fdc2f6bc.json",
-      "sha256": "fb54d9560eaf07f7e4699f5f430692fa315b38533e3323d75b98f19eabae269c"
+      "path": "artifacts/v1-document-examples/records/example-85b6281bd781fdc2f6bc.json",
+      "sha256": "2d4053c058f3ff2cbbe3ed7b1d113366cc4fc5b27870e261d20c16379b2535b8"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/腾讯元宝-轻装.html",
+      "path": "artifacts/v1-document-examples/html/腾讯元宝-轻装.html",
       "sha256": "0fe7e53694f21a9851a363774207b3199a885d4f2887552a2347ce9b870ab16e"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-e1de4158777bf15b9b04.json",
-      "sha256": "a5a6f9c7d55f1bf91e8c9d1d75ee39f387ae7bf89b33a529051006869f91581b"
+      "path": "artifacts/v1-document-examples/records/example-e1de4158777bf15b9b04.json",
+      "sha256": "377ef4355aa738bf2cb8842c8f5f621d91ee7a6a86327b7d3e10431dcc34451d"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/豆包-全量.html",
+      "path": "artifacts/v1-document-examples/html/豆包-全量.html",
       "sha256": "da83229063db0bd0346ba7655df2a59c8ecbad8d26cd0826699501ada744a259"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-cecc4c22b72b4ee52430.json",
-      "sha256": "0b76a58d449a951449be77e7a88b373d5c342053d21a087e231e8e7a1fec0c0e"
+      "path": "artifacts/v1-document-examples/records/example-cecc4c22b72b4ee52430.json",
+      "sha256": "dd38bcd95a2b483edd6ba5753235979f6aef15a3432f11a821c8bdc53a9e16a4"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/html/豆包-轻装.html",
+      "path": "artifacts/v1-document-examples/html/豆包-轻装.html",
       "sha256": "a3d0d5c09c8b9b731cb0ff957cc49e78a3af18f09a09f4cc529461d9a46f4140"
     },
     {
-      "path": "releases/1.0.0/Cloudig/docs/examples/records/example-1d1e463dbc6b01050238.json",
-      "sha256": "c829fd93173c062a97ac27343ce430fce4b17f1f5a206698219995e5b25b853b"
+      "path": "artifacts/v1-document-examples/records/example-1d1e463dbc6b01050238.json",
+      "sha256": "63ca5ed0eb98a2a36a27ecfe2ab3f32fb0947a12d7cb90309fa9223af7e24564"
     },
     {
       "path": "src/ui/document-site/site.js",
@@ -3191,198 +3191,198 @@
     },
     {
       "path": "examples/records/example-0d7840758f698ae4bb33.json",
-      "bytes": 1585331,
-      "sha256": "9d461e3e3bf7d5c6be8ebbb8650e673f7201436376483280274440f7f8941b7f"
+      "bytes": 1585332,
+      "sha256": "a625f9ce2fd1177c4a984842a03ab50d422bcdb72057a520633a4900fe36cc83"
     },
     {
       "path": "examples/records/example-11f2cae949a04d44507e.json",
-      "bytes": 331753,
-      "sha256": "77ab6308902eadc69e6b481477740911f113b7317d89ec4ea2e0b38714873d03"
+      "bytes": 331754,
+      "sha256": "97e2dd3c11ea5f0b7528333fc7e17de1a781ea673c5d11596bdae897dd1a6b0e"
     },
     {
       "path": "examples/records/example-193184c0f8b4f0b0dab2.json",
-      "bytes": 422835,
-      "sha256": "4e8eb34c66296f750c9466035c0b1f55007903fb98820f5ede7eb5091335e2b1"
+      "bytes": 422836,
+      "sha256": "07348e7e91c81011d395bb4f656f5465ee5212c4c603dce4281837bdee3318b8"
     },
     {
       "path": "examples/records/example-1acc11e7ad82b2be2c3e.json",
-      "bytes": 288705,
-      "sha256": "2dd93b676919d765bfca0a617e6dafdb9a044c2a1f542bb067397eaea9b0963d"
+      "bytes": 288706,
+      "sha256": "b7db3cab3faa452581ecb543fbddb2215eca3d1ddd429c4f66a40b575c6d3520"
     },
     {
       "path": "examples/records/example-1b4a99be82f394e361e7.json",
-      "bytes": 1501686,
-      "sha256": "a27cd36f9e944b4f1b93453765bec19c02a9bcd5cdc484d2fbeab1591d6fef09"
+      "bytes": 1501687,
+      "sha256": "b52b0171313087c092da6959b64383dd30f044afc48a05628d6abffce9266cd2"
     },
     {
       "path": "examples/records/example-1d1e463dbc6b01050238.json",
-      "bytes": 916543,
-      "sha256": "c829fd93173c062a97ac27343ce430fce4b17f1f5a206698219995e5b25b853b"
+      "bytes": 916544,
+      "sha256": "63ca5ed0eb98a2a36a27ecfe2ab3f32fb0947a12d7cb90309fa9223af7e24564"
     },
     {
       "path": "examples/records/example-22b6862f799872aeff0b.json",
-      "bytes": 779750,
-      "sha256": "f8ecf65a14c419005546871f9d11fecc27408dfbdabe1bbefadc8e740ca95f78"
+      "bytes": 779751,
+      "sha256": "4bfa1f50c90cd0f31414bc06a9d2312d6dd92997ed70cd9b843cce5a637469e8"
     },
     {
       "path": "examples/records/example-25d8e8141b67817978f3.json",
-      "bytes": 1587485,
-      "sha256": "7260925010211ede54b01211bf49cefdcc2d7363750a86f58399c5a7fd26905d"
+      "bytes": 1587486,
+      "sha256": "651202f785abd1fc618f3ad4cb5d480a4e8a1cd6ed23a9e6758a7367bbdd1325"
     },
     {
       "path": "examples/records/example-2ab3449e9edff4bd33bf.json",
-      "bytes": 1597326,
-      "sha256": "3a406fac4ceb2a13accc4235cc86078b8c1dba429acab422a5aeb4e110acd65a"
+      "bytes": 1597327,
+      "sha256": "280253c293347d89583860d0b0cccfdbd7a52563ef12b07d2b68bb7ee60977b3"
     },
     {
       "path": "examples/records/example-2fc54d3f267c2e5491b8.json",
-      "bytes": 389625,
-      "sha256": "ddba15ccbf696281727446d156f71143280aa2a445b66b482faa83719755a0fb"
+      "bytes": 389626,
+      "sha256": "ca63d4741c5256426a966d499f1ae47e42576e350dee0a53965f95dedc92d6fc"
     },
     {
       "path": "examples/records/example-316684318191af4b9e9e.json",
-      "bytes": 413550,
-      "sha256": "11fff3b94d931ad9a8d4981baeb89a10d821885d71b464bc04f325beedebb042"
+      "bytes": 413551,
+      "sha256": "879c244188dabe77be5e6da1e386796d9089cc78f304076a9922aa5eab8bea67"
     },
     {
       "path": "examples/records/example-3403c715595db0281fba.json",
-      "bytes": 1013496,
-      "sha256": "c17b2988593425f12d25f6d7595dbfc5737108c76fce89dedf72ad81072051cf"
+      "bytes": 1013497,
+      "sha256": "d0225a2a4736238b2b57b0be3d3ba39b545d11d45228e7f0e328484e835d3bc4"
     },
     {
       "path": "examples/records/example-444de426830fbb04cf1d.json",
-      "bytes": 6942003,
-      "sha256": "fd25377cea61ac9afece928d65b55688ca5be0256e50c4a49188c4e7999714f9"
+      "bytes": 6942004,
+      "sha256": "6086210fca242da203154162f2dfb0bf7483d446c903e54d26f406a3e0a5eb67"
     },
     {
       "path": "examples/records/example-44b4a7853d37bb47859b.json",
-      "bytes": 2066073,
-      "sha256": "d4e7f311e9716c5ddf120a5b7942fc3ff8f4d5e0f2d7ee09cc2dbcd808a5a359"
+      "bytes": 2065324,
+      "sha256": "934eaf0f399b5541bfe82b8f588d2f5f7618709bf210a3b1a703433e33e2d399"
     },
     {
       "path": "examples/records/example-47fb79f20431a6f23f59.json",
-      "bytes": 399245,
-      "sha256": "90c33c055d2a700a637e3833a4e15bd1075791239560a759dec5452e223f3862"
+      "bytes": 399246,
+      "sha256": "ceec4f954f4d0869b64052877c1bfb053022f31304592d541a97acf040453713"
     },
     {
       "path": "examples/records/example-4fac1e82a07c0e962764.json",
-      "bytes": 1363745,
-      "sha256": "6c7caaaa8e85bf671cccff09b3713f517ae93d1638a461e705224c137db916c3"
+      "bytes": 1363746,
+      "sha256": "e0f40188bd6f8a4a60e26f979688405ac43f8af704b2b5aa40d0c8bdad331234"
     },
     {
       "path": "examples/records/example-501f193d4dda7566fef8.json",
-      "bytes": 410509,
-      "sha256": "94f8a7f9ff0267bfd920f26acff1bab9e107fb867d1e59e9e2ce3c402a33bd3c"
+      "bytes": 867594,
+      "sha256": "7bc2a83e633424c22ee072a6cce780c6e22aca3efad5fe34e1e9243abf9ea733"
     },
     {
       "path": "examples/records/example-522109a1e01ea8ef1e50.json",
-      "bytes": 1429217,
-      "sha256": "2aef199e65d4996dac540c5822da67f1da494630ca0a49a35afd90dca634edd8"
+      "bytes": 1429218,
+      "sha256": "1b801e322539ce0723d563f88052e83e5196f96dace9d1be34bb53e73bff2b22"
     },
     {
       "path": "examples/records/example-5d288bb7df9acb10e8f3.json",
-      "bytes": 327015,
-      "sha256": "2d073495ace252a4d070bba1ba1bbbd8ca6ae481a2529616d93145caad538439"
+      "bytes": 751214,
+      "sha256": "4cf2903ec2cbdaf71eed99855a7206522b8a0ecd841fb9f432d16a62cd016b67"
     },
     {
       "path": "examples/records/example-61641a0b3a8982e0d76e.json",
-      "bytes": 1391544,
-      "sha256": "bfb627e5b3eef7faa85916a40643f40fe04f42edbafeec373fceaf3e7502d118"
+      "bytes": 1391545,
+      "sha256": "dc413c5bc42a677ef599488100f31c864385430314fc5b0103944a190057928e"
     },
     {
       "path": "examples/records/example-6d033a6e9ad7225bcb2b.json",
-      "bytes": 1787412,
-      "sha256": "fcd8f4bd2ffc46c2782cac9b7e57203c9c5ee4c0f1679b2648c647773f600946"
+      "bytes": 1787413,
+      "sha256": "38c7714cbc48caf189440fc427fac9864b1d002e5052e492105e109d06a32e9d"
     },
     {
       "path": "examples/records/example-6dd365137e337fa6968f.json",
-      "bytes": 175968,
-      "sha256": "e81e2b84574472b20092a6b2ef128b17a4732a982262bbd826ab16c5721056d6"
+      "bytes": 175969,
+      "sha256": "488ab2c6764be480374b9b1b0d83aee8fbb72f54c43fabe90fe0fc5634eec25d"
     },
     {
       "path": "examples/records/example-6fc582a50c2469ba0395.json",
-      "bytes": 1505567,
-      "sha256": "8815bfee8d4b7e9881033c702babc599ce598b8845eab1af6606710d24390a34"
+      "bytes": 1505568,
+      "sha256": "5b51cd3d059c235f4abd52774dc183d13b9e748a8daef84f358c5930a2906dd5"
     },
     {
       "path": "examples/records/example-77118f07dfd12fe315cd.json",
-      "bytes": 1785590,
-      "sha256": "52e5a7acc6b732606bf520b04d0bd843a5ef47ca08cbd119aa60f16c7504a11c"
+      "bytes": 1785591,
+      "sha256": "9ed29f79576ba3454363fc8f41e4c791382c4bb26e70cfdbd92df91e4de06366"
     },
     {
       "path": "examples/records/example-77918affc5c0d037190d.json",
-      "bytes": 1679257,
-      "sha256": "8d1958da343f6a75acba01f444f8386288fbe42d5dc5275314bf487bdda1f974"
+      "bytes": 1679258,
+      "sha256": "3c9cb1988e114b31b05c242700c3cd28c089ac07c805bf7ffd65de22ee644b24"
     },
     {
       "path": "examples/records/example-79864ea5d24fa52c0e31.json",
-      "bytes": 195037,
-      "sha256": "52143af73ccdf56b07489be64d56d981d77e5e14c93d7d8e0386c2e1becf4194"
+      "bytes": 195038,
+      "sha256": "dabe25c1911924b82b377d0680d555e07de3296a5c7a247544d46fab1e822f66"
     },
     {
       "path": "examples/records/example-85b6281bd781fdc2f6bc.json",
-      "bytes": 2984132,
-      "sha256": "fb54d9560eaf07f7e4699f5f430692fa315b38533e3323d75b98f19eabae269c"
+      "bytes": 2984133,
+      "sha256": "2d4053c058f3ff2cbbe3ed7b1d113366cc4fc5b27870e261d20c16379b2535b8"
     },
     {
       "path": "examples/records/example-ba3e6d99882b534b550a.json",
-      "bytes": 220344,
-      "sha256": "21bde03961482b53184084c8574903c90f116163ae009950afe77582cc47924d"
+      "bytes": 220345,
+      "sha256": "d74142f94e2abde070005e5131b9f1833938d204c0e85c86b6539ef7f98a43b3"
     },
     {
       "path": "examples/records/example-baf2b5dd2e674ba385c8.json",
-      "bytes": 3235950,
-      "sha256": "bf014892b61d03dfe8aa5020aa985ca9e94a09426206b14b7ca27171a23d63f3"
+      "bytes": 3235951,
+      "sha256": "1f8158a689173b178ca8ca571d61a1ad66e539c1d96e891c64b1815c1c18c41e"
     },
     {
       "path": "examples/records/example-bb13bbcfa8c0dc4ba064.json",
-      "bytes": 2086901,
-      "sha256": "e1bd58448f2d2bf69fd312c92387bfdd496f134fed7cbb16bcf61d83a8926bda"
+      "bytes": 2086902,
+      "sha256": "47233c01a986bef9306b5901763081058535f2d026cc3abef7a29c76392cef82"
     },
     {
       "path": "examples/records/example-cecc4c22b72b4ee52430.json",
-      "bytes": 24732688,
-      "sha256": "0b76a58d449a951449be77e7a88b373d5c342053d21a087e231e8e7a1fec0c0e"
+      "bytes": 24732689,
+      "sha256": "dd38bcd95a2b483edd6ba5753235979f6aef15a3432f11a821c8bdc53a9e16a4"
     },
     {
       "path": "examples/records/example-db43215446236624ebc4.json",
-      "bytes": 6117797,
-      "sha256": "8e5ea627cceb1d11ef8a72694b8507e0f40c215327b4d68cdca36cf6cb275b5d"
+      "bytes": 6117798,
+      "sha256": "bf4a9103361ce0cc62005cdfeb29289434b9a0fcc256dfaccb610608ed56cb62"
     },
     {
       "path": "examples/records/example-dedb24d02aa247f0c829.json",
-      "bytes": 2118397,
-      "sha256": "8d386cd0b321d6f43b1b30a2750595e0fbdb5d5ce65de491126551a98f975e33"
+      "bytes": 2117648,
+      "sha256": "16457740fdc4553251359ff1756e6d071d3ccb82734f48d7f4665d36a5c8b58c"
     },
     {
       "path": "examples/records/example-e0973add01ecf780f72c.json",
-      "bytes": 2111142,
-      "sha256": "d7bb33d79b57aeba29891cc5cc7382d98f195540d393697ac724b6c2dd470fc3"
+      "bytes": 2111143,
+      "sha256": "cab3539c9746b46b944cfbe908b8a59c8ec9a3da3f253fd1fb46a4d5d5b748e2"
     },
     {
       "path": "examples/records/example-e1de4158777bf15b9b04.json",
-      "bytes": 1839681,
-      "sha256": "a5a6f9c7d55f1bf91e8c9d1d75ee39f387ae7bf89b33a529051006869f91581b"
+      "bytes": 1839682,
+      "sha256": "377ef4355aa738bf2cb8842c8f5f621d91ee7a6a86327b7d3e10431dcc34451d"
     },
     {
       "path": "examples/records/example-e9ebb759665302885471.json",
-      "bytes": 6094090,
-      "sha256": "c5882b7eab404ca45dfc296641a5452da408d7756d9a19409484ffcc9eb54bae"
+      "bytes": 6094091,
+      "sha256": "464dfb9bd9421c2e7aea7110bbfc8c6206bcb3015b7e4c5a99343723253704e6"
     },
     {
       "path": "examples/records/example-ed0034e9e4c4c307f1a9.json",
-      "bytes": 49367,
-      "sha256": "7fd8965e4c727c4aa575e3610dccd5ed66e2989a25b88e4461636576d40a4fac"
+      "bytes": 49368,
+      "sha256": "14ad36fc3b8ceacde3a8faa0cd5fae683ffdfd4ecc66918198ac9538810cf420"
     },
     {
       "path": "examples/records/example-fece00eb8a5b900a213b.json",
-      "bytes": 634373,
-      "sha256": "83fcf0ed05cd262bb6ca57ffa3dcc22ebe7aefe2905016ba83cbf6bf451099e1"
+      "bytes": 633624,
+      "sha256": "d49164ec082cdf04511364192aae4532f098e2fc6396ed4b207fb72fd34b1e36"
     },
     {
       "path": "index.html",
-      "bytes": 9705,
-      "sha256": "25678a49529e33722810b107b3d73c93827a1b248a8bd2667fa8645c3a1fd685"
+      "bytes": 9701,
+      "sha256": "af184581c0c24ba2721f8533b21fe3bd79af896b5da81388120f2ac2962db422"
     },
     {
       "path": "LICENSE",
@@ -4366,8 +4366,8 @@
     },
     {
       "path": "pages/document/content/examples.json",
-      "bytes": 28673,
-      "sha256": "3c06ebbddbc89bb863714ce4e00f3d8e66cb2fc3656e434a57c19afdb88ef150"
+      "bytes": 28713,
+      "sha256": "b231a1d6e3a70dd4074e21355d5277c475713732fdf39bff1eb95bb233bc036f"
     },
     {
       "path": "pages/document/content/features-en.json",

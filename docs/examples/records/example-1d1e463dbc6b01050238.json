@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c5-2e88-7c63-a38e-0a75fb3220fa",
+  "conversation_id": "01a0d1a2-f0bc-7c1b-bc97-60d6ec471d9c",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "doubao-light-dom-v2",
-      "version": "3.0.2"
+      "version": "3.0.3"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:43.624Z",
-    "last_parsed_at": "2026-09-22T06:19:43.624Z",
-    "cloudig_edited_at": "2026-09-22T06:19:43.624Z"
+    "first_parsed_at": "2026-09-24T04:18:31.740Z",
+    "last_parsed_at": "2026-09-24T04:18:31.740Z",
+    "cloudig_edited_at": "2026-09-24T04:18:31.740Z"
   },
   "source": {
     "file": "豆包-轻装.html",

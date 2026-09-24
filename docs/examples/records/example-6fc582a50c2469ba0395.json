@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0c7c5-1643-7b90-bbc0-da9d091a3235",
+  "conversation_id": "01a0d1a2-d75a-7d30-b611-496a6e9e0dee",
   "parser": {
-    "version": "1.1.8",
+    "version": "1.1.10",
     "adapter": {
       "id": "zai-all-branches-v1",
-      "version": "3.0.3"
+      "version": "3.0.4"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-22T06:19:37.411Z",
-    "last_parsed_at": "2026-09-22T06:19:37.411Z",
-    "cloudig_edited_at": "2026-09-22T06:19:37.411Z"
+    "first_parsed_at": "2026-09-24T04:18:25.242Z",
+    "last_parsed_at": "2026-09-24T04:18:25.242Z",
+    "cloudig_edited_at": "2026-09-24T04:18:25.242Z"
   },
   "source": {
     "file": "Z.ai-整树.html",
