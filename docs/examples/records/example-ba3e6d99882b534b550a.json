@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-d167-7931-9e38-d911e8d0d25f",
+  "conversation_id": "01a0d1ba-6a32-7d18-8d4e-ec9e9bd6c39a",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "mistral-light-dom-rsc-v2",
       "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:23.719Z",
-    "last_parsed_at": "2026-09-24T04:18:23.719Z",
-    "cloudig_edited_at": "2026-09-24T04:18:23.719Z"
+    "first_parsed_at": "2026-09-24T04:44:10.162Z",
+    "last_parsed_at": "2026-09-24T04:44:10.162Z",
+    "cloudig_edited_at": "2026-09-24T04:44:10.162Z"
   },
   "source": {
     "file": "Mistral-轻装.html",

@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-b75c-71f8-a896-8dbe0978f6fb",
+  "conversation_id": "01a0d1ba-51de-7d04-a717-4847abb13363",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "claude-full-capture-v1",
       "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:17.052Z",
-    "last_parsed_at": "2026-09-24T04:18:17.052Z",
-    "cloudig_edited_at": "2026-09-24T04:18:17.052Z"
+    "first_parsed_at": "2026-09-24T04:44:03.934Z",
+    "last_parsed_at": "2026-09-24T04:44:03.934Z",
+    "cloudig_edited_at": "2026-09-24T04:44:03.934Z"
   },
   "source": {
     "file": "Claude-全量-Cowork.html",

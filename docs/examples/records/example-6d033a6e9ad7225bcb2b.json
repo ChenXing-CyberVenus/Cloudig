@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-b869-79ad-ae13-3aeaa3f08228",
+  "conversation_id": "01a0d1ba-531a-7f4a-8f86-d523d5c89fac",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "claude-all-branches-v1",
       "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:17.321Z",
-    "last_parsed_at": "2026-09-24T04:18:17.321Z",
-    "cloudig_edited_at": "2026-09-24T04:18:17.321Z"
+    "first_parsed_at": "2026-09-24T04:44:04.250Z",
+    "last_parsed_at": "2026-09-24T04:44:04.250Z",
+    "cloudig_edited_at": "2026-09-24T04:44:04.250Z"
   },
   "source": {
     "file": "Claude-整树-Chat.html",

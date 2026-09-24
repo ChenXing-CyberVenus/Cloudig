@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-b96f-765c-a1bf-65d23e4ba130",
+  "conversation_id": "01a0d1ba-53f5-7815-b6c1-e2f5f630e734",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "claude-light-dom-v1",
-      "version": "3.0.6"
+      "version": "3.0.7"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:17.583Z",
-    "last_parsed_at": "2026-09-24T04:18:17.583Z",
-    "cloudig_edited_at": "2026-09-24T04:18:17.583Z"
+    "first_parsed_at": "2026-09-24T04:44:04.469Z",
+    "last_parsed_at": "2026-09-24T04:44:04.469Z",
+    "cloudig_edited_at": "2026-09-24T04:44:04.469Z"
   },
   "source": {
     "file": "Claude-轻装-Chat.html",

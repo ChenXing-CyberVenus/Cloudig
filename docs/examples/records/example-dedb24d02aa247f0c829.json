@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-c92b-799c-8c08-cb53e86d3e00",
+  "conversation_id": "01a0d1ba-6286-774d-8507-13131cf65b78",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "grok-all-branches-v1",
       "version": "3.0.6"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:21.611Z",
-    "last_parsed_at": "2026-09-24T04:18:21.611Z",
-    "cloudig_edited_at": "2026-09-24T04:18:21.611Z"
+    "first_parsed_at": "2026-09-24T04:44:08.198Z",
+    "last_parsed_at": "2026-09-24T04:44:08.198Z",
+    "cloudig_edited_at": "2026-09-24T04:44:08.198Z"
   },
   "source": {
     "file": "Grok-整树.html",

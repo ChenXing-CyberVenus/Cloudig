@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-dd32-7e78-bff7-155e01759f0d",
+  "conversation_id": "01a0d1ba-753e-7ca1-9758-355bba8af855",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "yuanbao-light-dom-v2",
       "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:26.738Z",
-    "last_parsed_at": "2026-09-24T04:18:26.738Z",
-    "cloudig_edited_at": "2026-09-24T04:18:26.738Z"
+    "first_parsed_at": "2026-09-24T04:44:12.990Z",
+    "last_parsed_at": "2026-09-24T04:44:12.990Z",
+    "cloudig_edited_at": "2026-09-24T04:44:12.990Z"
   },
   "source": {
     "file": "腾讯元宝-轻装.html",

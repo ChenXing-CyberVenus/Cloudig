@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-bdf0-724d-b070-54c9842ec058",
+  "conversation_id": "01a0d1ba-57fa-7e4b-97da-f4cf9d1a4ce0",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "deepseek-full-v1",
       "version": "3.0.3"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:18.736Z",
-    "last_parsed_at": "2026-09-24T04:18:18.736Z",
-    "cloudig_edited_at": "2026-09-24T04:18:18.736Z"
+    "first_parsed_at": "2026-09-24T04:44:05.498Z",
+    "last_parsed_at": "2026-09-24T04:44:05.498Z",
+    "cloudig_edited_at": "2026-09-24T04:44:05.498Z"
   },
   "source": {
     "file": "DeepSeek-全量-识图模式.html",

@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-bcc6-7c37-a90e-b13e414e9c80",
+  "conversation_id": "01a0d1ba-570d-7737-b856-578d394c7230",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "deepseek-full-v1",
       "version": "3.0.3"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:18.438Z",
-    "last_parsed_at": "2026-09-24T04:18:18.438Z",
-    "cloudig_edited_at": "2026-09-24T04:18:18.438Z"
+    "first_parsed_at": "2026-09-24T04:44:05.261Z",
+    "last_parsed_at": "2026-09-24T04:44:05.261Z",
+    "cloudig_edited_at": "2026-09-24T04:44:05.261Z"
   },
   "source": {
     "file": "DeepSeek-全量-快速模式.html",

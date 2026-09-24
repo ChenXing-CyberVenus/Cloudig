@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1a2-ce48-7c3a-829f-b6e03ed84baf",
+  "conversation_id": "01a0d1ba-6712-7d49-b81c-2f2a1429e0fa",
   "parser": {
-    "version": "1.1.10",
+    "version": "1.1.11",
     "adapter": {
       "id": "kimi-all-branches-v1",
       "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:18:22.920Z",
-    "last_parsed_at": "2026-09-24T04:18:22.920Z",
-    "cloudig_edited_at": "2026-09-24T04:18:22.920Z"
+    "first_parsed_at": "2026-09-24T04:44:09.362Z",
+    "last_parsed_at": "2026-09-24T04:44:09.362Z",
+    "cloudig_edited_at": "2026-09-24T04:44:09.362Z"
   },
   "source": {
     "file": "Kimi-整树.html",
