@@ -8,7 +8,7 @@
 
 ## 下载
 
-**[下载 V1.0.1 东方既白 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.1/Cloudig-1.0.1-Setup.exe)**
+**[下载 V1.0.2 东方既白 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.2/Cloudig-1.0.2-Setup.exe)**
 
 安装时选择自己可写的文件夹。采云安装后仍是一份完整的便携目录：关闭程序后，复制整个目录就是备份，移走整个目录就是搬家。没有卸载器；删除目录也会删除其中的资料，请先备份。
 
@@ -21,7 +21,7 @@
 - **独立数据标准**：Conversation、Mark、Identity、ContentTime 与 Library；原始会话与用户编辑分开保存。
 - **内容时间**：此地时间与自建独立时间体系。
 - **双主题与双语言**：破晓 Dawn／星夜 StarNight，中文／English。
-- 随程序提供使用指南、平台范例、采云标准、历史与未来及许可证。
+- 随程序提供使用指南、采云标准、历史与未来及许可证；平台范例可在线查看或按需下载。
 
 这里的“跨平台”指汇集不同 AI 平台的对话；本次桌面程序发布平台为 Windows。
 
@@ -45,13 +45,13 @@ Cloudig brings conversations from multiple AI platforms to your own computer, wh
 
 **[Documentation & platform examples](https://chenxing-cybervenus.github.io/Cloudig/)** · Dawn / StarNight themes, Chinese / English.
 
-**[Download V1.0.1 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.1/Cloudig-1.0.1-Setup.exe)**
+**[Download V1.0.2 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.2/Cloudig-1.0.2-Setup.exe)**
 
 Choose a writable folder. The installed application remains portable: close Cloudig and copy the entire folder to back it up or move it. There is no uninstaller. Deleting the folder also deletes the data inside it, so back up first.
 
 This desktop release is for Windows x64 and requires Microsoft Edge WebView2 Runtime. If it is missing, the installer provides Microsoft's official download link.
 
-V1.0 includes the Archiver, Reader, conversation branches, reasoning and tool displays, formulas and diagrams, separate conversation and annotation records, identities, content-time systems, Dawn and StarNight themes, and Chinese and English interfaces. Documentation and platform examples are included in the application.
+V1.0 includes the Archiver, Reader, conversation branches, reasoning and tool displays, formulas and diagrams, separate conversation and annotation records, identities, content-time systems, Dawn and StarNight themes, and Chinese and English interfaces. Documentation is included in the application; platform examples can be viewed online or downloaded on demand.
 
 [Feedback](https://github.com/ChenXing-CyberVenus/Cloudig/issues) · [JOG-1.1 License](LICENSE)
 
