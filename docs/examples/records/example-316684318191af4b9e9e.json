@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-6820-79d1-b89c-73d9aab02f6a",
+  "conversation_id": "01a0d253-3757-7548-883e-59b11bd3da85",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "kimi-light-dom-v2",
-      "version": "3.0.5"
+      "version": "3.0.6"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:09.632Z",
-    "last_parsed_at": "2026-09-24T04:44:09.632Z",
-    "cloudig_edited_at": "2026-09-24T04:44:09.632Z"
+    "first_parsed_at": "2026-09-24T07:31:04.151Z",
+    "last_parsed_at": "2026-09-24T07:31:04.151Z",
+    "cloudig_edited_at": "2026-09-24T07:31:04.151Z"
   },
   "source": {
     "file": "Kimi-轻装.html",

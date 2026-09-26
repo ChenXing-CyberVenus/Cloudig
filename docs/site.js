@@ -3,19 +3,21 @@ import { mountHistoryDocument } from './pages/document/history.js';
 import { mountLicenseDocument } from './pages/document/license.js';
 import { mountBookmarkDocument } from './pages/document/bookmarks.js';
 import { mountFeatureDocument } from './pages/document/features.js';
+import { publicExampleRoute } from './pages/document/examples-links.js';
 const root = document.documentElement, host = document.querySelector('.site-reading');
 const topics = ['bookmark', 'archive', 'platforms', 'standard', 'roadmap', 'license'];
 const names = { 'zh-CN': ['书签指南', '采云功能', '平台范例', '采云标准', '历史与未来', 'LICENSE'], en: ['Bookmarklets', 'Features', 'Examples', 'Cloudig Standard', 'History & Future', 'LICENSE'] };
 const state = { theme: root.dataset.theme, language: root.lang };
 const base = new URL('.', import.meta.url);
 const url = path => new URL(path, base).href;
+const workRuntime = { frameUrl: url('runtime/interactive-frame.html'), dependencies: url('runtime/dependencies/') };
 let active = null, generation = 0, currentTopic = 'standard', restoreExamples = {}, currentDemo = null;
 const en = () => state.language === 'en';
 const errorBox = document.querySelector('.site-error');
 function report(error) { console.error(error); errorBox.querySelector('span').textContent = en() ? 'This page could not be loaded. Please retry.' : '这页没有加载完成，请重试。'; errorBox.hidden = false; }
 function external(value) { const target = new URL(value, base); if (['http:', 'https:'].includes(target.protocol))
     window.open(target.href, '_blank', 'noopener,noreferrer'); }
-function download(path, filename) { const a = document.createElement('a'); a.href = url(path); a.download = filename; a.click(); }
+function download(path, filename) { const a = document.createElement('a'); a.href = url(path); a.download = filename; document.body.append(a); a.click(); a.remove(); }
 async function json(path, signal) { const r = await fetch(url(path), { signal }); if (!r.ok)
     throw new Error(`Unable to load ${path}: ${r.status}`); return r.json(); }
 function labels() {
@@ -58,10 +60,14 @@ async function openTopic(topic) {
     host.replaceChildren(page);
     const mount = ({ archive: mountFeatureDocument, bookmark: mountBookmarkDocument, platforms: mountBookmarkDocument, roadmap: mountHistoryDocument, license: mountLicenseDocument })[topic] ?? mountStandardDocument;
     try {
-        const instance = await mount({ page, language: state.language, topic, restore: topic === 'platforms' ? restoreExamples : {}, onClose: () => { document.querySelector(`[data-site-topic="${topic}"]`)?.focus(); }, onError: report, onDocument: go, environment: 'browser',
+        const route = topic === 'platforms' ? publicExampleRoute(location.hash) : null;
+        const linkedExample = route ? (await catalogReady).examples.find(e => e.id === route.id) : null;
+        const exampleRestore = linkedExample ? { ...restoreExamples, example: linkedExample.id, revealExample: true } : restoreExamples;
+        const instance = await mount({ page, language: state.language, topic, restore: topic === 'platforms' ? exampleRestore : {}, onClose: () => { document.querySelector(`[data-site-topic="${topic}"]`)?.focus(); }, onError: report, onDocument: go, environment: 'browser',
             onExternal: external, onDemo: openDemo,
             onChrome: async (id) => { const e = catalog.examples.find(item => item.id === id); if (!e)
                 throw Error('Unknown example'); external(url(`examples/${e.html.path}`)); return { opened: true }; },
+            onDownloadHtml: e => download(`examples/${e.html.path}`, e.html.file),
             onDownloadRecord: e => download(`examples/${e.record.path}`, e.html.file.replace(/\.html$/u, '.json')) });
         if (ticket !== generation) {
             instance?.close();
@@ -75,6 +81,14 @@ async function openTopic(topic) {
         back.setAttribute('aria-label', back.textContent);
         page.querySelector('.site-loading')?.remove();
         host.dataset.ready = 'true';
+        if (linkedExample && route.action === 'reader') await openDemo(linkedExample, instance.snapshot());
+        else if (linkedExample && route.action.startsWith('download-')) {
+            // An explicit download link from Cloudig requests this one public
+            // file only. The normal buttons remain if the browser blocks it.
+            const selector = route.action === 'download-html' ? '[data-example-html-download]' : '[data-example-record]';
+            history.replaceState(null, '', `#platforms/${linkedExample.id}/view`);
+            instance.element.querySelector(selector).click();
+        }
     }
     catch (error) {
         if (ticket === generation)
@@ -124,7 +138,7 @@ async function openDemo(example, snapshot) {
         const avatar = reference => reference === 'Assets/Defaults/user.svg' ? 'assets/welcome/OsisLogo-Cloudig-1024.png' : reference === 'Assets/Defaults/assistant.svg' ? 'assets/welcome/OsisLogo-Simple.svg' : `assets/platforms/platform-${/^Assets\/Platforms\/([a-z0-9-]+)\.svg$/u.exec(reference)?.[1] ?? 'unknown'}.${reference.includes('/doubao.') ? 'png' : 'svg'}`;
         mounted = mountReaderConversation({ page, template: document.querySelector('#reader-conversation-template'), state: { ...state }, row: { example: example.id, title: example.html.file.replace(/\.html$/u, ''), platform: example.platform, messages: example.messages }, view: {}, loading: true, session, translate, readOnly: true, onExampleReturn: () => go('platforms'), onError: report,
             requestPage: async (s, offsets) => prepared.page(readerSession(s), offsets), onSessionChange: s => { session = s; },
-            resolveAvatar: async (reference) => ({ url: url(avatar(String(reference))) }), resolveResource: async (resource) => ({ url: resourceUrl(resource.id) }), onOpenExternal: external });
+            resolveAvatar: async (reference) => ({ url: url(avatar(String(reference))) }), resolveResource: async (resource) => ({ url: resourceUrl(resource.id) }), workRuntime, onOpenExternal: external });
         page.querySelector('[data-route-target="reader-cover"]')?.addEventListener('click', () => go('platforms'));
         record = await json(`examples/${example.record.path}`, abort.signal);
         if (ticket !== generation)

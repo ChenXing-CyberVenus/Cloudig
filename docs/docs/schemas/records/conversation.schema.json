@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cloudig.local/records/conversation/1.0.0",
+  "$id": "https://cloudig.local/records/conversation/1.0.1",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,7 +15,7 @@
   ],
   "properties": {
     "schema": {
-      "const": "cloudig/conversation/1.0.0"
+      "const": "cloudig/conversation/1.0.1"
     },
     "conversation_id": {
       "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
@@ -1017,6 +1017,43 @@
         }
       }
     },
+    "interactiveBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "display", "source", "format"],
+      "properties": {
+        "type": { "const": "interactive" },
+        "speaker": { "type": "string", "minLength": 1 },
+        "recipient": { "type": "string", "minLength": 1 },
+        "display": { "enum": ["box", "window"] },
+        "source": { "type": "string", "pattern": "^[^\\s_]+_[^\\s]+$", "description": "Specific originating site or product plus its native content type, for example claude.ai_visualize. Not a brand or model name." },
+        "title": { "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/titleText" },
+        "format": { "enum": ["structured", "html", "react", "svg", "document", "slides", "design", "design-system"] },
+        "data": { "type": "object" },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "resource"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "resource": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "entry": { "type": "string", "minLength": 1 },
+        "preview": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "format": { "const": "structured" } } },
+          "then": { "required": ["data"] },
+          "else": { "required": ["files", "entry"] }
+        }
+      ]
+    },
     "block": {
       "oneOf": [
         {
@@ -1054,6 +1091,9 @@
         },
         {
           "$ref": "#/$defs/unknownBlock"
+        },
+        {
+          "$ref": "#/$defs/interactiveBlock"
         }
       ]
     }

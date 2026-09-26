@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-5fe7-71cc-a6db-1cd4097ad544",
+  "conversation_id": "01a0d253-2ee9-7208-b8a0-47f3baa507d2",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "grok-full-v1",
-      "version": "3.0.6"
+      "version": "3.0.7"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:07.527Z",
-    "last_parsed_at": "2026-09-24T04:44:07.527Z",
-    "cloudig_edited_at": "2026-09-24T04:44:07.527Z"
+    "first_parsed_at": "2026-09-24T07:31:01.993Z",
+    "last_parsed_at": "2026-09-24T07:31:01.993Z",
+    "cloudig_edited_at": "2026-09-24T07:31:01.993Z"
   },
   "source": {
     "file": "Grok-全量.html",

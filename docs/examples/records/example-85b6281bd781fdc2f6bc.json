@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-7323-7672-b6d9-f55d51f9a8ac",
+  "conversation_id": "01a0d253-4204-74f4-af35-8fe4e212b715",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "yuanbao-full-dom-v1",
-      "version": "3.0.5"
+      "version": "3.0.6"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:12.451Z",
-    "last_parsed_at": "2026-09-24T04:44:12.451Z",
-    "cloudig_edited_at": "2026-09-24T04:44:12.451Z"
+    "first_parsed_at": "2026-09-24T07:31:06.884Z",
+    "last_parsed_at": "2026-09-24T07:31:06.884Z",
+    "cloudig_edited_at": "2026-09-24T07:31:06.884Z"
   },
   "source": {
     "file": "腾讯元宝-全量.html",

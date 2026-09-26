@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-5bd1-7c50-8253-642020c3f08d",
+  "conversation_id": "01a0d253-2a03-7b6e-a165-7be794e4e94d",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "deepseek-light-messages-v2",
-      "version": "3.0.3"
+      "version": "3.0.4"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:06.481Z",
-    "last_parsed_at": "2026-09-24T04:44:06.481Z",
-    "cloudig_edited_at": "2026-09-24T04:44:06.481Z"
+    "first_parsed_at": "2026-09-24T07:31:00.739Z",
+    "last_parsed_at": "2026-09-24T07:31:00.739Z",
+    "cloudig_edited_at": "2026-09-24T07:31:00.739Z"
   },
   "source": {
     "file": "DeepSeek-轻装-快速模式.html",

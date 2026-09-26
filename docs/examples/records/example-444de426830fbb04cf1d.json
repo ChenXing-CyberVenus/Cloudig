@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-6ccb-7fd3-ae99-83fd9181ff0b",
+  "conversation_id": "01a0d253-3b70-7f7b-9c40-6f7a3e56262c",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "qwen-all-branches-v1",
-      "version": "3.0.2"
+      "version": "3.0.3"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:10.827Z",
-    "last_parsed_at": "2026-09-24T04:44:10.827Z",
-    "cloudig_edited_at": "2026-09-24T04:44:10.827Z"
+    "first_parsed_at": "2026-09-24T07:31:05.200Z",
+    "last_parsed_at": "2026-09-24T07:31:05.200Z",
+    "cloudig_edited_at": "2026-09-24T07:31:05.200Z"
   },
   "source": {
     "file": "Qwen-整树.html",

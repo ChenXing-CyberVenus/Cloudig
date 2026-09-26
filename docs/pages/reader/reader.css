@@ -149,6 +149,8 @@
   [data-page="reader"] .reader-brand-logo { border-radius: 7px; height: 36px; left: 0; object-fit: cover; position: absolute; top: 0; width: 36px; }
   [data-page="reader"] .reader-brand-title { height: 32px; left: 49px; object-fit: contain; object-position: left center; position: absolute; top: 2px; width: 74px; }
   [data-page="reader"] .reader-brand-slogan { height: 28px; left: 124px; object-fit: fill; object-position: left center; position: absolute; top: 4px; width: 267px; }
+  :root[lang="en"] [data-page="reader"] .reader-brand-title { width: 116px; }
+  :root[lang="en"] [data-page="reader"] .reader-brand-slogan { left: 177px; object-fit: contain; width: 214px; }
   [data-page="reader"] .reader-total-pill {
     align-items: center;
     background: var(--reader-main);
@@ -172,7 +174,6 @@
   [data-page="reader"] .reader-topbar-actions { align-items: center; display: flex; gap: 11px; height: 100%; min-width: 0; padding: 0; position: absolute; right: 11px; top: 0; }
   [data-page="reader"] .reader-manage-archives { --cloudig-button-fill: var(--cloudig-seal-red); color: #ffffff; }
   :root[data-theme="star-night"] [data-page="reader"] .reader-manage-archives { --cloudig-button-fill: var(--cloudig-purple); color: var(--cloudig-orange); }
-  :root[lang="en"] [data-page="reader"] .reader-manage-archives { font-size: 16px; white-space: nowrap; width: 132px; }
   [data-page="reader"] .reader-text-action,
   [data-page="reader"] .reader-topbar-theme { appearance: none; background: transparent; border: 0; color: var(--reader-topbar-action); cursor: pointer; font-size: 18px; font-weight: 400; padding: 0; white-space: nowrap; }
   [data-page="reader"] .reader-topbar-theme { height: 28px; width: 28px; }
@@ -541,9 +542,25 @@
   [data-page="reader"] .reader-scene-brand-logo { border-radius: 12px; height: 95px; left: 0; position: absolute; top: 0; width: 95px; }
   [data-page="reader"] .reader-scene-brand-title { height: auto; left: 121px; position: absolute; top: 1px; width: 128px; }
   [data-page="reader"] .reader-scene-brand-slogan { height: auto; left: 121px; position: absolute; top: 67px; width: 225px; }
+  /* English has one centered lockup, not the Chinese title's absolute offsets. */
+  :root[lang="en"] [data-page="reader"] { --reader-english-copy-left: 104px; --reader-english-brand-top: 278px; --reader-english-statement-top: 454px; }
+  :root[lang="en"][data-theme="star-night"] [data-page="reader"] { --reader-english-copy-left: 130px; --reader-english-brand-top: 172px; --reader-english-statement-top: 348px; }
+  :root[lang="en"] [data-page="reader"] .reader-scene-brand {
+    align-items: center; column-gap: 24px; display: grid; grid-template-columns: 88px 264px;
+    grid-template-rows: 88px auto; height: auto; justify-content: center;
+    left: var(--reader-english-copy-left); row-gap: 14px; top: var(--reader-english-brand-top); width: 480px;
+  }
+  :root[lang="en"] [data-page="reader"] .reader-scene-brand > img { inset: auto; object-fit: contain; position: static; }
+  :root[lang="en"] [data-page="reader"] .reader-scene-brand-logo { grid-area: 1 / 1; height: 88px; width: 88px; }
+  :root[lang="en"] [data-page="reader"] .reader-scene-brand-title { grid-area: 1 / 2; height: auto; width: 264px; }
+  :root[lang="en"] [data-page="reader"] .reader-scene-brand-slogan { grid-area: 2 / 1 / 3 / 3; height: auto; justify-self: center; width: 354px; }
   [data-page="reader"] .reader-scene-statement { color: #fdfced; display: flex; flex-direction: column; font-size: 60px; font-weight: 700; left: 167.82px; letter-spacing: 0; line-height: 1.2; margin: 0; position: absolute; text-shadow: 1px 2px 2px rgb(0 0 0 / 22%); top: 482.03px; z-index: 20; }
   :root[data-theme="star-night"] [data-page="reader"] .reader-scene-statement { color: #e2e1e1; left: 188.85px; top: 376.07px; }
-  :root[lang="en"] [data-page="reader"] .reader-scene-statement { font-size: 30px; letter-spacing: -.01em; line-height: 1.2; max-width: 428px; }
+  :root[lang="en"] [data-page="reader"] .reader-scene-statement { display: block; filter: drop-shadow(1px 2px 1px rgb(0 0 0 / 22%)); height: 136.64px; left: var(--reader-english-copy-left); text-shadow: none; top: var(--reader-english-statement-top); width: 480px; }
+  :root[lang="en"] [data-page="reader"] .reader-scene-statement::before { background: currentColor; content: ""; display: block; height: 100%; mask: url("/Cloudig/assets/reader/Reader-Welcome-Home-English.svg") center / 100% 100% no-repeat; width: 100%; }
+  /* Keep the localized words available to assistive tools, but paint only the
+     shared outlined SVG. Both themes inherit their original text color. */
+  :root[lang="en"] [data-page="reader"] .reader-scene-statement > span { clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
   [data-page="reader"] .reader-archive-entry { appearance: none; background: transparent; border: 0; color: var(--cloudig-seal-red); cursor: pointer; height: 246.29px; left: 332.35px; padding: 0; position: absolute; top: 686px; width: 265.68px; z-index: 30; }
   [data-page="reader"] .reader-archive-entry > img { height: 246.29px; inset: 0; position: absolute; width: 265.68px; z-index: 0; }

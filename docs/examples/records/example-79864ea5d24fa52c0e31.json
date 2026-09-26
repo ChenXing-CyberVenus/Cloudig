@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-6e86-70d2-a224-2f11394da9b4",
+  "conversation_id": "01a0d253-3d10-7982-9d08-0f840091ae7a",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "qwen-light-messages-v2",
-      "version": "3.0.2"
+      "version": "3.0.3"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:11.270Z",
-    "last_parsed_at": "2026-09-24T04:44:11.270Z",
-    "cloudig_edited_at": "2026-09-24T04:44:11.270Z"
+    "first_parsed_at": "2026-09-24T07:31:05.616Z",
+    "last_parsed_at": "2026-09-24T07:31:05.616Z",
+    "cloudig_edited_at": "2026-09-24T07:31:05.616Z"
   },
   "source": {
     "file": "Qwen-轻装.html",

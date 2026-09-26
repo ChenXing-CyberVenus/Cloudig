@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-6569-72de-b4dc-332f9678602d",
+  "conversation_id": "01a0d253-3454-7ee4-b2b7-6cc83404a521",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "kimi-full-dom-v1",
-      "version": "3.0.5"
+      "version": "3.0.6"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:08.937Z",
-    "last_parsed_at": "2026-09-24T04:44:08.937Z",
-    "cloudig_edited_at": "2026-09-24T04:44:08.937Z"
+    "first_parsed_at": "2026-09-24T07:31:03.380Z",
+    "last_parsed_at": "2026-09-24T07:31:03.380Z",
+    "cloudig_edited_at": "2026-09-24T07:31:03.380Z"
   },
   "source": {
     "file": "Kimi-全量.html",

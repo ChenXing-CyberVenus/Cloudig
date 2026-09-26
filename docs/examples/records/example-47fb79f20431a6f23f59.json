@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-5b0a-752f-ad15-310340285b43",
+  "conversation_id": "01a0d253-2929-75cf-bb9c-a5148353688b",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "deepseek-all-branches-v1",
-      "version": "3.0.3"
+      "version": "3.0.4"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:06.282Z",
-    "last_parsed_at": "2026-09-24T04:44:06.282Z",
-    "cloudig_edited_at": "2026-09-24T04:44:06.282Z"
+    "first_parsed_at": "2026-09-24T07:31:00.521Z",
+    "last_parsed_at": "2026-09-24T07:31:00.521Z",
+    "cloudig_edited_at": "2026-09-24T07:31:00.521Z"
   },
   "source": {
     "file": "DeepSeek-整树-识图模式.html",

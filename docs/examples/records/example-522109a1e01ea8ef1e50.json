@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-6983-7d3b-b6ed-de07476c40de",
+  "conversation_id": "01a0d253-387a-7f1a-95ad-b810eec7f17f",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "mistral-all-branches-v1",
-      "version": "3.0.5"
+      "version": "3.0.6"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:09.987Z",
-    "last_parsed_at": "2026-09-24T04:44:09.987Z",
-    "cloudig_edited_at": "2026-09-24T04:44:09.987Z"
+    "first_parsed_at": "2026-09-24T07:31:04.442Z",
+    "last_parsed_at": "2026-09-24T07:31:04.442Z",
+    "cloudig_edited_at": "2026-09-24T07:31:04.442Z"
   },
   "source": {
     "file": "Mistral-整树.html",

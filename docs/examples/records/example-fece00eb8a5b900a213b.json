@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-63b8-7404-8394-d2342c14521f",
+  "conversation_id": "01a0d253-32ad-7085-b83d-29979bacf00e",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "grok-light-dom-v2",
-      "version": "3.0.6"
+      "version": "3.0.7"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:08.504Z",
-    "last_parsed_at": "2026-09-24T04:44:08.504Z",
-    "cloudig_edited_at": "2026-09-24T04:44:08.504Z"
+    "first_parsed_at": "2026-09-24T07:31:02.957Z",
+    "last_parsed_at": "2026-09-24T07:31:02.957Z",
+    "cloudig_edited_at": "2026-09-24T07:31:02.957Z"
   },
   "source": {
     "file": "Grok-轻装.html",

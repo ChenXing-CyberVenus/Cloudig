@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cloudig.local/records/library/1.0.0",
+  "$id": "https://cloudig.local/records/library/1.0.1",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,7 +15,7 @@
       "const": "1.0"
     },
     "schema": {
-      "const": "cloudig/library/1.0.0"
+      "const": "cloudig/library/1.0.1"
     },
     "schemas": {
       "type": "object",
@@ -29,7 +29,7 @@
       ],
       "properties": {
         "library": {
-          "const": "1.0.0"
+          "const": "1.0.1"
         },
         "identity": {
           "const": "1.0.0"
@@ -38,7 +38,7 @@
           "const": "1.0.0"
         },
         "conversation": {
-          "const": "1.0.0"
+          "const": "1.0.1"
         },
         "mark": {
           "const": "1.0.0"

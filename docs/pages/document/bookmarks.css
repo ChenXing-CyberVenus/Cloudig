@@ -41,7 +41,12 @@
   .example-pair h3 span { font-size: 18px; font-weight: 400; }
   .bookmark-document .example-pair-note { margin: 12px 0 22px; }
   .example-pair-actions { display: flex; flex-wrap: wrap; gap: 16px; }
-  .bookmark-document .example-pair-actions .cloudig-button { width: auto; min-width: 170px; min-height: 44px; height: auto; white-space: nowrap; padding: 9px 18px; font-size: 16px; font-weight: 700; text-shadow: none; }
+  .example-downloads { display: flex; flex-wrap: wrap; gap: 12px 16px; margin-top: 16px; }
+  .bookmark-document :is(.example-pair-actions,.example-downloads) .cloudig-button { width: auto; min-width: 170px; max-width: 100%; min-height: 44px; height: auto; white-space: normal; padding: 9px 18px; font-size: 16px; font-weight: 700; text-shadow: none; }
+  .example-downloads small { font-size: 14px; margin-inline: 8px; font-weight: 400; white-space: nowrap; }
+  .example-status:has(progress) { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+  .example-status progress { flex:1; min-width:120px; height:8px; accent-color:var(--standard-accent); }
+  .bookmark-document .example-downloads .cloudig-button { color: var(--standard-accent); }
   .bookmark-document .example-pair-actions .cloudig-button-filled { --cloudig-button-fill: var(--cloudig-seal-red); color: #fff; }
   .bookmark-document .example-pair-actions .cloudig-button-outline { color: var(--cloudig-seal-red); }
   :root[data-theme="star-night"] .bookmark-document .example-pair-actions .cloudig-button-filled { --cloudig-button-fill: var(--cloudig-purple); color: var(--cloudig-orange); }

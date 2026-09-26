@@ -1,0 +1,8 @@
+Bundled license information:
+
+maplibre-gl/dist/maplibre-gl-shared.mjs:
+maplibre-gl/dist/maplibre-gl.mjs:
+  /**
+  * MapLibre GL JS
+  * @license 3-Clause BSD. Full text of license: https://github.com/maplibre/maplibre-gl-js/blob/v6.11.2/LICENSE.txt
+  */

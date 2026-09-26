@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-4623-733b-8f25-646c6d04ad90",
+  "conversation_id": "01a0d253-1390-7351-acc2-c552a7bfa05a",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "chatglm-full-v1",
-      "version": "3.0.5"
+      "version": "3.0.6"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:00.931Z",
-    "last_parsed_at": "2026-09-24T04:44:00.931Z",
-    "cloudig_edited_at": "2026-09-24T04:44:00.931Z"
+    "first_parsed_at": "2026-09-24T07:30:54.992Z",
+    "last_parsed_at": "2026-09-24T07:30:54.992Z",
+    "cloudig_edited_at": "2026-09-24T07:30:54.992Z"
   },
   "source": {
     "file": "ChatGLM-全量.html",

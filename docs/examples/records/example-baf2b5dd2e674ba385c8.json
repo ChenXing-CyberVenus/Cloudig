@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-6b09-7711-8425-0e1d36b145d7",
+  "conversation_id": "01a0d253-39da-74ae-b696-6345a4e52eac",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "qwen-full-v1",
-      "version": "3.0.2"
+      "version": "3.0.3"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:10.377Z",
-    "last_parsed_at": "2026-09-24T04:44:10.377Z",
-    "cloudig_edited_at": "2026-09-24T04:44:10.377Z"
+    "first_parsed_at": "2026-09-24T07:31:04.794Z",
+    "last_parsed_at": "2026-09-24T07:31:04.794Z",
+    "cloudig_edited_at": "2026-09-24T07:31:04.794Z"
   },
   "source": {
     "file": "Qwen-全量.html",

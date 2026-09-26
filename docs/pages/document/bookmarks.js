@@ -1,4 +1,5 @@
 import { mountDocumentNavigation } from './navigation.js';
+import { publicExampleUrl, exampleFileSize } from './examples-links.js';
 
 const base = '/Cloudig/pages/document';
 const values = ['core', 'important', 'general', 'fold'];
@@ -10,19 +11,19 @@ const platformOrder = ['chatgpt','claude','gemini','deepseek','grok','kimi','mis
 const svg = `<svg class="bookmark-pair-art" viewBox="0 0 460 150" aria-hidden="true"><g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="22" y="18" width="132" height="100" rx="10"/><path d="M22 40h132M36 29h1m8 0h1m8 0h1M61 64L47 79l14 15m50-30 14 15-14 15m-19-34-13 38M164 78h120m-12-8 12 8-12 8M328 27c27-8 48-2 62 12v87c-14-14-35-20-62-12zm62 12c14-14 35-20 62-12v87c-27-8-48-2-62 12M341 48l35 10m-35 5 35 10m-35 5 35 10m29-30 34-10m-34 25 34-10m-34 25 34-10"/></g><circle cx="222" cy="78" r="19" fill="var(--standard-paper)" stroke="currentColor" stroke-width="2"/><path d="m213 78 6 6 12-13" fill="none" stroke="currentColor" stroke-width="3"/></svg>`;
 async function load(name) { const r = await fetch(`${base}/content/${name}.json`); if (!r.ok) throw new Error('Public documentation unavailable'); return r.json(); }
 
-export async function mountBookmarkDocument({ page, language, topic = 'bookmark', restore = {}, onClose, onDocument, onDemo, onChrome, onExternal, onError, environment = 'desktop', onDownloadRecord }) {
+export async function mountBookmarkDocument({ page, language, topic = 'bookmark', restore = {}, onClose, onDocument, onDemo, onChrome, onExternal, onError, environment = 'desktop', onDownloadRecord, onDownloadHtml }) {
   const center = page.querySelector('.reader-main, .archiver-center');
   if (!center) throw new Error('Bookmark documents need the existing central surface');
   const [zh, english, catalog] = await Promise.all([load(`${topic}-zh-CN`), load(`${topic}-en`), topic === 'platforms' ? load('examples') : null]);
   const element = document.createElement('section'); element.className = 'standard-document bookmark-document';
   let lang = language, selected = restore.example ?? catalog?.examples.find(e => e.platform === 'chatgpt' && e.profile === 'light')?.id;
-  let navigation, disposed = false, busy = false;
+  let navigation, disposed = false, busy = false, downloadAbort = null;
   let platformDirectoryOpen = Boolean(restore.platformDirectoryOpen);
   const collapsed = new Set(restore.collapsed ?? []);
   const browser = environment === 'browser';
   const en = () => lang === 'en', scroll = () => element.querySelector('.standard-scroll');
   const entry = () => catalog?.examples.find(e => e.id === selected);
-  const scenarioLabel = scenario => en() ? ({'快速模式':'Fast mode','识图模式':'Vision mode'})[scenario] ?? scenario : ({Chat:'普通对话',Schedule:'定时任务',Cowork:'Cowork'})[scenario] ?? scenario;
+  const scenarioLabel = scenario => en() ? ({'快速模式':'Fast mode','识图模式':'Vision mode',Artifacts:'Artifacts · FuckTheSheath'})[scenario] ?? scenario : ({Chat:'普通对话',Schedule:'定时任务',Cowork:'Cowork',Artifacts:'作品 · 霜刃'})[scenario] ?? scenario;
   const profileLabel = profile => en() ? ['Light','Full','Tree'][profiles.indexOf(profile)] : ['轻装 Light','全量 Full','整树 Tree'][profiles.indexOf(profile)];
   function reveal(id) {
     const section = element.querySelector(`#${id}`); if (!section) return;
@@ -50,10 +51,11 @@ export async function mountBookmarkDocument({ page, language, topic = 'bookmark'
     const platformName = item => en() ? ({yuanbao:'Tencent Yuanbao',doubao:'Doubao'})[item.platform] ?? item.platform_name : item.platform_name;
     host.innerHTML = `<p class="bookmark-step-label">01 · ${en() ? 'Choose a platform' : '选择平台'}</p><div class="example-platforms" role="group" aria-label="${en() ? 'Platforms' : '平台'}">${platformOrder.map(p => catalog.examples.find(i => i.platform === p)).filter(Boolean).map(i => `<button type="button" data-example-platform="${i.platform}" aria-pressed="${i.platform === e.platform}"><span class="example-platform-logo" data-platform="${i.platform}"><img src="/Cloudig/assets/platforms/platform-${i.platform}.${i.platform === 'doubao' ? 'png' : 'svg'}" alt=""></span>${escape(platformName(i))}</button>`).join('')}</div>
       <div class="example-choice-line"><div><p class="bookmark-step-label">02 · ${en() ? 'Conversation scenario' : '会话场景'}</p><div class="example-scenarios" role="group" aria-label="${en() ? 'Scenarios' : '场景'}">${scenarios.map(s => `<button type="button" class="example-choice" data-example-scenario="${escape(s)}" aria-pressed="${s === e.scenario}">${escape(scenarioLabel(s))}</button>`).join('')}</div></div><div><p class="bookmark-step-label">03 · ${en() ? 'Export profile' : '导出档位'}</p><div class="example-profiles" role="group" aria-label="${en() ? 'Profiles' : '档位'}">${profiles.map(p => `<button type="button" class="example-choice" data-example-profile="${p}" aria-pressed="${p === e.profile}" ${!group.some(i => i.scenario === e.scenario && i.profile === p) ? 'disabled' : ''}>${profileLabel(p)}</button>`).join('')}</div></div></div>
-      <article class="example-pair" data-example-id="${e.id}"><p class="example-pair-kicker">${en() ? 'ONE SOURCE · TWO VIEWS' : '同一份原件 · 两种阅读'}</p><h3>${escape(platformName(e))} <span>· ${escape(scenarioLabel(e.scenario))} · ${profileLabel(e.profile)}</span></h3><p class="example-pair-note">${browser ? (en() ? 'Open the original HTML in a new tab, or read the parsed conversation with the same Cloudig Reader.' : '在新标签阅读原HTML，或用与采云同源的Reader查看解析结果。') : (en() ? 'Open the original export in Chrome, or explore its parsed counterpart with the real Cloudig Reader.' : '在Chrome阅读书签导出的原HTML，或在采云真实Reader里查看对应解析结果。')}</p>
-      <div class="example-pair-actions"><button type="button" class="cloudig-button cloudig-button-outline" data-example-chrome>${browser ? (en() ? 'Original HTML ↗' : '原始 HTML ↗') : (en() ? 'Original HTML · Chrome ↗' : '原始 HTML · Chrome ↗')}</button><button type="button" class="cloudig-button cloudig-button-filled" data-example-reader>${en() ? 'Explore in Reader →' : '在采云中演示 →'}</button>${browser ? `<button type="button" class="cloudig-button cloudig-button-outline" data-example-record>${en() ? 'Download JSON ↓' : '下载 JSON ↓'}</button>` : ''}</div>
+      <article class="example-pair" data-example-id="${e.id}"><p class="example-pair-kicker">${en() ? 'ONE SOURCE · TWO VIEWS' : '同一份原件 · 两种阅读'}</p><h3>${escape(platformName(e))} <span>· ${escape(scenarioLabel(e.scenario))} · ${profileLabel(e.profile)}</span></h3><p class="example-pair-note">${browser ? (en() ? 'Open the original HTML in a new tab, or read the parsed conversation with the same Cloudig Reader.' : '在新标签阅读原HTML，或用与采云同源的Reader查看解析结果。') : (en() ? 'Examples are online. Open your browser to compare the original HTML and the Cloudig Reader view.' : '范例需联网查看。在浏览器中对照原始HTML与采云Reader的解析结果。')}</p>
+      <div class="example-pair-actions">${browser ? `<button type="button" class="cloudig-button cloudig-button-outline" data-example-chrome>${en() ? 'Original HTML ↗' : '原始 HTML ↗'}</button><button type="button" class="cloudig-button cloudig-button-filled" data-example-reader>${en() ? 'Explore in Reader →' : '在采云中演示 →'}</button>` : `<button type="button" class="cloudig-button cloudig-button-filled" data-example-online>${en() ? 'View online · Browser ↗' : '在线查看 · 浏览器 ↗'}</button>`}</div>
+      <div class="example-downloads"><button type="button" class="cloudig-button cloudig-button-outline" data-example-html-download>${en() ? 'Download HTML' : '下载 HTML'} <small>${exampleFileSize(e.html.bytes)}</small> ↓</button><button type="button" class="cloudig-button cloudig-button-outline" data-example-record>${en() ? 'Download JSON' : '下载 JSON'} <small>${exampleFileSize(e.record.bytes)}</small> ↓</button></div>
       <dl class="example-facts"><div><dt>${en() ? 'Bookmarklet' : '书签版本'}</dt><dd>${escape(version)}</dd></div><div><dt>Parser / Adapter</dt><dd>${escape(e.parser.version)} / ${escape(e.parser.adapter.version)}</dd></div><div><dt>${en() ? 'Messages / embedded resources' : '消息 / 内嵌资源'}</dt><dd>${e.messages} / ${e.resources}</dd></div></dl>
-      <p class="example-readonly">${browser ? (en() ? 'Read-only public examples. Original HTML and Conversation JSON are also available to download.' : '公开范例只读演示；也可下载原HTML与Conversation JSON。') : (en() ? 'Read-only demonstration: no imports, Marks or Library changes. Use the original HTML in Chrome to download attachments. Unsupported profiles remain unavailable.' : '只读演示，不导入文件、不创建Mark、不修改资料库；如需下载附件，请在Chrome打开原HTML。不支持的档位不可选。')}</p><p class="example-status" role="status" aria-live="polite"></p></article>`;
+      <p class="example-readonly">${browser ? (en() ? 'Read-only public examples. Download only the files you choose.' : '公开范例只读演示；仅下载你选择的文件。') : (en() ? 'Selected files are saved to docs/examples in your Cloudig folder.' : '下载的范例保存在采云文件夹的 docs/examples 中。')}</p><p class="example-status" role="status" aria-live="polite"></p></article>`;
     host.querySelectorAll('[data-example-platform]').forEach(b => b.addEventListener('click', () => { const candidates = catalog.examples.filter(i => i.platform === b.dataset.examplePlatform); choose((candidates.find(i => i.profile === e.profile) ?? candidates[0]).id); }));
     host.querySelectorAll('[data-example-scenario]').forEach(b => b.addEventListener('click', () => { const candidates = group.filter(i => i.scenario === b.dataset.exampleScenario); choose((candidates.find(i => i.profile === e.profile) ?? candidates[0]).id); }));
     host.querySelectorAll('[data-example-profile]').forEach(b => b.addEventListener('click', () => choose(group.find(i => i.scenario === e.scenario && i.profile === b.dataset.exampleProfile).id)));
@@ -61,14 +63,27 @@ export async function mountBookmarkDocument({ page, language, topic = 'bookmark'
       if (busy) return; busy = true; host.querySelectorAll('button').forEach(b => b.disabled = true);
       const status = host.querySelector('.example-status'); status.textContent = en() ? 'Opening…' : '正在打开…';
       try {
-        if (kind === 'reader') await onDemo(e, snapshot());
+        if (kind === 'download-html' || kind === 'download-json') {
+          downloadAbort = new AbortController();
+          const progress = document.createElement('progress'), label = document.createElement('span'), cancel = document.createElement('button');
+          progress.max = 1; progress.value = 0; progress.setAttribute('aria-label', en() ? 'Download progress' : '下载进度');
+          cancel.type = 'button'; cancel.className = 'cloudig-button cloudig-button-outline'; cancel.textContent = en() ? 'Cancel' : '取消'; cancel.addEventListener('click', () => downloadAbort?.abort());
+          if (!browser) { label.textContent = en() ? 'Downloading…' : '正在下载…'; status.replaceChildren(progress, label, cancel); }
+          const callback = kind === 'download-html' ? onDownloadHtml : onDownloadRecord;
+          const result = await callback(e, { signal: downloadAbort.signal, onProgress: value => { if (disposed || !Number.isFinite(value?.total) || value.total <= 0) return; e[kind==='download-html'?'html':'record'].bytes=value.total; progress.max = value.total; progress.value = value.bytes; label.textContent = `${exampleFileSize(value.bytes)} / ${exampleFileSize(value.total)}`; } });
+          if (!disposed) status.textContent = browser ? (en() ? 'Download requested.' : '已请求下载。') : `${result.existing ? (en() ? 'Already saved: ' : '已存在完整文件：') : (en() ? 'Saved to: ' : '已保存至：')}${result.path}`;
+        }
+        else if (!browser) { await onExternal(publicExampleUrl(e.id, kind, lang, document.documentElement.dataset.theme)); if (!disposed) status.textContent = en() ? 'Opened in your browser.' : '已在浏览器打开。'; }
+        else if (kind === 'reader') await onDemo(e, snapshot());
         else { const result = await onChrome(e.id); if (!disposed) status.textContent = result.opened ? (browser ? (en() ? 'Requested a new browser tab.' : '已请求在新标签打开。') : (en() ? 'Opened in Chrome.' : '已在Chrome打开。')) : (en() ? 'Chrome launch plan verified (offscreen audit).' : '已验证Chrome启动计划（离屏审查）。'); }
-      } catch (error) { if (!disposed) { status.textContent = en() ? 'Could not open. Please retry.' : '未能打开，请重试。'; onError(error); } }
-      finally { busy = false; if (!disposed) { const message = status.textContent; renderCatalog(); host.querySelector('.example-status').textContent = message; } }
+      } catch (error) { if (!disposed) { const cancelled = downloadAbort?.signal.aborted; status.textContent = cancelled ? (en() ? 'Cancelled.' : '已取消。') : (en() ? 'Could not complete. Please retry.' : '未能完成，请重试。'); if (!cancelled) onError?.(error); } }
+      finally { downloadAbort = null; busy = false; if (!disposed) { const message = status.textContent; renderCatalog(); host.querySelector('.example-status').textContent = message; } }
     };
-    host.querySelector('[data-example-reader]').addEventListener('click', () => run('reader'));
-    host.querySelector('[data-example-chrome]').addEventListener('click', () => run('chrome'));
-    host.querySelector('[data-example-record]')?.addEventListener('click', () => onDownloadRecord?.(e));
+    host.querySelector('[data-example-reader]')?.addEventListener('click', () => run('reader'));
+    host.querySelector('[data-example-chrome]')?.addEventListener('click', () => run('chrome'));
+    host.querySelector('[data-example-online]')?.addEventListener('click', () => run('view'));
+    host.querySelector('[data-example-html-download]').addEventListener('click', () => run('download-html'));
+    host.querySelector('[data-example-record]').addEventListener('click', () => run('download-json'));
   }
   function snapshot() { return { example: selected, collapsed: [...collapsed], scroll: scroll()?.scrollTop ?? 0, platformDirectoryOpen: element.querySelector('[data-platform-directory]')?.open ?? platformDirectoryOpen }; }
   function render(language, initialScroll = scroll()?.scrollTop ?? 0) {
@@ -100,5 +115,6 @@ export async function mountBookmarkDocument({ page, language, topic = 'bookmark'
   page.querySelector(`[data-doc-topic="${topic}"]`)?.setAttribute('aria-current','page');
   // Set after mounting: scroll ranges do not exist while detached.
   scroll().scrollTop = restore.scroll ?? 0;
-  return { element, snapshot, updateLanguage(value) { if (value !== lang) render(value); }, close() { disposed = true; navigation?.dispose(); element.remove(); center.classList.remove('standard-document-host'); delete page.dataset.document; page.querySelector(`[data-doc-topic="${topic}"]`)?.removeAttribute('aria-current'); } };
+  if (catalog && restore.revealExample) reveal('platform-catalog');
+  return { element, snapshot, updateLanguage(value) { if (value !== lang) render(value); }, close() { disposed = true; downloadAbort?.abort(); navigation?.dispose(); element.remove(); center.classList.remove('standard-document-host'); delete page.dataset.document; page.querySelector(`[data-doc-topic="${topic}"]`)?.removeAttribute('aria-current'); } };
 }

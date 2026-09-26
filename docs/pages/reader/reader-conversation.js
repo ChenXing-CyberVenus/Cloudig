@@ -1,5 +1,6 @@
 import { formatTimeRange } from "/Cloudig/shared/time/endpoint-editor.js";
 import { observeTitleLayout } from "./title-layout.js";
+import { localizePlatformLabel } from "../../platform-labels.js";
 
 const platformDefinitions = Object.freeze({
   chatgpt: ["ChatGPT", "/Cloudig/assets/platforms/platform-chatgpt.svg"],
@@ -103,7 +104,9 @@ function labels(translate) {
 }
 
 function platform(value, language) {
-  return Object.hasOwn(platformDefinitions, value) ? platformDefinitions[value] : [language === "en" ? "Unknown" : "未知", "/Cloudig/assets/platforms/platform-unknown.svg"];
+  if (!Object.hasOwn(platformDefinitions, value)) return [language === "en" ? "Unknown" : "未知", "/Cloudig/assets/platforms/platform-unknown.svg"];
+  const [name, asset] = platformDefinitions[value];
+  return [localizePlatformLabel(value, name, language), asset];
 }
 
 function renderHeader(root, view, row, state, translate) {
@@ -248,8 +251,10 @@ export function mountReaderConversation(options) {
     root: rendererRoot,
     labels: labels(options.translate),
     theme: state.theme,
+    language: state.language === "en" ? "en" : "zh",
     resolveAvatar,
     resolveResource,
+    workRuntime: options.workRuntime,
     onOpenExternal: options.onOpenExternal,
     onOpenResource: options.onOpenResource,
     onEditIdentity: options.onEditIdentity,

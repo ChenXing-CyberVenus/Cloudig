@@ -1,17 +1,17 @@
 {
   "schema": "cloudig/conversation/1.0.0",
-  "conversation_id": "01a0d1ba-7100-7868-b18a-1d2465088b6d",
+  "conversation_id": "01a0d253-3f55-767e-811a-237db21cc0e6",
   "parser": {
-    "version": "1.1.11",
+    "version": "1.1.12",
     "adapter": {
       "id": "zai-light-messages-v2",
-      "version": "3.0.4"
+      "version": "3.0.5"
     }
   },
   "lifecycle": {
-    "first_parsed_at": "2026-09-24T04:44:11.904Z",
-    "last_parsed_at": "2026-09-24T04:44:11.904Z",
-    "cloudig_edited_at": "2026-09-24T04:44:11.904Z"
+    "first_parsed_at": "2026-09-24T07:31:06.197Z",
+    "last_parsed_at": "2026-09-24T07:31:06.197Z",
+    "cloudig_edited_at": "2026-09-24T07:31:06.197Z"
   },
   "source": {
     "file": "Z.ai-轻装.html",
