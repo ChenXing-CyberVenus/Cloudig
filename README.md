@@ -18,6 +18,7 @@
 
 - **Archiver 档案馆**：安装与更新书签、导入 HTML 和受支持的 JSON、解析与管理档案。
 - **Reader 阅览室**：阅读对话、分支、思考与工具调用，以及公式、图表和资源。
+- Reader 支持 Claude 的 Card 和 Artifacts 渲染。
 - **独立数据标准**：Conversation、Mark、Identity、ContentTime 与 Library；原始会话与用户编辑分开保存。
 - **内容时间**：此地时间与自建独立时间体系。
 - **双主题与双语言**：破晓 Dawn／星夜 StarNight，中文／English。
@@ -52,6 +53,8 @@ Choose a writable folder. The installed application remains portable: close Clou
 This desktop release is for Windows x64 and requires Microsoft Edge WebView2 Runtime. If it is missing, the installer provides Microsoft's official download link.
 
 V1.0 includes the Archiver, Reader, conversation branches, reasoning and tool displays, formulas and diagrams, separate conversation and annotation records, identities, content-time systems, Dawn and StarNight themes, and Chinese and English interfaces. Documentation is included in the application; platform examples can be viewed online or downloaded on demand.
+
+The Reader supports rendering Claude Cards and Artifacts.
 
 [Feedback](https://github.com/ChenXing-CyberVenus/Cloudig/issues) · [JOG-1.1 License](LICENSE)
 
