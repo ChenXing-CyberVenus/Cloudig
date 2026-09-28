@@ -834,7 +834,7 @@
     },
     {
       "path": "src/ui/shell/pages/document/content/history-en.json",
-      "sha256": "b6237f41579a63ac2a730bc479e4e65085eae513c2e12c2e6366adc2a619c536"
+      "sha256": "7d1370c8da7aa7484ca3db45e67845a248e1587d37fbdd2037fbdbf0affd58a1"
     },
     {
       "path": "src/ui/shell/pages/document/content/history-zh-CN.json",
@@ -4534,8 +4534,8 @@
     },
     {
       "path": "pages/document/content/history-en.json",
-      "bytes": 794761,
-      "sha256": "1331007c6230facc872d5e88eae1ea3a265fc920395ad0f35c813eb65ff5b06c"
+      "bytes": 795062,
+      "sha256": "975d93c74f451168f15009fbad141799b614710b247c7a65d2c521401fbfff07"
     },
     {
       "path": "pages/document/content/history-zh-CN.json",
