@@ -2,7 +2,7 @@
 
 ## 下载 Download
 
-**[下载 Download V1.0.3 东方既白 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.3/Cloudig-1.0.3-Setup.exe)**
+**[下载 Download V1.0.4 东方既白 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe)**
 
 装在你有写入权限的文件夹里，别选Program Files。
 
@@ -18,7 +18,11 @@
 
 把 AI 平台上的对话带回你自己的电脑，思考、工具调用、公式、分支完整保留，整理成可以阅读、编辑、再利用的作品。
 
-支持 ChatGPT、Claude、Gemini、DeepSeek、Grok、豆包、Kimi、Qwen、ChatGLM、Z.ai、元宝、Mistral，持续扩展，长期维护。
+1. 导出HTML书签：支持 ChatGPT、Claude、Gemini、DeepSeek、Grok、豆包、Kimi、Qwen、ChatGLM、Z.ai、元宝、Mistral
+2. 平台官方文件导入：支持解析 Claude、ChatGPT、DeepSeek、Qwen、Mistral 与 Grok 官方导出文件。
+3. Agent Tool 文件导入：支持 Cline、SillyTavern、Kimi Code、Claude Code 与 Codex 的 JSON / JSONL 导入。
+
+持续扩展，长期维护。
 
 ## V1.0功能
 
@@ -48,7 +52,7 @@
 
 ## Download
 
-**[Download V1.0.3 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.3/Cloudig-1.0.3-Setup.exe)**
+**[Download V1.0.4 DawnGlow · Windows x64](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe)**
 
 Install it in a folder you can write to. Do not choose Program Files.
 
@@ -64,7 +68,11 @@ Microsoft Edge WebView2 Runtime is required. The installer will prompt you if it
 
 Bring conversations from AI platforms back to your own computer, preserving thoughts, tool calls, formulas and branches in full, and organize them into works you can read, edit and reuse.
 
-Supports ChatGPT, Claude, Gemini, DeepSeek, Grok, Doubao, Kimi, Qwen, ChatGLM, Z.ai, Yuanbao and Mistral, with ongoing expansion and long-term maintenance.
+1. HTML export bookmarklets: supports ChatGPT, Claude, Gemini, DeepSeek, Grok, Doubao, Kimi, Qwen, ChatGLM, Z.ai, Yuanbao and Mistral.
+2. Official platform-file import: supports parsing official exports from Claude, ChatGPT, DeepSeek, Qwen, Mistral and Grok.
+3. Agent Tool file import: supports JSON / JSONL import from Cline, SillyTavern, Kimi Code, Claude Code and Codex.
+
+Continuously expanding, maintained for the long term.
 
 ## V1.0 features
 
