@@ -6,7 +6,7 @@
 
 Cloudig: Free tool to export, organize & read AI conversations from 12 web platforms
 
-**Windows x64:** [Download Cloudig V1.0.4 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
+**Windows x64:** [Download Cloudig V1.0.5 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.5/Cloudig-1.0.5-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
 Do not install it in `Program Files`; choose a directory with write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall.
 
@@ -24,7 +24,9 @@ Cloudig turns captured HTML, official platform exports, and Agent Tool files int
 <p><strong>Archiver · StarNight</strong></p>
 <img src="docs/assets/readme/Archiver-StarNight.webp" alt="Cloudig Archiver StarNight" width="100%">
 
-## V1.0.4 highlights
+**[Source code · Cloudig V1.0.5](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.5)**
+
+## V1.0.5 highlights
 
 ### Web bookmark export
 
