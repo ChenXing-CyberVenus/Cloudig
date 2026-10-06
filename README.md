@@ -8,7 +8,7 @@
 
 **Windows x64：** [下载采云 V1.0.4 东方既白 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [查看全部发布版本](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
-建议安装到有写入权限的目录。采云是完整的便携目录：复制就是备份，移走就是搬家，删除就是卸载。
+请不要安装到 `Program Files`，请选择你有写入权限的目录。采云是完整的便携目录：复制就是备份，移走就是搬家，删除就是卸载。
 
 ## English
 
@@ -16,7 +16,7 @@ Cloudig: Free tool to export, organize & read AI conversations from 12 web platf
 
 **Windows x64:** [Download Cloudig V1.0.4 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
-Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall.
+Do not install it in `Program Files`; choose a directory where you have write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall it.
 
 <p><strong>Reader · 破晓 Dawn</strong></p>
 <img src="docs/assets/readme/Reader-Cover-Dawn.webp" alt="Cloudig Reader Dawn" width="100%">
@@ -41,7 +41,7 @@ Cloudig: Free tool to export, organize & read AI conversations from 12 web platf
 
 **Windows x64:** [Download Cloudig V1.0.4 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
-Install it in a directory where you have write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall it.
+Do not install it in `Program Files`; choose a directory where you have write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall it.
 
 ### What Cloudig does
 
