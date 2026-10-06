@@ -1,0 +1,9 @@
+{
+  "schema": "cloudig/cache-policy/1.0.0",
+  "directory": "cache",
+  "persistent_reuse": false,
+  "cleanup": "after_owner_exit",
+  "webview_disk_cache_bytes": 67108864,
+  "webview_media_cache_bytes": 16777216,
+  "disk_reserve_bytes": 67108864
+}

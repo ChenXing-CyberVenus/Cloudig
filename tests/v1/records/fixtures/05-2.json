@@ -1,0 +1,18 @@
+{
+  "schema": "cloudig/mark/1.0.0",
+  "mark_id": "01993520-0000-7000-8000-000000000301",
+  "target": "01993520-0000-7000-8000-000000000101",
+  "edited_at": "2026-09-11T10:00:00Z",
+  "conversation_title": "我整理后的标题",
+  "models": [],
+  "content_time": {
+    "range": {
+      "start": {
+        "kind": "calendar",
+        "era": "AD",
+        "year": 2026,
+        "month": 9
+      }
+    }
+  }
+}

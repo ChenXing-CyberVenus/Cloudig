@@ -1,0 +1,119 @@
+{
+  "schema": "cloudig/conversation/1.0.0",
+  "conversation_id": "01993520-0000-7000-8000-000000000101",
+  "parser": {
+    "version": "1.0.0",
+    "adapter": {
+      "id": "example-html",
+      "version": "1.0.0"
+    }
+  },
+  "lifecycle": {
+    "first_parsed_at": "2026-09-11T09:00:00Z",
+    "last_parsed_at": "2026-09-11T09:00:00Z",
+    "cloudig_edited_at": "2026-09-11T09:00:00Z"
+  },
+  "source": {
+    "file": "inline-image-test.html",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "bytes": 1000,
+    "format": "bookmark_html",
+    "profile": "full",
+    "captured_at": "2026-09-11T08:00:00Z",
+    "captured_from": "bookmark:exported_at"
+  },
+  "platform": "chatgpt",
+  "title": {
+    "filename": "行内图片与嵌套思考 / Inline images"
+  },
+  "identity": [
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "user-1",
+      "names": [],
+      "kind": {
+        "world": "terran",
+        "subject": "human"
+      },
+      "role": "user"
+    },
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "assistant-1",
+      "names": [
+        {
+          "name": "ChatGPT",
+          "claimers": [
+            {
+              "name": "OpenAI"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "ai"
+      },
+      "role": "assistant"
+    }
+  ],
+  "messages": {
+    "current": "m2",
+    "items": [
+      {
+        "id": "m1",
+        "speaker": "user-1",
+        "content": [
+          {
+            "type": "html",
+            "html": "<table data-audit-inline-images=\"true\"><thead><tr><th>Structure / 结构</th><th>Image stays inside / 图片留在格内</th></tr></thead><tbody><tr><td>Table cell / 单元格</td><td>Before<img data-cloudig-resource=\"r1\" alt=\"Image 1\" width=\"160\" height=\"64\">After</td></tr></tbody></table><ol><li>List item / 列表<img data-cloudig-resource=\"r1\" alt=\"Image 1\" width=\"160\" height=\"64\">end.</li></ol>"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "parent": "m1",
+        "speaker": "assistant-1",
+        "content": [
+          {
+            "type": "reasoning",
+            "title": "Outer reasoning / 外层思考",
+            "content": [
+              {
+                "type": "reasoning",
+                "title": "Nested reasoning / 内层思考",
+                "format": "html",
+                "text": "<p data-audit-inline-nested=\"true\">Nested body / 嵌套正文<img data-cloudig-resource=\"r1\" alt=\"Image 1\" width=\"160\" height=\"64\"></p>"
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "html": "<p>Normal reply / 正文。<img data-cloudig-resource=\"r2\" alt=\"Description only / 仅有描述\"></p>"
+          }
+        ]
+      }
+    ]
+  },
+  "resources": [
+    {
+      "id": "r1",
+      "kind": "image",
+      "availability": "embedded",
+      "mime": "image/svg+xml",
+      "name": "inline.svg",
+      "bytes": 278,
+      "sha256": "b8785b92338ab6abb41ec1078b66226a3016bf8240acf17927fdf7a2f5adacb3",
+      "data_base64": [
+        "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCAxNjAgNjQiPjxyZWN0IHdpZHRoPSIxNjAiIGhlaWdodD0iNjQiIHJ4PSI4IiBmaWxsPSIjNzc1M2E1Ii8+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMiIgcj0iMTciIGZpbGw9IiNmZmJkNzAiLz48dGV4dCB4PSI1OCIgeT0iMzkiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSJ3aGl0ZSI+SU1BR0UgMTwvdGV4dD48L3N2Zz4="
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "image",
+      "availability": "metadata_only",
+      "name": "Description only"
+    }
+  ]
+}

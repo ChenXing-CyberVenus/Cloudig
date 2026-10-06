@@ -1,0 +1,37 @@
+{
+  "format": "cloudig/windows-runtime-lock",
+  "version": "0.2.0",
+  "node": {
+    "version": "24.18.0",
+    "vendor": "Node.js",
+    "archive": "node-v24.18.0-win-x64.zip",
+    "url": "https://nodejs.org/download/release/v24.18.0/node-v24.18.0-win-x64.zip",
+    "sha256": "0ae68406b42d7725661da979b1403ec9926da205c6770827f33aac9d8f26e821",
+    "node_exe_sha256": "9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de",
+    "license": "LICENSE"
+  },
+  "dotnet": {
+    "target_framework": "net10.0-windows",
+    "runtime_identifier": "win-x64",
+    "self_contained": true
+  },
+  "webview2": {
+    "sdk_version": "1.0.4078.44",
+    "runtime_channel": "Evergreen",
+    "distribution": {
+      "primary": "system_evergreen",
+      "offline_fallback": "optional_microsoft_signed_evergreen_standalone_x64",
+      "installer_filename": "MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
+      "silent_install_arguments": [
+        "/silent",
+        "/install"
+      ],
+      "bundled_by_default": false,
+      "auto_execute": false,
+      "authenticode_signer_cn": "Microsoft Corporation",
+      "authenticode_required_when_bundled": true,
+      "approved_installers": [],
+      "product_identity_required_when_bundled": true
+    }
+  }
+}

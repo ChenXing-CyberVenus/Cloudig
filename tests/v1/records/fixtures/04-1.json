@@ -1,0 +1,88 @@
+{
+  "schema": "cloudig/conversation/1.0.0",
+  "conversation_id": "01993520-0000-7000-8000-000000000101",
+  "parser": {
+    "version": "1.0.0",
+    "adapter": {
+      "id": "example-html",
+      "version": "1.0.0"
+    }
+  },
+  "lifecycle": {
+    "first_parsed_at": "2026-09-11T09:00:00Z",
+    "last_parsed_at": "2026-09-11T09:00:00Z",
+    "cloudig_edited_at": "2026-09-11T09:00:00Z"
+  },
+  "source": {
+    "file": "示例对话（1）.html",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "bytes": 1000,
+    "format": "bookmark_html",
+    "profile": "light",
+    "captured_at": "2026-09-11T08:00:00Z",
+    "captured_from": "bookmark:exported_at"
+  },
+  "platform": "chatgpt",
+  "title": {
+    "filename": "示例对话（1）",
+    "original": "示例对话"
+  },
+  "identity": [
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "user-1",
+      "names": [],
+      "kind": {
+        "world": "terran",
+        "subject": "human"
+      },
+      "role": "user"
+    },
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "assistant-1",
+      "names": [
+        {
+          "name": "ChatGPT",
+          "claimers": [
+            {
+              "name": "OpenAI"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "ai"
+      },
+      "role": "assistant"
+    }
+  ],
+  "messages": {
+    "current": "m2",
+    "items": [
+      {
+        "id": "m1",
+        "speaker": "user-1",
+        "content": [
+          {
+            "type": "text",
+            "text": "第一行\n第二行"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "parent": "m1",
+        "speaker": "assistant-1",
+        "content": [
+          {
+            "type": "markdown",
+            "text": "已收到。"
+          }
+        ]
+      }
+    ]
+  }
+}

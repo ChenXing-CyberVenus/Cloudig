@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1272 793">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_未命名的渐变_151);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_151" x1="0" y1="396.5" x2="1272" y2="396.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000"/>
+      <stop offset=".18" stop-color="#161416"/>
+      <stop offset=".51" stop-color="#3b383c"/>
+      <stop offset=".54" stop-color="#363337"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <rect id="_星夜窗户" class="cls-1" y="0" width="1272" height="793"/>
+  </g>
+</svg>

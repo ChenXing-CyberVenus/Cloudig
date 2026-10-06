@@ -1,0 +1,102 @@
+@layer components {
+  :is(.cloudig-search-actions, .cloudig-content-search, .cloudig-markdown-dialog) {
+    --search-accent: #a52525; --search-surface: #f2e3d2; --search-edge: #b78862; --search-muted: #6d514b;
+    --search-wash: rgb(165 37 37 / 6%); --search-hit-bg: #f4cf81; --search-hit-copy: #542019;
+    --cloudig-button-fill: #a52525;
+  }
+  :root[data-theme="star-night"] :is(.cloudig-search-actions, .cloudig-content-search, .cloudig-markdown-dialog) {
+    --search-accent: #ffa92e; --search-surface: #3b383c; --search-edge: #766483; --search-muted: #beb4cb;
+    --search-wash: rgb(126 94 255 / 12%); --search-hit-bg: #69451e; --search-hit-copy: #ffe2a7;
+    --cloudig-button-fill: #5125a5;
+  }
+  .cloudig-search-icon { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .cloudig-search-actions { position: fixed; z-index: 190; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 10px; border: 1px solid var(--search-edge); border-radius: 12px; background: var(--search-surface); filter: drop-shadow(0 5px 7px rgb(0 0 0 / 26%)); }
+  .cloudig-search-actions[hidden] { display: none; }
+  .cloudig-search-actions .cloudig-button { width: auto; min-width: 0; height: 42px; padding: 0 12px; gap: 0; font-size: 15px; white-space: nowrap; }
+  .cloudig-search-action-content { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 0 0 auto; }
+  .cloudig-search-action-label { display: block; }
+  .cloudig-search-actions .cloudig-button-outline { color: var(--search-accent); }
+  :is([data-reader-search-input], [data-archive-search], [data-content-query])::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  .cloudig-content-search { width: min(1120px, calc(100vw - 64px)); height: min(850px, calc(100vh - 64px)); display: flex; flex-direction: column; gap: 18px; overflow: hidden; padding: 26px 32px; background: linear-gradient(135deg, #edcfb6, #f2e3d2 45%, #e6d0c3); border-color: var(--search-edge); }
+  :root[data-theme="star-night"] .cloudig-content-search { background: linear-gradient(135deg, #373039, #3b383c 48%, #302e38); border-color: var(--search-edge); }
+  .cloudig-content-search > header { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex: 0 0 auto; padding-bottom: 14px; border-bottom: 1px solid color-mix(in srgb, var(--search-edge) 60%, transparent); }
+  .cloudig-content-search > header h2 { margin: 0; display: flex; gap: 12px; align-items: center; font-size: 25px; }
+  .cloudig-content-search > header h2 svg { width: 26px; height: 26px; }
+  .cloudig-search-close { display: grid; place-items: center; flex: none; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--search-accent); cursor: pointer; }
+  .cloudig-search-close:hover { background: var(--search-wash); }
+  .cloudig-search-close:focus-visible { outline: 2px solid var(--search-accent); outline-offset: 2px; }
+  .cloudig-content-search .cloudig-button { width: auto; min-width: 100px; height: auto; min-height: 38px; flex-shrink: 0; gap: 8px; font-size: 16px; padding: 8px 18px; white-space: nowrap; }
+  .cloudig-content-search .cloudig-button-outline { color: var(--search-accent); }
+  .cloudig-content-search-form { display: flex; gap: 14px; align-items: center; flex: 0 0 auto; }
+  .cloudig-content-search-form .cloudig-dialog-field { position: relative; display: flex; flex: 1; min-width: 0; margin: 0; align-items: center; }
+  .cloudig-content-search-form .cloudig-dialog-field > svg { position: absolute; left: 16px; color: var(--search-muted); pointer-events: none; }
+  .cloudig-content-search-form .cloudig-dialog-field input { width: 100%; height: 48px; padding: 10px 16px 10px 48px; border: 2px solid #b78862; border-radius: 10px; background: #e8d6c4; color: #2d2d2d; font: inherit; font-size: 17px; box-shadow: none; }
+  :root[data-theme="star-night"] .cloudig-content-search-form .cloudig-dialog-field input { background: #3b383c; border-color: #282828; color: #e2e1e1; }
+  .cloudig-content-search-form .cloudig-dialog-field input:focus-visible { outline: 2px solid var(--search-accent); outline-offset: 2px; }
+  .cloudig-content-search-form .cloudig-button { min-height: 48px; }
+  .cloudig-content-search-filters { display: flex; align-items: flex-start; gap: 12px 24px; flex-wrap: wrap; flex: 0 0 auto; }
+  .cloudig-content-search-filters details { position: relative; }
+  .cloudig-content-search-filters summary { cursor: pointer; font-size: 16px; line-height: 1.5; padding: 5px 0; list-style: none; display: flex; align-items: center; gap: 10px; color: var(--search-accent); }
+  .cloudig-content-search-filters summary::-webkit-details-marker { display: none; }
+  .cloudig-content-search-filters summary::after { content: ""; width: 6px; height: 6px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); margin: -4px 4px 0; }
+  .cloudig-content-search-filters details[open] summary::after { transform: rotate(225deg); margin-top: 4px; }
+  .cloudig-content-search-filters summary:focus-visible { outline: 2px solid var(--search-accent); outline-offset: 3px; border-radius: 4px; }
+  .cloudig-content-scope-choices, .cloudig-content-platform-choices { position: absolute; top: calc(100% + 4px); left: 0; z-index: 2; min-width: 280px; max-width: min(420px, 75vw); max-height: 260px; overflow: auto; display: grid; gap: 4px; padding: 10px; border: 1px solid var(--search-edge); border-radius: 10px; background: var(--search-surface); filter: drop-shadow(0 5px 6px rgb(0 0 0 / 30%)); }
+  :is(.cloudig-content-scope-choices, .cloudig-content-platform-choices) .cloudig-choice { padding: 9px 10px; border-radius: 6px; }
+  :is(.cloudig-content-scope-choices, .cloudig-content-platform-choices) .cloudig-choice:hover { background: var(--search-wash); }
+  .cloudig-content-categories { display: flex; align-items: center; gap: 12px 24px; width: 100%; border: 0; border-top: 1px solid color-mix(in srgb, var(--search-edge) 45%, transparent); padding: 12px 0 0; margin: 0; flex-wrap: wrap; }
+  .cloudig-content-categories legend { float: left; padding: 0; font-size: 14px; line-height: 24px; color: var(--search-muted); }
+  .cloudig-content-search .cloudig-choice > span { align-items: center; font-size: 16px; line-height: 1.5; }
+  .cloudig-content-search-status { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; min-height: 26px; color: var(--search-muted); }
+  .cloudig-content-search-status p { margin: 0; flex: 1; font-size: 14px; line-height: 1.5; }
+  .cloudig-content-search-status progress { width: 160px; height: 8px; accent-color: var(--cloudig-action); }
+  .cloudig-content-search[aria-busy="true"] .cloudig-content-search-status::before,
+  .cloudig-search-message-preview[data-loading="true"]::before { content: ""; display: inline-block; flex: 0 0 auto; width: 14px; height: 14px; margin-right: 8px; border: 2px solid var(--cloudig-action); border-right-color: transparent; border-radius: 50%; animation: cloudig-copy-spin .8s linear infinite; }
+  .cloudig-content-search-results { flex: 1; min-height: 0; overflow: auto; padding: 0 12px 8px 0; border-top: 1px solid color-mix(in srgb, var(--search-edge) 60%, transparent); }
+  .cloudig-search-result { border-bottom: 1px solid color-mix(in srgb, var(--search-edge) 45%, transparent); padding: 22px 8px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px 24px; align-items: center; }
+  .cloudig-search-result:has([aria-expanded="true"]) { background: var(--search-wash); }
+  .cloudig-search-result-toggle { appearance: none; border: 0; background: transparent; color: inherit; padding: 0; text-align: left; cursor: pointer; min-width: 0; }
+  .cloudig-search-result-toggle strong { display: block; font-size: 18px; line-height: 1.5; color: var(--search-accent); overflow-wrap: anywhere; margin-bottom: 8px; }
+  .cloudig-search-result-toggle > span { display: block; font-size: 16px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .cloudig-search-result-toggle:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+  .cloudig-search-result-meta { display: block; font-size: 14px; color: var(--search-muted); margin-bottom: 6px; }
+  .cloudig-search-result-cue { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--search-accent); margin-top: 10px; }
+  .cloudig-search-result-cue::before { content: "+"; font-size: 18px; line-height: 1; }
+  .cloudig-search-result-toggle[aria-expanded="true"] .cloudig-search-result-cue::before { content: "−"; }
+  .cloudig-search-match { background: var(--search-hit-bg); color: var(--search-hit-copy); border-radius: 3px; padding: 0 1px; box-decoration-break: clone; }
+  ::highlight(cloudig-search-hit) { background-color: #f4cf81; color: #542019; }
+  :root[data-theme="star-night"] ::highlight(cloudig-search-hit) { background-color: #69451e; color: #ffe2a7; }
+  .cloudig-search-result-toggle:focus-visible { outline: 2px solid var(--cloudig-action); outline-offset: 5px; border-radius: 4px; }
+  .cloudig-search-message-preview { grid-column: 1 / -1; min-width: 0; padding: 18px 8px 4px; border-top: 1px solid color-mix(in srgb, var(--search-edge) 45%, transparent); }
+  .cloudig-search-message-preview.cloudig-conversation-renderer { --cloudig-message-leading: 88px; --cloudig-axis-x: 44px; }
+  .cloudig-search-message-preview .cloudig-message-name { max-width: 88px; text-align: center; }
+  .cloudig-search-message-preview .cloudig-avatar { background: #fff; }
+  .cloudig-search-message-preview .cloudig-avatar:has(img[src$="platform-kimi.svg"]),
+  .cloudig-search-message-preview .cloudig-avatar:has(img[src$="platform-kimi-code.svg"]),
+  .cloudig-search-message-preview .cloudig-avatar:has(img[src$="platform-claude-code.svg"]),
+  .cloudig-search-message-preview .cloudig-avatar:has(img[src$="platform-agent-instance.svg"]) { background: #17152b; }
+  :root[data-theme="star-night"] .cloudig-search-message-preview .cloudig-avatar:has(img[src$="platform-cline.svg"]),
+  :root[data-theme="star-night"] .cloudig-search-message-preview .cloudig-avatar:has(img[src$="platform-codex.svg"]) { background: #e2e1e1; border-color: #ffa92e; }
+  .cloudig-content-search > button { align-self: center; }
+  .cloudig-markdown-dialog { width: min(760px, calc(100vw - 64px)); display: flex; flex-direction: column; overflow: hidden; }
+  .cloudig-markdown-dialog > * { flex-shrink: 0; }
+  .cloudig-markdown-dialog fieldset { border: 0; padding: 0; margin: 0 0 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .cloudig-markdown-dialog .cloudig-choice > span { align-items: center; }
+  .cloudig-markdown-messages { flex: 0 1 auto; min-height: 0; max-height: min(45vh, 420px); overflow: auto; display: grid; gap: 4px; padding: 4px 10px 4px 0; border-block: 1px solid color-mix(in srgb, var(--search-edge) 55%, transparent); }
+  .cloudig-markdown-messages[hidden] { display: none; }
+  .cloudig-markdown-messages .cloudig-choice > span { align-items: flex-start; white-space: pre-wrap; font-size: 16px; line-height: 1.55; }
+  .cloudig-markdown-messages .cloudig-choice { display: block; padding: 12px; border-radius: 8px; }
+  .cloudig-markdown-messages .cloudig-choice:has(input:checked), .cloudig-markdown-messages .cloudig-choice:hover { background: var(--search-wash); }
+  .cloudig-markdown-messages .cloudig-choice > span::before { margin-top: 2px; }
+  .cloudig-markdown-message-copy { display: grid; gap: 6px; min-width: 0; overflow-wrap: anywhere; }
+  .cloudig-markdown-message-copy small { font-size: 14px; line-height: 1.5; color: var(--search-muted); }
+  .cloudig-markdown-dialog footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
+  .cloudig-markdown-dialog .cloudig-button { width: auto; min-width: 100px; height: auto; min-height: 32px; padding: 7px 16px; font-size: 16px; white-space: nowrap; }
+  .cloudig-markdown-dialog footer .cloudig-button-filled { --cloudig-button-fill: #a52525; }
+  .cloudig-markdown-feedback { position: absolute; z-index: 210; right: 28px; bottom: 28px; display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-radius: 12px; background: #f2e3d2; color: var(--cloudig-ink); filter: drop-shadow(0 4px 6px rgb(0 0 0 / 30%)); pointer-events: auto; }
+  :root[data-theme="star-night"] .cloudig-markdown-feedback { background: #3b383c; color: var(--cloudig-light); }
+  .cloudig-markdown-feedback[data-busy="true"]::before { content: ""; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: cloudig-copy-spin .8s linear infinite; }
+  @keyframes cloudig-copy-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .cloudig-markdown-feedback[data-busy="true"]::before, .cloudig-content-search[aria-busy="true"] .cloudig-content-search-status::before, .cloudig-search-message-preview[data-loading="true"]::before { animation: none; } }
+  @media (max-height: 800px) { .cloudig-content-search { padding: 18px 24px; gap: 12px; } .cloudig-content-search > header { padding-bottom: 10px; } .cloudig-content-search-filters { gap: 8px 24px; } }
+}

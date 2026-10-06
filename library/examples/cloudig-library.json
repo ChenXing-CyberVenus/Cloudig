@@ -1,0 +1,8 @@
+{
+  "format": "cloudig/library",
+  "version": "0.1.4",
+  "preferences": {
+    "language": "zh-CN",
+    "theme": "platform"
+  }
+}

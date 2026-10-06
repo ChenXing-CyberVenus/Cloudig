@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:library:0.1.4",
+  "title": "Cloudig library overlay 0.1.4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version"],
+  "properties": {
+    "format": { "const": "cloudig/library" },
+    "version": { "const": "0.1.4" },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" }
+      },
+      "minProperties": 1
+    },
+    "assistant": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" },
+        "apply_to_all": { "type": "boolean" }
+      },
+      "minProperties": 1
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "icon": { "$ref": "#/$defs/assetPath" },
+        "cover": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": { "$ref": "#/$defs/assetPath" },
+            "fit": { "enum": ["contain", "stretch"] }
+          },
+          "minProperties": 1
+        }
+      },
+      "minProperties": 1
+    },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "language": { "enum": ["zh-CN", "en"] },
+        "theme": { "enum": ["platform", "dawn", "star_night"] },
+        "name_rule_ack_version": { "type": "integer", "minimum": 0 }
+      },
+      "minProperties": 1
+    },
+    "platform_overrides": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "icon": { "$ref": "#/$defs/assetPath" },
+          "assistant_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "assistant_avatar": { "$ref": "#/$defs/assetPath" }
+        },
+        "minProperties": 1
+      }
+    },
+    "conversation_overrides": {
+      "type": "object",
+      "description": "Sparse user edits keyed by the conversation JSON conversation_key.",
+      "propertyNames": { "pattern": "^[0-9a-f]{64}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "conversation_name": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "content_time": { "$ref": "#/$defs/contentTime" },
+          "provider": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "platform": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "models": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "user_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "assistant_name": { "type": "string", "minLength": 1, "maxLength": 100 }
+        },
+        "minProperties": 1
+      }
+    }
+  },
+  "$defs": {
+    "assetPath": {
+      "type": "string",
+      "pattern": "^Data/Assets/(Covers|Avatars|PlatformIcons)/[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    },
+    "contentTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start"],
+      "properties": {
+        "start": { "$ref": "#/$defs/contentTimeEndpoint" },
+        "end": { "$ref": "#/$defs/contentTimeEndpoint" }
+      }
+    },
+    "contentTimeEndpoint": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": { "type": { "const": "unknown" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "year"],
+          "properties": {
+            "type": { "const": "decade" },
+            "era": { "enum": ["AD", "BC"] },
+            "year": { "type": "integer", "minimum": 1, "maximum": 9999, "multipleOf": 10 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "year"],
+          "properties": {
+            "type": { "const": "year" },
+            "era": { "enum": ["AD", "BC"] },
+            "year": { "type": "integer", "minimum": 1, "maximum": 9999 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "year", "month"],
+          "properties": {
+            "type": { "const": "month" },
+            "era": { "enum": ["AD", "BC"] },
+            "year": { "type": "integer", "minimum": 1, "maximum": 9999 },
+            "month": { "type": "integer", "minimum": 1, "maximum": 12 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "year", "month", "day"],
+          "properties": {
+            "type": { "const": "exact" },
+            "era": { "enum": ["AD", "BC"] },
+            "year": { "type": "integer", "minimum": 1, "maximum": 9999 },
+            "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+            "day": { "type": "integer", "minimum": 1, "maximum": 31 },
+            "hour": { "type": "integer", "minimum": 0, "maximum": 23 },
+            "minute": { "type": "integer", "minimum": 0, "maximum": 59 },
+            "timezone": { "type": "string", "pattern": "^(Z|[+-]((0[0-9]|1[0-3]):[0-5][0-9]|14:00))$" }
+          },
+          "dependentRequired": { "hour": ["minute"], "minute": ["hour"] }
+        }
+      ]
+    }
+  }
+}

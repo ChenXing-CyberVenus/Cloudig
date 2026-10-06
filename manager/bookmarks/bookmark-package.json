@@ -1,0 +1,412 @@
+{
+  "format": "cloudig/bookmark-package",
+  "version": "0.2.0",
+  "bookmark_set_version": "2026.08.08.1",
+  "default_profile": "light",
+  "profiles": [
+    "light",
+    "full",
+    "all_branches"
+  ],
+  "platform_count": 12,
+  "variant_count": 32,
+  "effective_count_per_profile": 12,
+  "platforms": [
+    {
+      "id": "deepseek",
+      "label": "DeepSeek",
+      "title_zh": "保存 DeepSeek 会话-Cloudig",
+      "title_en": "Save DeepSeek conversation-Cloudig",
+      "variants": [
+        {
+          "id": "deepseek:light",
+          "profile": "light",
+          "version": "2.8.9-light",
+          "artifact": "bookmarklets/stable/deepseek/2026-07-14_DeepSeek会话导出HTML书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "2d5e671a22c277b6f7ec9c615508d276e99fcece9c196921c37b818c82f3c100",
+          "bytes": 217106,
+          "characters": 212442
+        },
+        {
+          "id": "deepseek:full",
+          "profile": "full",
+          "version": "1.0.6-full",
+          "artifact": "bookmarklets/candidate/deepseek/2026-07-28_DeepSeek会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "edd4b1c1e1730825117919ab89b936e25a5077cdf1322e505c6e6c8154b0b998",
+          "bytes": 221266,
+          "characters": 216376
+        },
+        {
+          "id": "deepseek:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.6-all-branches",
+          "artifact": "bookmarklets/candidate/deepseek/2026-07-28_DeepSeek会话导出HTML全分支书签单行版-1.0.1-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "e06da44f17e542ee5fa2c283adb2ff41c9d0fe3decf47c5c814e46e2a7501962",
+          "bytes": 227988,
+          "characters": 222574
+        }
+      ]
+    },
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT",
+      "title_zh": "保存 ChatGPT 会话-Cloudig",
+      "title_en": "Save ChatGPT conversation-Cloudig",
+      "variants": [
+        {
+          "id": "chatgpt:light",
+          "profile": "light",
+          "version": "3.7.14-light",
+          "artifact": "bookmarklets/stable/chatgpt/2026-07-15_ChatGPT会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "776c10c3e801397ced83b60c2e1f6e69e162f7224e0fcc2fdfca3ca06138fe46",
+          "bytes": 252759,
+          "characters": 246985
+        },
+        {
+          "id": "chatgpt:full",
+          "profile": "full",
+          "version": "1.0.10-full",
+          "artifact": "bookmarklets/candidate/chatgpt/2026-07-28_ChatGPT会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "2362139148a65f146c4159dd4860bf20285ae8781810df88f5fb8a180722586d",
+          "bytes": 262475,
+          "characters": 256497
+        },
+        {
+          "id": "chatgpt:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.9-all-branches",
+          "artifact": "bookmarklets/candidate/chatgpt/2026-07-28_ChatGPT会话导出HTML全分支书签单行版-1.0.1-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "fce9a88cb112311c1d069372cf33f30f76718ca156d5ec0c759af78797605654",
+          "bytes": 271566,
+          "characters": 265232
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "title_zh": "保存 Gemini 会话-Cloudig",
+      "title_en": "Save Gemini conversation-Cloudig",
+      "variants": [
+        {
+          "id": "gemini:light",
+          "profile": "light",
+          "version": "2.7.7-light",
+          "artifact": "bookmarklets/stable/gemini/2026-07-16_Gemini会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "53abde72bb050f54722a35bb70736963dee16f3c628955efc240d48dece3f156",
+          "bytes": 230796,
+          "characters": 224812
+        },
+        {
+          "id": "gemini:full",
+          "profile": "full",
+          "version": "1.0.3-full",
+          "artifact": "bookmarklets/candidate/gemini/2026-07-28_Gemini会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "637228f9aa7bc9e8a192b41e0e895274a6aec2b5570dc4b2014722b75548a1cf",
+          "bytes": 245289,
+          "characters": 238860
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "grok",
+      "label": "Grok",
+      "title_zh": "保存 Grok 会话-Cloudig",
+      "title_en": "Save Grok conversation-Cloudig",
+      "variants": [
+        {
+          "id": "grok:light",
+          "profile": "light",
+          "version": "2.8.7-light",
+          "artifact": "bookmarklets/stable/grok/2026-07-16_Grok会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "3176eca32b5a75894d5b340f4d7c7dce6b640283cec4b0dec9df3a63d2820e4f",
+          "bytes": 237228,
+          "characters": 231804
+        },
+        {
+          "id": "grok:full",
+          "profile": "full",
+          "version": "1.0.5-full",
+          "artifact": "bookmarklets/candidate/grok/2026-07-28_Grok会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "2dfaf547f98fc301a0b3b35c9f6f51aea155ee29a9497905c8ededc98a693da3",
+          "bytes": 243834,
+          "characters": 238328
+        },
+        {
+          "id": "grok:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.5-all-branches",
+          "artifact": "bookmarklets/candidate/grok/2026-07-28_Grok会话导出HTML全分支书签单行版-1.0.1-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "e64455aed9400b87a5b0fcc85235d8e4c1c15974538c6270a44c85843c5a2a32",
+          "bytes": 258837,
+          "characters": 253092
+        }
+      ]
+    },
+    {
+      "id": "doubao",
+      "label": "豆包",
+      "title_zh": "保存 豆包 会话-Cloudig",
+      "title_en": "Save 豆包 conversation-Cloudig",
+      "variants": [
+        {
+          "id": "doubao:light",
+          "profile": "light",
+          "version": "3.5.6-light",
+          "artifact": "bookmarklets/stable/doubao/2026-07-16_豆包会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "223aac982427adf43be4d74a90f1f07d1e6422978a78c648c0eb865373a1ab70",
+          "bytes": 237029,
+          "characters": 231983
+        },
+        {
+          "id": "doubao:full",
+          "profile": "full",
+          "version": "1.0.4-full",
+          "artifact": "bookmarklets/candidate/doubao/2026-07-28_豆包会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "5b8d3c6e5f59f4ee1352e6ceb657d8025e72eb4fe54a324d6fa2cc1633634336",
+          "bytes": 242315,
+          "characters": 237021
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "chatglm",
+      "label": "ChatGLM",
+      "title_zh": "保存 ChatGLM 会话-Cloudig",
+      "title_en": "Save ChatGLM conversation-Cloudig",
+      "variants": [
+        {
+          "id": "chatglm:light",
+          "profile": "light",
+          "version": "2.5.8-light",
+          "artifact": "bookmarklets/stable/chatglm/2026-07-17_ChatGLM会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "0791a54fec7c1c9125f64d1c6974730c6f844697719fcbe8def46c5f5e93c60b",
+          "bytes": 230110,
+          "characters": 225529
+        },
+        {
+          "id": "chatglm:full",
+          "profile": "full",
+          "version": "1.0.4-full",
+          "artifact": "bookmarklets/candidate/chatglm/2026-07-28_ChatGLM会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "785b4e73d0a62f76e276fecead3501ebe8e1d585b3276d9ba42c0b83def39f43",
+          "bytes": 230851,
+          "characters": 226242
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi",
+      "title_zh": "保存 Kimi 会话-Cloudig",
+      "title_en": "Save Kimi conversation-Cloudig",
+      "variants": [
+        {
+          "id": "kimi:light",
+          "profile": "light",
+          "version": "2.9.8-light",
+          "artifact": "bookmarklets/stable/kimi/2026-07-17_Kimi会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "2352e9dd69cf8f653266ff78a07fadd96dc7c18bb63b32d1fb71ece6aeec07a2",
+          "bytes": 218946,
+          "characters": 214305
+        },
+        {
+          "id": "kimi:full",
+          "profile": "full",
+          "version": "1.0.4-full",
+          "artifact": "bookmarklets/candidate/kimi/2026-07-28_Kimi会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "12160678881d791b56ece1747014a3011fe85fe11bcd9d423d6b96b00d89abce",
+          "bytes": 227924,
+          "characters": 222595
+        },
+        {
+          "id": "kimi:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.4-all-branches",
+          "artifact": "bookmarklets/candidate/kimi/2026-07-28_Kimi会话导出HTML全分支书签单行版-1.0.1-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "3f0cc41f9e71fe30664a897570a4b21202dd1aefe98c6b566061d865ed3961e0",
+          "bytes": 239683,
+          "characters": 234136
+        }
+      ]
+    },
+    {
+      "id": "mistral",
+      "label": "Mistral",
+      "title_zh": "保存 Mistral 会话-Cloudig",
+      "title_en": "Save Mistral conversation-Cloudig",
+      "variants": [
+        {
+          "id": "mistral:light",
+          "profile": "light",
+          "version": "2.5.11-light",
+          "artifact": "bookmarklets/stable/mistral/2026-07-17_Mistral会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "0d27b1c048dcef41f0de2d5f93d8907e665bf99b25048fb54966ed6d2b805af0",
+          "bytes": 263459,
+          "characters": 258105
+        },
+        {
+          "id": "mistral:full",
+          "profile": "full",
+          "version": "1.0.7-full",
+          "artifact": "bookmarklets/candidate/mistral/2026-07-28_Mistral会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "b6a70a664c8f3b0632ce812063207f8504cf48364213f9eed3458182c9151a8f",
+          "bytes": 269509,
+          "characters": 264121
+        },
+        {
+          "id": "mistral:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.7-all-branches",
+          "artifact": "bookmarklets/candidate/mistral/2026-07-28_Mistral会话导出HTML全分支书签单行版-1.0.1-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "edf88046f282d1222d3b8b517cae60c3458d92e72e924a9c880ced2f5513c498",
+          "bytes": 282123,
+          "characters": 276292
+        }
+      ]
+    },
+    {
+      "id": "qwen",
+      "label": "Qwen",
+      "title_zh": "保存 Qwen 会话-Cloudig",
+      "title_en": "Save Qwen conversation-Cloudig",
+      "variants": [
+        {
+          "id": "qwen:light",
+          "profile": "light",
+          "version": "2.6.9-light",
+          "artifact": "bookmarklets/stable/qwen/2026-07-17_Qwen会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "60de16c2138debeced48efdf7e8e0b9503172d48917228b955e0e614e4ce59e6",
+          "bytes": 214929,
+          "characters": 210526
+        },
+        {
+          "id": "qwen:full",
+          "profile": "full",
+          "version": "1.0.6-full",
+          "artifact": "bookmarklets/candidate/qwen/2026-07-28_Qwen会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "81431afacede58e6fb048e39d38f0b181ba52bc4d16883b0be8037500d67ee3b",
+          "bytes": 217653,
+          "characters": 213192
+        },
+        {
+          "id": "qwen:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.6-all-branches",
+          "artifact": "bookmarklets/candidate/qwen/2026-07-28_Qwen会话导出HTML全分支书签单行版-1.0.1-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "703915f9aa6d2a728199280dc4ebbb075a8982f416b7db84530a4965cefad0be",
+          "bytes": 233147,
+          "characters": 228247
+        }
+      ]
+    },
+    {
+      "id": "zai",
+      "label": "Z.ai",
+      "title_zh": "保存 Z.ai 会话-Cloudig",
+      "title_en": "Save Z.ai conversation-Cloudig",
+      "variants": [
+        {
+          "id": "zai:light",
+          "profile": "light",
+          "version": "2.7.9-light",
+          "artifact": "bookmarklets/stable/zai/2026-07-17_Z.ai会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "4095b7f5d232a346da864000c1e7a4b46173ec40b0d64da3b2011d097065b5d3",
+          "bytes": 237250,
+          "characters": 232432
+        },
+        {
+          "id": "zai:full",
+          "profile": "full",
+          "version": "1.0.5-full",
+          "artifact": "bookmarklets/candidate/zai/2026-07-28_Z.ai会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "5bf0de12adc57c87e7508014c7758f88059cd38a10e5ab428eab92d18f308602",
+          "bytes": 252917,
+          "characters": 247561
+        },
+        {
+          "id": "zai:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.5-all-branches",
+          "artifact": "bookmarklets/candidate/zai/2026-07-28_Z.ai会话导出HTML全分支书签单行版-1.0.1-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "4719e80e778edd68d30f7a3d39e0c4c899118247f3c71c277c110db7f12fa44d",
+          "bytes": 252918,
+          "characters": 247572
+        }
+      ]
+    },
+    {
+      "id": "yuanbao",
+      "label": "腾讯元宝",
+      "title_zh": "保存 腾讯元宝 会话-Cloudig",
+      "title_en": "Save 腾讯元宝 conversation-Cloudig",
+      "variants": [
+        {
+          "id": "yuanbao:light",
+          "profile": "light",
+          "version": "2.10.9-light",
+          "artifact": "bookmarklets/stable/yuanbao/2026-07-17_腾讯元宝会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js",
+          "sha256": "2493f06b9d53a8be93190ddf6edfeac73398dff3089a4f70df10544ee83dd034",
+          "bytes": 247826,
+          "characters": 242184
+        },
+        {
+          "id": "yuanbao:full",
+          "profile": "full",
+          "version": "1.0.7-full",
+          "artifact": "bookmarklets/candidate/yuanbao/2026-07-28_腾讯元宝会话导出HTML全量书签单行版-1.0.1-full-GPT-5.6-Sol.min.js",
+          "sha256": "0edc68275314813e4f0cd0790a937ece04d6f11cdc60c352fdc9b85696ea8c42",
+          "bytes": 250055,
+          "characters": 244385
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "title_zh": "保存 Claude 会话-Cloudig",
+      "title_en": "Save Claude conversation-Cloudig",
+      "variants": [
+        {
+          "id": "claude:light",
+          "profile": "light",
+          "version": "1.1.8-light",
+          "artifact": "bookmarklets/candidate/claude/2026-07-28_Claude会话导出HTML轻量书签单行版-1.1.4-light-GPT-5.6-Sol.min.js",
+          "sha256": "352ec2b08693d5d4d006b51735b8678d7201c79d91635c38ac76f0baad15e1b8",
+          "bytes": 298847,
+          "characters": 293251
+        },
+        {
+          "id": "claude:full",
+          "profile": "full",
+          "version": "1.1.8-full",
+          "artifact": "bookmarklets/candidate/claude/2026-07-28_Claude会话导出HTML全量取证书签单行版-1.1.4-full-GPT-5.6-Sol.min.js",
+          "sha256": "256c67620bcc05021653c3ec1b040f929bf7b5499405fdb90e3635fed608e7d7",
+          "bytes": 300222,
+          "characters": 294634
+        },
+        {
+          "id": "claude:all_branches",
+          "profile": "all_branches",
+          "version": "1.1.8-all-branches",
+          "artifact": "bookmarklets/candidate/claude/2026-07-28_Claude会话导出HTML全分支取证书签单行版-1.1.4-all-branches-GPT-5.6-Sol.min.js",
+          "sha256": "9fb4271fd95b2290cd351fb1473a254de6b9e4c44107524c1db54143af7dff69",
+          "bytes": 309039,
+          "characters": 303268
+        }
+      ]
+    }
+  ]
+}

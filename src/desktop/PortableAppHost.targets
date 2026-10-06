@@ -1,0 +1,25 @@
+<Project>
+  <!-- Use the SDK's native apphost, not another managed launcher or a
+       self-extracting executable. All runtime dependencies stay in app/. -->
+  <Target Name="CreateCloudigPortableEntry" AfterTargets="Publish"
+          DependsOnTargets="_GetAppHostPaths;_GetAppHostCreationConfiguration"
+          Condition="'$(CloudigPortableRoot)' != ''">
+    <Error Condition="'$(PublishSingleFile)' == 'true'" Text="The flat portable layout requires an app-local, non-extracting runtime." />
+    <Error Condition="'$(SelfContained)' != 'true'" Text="The portable package must include its runtime in app/." />
+    <PropertyGroup>
+      <_CloudigExpectedPublish>$([System.IO.Path]::GetFullPath('$(CloudigPortableRoot)/app/'))</_CloudigExpectedPublish>
+      <_CloudigActualPublish>$([MSBuild]::EnsureTrailingSlash($([System.IO.Path]::GetFullPath('$(PublishDir)'))))</_CloudigActualPublish>
+    </PropertyGroup>
+    <Error Condition="'$(_CloudigActualPublish)' != '$(_CloudigExpectedPublish)'" Text="Portable publish output must be exactly the selected root's app directory." />
+    <MakeDir Directories="$(CloudigPortableRoot)" />
+    <CreateAppHost AppHostSourcePath="$(AppHostSourcePath)"
+                   AppHostDestinationPath="$(CloudigPortableRoot)/$(AssemblyName).exe"
+                   AppBinaryName="app/$(AssemblyName)$(TargetExt)"
+                   IntermediateAssembly="@(IntermediateAssembly->'%(FullPath)')"
+                   WindowsGraphicalUserInterface="$(_UseWindowsGraphicalUserInterface)"
+                   Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+                   DisableCetCompat="$(_DisableCetCompat)" />
+    <!-- The same app has one visible entry at the root. -->
+    <Delete Files="$(PublishDir)$(AssemblyName).exe" />
+  </Target>
+</Project>

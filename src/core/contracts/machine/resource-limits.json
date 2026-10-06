@@ -1,0 +1,14 @@
+{
+  "schema": "cloudig/resource-limits/1.0.0",
+  "version": "1.0.0",
+  "base64_decoded_chunk_bytes": 196608,
+  "canonical_json_line_max_bytes": 67108864,
+  "ipc_json_line_max_bytes": 1048576,
+  "ipc_json_depth_max": 32,
+  "ipc_json_nodes_max": 20000,
+  "ipc_concurrent_commands_max": 4,
+  "reader_message_page_max": 200,
+  "reader_navigation_page_max": 500,
+  "reader_branch_page_max": 200,
+  "avatar_file_max_bytes": 67108864
+}

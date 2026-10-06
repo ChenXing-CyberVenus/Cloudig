@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:library:1.0.0",
+  "title": "Cloudig library overlay 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "conversation_schema", "content_time_schema", "edited_at", "content_time_system"],
+  "properties": {
+    "format": { "const": "cloudig/library" },
+    "version": { "const": "1.0.0" },
+    "conversation_schema": { "const": "ai-chat-archive/conversation/1.0.0" },
+    "content_time_schema": { "const": "cloudig/content-time/1.0.0" },
+    "edited_at": { "$ref": "#/$defs/utcDateTime" },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" }
+      }
+    },
+    "assistant": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" },
+        "apply_to_all": { "type": "boolean" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "icon": { "$ref": "#/$defs/assetPath" },
+        "cover": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "path": { "$ref": "#/$defs/assetPath" },
+            "fit": { "enum": ["contain", "stretch"] }
+          }
+        }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "language": { "enum": ["zh-CN", "en"] },
+        "theme": { "enum": ["platform", "dawn", "star_night"] },
+        "name_rule_ack_version": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "workflow_preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "time_fields": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "archiver": { "$ref": "#/$defs/timeField" },
+            "claude": { "$ref": "#/$defs/timeField" },
+            "reader": { "$ref": "#/$defs/timeField" }
+          }
+        },
+        "sorts": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "parser": { "$ref": "#/$defs/sortMode" },
+            "archiver": { "$ref": "#/$defs/sortMode" },
+            "claude": { "$ref": "#/$defs/sortMode" },
+            "reader": { "$ref": "#/$defs/sortMode" }
+          }
+        },
+        "parse_batch": { "$ref": "#/$defs/parseBatch" },
+        "claude_batch": { "$ref": "#/$defs/claudeBatch" }
+      }
+    },
+    "platform_overrides": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "minProperties": 1,
+        "properties": {
+          "icon": { "$ref": "#/$defs/assetPath" },
+          "assistant_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "assistant_avatar": { "$ref": "#/$defs/assetPath" }
+        }
+      }
+    },
+    "conversation_overrides": {
+      "type": "object",
+      "description": "Sparse user authority keyed by privacy-preserving conversation_key.",
+      "propertyNames": { "$ref": "#/$defs/sha256" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "minProperties": 1,
+        "properties": {
+          "conversation_name": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "provider": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "platform": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "models": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "user_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "assistant_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "content_time": { "$ref": "#/$defs/contentTimeOverride" }
+        }
+      }
+    },
+    "content_time_system": { "$ref": "../time/content-time-system-1.0.0.schema.json" }
+  },
+  "$defs": {
+    "uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "utcDateTime": { "type": "string", "format": "date-time", "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$" },
+    "assetPath": { "type": "string", "pattern": "^Data/Assets/(?:Covers|Avatars|PlatformIcons)/[A-Za-z0-9][A-Za-z0-9._/-]*$" },
+    "timeField": {
+      "enum": [
+        "content_time",
+        "first_parsed_at",
+        "last_parsed_at",
+        "cloudig_edited_at",
+        "source_captured_at",
+        "source_conversation_created_at",
+        "source_conversation_updated_at",
+        "message_start",
+        "message_end",
+        "file_modified_at"
+      ]
+    },
+    "sortMode": { "enum": ["time_asc", "time_desc", "title_asc", "title_desc"] },
+    "parseBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["archive_directory", "parse_unparsed", "parse_selected", "update_outdated", "preserve_previous"],
+      "properties": {
+        "archive_directory": { "type": "string", "maxLength": 500 },
+        "parse_unparsed": { "type": "boolean" },
+        "parse_selected": { "type": "boolean" },
+        "update_outdated": { "type": "boolean" },
+        "preserve_previous": { "type": "boolean" }
+      }
+    },
+    "claudeBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parse_unparsed", "parse_selected", "update_outdated", "preserve_previous"],
+      "properties": {
+        "parse_unparsed": { "type": "boolean" },
+        "parse_selected": { "type": "boolean" },
+        "update_outdated": { "type": "boolean" },
+        "preserve_previous": { "type": "boolean" }
+      }
+    },
+    "contentTimeOverride": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["edit_id", "edited_at", "state", "range"],
+          "properties": {
+            "edit_id": { "$ref": "#/$defs/uuid" },
+            "edited_at": { "$ref": "#/$defs/utcDateTime" },
+            "state": { "const": "set" },
+            "range": { "$ref": "../time/content-time-1.0.0.schema.json#/$defs/range" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["edit_id", "edited_at", "state"],
+          "properties": {
+            "edit_id": { "$ref": "#/$defs/uuid" },
+            "edited_at": { "$ref": "#/$defs/utcDateTime" },
+            "state": { "const": "cleared" }
+          }
+        }
+      ]
+    }
+  }
+}

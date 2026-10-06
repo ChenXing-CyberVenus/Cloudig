@@ -1,0 +1,63 @@
+{
+  "zh-CN": {
+    "accent": [
+      "简洁和可恢复",
+      "造意义火箭，但不搞虚空飞机",
+      "节点之间的映射，构成了意义的结构",
+      "序数是注意力在意义间流动",
+      "复制即备份，移走即搬家",
+      "此地总是特殊的独立",
+      "原件与赋值分开",
+      "读取不写时间",
+      "索引不是权威",
+      "与发送、下载、解析时间无关",
+      "覆盖不动标记"
+    ],
+    "bold": [
+      "所有程序与用户内容存放在采云文件夹内",
+      "所有重要上限设为常数成表",
+      "包含自身的全部原生信息",
+      "信息与映射的价值排序规则",
+      "与其他节点的关系",
+      "动手前先退出采云",
+      "没有特定距离的序数轴",
+      "一个呈现可能有多个名字和多个宣名者",
+      "宣名者可以自指",
+      "身份靠 UUID，不靠文件名",
+      "缺席不是 null",
+      "数据不出目录",
+      "可恢复优先于防错",
+      "重解析不覆盖它，它不改对话正文",
+      "起点晚于终点合法，界面提醒，不替换",
+      "不静默截断旧选择",
+      "无引用不等于自动删除",
+      "倒序不翻转组序",
+      "旧值不覆盖新文件",
+      "只删记录，不删来源与对话"
+    ]
+  },
+  "en": {
+    "accent": [
+      "simplicity and recoverability",
+      "Build Meaning Rockets, not Void Airplanes",
+      "The mappings between nodes make up the structure of meaning",
+      "The Ordinal is attention flowing between meanings",
+      "Copy the folder and you have a backup; move the folder and you have moved house",
+      "Overwriting does not touch the Mark"
+    ],
+    "bold": [
+      "every other program and user content lives inside the Cloudig folder",
+      "All important limits are constants, kept in a table",
+      "contains all of its own native information",
+      "the rule that orders the value of information and of mappings",
+      "relations to other nodes",
+      "Quit Cloudig before doing either",
+      "an ordinal axis with no fixed distances",
+      "Identity comes from the UUID, not the filename",
+      "Having no references does not authorize automatic deletion",
+      "Descending order does not reverse the group order",
+      "old values do not overwrite the new file",
+      "Clearing parse records or System Log deletes only those records, not sources or Conversations"
+    ]
+  }
+}

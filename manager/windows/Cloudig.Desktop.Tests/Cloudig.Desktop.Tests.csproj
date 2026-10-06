@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Cloudig.Desktop\AppPaths.cs" Link="AppPaths.cs" />
+    <Compile Include="..\Cloudig.Desktop\LocalSettings.cs" Link="LocalSettings.cs" />
+    <Compile Include="..\Cloudig.Desktop\ManagerCommandHost.cs" Link="ManagerCommandHost.cs" />
+  </ItemGroup>
+</Project>

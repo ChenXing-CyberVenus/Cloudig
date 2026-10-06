@@ -1,0 +1,20 @@
+# Five business record contracts
+
+This is the production target for the approved 2026-09-11 Library, Identity, Conversation, Mark and ContentTime formats. It is not a second application or an automatic converter for the previous development format.
+
+- `schemas/` is the field-shape authority. `common.schema.json` shares Front/time structures; identity-settings and time ordering belong to their existing business category.
+- Conversation/Library 1.0.1 add cross-platform interactive content with `display: box | window` and a specific product/native-type `source` string (for example `claude.ai_visualize`). Source data and virtual file/resource references remain inert at parse/validation time; display mode does not grant access to the host bridge. `schemas/compat/` freezes the two 1.0.0 contracts, which remain independently strict and readable. Ordinary parses keep 1.0.0; an explicit successful new-format parse updates the Library declaration in the same transaction, without resetting settings or rewriting other records. Reader execution/visual acceptance is tracked separately in PROJECT_STATE.
+- `index.mts` validates, decodes and encodes a single record without injecting defaults, IDs, revisions or edits. Byte input is strict UTF-8; raw duplicate keys and lossy numbers are rejected before JSON.parse discards evidence.
+- `semantics.mts` validates local identities/references, message cycles, actual embedded resource bytes, timestamps and time selections. `inspectTimeLinks` reports cross-file issues without editing nodes; missing references are not deletion authority.
+- `limits.mts` uses the existing versioned time limit table. Tests keep literal JSON Schema numeric bounds in sync with it.
+- `text-limits.mts` reads the only name/title numerical limits from common Schema's `nameText`/`titleText` definitions. Names are 1024 and titles 4096 Unicode code points; the UI and saves use the same values without truncating body text.
+- Canonical Library writes start with `cloudig_standard: "1.0"`, followed by the existing record/component versions. The earlier development Library without this field is adapted only in memory and checked against all current fields; reads never rewrite it. Unsupported schemas/declared component versions have a distinct update-required error, while ordinary invalid archive files stay silently excluded.
+- ContentTime collection reads propagate that update-required error instead of dropping newer nodes into a partial graph. Time queries and writes (including an already-open page's ordering request) stop without changing node/order bytes; the shell uses its existing error dialog. Independent archive reading and stored Mark snapshots remain available. Restoring compatible files needs no restart.
+- A single leading UTF-8 BOM is accepted at file input; byte-span readers include its three bytes when locating embedded resources. Writers remain UTF-8 without BOM.
+- `front-presets.json` fixes one UUID v7 for each of the twelve platform defaults, not one per company. New Library bindings use these IDs; ChatGLM and Z.ai remain separate. Personal user/assistant IDs are still generated per Library, source Fronts still use local `source_id`, and existing bindings are not silently renumbered.
+
+Run `npm run test:v1:records` and `npm run check:v1:types` for this contract boundary. These are not Parser, persistent-storage or EXE acceptance.
+
+The old `core/contracts` still contains shared JSON/time-limit utilities and retained pre-reset contracts; it does not define these five current business records. Persistence, the record Engine and desktop now use the completed S0–S5 record chain; see PROJECT_STATE for internal verification evidence and separate release limitations. No new record is to be passed through the old aN/Library-overlay validators or written in both formats.
+
+Meaning authority: [Core](../../../docs/2026-09-08_采云V1现行工程规范-GPT-6-Astra/00_入口与整编路线-GPT-6-Astra.md). Current integration state: [PROJECT_STATE](../../../PROJECT_STATE.md).

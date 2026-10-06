@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/records/identity/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "front_id",
+    "names",
+    "kind",
+    "created_at",
+    "edited_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/identity/1.0.0"
+    },
+    "names": {
+      "type": "array",
+      "items": {
+        "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/name"
+      }
+    },
+    "display_name": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "kind": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/kind"
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "image": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/relativePath"
+    },
+    "created_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "front_id": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "role"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "tool",
+              "system"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "kind": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "world",
+              "subject"
+            ],
+            "properties": {
+              "world": {
+                "const": "terran"
+              },
+              "subject": {
+                "const": "program"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

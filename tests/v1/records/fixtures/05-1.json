@@ -1,0 +1,29 @@
+{
+  "schema": "cloudig/mark/1.0.0",
+  "mark_id": "01993520-0000-7000-8000-000000000302",
+  "target": "01993520-0000-7000-8000-000000000101",
+  "edited_at": "2026-09-11T10:00:00Z",
+  "models": [
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "names": [
+        {
+          "name": "我认定的模型",
+          "claimers": [
+            {
+              "front": "01993520-0000-7000-8000-000000000001"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "ai"
+      },
+      "role": "assistant",
+      "created_at": "2026-09-11T10:00:00Z",
+      "edited_at": "2026-09-11T10:00:00Z"
+    }
+  ]
+}

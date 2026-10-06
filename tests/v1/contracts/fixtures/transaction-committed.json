@@ -1,0 +1,48 @@
+{
+  "schema": "cloudig/transaction/1.0.0",
+  "transaction": "x_ABCDEFGHIJKLMNOP",
+  "state": "committed",
+  "intent": "parse-source",
+  "created_at": "2026-08-31T12:00:00.000Z",
+  "updated_at": "2026-08-31T12:00:01.000Z",
+  "authority": {
+    "library": {
+      "state": "present",
+      "revision": 2,
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targets": [
+    {
+      "action": "replace",
+      "path": "Conversations/chat.json",
+      "status": "installed",
+      "expected_before": {
+        "state": "present",
+        "bytes": 2048,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "staged_after": {
+        "bytes": 3072,
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "installed": {
+        "bytes": 3072,
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "temp": "Data/Transactions/x_ABCDEFGHIJKLMNOP/staged/chat.json",
+      "displaced": "Data/Transactions/x_ABCDEFGHIJKLMNOP/displaced/chat.json",
+      "source": {
+        "path": "Inbox/chat.html",
+        "bytes": 1536,
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      },
+      "semantic": {
+        "kind": "conversation",
+        "archive": "a1",
+        "generation": 2,
+        "schema": "cloudig/conversation/1.0.0"
+      }
+    }
+  ]
+}

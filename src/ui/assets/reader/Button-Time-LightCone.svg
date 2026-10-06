@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.19 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffa92e;
+      }
+
+      .cls-2 {
+        fill: #c67812;
+      }
+    </style>
+  </defs>
+  <g>
+    <g id="_光锥">
+      <rect class="cls-2" x="7.53" y="1.72" width=".63" height="22.28"/>
+      <rect class="cls-2" y="12.35" width="14.68" height=".63"/>
+      <rect class="cls-2" x="7.86" y="5.6" width=".63" height="14.6" transform="translate(-6.73 9.56) rotate(-45)"/>
+      <polygon class="cls-1" points="13.27 4.89 7.85 12.67 2.42 4.89 13.27 4.89"/>
+      <polygon class="cls-2" points="6.52 1.92 7.85 0 9.19 1.92 6.52 1.92"/>
+      <polygon class="cls-2" points="2.24 8.97 1.75 6.68 4.07 7.02 2.24 8.97"/>
+      <polygon class="cls-2" points="14.29 11.25 16.19 12.59 14.27 13.92 14.29 11.25"/>
+      <ellipse class="cls-2" cx="7.85" cy="4.89" rx="5.43" ry="1.24"/>
+      <path class="cls-1" d="M13,20.06l-5.15-7.39-5.15,7.39c-.17.12-.27.25-.27.39,0,.69,2.43,1.24,5.43,1.24s5.43-.56,5.43-1.24c0-.14-.1-.27-.27-.39Z"/>
+    </g>
+  </g>
+</svg>

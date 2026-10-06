@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 630">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_未命名的渐变_136);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_136" x1="250" y1="630" x2="250" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b3dee4"/>
+      <stop offset=".2" stop-color="#b4dde1"/>
+      <stop offset=".35" stop-color="#b8dad7"/>
+      <stop offset=".48" stop-color="#bed5c7"/>
+      <stop offset=".6" stop-color="#c8cfb1"/>
+      <stop offset=".71" stop-color="#d4c693"/>
+      <stop offset=".82" stop-color="#e3bc70"/>
+      <stop offset=".92" stop-color="#f5af46"/>
+      <stop offset=".96" stop-color="#fcab36"/>
+      <stop offset="1" stop-color="#ffa92e"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <rect id="_破晓窗户" class="cls-1" width="500" height="630"/>
+  </g>
+</svg>

@@ -1,0 +1,43 @@
+@layer pages {
+  .archiver-import-guide { grid-row: 1 / -1; display: grid; grid-template-rows: auto auto minmax(0, 1fr); min-height: 0; min-width: 0; }
+  .archiver-guide-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 24px 30px 16px; }
+  .archiver-guide-heading h1 { font-size: 25px; line-height: 1.35; margin: 0; color: var(--cloudig-seal-red); }
+  .archiver-guide-heading .cloudig-button { flex: none; width: auto; height: auto; padding: 8px 16px; white-space: nowrap; font-size: 16px; --cloudig-button-fill: var(--cloudig-seal-red); }
+  .archiver-guide-platforms { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 30px 16px; border-bottom: 1px solid #ae8b7f; }
+  .archiver-guide-platforms button { font: inherit; font-size: 16px; font-weight: 700; line-height: 1.4; padding: 6px 12px; border: 2px solid var(--cloudig-seal-red); border-radius: 8px; background: #d68c80; color: var(--cloudig-seal-red); cursor: pointer; }
+  .archiver-guide-platforms button[aria-pressed="true"] { background: var(--cloudig-seal-red); color: #fff; }
+  .archiver-guide-platforms button:hover { filter: brightness(1.08); }
+  .archiver-guide-platforms button:focus-visible, .archiver-guide-image:focus-visible { outline: 2px solid var(--cloudig-seal-red); outline-offset: 3px; }
+  .archiver-guide-scroll { min-height: 0; min-width: 0; overflow-y: auto; overflow-x: hidden; padding: 24px 32px 36px; font-size: 16px; line-height: 1.7; color: var(--cloudig-ink); }
+  .archiver-guide-method { max-width: 100%; }
+  .archiver-guide-method + .archiver-guide-method { margin-top: 32px; padding-top: 24px; border-top: 1px solid #ae8b7f; }
+  .archiver-guide-method h2 { font-size: 21px; margin: 0 0 12px; }
+  .archiver-guide-website { margin: 0 0 24px; overflow-wrap: anywhere; }
+  .archiver-guide-scroll a { color: var(--cloudig-seal-red); text-underline-offset: 4px; }
+  .archiver-guide-steps { margin: 0; padding-left: 26px; }
+  .archiver-guide-steps > li { padding-left: 6px; }
+  .archiver-guide-steps > li + li { margin-top: 30px; }
+  .archiver-guide-steps > li::marker { color: var(--cloudig-seal-red); font-weight: 700; }
+  .archiver-guide-steps p { margin: 0 0 12px; overflow-wrap: anywhere; }
+  .archiver-guide-steps strong { color: var(--cloudig-seal-red); }
+  .archiver-guide-image { display: block; max-width: 100%; width: fit-content; margin: 12px 0 0; padding: 0; border: 0; border-radius: 6px; overflow: hidden; background: transparent; cursor: zoom-in; filter: drop-shadow(0 2px 5px rgb(0 0 0 / 18%)); }
+  .archiver-guide-image img { display: block; max-width: 100%; width: auto; height: auto; }
+  .archiver-guide-lightbox { padding: 0; max-width: none; max-height: none; width: min(1180px, calc(100vw - 48px)); height: min(1000px, calc(100vh - 48px)); border: 2px solid var(--cloudig-seal-red); border-radius: 12px; background: #e8d6c4; color: var(--cloudig-ink); filter: drop-shadow(0 12px 32px rgb(0 0 0 / 40%)); }
+  .archiver-guide-lightbox[open] { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+  .archiver-guide-lightbox::backdrop { background: rgb(0 0 0 / 65%); }
+  .archiver-guide-lightbox header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px; font-size: 16px; }
+  .archiver-guide-lightbox .cloudig-button { width: auto; padding: 6px 18px; --cloudig-button-fill: var(--cloudig-seal-red); }
+  .archiver-guide-lightbox-scroll { overflow: auto; min-height: 0; padding: 0 20px 20px; }
+  .archiver-guide-lightbox-scroll img { display: block; margin: 0 auto; width: auto; max-width: 100%; height: auto; }
+  :root[data-theme="star-night"] :is(.archiver-guide-heading h1, .archiver-guide-steps strong) { color: var(--cloudig-orange); }
+  :root[data-theme="star-night"] .archiver-guide-scroll { color: #e2e1e1; }
+  :root[data-theme="star-night"] :is(.archiver-guide-platforms, .archiver-guide-method + .archiver-guide-method) { border-color: #606060; }
+  :root[data-theme="star-night"] .archiver-guide-platforms button { border-color: var(--cloudig-base-blue); background: var(--cloudig-base-blue); color: #000; }
+  :root[data-theme="star-night"] .archiver-guide-platforms button[aria-pressed="true"] { background: var(--cloudig-purple); border-color: var(--cloudig-purple); color: var(--cloudig-orange); }
+  :root[data-theme="star-night"] .archiver-guide-scroll a { color: var(--cloudig-base-blue); }
+  :root[data-theme="star-night"] .archiver-guide-steps > li::marker { color: var(--cloudig-orange); }
+  :root[data-theme="star-night"] :is(.archiver-guide-heading, .archiver-guide-lightbox) .cloudig-button { --cloudig-button-fill: var(--cloudig-purple); color: var(--cloudig-orange); }
+  :root[data-theme="star-night"] .archiver-guide-lightbox { background: #2d2d2d; color: #e2e1e1; border-color: var(--cloudig-base-blue); }
+  :root[data-theme="star-night"] :is(.archiver-guide-platforms button, .archiver-guide-image):focus-visible { outline-color: var(--cloudig-base-blue); }
+  @media (max-width: 1280px) { .archiver-guide-heading { padding: 18px 22px 14px; gap: 12px; } .archiver-guide-heading h1 { font-size: 21px; } .archiver-guide-platforms { padding-inline: 22px; } .archiver-guide-scroll { padding: 20px 24px 28px; } }
+}

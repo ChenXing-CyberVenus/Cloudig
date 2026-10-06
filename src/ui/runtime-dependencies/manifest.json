@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "license_supplements": [
+    { "package": "victory-vendor", "version": "37.3.6", "file": "licenses/Victory-37.3.6-LICENSE.txt", "sha256": "34dee5fd5e5cc756efb5ad4d64652bce719bdf5e900ca5d7538253e737930bc4", "source": "https://raw.githubusercontent.com/FormidableLabs/victory/v37.3.6/LICENSE.txt" }
+  ],
+  "libraries": [
+    { "package": "@tailwindcss/browser", "version": "4.1.13", "package_file": "dist/index.global.js", "file": "libraries/tailwind-4.1.13.js", "sha256": "4df034809c175da313a3e44657411bd26cbd52ceb16f52f028e35e3d646bb9c8", "aliases": ["cloudig-runtime:tailwind"], "formats": ["react"] },
+    { "package": "react", "version": "18.3.1", "package_file": "umd/react.production.min.js", "file": "libraries/react-18.3.1.min.js", "sha256": "d949f1c3687aedadcedac85261865f29b17cd273997e7f6b2bfc53b2f9d4c4dd", "aliases": ["https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"] },
+    { "package": "react-dom", "version": "18.3.1", "package_file": "umd/react-dom.production.min.js", "file": "libraries/react-dom-18.3.1.min.js", "sha256": "35f4f974f4b2bcd44da73963347f8952e341f83909e4498227d4e26b98f66f0d", "aliases": ["https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"] },
+    { "package": "three", "version": "0.128.0", "package_file": "build/three.min.js", "file": "libraries/three-r128.min.js", "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2", "aliases": ["https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"] },
+    { "package": "chart.js", "version": "3.9.1", "package_file": "dist/chart.min.js", "file": "libraries/chart-3.9.1.min.js", "sha256": "fbc45926e6b46845a0f905552a0e0b1331049bff1115ecf94dbe0904d895e710", "aliases": ["https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"] }
+  ],
+  "fonts": [
+    { "family": "DM Sans", "weight": 400, "file": "fonts/DMSans-400.ttf", "alias": "cloudig-font:DMSans-400", "sha256": "b0ae3e89a7d3ef2b1838bb4b1ceb0b17cc3435af061eee809d76aa623ff116e9", "license": "fonts/DMSans-OFL.txt", "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAopxhTg.ttf" },
+    { "family": "DM Sans", "weight": 500, "file": "fonts/DMSans-500.ttf", "alias": "cloudig-font:DMSans-500", "sha256": "376427b5322148d8de1e03f263bcca4935a2d60ba71d9f94f4947ab664c711ae", "license": "fonts/DMSans-OFL.txt", "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAkJxhTg.ttf" },
+    { "family": "DM Sans", "weight": 700, "file": "fonts/DMSans-700.ttf", "alias": "cloudig-font:DMSans-700", "sha256": "2a8e7f713ee79fbccdef3cef5c787aff47580299f7da60144961e7db2ec08211", "license": "fonts/DMSans-OFL.txt", "source": "https://fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwARZthTg.ttf" },
+    { "family": "Ma Shan Zheng", "weight": 400, "file": "fonts/MaShanZheng-400.ttf", "alias": "cloudig-font:MaShanZheng-400", "sha256": "7aeadc89ef360fd53085a83a08c0062b08dae43d0b70c367c4170bf1f1f53696", "license": "fonts/MaShanZheng-OFL.txt", "source": "https://fonts.gstatic.com/s/mashanzheng/v18/NaPecZTRCLxvwo41b4gvzkXaRMQ.ttf" },
+    { "family": "Noto Serif SC", "weight": "200 900", "file": "fonts/NotoSerifSC-Variable.ttf", "alias": "cloudig-font:NotoSerifSC-Variable", "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9", "license": "fonts/NotoSerifSC-OFL.txt", "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf" },
+    { "family": "Cormorant Garamond", "weight": "300 700", "style": "italic", "file": "fonts/CormorantGaramond-Italic-Variable.ttf", "alias": "cloudig-font:CormorantGaramond-Italic-Variable", "sha256": "0f48ea6abb2084537854f7174c470991a463b13036309e3b50a81511611c530d", "license": "fonts/CormorantGaramond-OFL.txt", "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/CormorantGaramond-Italic%5Bwght%5D.ttf" },
+    { "family": "Zhi Mang Xing", "weight": 400, "file": "fonts/ZhiMangXing-400.ttf", "alias": "cloudig-font:ZhiMangXing-400", "sha256": "644e0cae9b40f0b10ab729a01bd32032e3973bac22be3dccae01bf6ae7fde969", "license": "fonts/ZhiMangXing-OFL.txt", "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/zhimangxing/ZhiMangXing-Regular.ttf" }
+  ]
+}

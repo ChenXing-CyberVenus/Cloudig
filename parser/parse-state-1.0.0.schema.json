@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:parse-state:1.0.0",
+  "title": "Cloudig parse-state 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "sources"],
+  "properties": {
+    "format": { "const": "cloudig/parse-state" },
+    "version": { "const": "1.0.0" },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "utcDateTime": { "type": "string", "format": "date-time", "pattern": "Z$" },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$" },
+        "version": { "type": "string", "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
+        "format": { "type": "string", "minLength": 1, "maxLength": 160 }
+      }
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basis"],
+      "properties": {
+        "value": { "$ref": "#/$defs/utcDateTime" },
+        "basis": {
+          "enum": [
+            "bookmark_metadata",
+            "source_metadata",
+            "filesystem_earliest_create_or_modify",
+            "filesystem_modified_time",
+            "unavailable"
+          ]
+        },
+        "field": { "type": "string", "minLength": 1, "maxLength": 200 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "basis": { "const": "unavailable" } }, "required": ["basis"] },
+          "then": { "not": { "anyOf": [{ "required": ["value"] }, { "required": ["field"] }] } },
+          "else": { "required": ["value"] }
+        }
+      ]
+    },
+    "firstParsed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basis"],
+      "properties": {
+        "value": { "$ref": "#/$defs/utcDateTime" },
+        "basis": {
+          "enum": [
+            "parser_creation",
+            "legacy_output_birthtime_estimate",
+            "legacy_last_parse_upper_bound",
+            "unavailable"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "basis": { "const": "unavailable" } }, "required": ["basis"] },
+          "then": { "not": { "required": ["value"] } },
+          "else": { "required": ["value"] }
+        }
+      ]
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conversation_key", "archive_id", "role", "path", "size_bytes", "modified_at", "sha256",
+        "schema", "parser_version", "parser_adapter", "first_parsed_at", "last_parsed_at"
+      ],
+      "properties": {
+        "conversation_key": { "$ref": "#/$defs/sha256" },
+        "archive_id": { "$ref": "#/$defs/uuid" },
+        "role": { "enum": ["current", "historical"] },
+        "path": { "type": "string", "pattern": "^Conversations/(?!.*(?:^|/)\\.\\.?/).+\\.json$" },
+        "size_bytes": { "type": "integer", "minimum": 1 },
+        "modified_at": { "$ref": "#/$defs/utcDateTime" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "schema": { "const": "ai-chat-archive/conversation/1.0.0" },
+        "parser_version": { "type": "string", "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
+        "parser_adapter": { "$ref": "#/$defs/adapter" },
+        "exporter_version": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "first_parsed_at": { "$ref": "#/$defs/firstParsed" },
+        "last_parsed_at": { "$ref": "#/$defs/utcDateTime" }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$" },
+        "message": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "kind": { "enum": ["interrupted", "environment", "source", "internal"] },
+        "support_key": { "$ref": "#/$defs/sha256" },
+        "source_failures": { "type": "integer", "minimum": 1, "maximum": 2 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size_bytes", "modified_at", "captured_at", "status"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^Inbox/(?!.*(?:^|/)\\.\\.?/).+" },
+        "size_bytes": { "type": "integer", "minimum": 0 },
+        "modified_at": { "$ref": "#/$defs/utcDateTime" },
+        "captured_at": { "$ref": "#/$defs/capture" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "source_key": { "$ref": "#/$defs/sha256" },
+        "adapter": { "$ref": "#/$defs/adapter" },
+        "source_adapter": { "$ref": "#/$defs/adapter" },
+        "parser_version": { "type": "string", "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
+        "status": { "enum": ["pending", "parsing", "success", "failed", "unsupported", "cancelled", "source_missing"] },
+        "last_attempt_at": { "$ref": "#/$defs/utcDateTime" },
+        "last_success_at": { "$ref": "#/$defs/utcDateTime" },
+        "outputs": { "type": "array", "items": { "$ref": "#/$defs/output" } },
+        "error": { "$ref": "#/$defs/error" },
+        "dismissed": { "const": true }
+      }
+    }
+  }
+}

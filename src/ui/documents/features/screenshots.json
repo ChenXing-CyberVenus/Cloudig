@@ -1,0 +1,2920 @@
+{
+  "format": "cloudig/feature-guide-crops/1",
+  "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+  "images": {
+    "en/dawn/01-welcome": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identities,.welcome-primary-actions",
+      "bounds": {
+        "bottom": 814.9375,
+        "language": "en",
+        "left": 823,
+        "right": 1097,
+        "theme": "dawn",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 412,
+        "height": 298
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "ae8fe0e898925504ff598ef877d046763efe45822f65b3b5778dfbab13e57ddd",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/01-welcome.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/01-welcome.json"
+    },
+    "en/dawn/03-batch-settings": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings-popover]",
+      "bounds": {
+        "bottom": 630.5,
+        "language": "en",
+        "left": 658,
+        "right": 1032,
+        "theme": "dawn",
+        "top": 150,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 561,
+        "height": 721
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "cbba4ca5a0340efee1f991f8dc5934a93c1e764c1a7dc4907d65abfa21dafb30",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/03-batch-settings.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/03-batch-settings.json"
+    },
+    "en/dawn/03-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings],[data-archiver-parse-all]",
+      "bounds": {
+        "bottom": 172.40625,
+        "language": "en",
+        "left": 875.1979370117188,
+        "right": 1024.0000228881836,
+        "theme": "dawn",
+        "top": 120.40625,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 225,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "9a4724a9de90b7fc99c8db83d78e8138d71fef9553347f2b1c675b66d07f2759",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/03-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/03-entry.json"
+    },
+    "en/dawn/03b-batch-confirm": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 763.1458740234375,
+        "language": "en",
+        "left": 688,
+        "right": 1232,
+        "theme": "dawn",
+        "top": 316.85418701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 670
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "d998c0c7ec66d06b9b7940b13cac6ac6bf3084dee1f77d878afce5feed47d570",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/03b-batch-confirm.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/03b-batch-confirm.json"
+    },
+    "en/dawn/04-claude-json": {
+      "kind": "native-webview-crop",
+      "selector": "[data-claude-search],.archiver-claude-columns,[data-claude-row],[data-claude-one-click]",
+      "bounds": {
+        "bottom": 450.2395935058594,
+        "language": "en",
+        "left": 424,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 246.73959350585938,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 306
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "bc53441b8627d338e9eaccbd79e08b6d369211002bf207c572f6422101269c50",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/04-claude-json.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/04-claude-json.json"
+    },
+    "en/dawn/04-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-source-claude]",
+      "bounds": {
+        "bottom": 329,
+        "language": "en",
+        "left": 975,
+        "right": 1033,
+        "theme": "dawn",
+        "top": 271,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 88,
+        "height": 88
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/04-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/04-entry.json"
+    },
+    "en/dawn/05-reader-cover": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-catalog",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 0,
+        "right": 412,
+        "theme": "dawn",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 618,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "30711bfaf3d463a9d696146a1b6028306e5deca84821518f95b254b1d16acc9f",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/05-reader-cover.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/05-reader-cover.json"
+    },
+    "en/dawn/06-conversation": {
+      "kind": "native-webview-crop",
+      "selector": "[data-reader-conversation-scroll]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 388,
+        "right": 1684,
+        "theme": "dawn",
+        "top": 231.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 1273
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "e6aad16f7cb72f99e08eb8b4b531343b6557bdd335334ab6070a81cfcfbc7d01",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/06-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/06-conversation.json"
+    },
+    "en/dawn/07-branches": {
+      "kind": "native-webview-crop",
+      "selector": "[data-branch-parent]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 623,
+        "right": 1499,
+        "theme": "dawn",
+        "top": 982.8541870117188,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 220,
+        "height": 70
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "c7a67615ebb5a4e68a005764c8b1bee3d1c8e7eb2ea5f3f9e19c54d592ea0f68",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "a2954eb88c548e3458b9a0926ddb411cb3aa5912c1e4c5382dbcb35124abd117",
+      "native_crop_pixels": {
+        "width": 1315,
+        "height": 146
+      },
+      "refinement": {
+        "y": 10,
+        "width": 220,
+        "height": 70,
+        "x": 1085
+      },
+      "file": "en/dawn/07-branches.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/07-branches.json"
+    },
+    "en/dawn/07-navigation": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-navigation",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 1660,
+        "right": 1920,
+        "theme": "dawn",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 390,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "517d6958c0654a0e5bfe333b2ea89cbd0269bff703eda622be23928c13bff6e5",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/07-navigation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/07-navigation.json"
+    },
+    "en/dawn/07-toolbar": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-toolbar",
+      "bounds": {
+        "bottom": 255.59375,
+        "language": "en",
+        "left": 388,
+        "right": 1684,
+        "theme": "dawn",
+        "top": 183.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 109
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "290f29992f8e386ebe2b06e3ceb27ae5b76c3a43beb1a21814264323d21f3003",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/07-toolbar.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/07-toolbar.json"
+    },
+    "en/dawn/08-conversation-info": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-header,.conversation-info-metadata,[data-conversation-name],[data-conversation-models]",
+      "bounds": {
+        "bottom": 414.3645935058594,
+        "language": "en",
+        "left": 424,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 544
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "18b12cf3ac456afa00762f72d5c7a3773d7ba6b5bc11b8b70cec69c2101942f2",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/08-conversation-info.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/08-conversation-info.json"
+    },
+    "en/dawn/08-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-action=edit-conversation]",
+      "bounds": {
+        "bottom": 107,
+        "language": "en",
+        "left": 1413,
+        "right": 1499,
+        "theme": "dawn",
+        "top": 55,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 130,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "8802f8a38a52c9aa7b50ba358e24f0834d5f7ea16a9dcd1d5491797e9c929884",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/08-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/08-entry.json"
+    },
+    "en/dawn/09a-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identity-user",
+      "bounds": {
+        "bottom": 750.9375,
+        "language": "en",
+        "left": 852,
+        "right": 956,
+        "theme": "dawn",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 156,
+        "height": 202
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "2c5c82fbda97b293fafd6693907ed649b0f814f3f366c3df4594bbe715ee354c",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/09a-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/09a-entry.json"
+    },
+    "en/dawn/09a-identity-global": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-global",
+      "bounds": {
+        "bottom": 773.9687957763672,
+        "language": "en",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "dawn",
+        "top": 124.66667175292969,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 974
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "9bdfcbd29cbd4a3bbe342ee4e80752ec581c4c1912c3541160239482224489af",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/09a-identity-global.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/09a-identity-global.json"
+    },
+    "en/dawn/09b-identity-platforms": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-platforms",
+      "bounds": {
+        "bottom": 965.3020935058594,
+        "language": "en",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "dawn",
+        "top": 131.30209350585938,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 1252
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "e1c53f53e8fae6ff6b90a355a64142d26ba8c951a0cce9e9f1acdb3ca09f1046",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/09b-identity-platforms.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/09b-identity-platforms.json"
+    },
+    "en/dawn/10-content-time-edit": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-time",
+      "bounds": {
+        "bottom": 815.0312805175781,
+        "language": "en",
+        "left": 424,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 390.3645935058594,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 638
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "cf29d27720cfe5472bb2f2612025c64f6b0ee5358138fdc4c07568167642bfaa",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/10-content-time-edit.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/10-content-time-edit.json"
+    },
+    "en/dawn/11-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-conversation-time-open]",
+      "bounds": {
+        "bottom": 642.03125,
+        "language": "en",
+        "left": 628.3333740234375,
+        "right": 767.3333740234375,
+        "theme": "dawn",
+        "top": 586.03125,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 210,
+        "height": 85
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "6148a5a42b8539df8d90ce01b94d0a76c45315be0bbe653eea90d738f85e80d4",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/11-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/11-entry.json"
+    },
+    "en/dawn/11-time-create": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-actions",
+      "bounds": {
+        "bottom": 1076,
+        "language": "en",
+        "left": 724,
+        "right": 1348,
+        "theme": "dawn",
+        "top": 948,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 936,
+        "height": 192
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "7170a2bbe00308acb2dd24ff3671e7f37d289bc3e841dd4b228acf24f053c2a4",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/11-time-create.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/11-time-create.json"
+    },
+    "en/dawn/11-time-sovereign": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-sovereign .time-cover-bank-header,[data-time-sovereign-list] > *",
+      "bounds": {
+        "bottom": 426,
+        "language": "en",
+        "left": 1324,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 561
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "587ed3d44499d27b79a951b261828e53e45ab53a5e61bbc7b780e8bcfa16c44d",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/11-time-sovereign.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/11-time-sovereign.json"
+    },
+    "en/dawn/11-time-terran": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-terran .time-cover-bank-header,[data-time-terran-list] > *",
+      "bounds": {
+        "bottom": 1076,
+        "language": "en",
+        "left": 424,
+        "right": 748,
+        "theme": "dawn",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 1536
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "c35146d5a48fc1fbfff0756003dbacc721763a3263d80676cc9d45895106a6df",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/11-time-terran.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/11-time-terran.json"
+    },
+    "en/dawn/11b-time-editor": {
+      "kind": "native-webview-crop",
+      "selector": "[data-time-editor-body] > .time-editor-section",
+      "bounds": {
+        "bottom": 779.6666870117188,
+        "language": "en",
+        "left": 744,
+        "right": 1328,
+        "theme": "dawn",
+        "top": 276,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 876,
+        "height": 756
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "5fbeac452b7539d7439480cd6fffc4c721c8a855647adb59abfd7ac1b0326d21",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/11b-time-editor.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/11b-time-editor.json"
+    },
+    "en/dawn/12-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-shell-action=change-library]",
+      "bounds": {
+        "bottom": 48,
+        "language": "en",
+        "left": 1001.15625,
+        "right": 1140.75,
+        "theme": "dawn",
+        "top": 0,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 211,
+        "height": 72
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "d50e1d4d0c69f65f32dd8c2eda57973f2403c308f49504bf60665e4551fbc2e9",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/12-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/12-entry.json"
+    },
+    "en/dawn/12-move-library": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 745.5833740234375,
+        "language": "en",
+        "left": 688,
+        "right": 1232,
+        "theme": "dawn",
+        "top": 334.41668701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 618
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "b4d75d090ce9f1b0036314c04c006bf46ae68e6e8576956caef5d8b8f7897458",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/12-move-library.png",
+      "capture": "artifacts/v1-visual-audit/features-move-preview-final/en-dawn/guide/12-move-library.json"
+    },
+    "en/dawn/13-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-route-target='system/log']",
+      "bounds": {
+        "bottom": 306,
+        "language": "en",
+        "left": 1680,
+        "right": 1912,
+        "theme": "dawn",
+        "top": 260,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 348,
+        "height": 69
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "a5f52e68b966ea901a76b91498b148ed05363f4b99127e95a350fc729528a71f",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/13-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/13-entry.json"
+    },
+    "en/dawn/13-system-log": {
+      "kind": "native-webview-crop",
+      "selector": ".system-log-header,.system-log-error-row,.system-log-file-heading",
+      "bounds": {
+        "bottom": 362.3333549499512,
+        "language": "en",
+        "left": 408,
+        "right": 1512,
+        "theme": "dawn",
+        "top": 118,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1656,
+        "height": 367
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "3920dbfed3a15a43c952585e7a7dbe92042034d001203268b0780e2a2f0f68d3",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/13-system-log.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/13-system-log.json"
+    },
+    "en/dawn/14-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-message-identity",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 575,
+        "right": 703.90625,
+        "theme": "dawn",
+        "top": 247.35418701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 194,
+        "height": 90
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "9fc4221b73d72f1012e113571f7e6b6b04b498aba2a417d51e653aa1e437c545",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "154c22592c5273f3477c74845ea7158108cc1aa203c275053ee19612d73923c9",
+      "native_crop_pixels": {
+        "width": 194,
+        "height": 1249
+      },
+      "refinement": {
+        "y": 0,
+        "width": 194,
+        "height": 90,
+        "x": 0
+      },
+      "file": "en/dawn/14-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/14-entry.json"
+    },
+    "en/dawn/14-rename-in-conversation": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-header,.identity-editor-conversation",
+      "bounds": {
+        "bottom": 299.06251525878906,
+        "language": "en",
+        "left": 408.66668701171875,
+        "right": 1511.3334350585938,
+        "theme": "dawn",
+        "top": 12.666667938232422,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1655,
+        "height": 430
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "877835768b65d5501df40d96fe22476da5520afa22782621ee12672c1f424263",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/dawn/14-rename-in-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-en/guide/14-rename-in-conversation.json"
+    },
+    "en/star-night/01-welcome": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identities,.welcome-primary-actions",
+      "bounds": {
+        "bottom": 814.9375,
+        "language": "en",
+        "left": 823,
+        "right": 1097,
+        "theme": "star-night",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 412,
+        "height": 298
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "0a5f65cbd1e3e00ece4e982ab4ffd73ca899ad2e6e92ca043d96f56585a15029",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/01-welcome.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/01-welcome.json"
+    },
+    "en/star-night/03-batch-settings": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings-popover]",
+      "bounds": {
+        "bottom": 630.5,
+        "language": "en",
+        "left": 658,
+        "right": 1032,
+        "theme": "star-night",
+        "top": 150,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 561,
+        "height": 721
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "24955a6a8ccfe510cee5a4ddb239bbe656e66efdfb3b27e6041fa720220a5a1a",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/03-batch-settings.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/03-batch-settings.json"
+    },
+    "en/star-night/03-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings],[data-archiver-parse-all]",
+      "bounds": {
+        "bottom": 172.40625,
+        "language": "en",
+        "left": 875.1979370117188,
+        "right": 1024.0000228881836,
+        "theme": "star-night",
+        "top": 120.40625,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 225,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "78375fd0df0ac44abd138f0dad970f1fc01b46a3fa84d3b19e79ea9d87a908ea",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/03-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/03-entry.json"
+    },
+    "en/star-night/03b-batch-confirm": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 763.1458740234375,
+        "language": "en",
+        "left": 688,
+        "right": 1232,
+        "theme": "star-night",
+        "top": 316.85418701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 670
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "31e6b6966758bd86d4efefc18bc3b675ceabb9846836b489e5b06908b6eb21b4",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/03b-batch-confirm.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/03b-batch-confirm.json"
+    },
+    "en/star-night/04-claude-json": {
+      "kind": "native-webview-crop",
+      "selector": "[data-claude-search],.archiver-claude-columns,[data-claude-row],[data-claude-one-click]",
+      "bounds": {
+        "bottom": 450.2395935058594,
+        "language": "en",
+        "left": 424,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 246.73959350585938,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 306
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "d07853fdd87d3379d0618fa38f6bda4561f33bd05895ca523c00c3a4d3ecbd33",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/04-claude-json.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/04-claude-json.json"
+    },
+    "en/star-night/04-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-source-claude]",
+      "bounds": {
+        "bottom": 329,
+        "language": "en",
+        "left": 975,
+        "right": 1033,
+        "theme": "star-night",
+        "top": 271,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 88,
+        "height": 88
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/04-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/04-entry.json"
+    },
+    "en/star-night/05-reader-cover": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-catalog",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 0,
+        "right": 412,
+        "theme": "star-night",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 618,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "93e6621f2b4ae5b2721ec8e91a0070d6479af39a8806eb7da8072b6eaa54d8aa",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/05-reader-cover.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/05-reader-cover.json"
+    },
+    "en/star-night/06-conversation": {
+      "kind": "native-webview-crop",
+      "selector": "[data-reader-conversation-scroll]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 388,
+        "right": 1684,
+        "theme": "star-night",
+        "top": 231.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 1273
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "80fc3a09cf27888a701c67be5a55253cb2a7093a23bc5cdca716192b5932e35a",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/06-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/06-conversation.json"
+    },
+    "en/star-night/07-branches": {
+      "kind": "native-webview-crop",
+      "selector": "[data-branch-parent]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 623,
+        "right": 1499,
+        "theme": "star-night",
+        "top": 982.8541870117188,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 220,
+        "height": 70
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "c96e36ce0472336bba70a456425261349d43755cee9de3112f7c6f1c0fd17ba3",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "e8162a71a9cff16dcb2f963ac50cd10b254c5df7ec66cfa6236da0868fcd165f",
+      "native_crop_pixels": {
+        "width": 1315,
+        "height": 146
+      },
+      "refinement": {
+        "y": 10,
+        "width": 220,
+        "height": 70,
+        "x": 1085
+      },
+      "file": "en/star-night/07-branches.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/07-branches.json"
+    },
+    "en/star-night/07-navigation": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-navigation",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 1660,
+        "right": 1920,
+        "theme": "star-night",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 390,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "1b1b429f063cd5c0cd5ff10963f579c2f0b9a8eb3f22943d1fabea36f6b29d1f",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/07-navigation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/07-navigation.json"
+    },
+    "en/star-night/07-toolbar": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-toolbar",
+      "bounds": {
+        "bottom": 255.59375,
+        "language": "en",
+        "left": 388,
+        "right": 1684,
+        "theme": "star-night",
+        "top": 183.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 109
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "6eece14173f32aa8725dd8534418bf801d38b33268e8413090a4d6bbf841c3ef",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/07-toolbar.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/07-toolbar.json"
+    },
+    "en/star-night/08-conversation-info": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-header,.conversation-info-metadata,[data-conversation-name],[data-conversation-models]",
+      "bounds": {
+        "bottom": 414.3645935058594,
+        "language": "en",
+        "left": 424,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 544
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "d3578dcdf8195020d969c7368c4ba5df649856c9a5a46c7e9776bd05e67e4d34",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/08-conversation-info.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/08-conversation-info.json"
+    },
+    "en/star-night/08-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-action=edit-conversation]",
+      "bounds": {
+        "bottom": 107,
+        "language": "en",
+        "left": 1413,
+        "right": 1499,
+        "theme": "star-night",
+        "top": 55,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 130,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "f1879a425b3aa9494086355d17e643d84698cb6a5e8eb7045fec8937775ce6b6",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/08-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/08-entry.json"
+    },
+    "en/star-night/09a-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identity-user",
+      "bounds": {
+        "bottom": 750.9375,
+        "language": "en",
+        "left": 852,
+        "right": 956,
+        "theme": "star-night",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 156,
+        "height": 202
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "414d9c4caad509213881c789a1cadc908eb8caf4fae390dfcd5bfb44ff02f73c",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/09a-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/09a-entry.json"
+    },
+    "en/star-night/09a-identity-global": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-global",
+      "bounds": {
+        "bottom": 773.9687957763672,
+        "language": "en",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "star-night",
+        "top": 124.66667175292969,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 974
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "ca8d8f20d5b39e2a104ca3d71c4ae58e615559e2039cf5827f81ff2f36502a47",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/09a-identity-global.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/09a-identity-global.json"
+    },
+    "en/star-night/09b-identity-platforms": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-platforms",
+      "bounds": {
+        "bottom": 965.3020935058594,
+        "language": "en",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "star-night",
+        "top": 131.30209350585938,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 1252
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "d52f6002a292a4bb61f0a357d7319543109ad56fb69955a1319e49474e9ff2d6",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/09b-identity-platforms.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/09b-identity-platforms.json"
+    },
+    "en/star-night/10-content-time-edit": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-time",
+      "bounds": {
+        "bottom": 815.0312805175781,
+        "language": "en",
+        "left": 424,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 390.3645935058594,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 638
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "a8bf983aeb70ef0097cf1a2b4b2d58e53d7d4e430ad08c45ff9ae0330e2ba368",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/10-content-time-edit.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/10-content-time-edit.json"
+    },
+    "en/star-night/11-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-conversation-time-open]",
+      "bounds": {
+        "bottom": 642.03125,
+        "language": "en",
+        "left": 628.3333740234375,
+        "right": 767.3333740234375,
+        "theme": "star-night",
+        "top": 586.03125,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 210,
+        "height": 85
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "bb95da9fa82e4dac636599c6f40bc60c1dae09cddc22a0af763c879732c6ecfe",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/11-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/11-entry.json"
+    },
+    "en/star-night/11-time-create": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-actions",
+      "bounds": {
+        "bottom": 1076,
+        "language": "en",
+        "left": 724,
+        "right": 1348,
+        "theme": "star-night",
+        "top": 948,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 936,
+        "height": 192
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "6f5b77d401582c6bdf1ddba0a89977c26ce76bd71fc261cb8e8f918accb03455",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/11-time-create.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/11-time-create.json"
+    },
+    "en/star-night/11-time-sovereign": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-sovereign .time-cover-bank-header,[data-time-sovereign-list] > *",
+      "bounds": {
+        "bottom": 426,
+        "language": "en",
+        "left": 1324,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 561
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "e8953a4f2747a15a3652516aeb2ce7348e9bfd6b304992e6d2e0413de5a80974",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/11-time-sovereign.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/11-time-sovereign.json"
+    },
+    "en/star-night/11-time-terran": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-terran .time-cover-bank-header,[data-time-terran-list] > *",
+      "bounds": {
+        "bottom": 1076,
+        "language": "en",
+        "left": 424,
+        "right": 748,
+        "theme": "star-night",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 1536
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "4c9d341ff425eba71f891122271cae0afe381597854e29d68776b9048759dcef",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/11-time-terran.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/11-time-terran.json"
+    },
+    "en/star-night/11b-time-editor": {
+      "kind": "native-webview-crop",
+      "selector": "[data-time-editor-body] > .time-editor-section",
+      "bounds": {
+        "bottom": 779.6666870117188,
+        "language": "en",
+        "left": 744,
+        "right": 1328,
+        "theme": "star-night",
+        "top": 276,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 876,
+        "height": 756
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "663202c17582e8e2d2a838c9868a46f9b65b5688f95612eeeb65eb350c8fe369",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/11b-time-editor.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/11b-time-editor.json"
+    },
+    "en/star-night/12-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-shell-action=change-library]",
+      "bounds": {
+        "bottom": 48,
+        "language": "en",
+        "left": 1000.3958740234375,
+        "right": 1139.9896240234375,
+        "theme": "star-night",
+        "top": 0,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 210,
+        "height": 72
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "fef6406ff2c8e94962f7d379168a9d497427b848be8871cfb3620117dbcae3a3",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/12-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/12-entry.json"
+    },
+    "en/star-night/12-move-library": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 745.5833740234375,
+        "language": "en",
+        "left": 688,
+        "right": 1232,
+        "theme": "star-night",
+        "top": 334.41668701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 618
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "210ce6d4bb05487eb865b5bf64904fd46bc092a4c9d7f70a00bcd15e1b972ce4",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/12-move-library.png",
+      "capture": "artifacts/v1-visual-audit/features-move-preview-final/en-star-night/guide/12-move-library.json"
+    },
+    "en/star-night/13-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-route-target='system/log']",
+      "bounds": {
+        "bottom": 306,
+        "language": "en",
+        "left": 1680,
+        "right": 1912,
+        "theme": "star-night",
+        "top": 260,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 348,
+        "height": 69
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "6399f272ec3048fd087e146f782553dac03ff3328e5a47a5ac6503b21bf5d627",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/13-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/13-entry.json"
+    },
+    "en/star-night/13-system-log": {
+      "kind": "native-webview-crop",
+      "selector": ".system-log-header,.system-log-error-row,.system-log-file-heading",
+      "bounds": {
+        "bottom": 362.3333549499512,
+        "language": "en",
+        "left": 408,
+        "right": 1512,
+        "theme": "star-night",
+        "top": 118,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1656,
+        "height": 367
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "c1782ad65b29f6fb49044454ef336e416a8d33c5eeab43f0590d89411a62ddbd",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/13-system-log.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/13-system-log.json"
+    },
+    "en/star-night/14-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-message-identity",
+      "bounds": {
+        "bottom": 1080,
+        "language": "en",
+        "left": 575,
+        "right": 703.90625,
+        "theme": "star-night",
+        "top": 247.35418701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 194,
+        "height": 90
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "780d27596251dd1410740b4a9f8322c888efe5b6e3a8cb27aff088cf5c9dc38a",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "5822b1134c295d32bdc215231876a36200a50665d125c6df5a256643b2dfacc4",
+      "native_crop_pixels": {
+        "width": 194,
+        "height": 1249
+      },
+      "refinement": {
+        "y": 0,
+        "width": 194,
+        "height": 90,
+        "x": 0
+      },
+      "file": "en/star-night/14-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/14-entry.json"
+    },
+    "en/star-night/14-rename-in-conversation": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-header,.identity-editor-conversation",
+      "bounds": {
+        "bottom": 299.06251525878906,
+        "language": "en",
+        "left": 408.66668701171875,
+        "right": 1511.3334350585938,
+        "theme": "star-night",
+        "top": 12.666667938232422,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1655,
+        "height": 430
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "3c44ec0fbf837aa0c05e37d940a4839015ce874d010bb3e75f9c2b447d9189c7",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "en/star-night/14-rename-in-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-en/guide/14-rename-in-conversation.json"
+    },
+    "zh-CN/dawn/01-welcome": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identities,.welcome-primary-actions",
+      "bounds": {
+        "bottom": 814.9375,
+        "language": "zh-CN",
+        "left": 823,
+        "right": 1097,
+        "theme": "dawn",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 412,
+        "height": 298
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "776af01a58a4bdf406e7b4ae06bf54de1daa71ddbb59737e51445b2e4d66ca52",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/01-welcome.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/01-welcome.json"
+    },
+    "zh-CN/dawn/03-batch-settings": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings-popover]",
+      "bounds": {
+        "bottom": 612.25,
+        "language": "zh-CN",
+        "left": 658,
+        "right": 1032,
+        "theme": "dawn",
+        "top": 150,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 561,
+        "height": 694
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "a0c898f27a01c0559e31714642938ac4942f8ec8ba0918f7f668220f2ceac5d5",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/03-batch-settings.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/03-batch-settings.json"
+    },
+    "zh-CN/dawn/03-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings],[data-archiver-parse-all]",
+      "bounds": {
+        "bottom": 172.40625,
+        "language": "zh-CN",
+        "left": 875.1979370117188,
+        "right": 1024.0000228881836,
+        "theme": "dawn",
+        "top": 120.40625,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 225,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "023c621be0c282afa50c8acea42f555953aab927d5a8f2fb625450b9f0ffd681",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/03-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/03-entry.json"
+    },
+    "zh-CN/dawn/03b-batch-confirm": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 750.75,
+        "language": "zh-CN",
+        "left": 688,
+        "right": 1232,
+        "theme": "dawn",
+        "top": 329.25,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 634
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "9b50e5a74448412c9ac6b28085d36a4b5d367f14c7d28e9f89595bdfe235d707",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/03b-batch-confirm.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/03b-batch-confirm.json"
+    },
+    "zh-CN/dawn/04-claude-json": {
+      "kind": "native-webview-crop",
+      "selector": "[data-claude-search],.archiver-claude-columns,[data-claude-row],[data-claude-one-click]",
+      "bounds": {
+        "bottom": 450.2395935058594,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 246.73959350585938,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 306
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "780c59499720a5af2277636bfaa56ecb7cc55c9f3b9eb91c9bac69e4ec31a5ac",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/04-claude-json.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/04-claude-json.json"
+    },
+    "zh-CN/dawn/04-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-source-claude]",
+      "bounds": {
+        "bottom": 329,
+        "language": "zh-CN",
+        "left": 975,
+        "right": 1033,
+        "theme": "dawn",
+        "top": 271,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 88,
+        "height": 88
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/04-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/04-entry.json"
+    },
+    "zh-CN/dawn/05-reader-cover": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-catalog",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 0,
+        "right": 412,
+        "theme": "dawn",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 618,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "b3811039e5a472f1f283110ad2f054ed05a4185b59d1e670a12fbef7c59f8cd9",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/05-reader-cover.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/05-reader-cover.json"
+    },
+    "zh-CN/dawn/06-conversation": {
+      "kind": "native-webview-crop",
+      "selector": "[data-reader-conversation-scroll]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 388,
+        "right": 1684,
+        "theme": "dawn",
+        "top": 231.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 1273
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "13b2c8c0809216dd226f246995276a677adea838deeff2929808f426eee57de5",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/06-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/06-conversation.json"
+    },
+    "zh-CN/dawn/07-branches": {
+      "kind": "native-webview-crop",
+      "selector": "[data-branch-parent]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 623,
+        "right": 1499,
+        "theme": "dawn",
+        "top": 983.03125,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 220,
+        "height": 70
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "bc774f27412f55c258dc6d2b7840acc805dd59451f522cfa0d820b42d2bb18a0",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "fc42f3bdb0935e9b25cf90bc07355b8b072eaa37b9328eefbb2c6edca40cf4c0",
+      "native_crop_pixels": {
+        "width": 1315,
+        "height": 146
+      },
+      "refinement": {
+        "y": 10,
+        "width": 220,
+        "height": 70,
+        "x": 1085
+      },
+      "file": "zh-CN/dawn/07-branches.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/07-branches.json"
+    },
+    "zh-CN/dawn/07-navigation": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-navigation",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 1660,
+        "right": 1920,
+        "theme": "dawn",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 390,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "ef24ce3cb59cd3c5d8b7b32ae98f1e743b50a00f10c9c8dab5c908d2ea585c7c",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/07-navigation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/07-navigation.json"
+    },
+    "zh-CN/dawn/07-toolbar": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-toolbar",
+      "bounds": {
+        "bottom": 255.59375,
+        "language": "zh-CN",
+        "left": 388,
+        "right": 1684,
+        "theme": "dawn",
+        "top": 183.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 109
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "835755496b5fbf720d9739c1d8f4b15eb4c5d1987c21c8e6da5710b804f7bfe3",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/07-toolbar.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/07-toolbar.json"
+    },
+    "zh-CN/dawn/08-conversation-info": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-header,.conversation-info-metadata,[data-conversation-name],[data-conversation-models]",
+      "bounds": {
+        "bottom": 396.90625,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 518
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "7f9d12e5805d45ed376e3a55097a05c08e89757f4a7e75e8c91f2c780e3d9824",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/08-conversation-info.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/08-conversation-info.json"
+    },
+    "zh-CN/dawn/08-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-action=edit-conversation]",
+      "bounds": {
+        "bottom": 107,
+        "language": "zh-CN",
+        "left": 1413,
+        "right": 1499,
+        "theme": "dawn",
+        "top": 55,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 130,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "f7f4726011a3d410d218860b88bdadf74e4971c171afbdfc1168a7aad1e25b8d",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/08-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/08-entry.json"
+    },
+    "zh-CN/dawn/09a-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identity-user",
+      "bounds": {
+        "bottom": 750.9375,
+        "language": "zh-CN",
+        "left": 852,
+        "right": 956,
+        "theme": "dawn",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 156,
+        "height": 202
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "9a83889d234afba77f9bd74bd9d5510240089bd30d72af1a2a86a05c3aeaa481",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/09a-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/09a-entry.json"
+    },
+    "zh-CN/dawn/09a-identity-global": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-global",
+      "bounds": {
+        "bottom": 765.9687957763672,
+        "language": "zh-CN",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "dawn",
+        "top": 124.66667175292969,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 962
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "447328f2a9f998eb6a8e4bb893547c8ac79b2c4ec59823a6c7d0459da4e6b4e9",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/09a-identity-global.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/09a-identity-global.json"
+    },
+    "zh-CN/dawn/09b-identity-platforms": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-platforms",
+      "bounds": {
+        "bottom": 965.3021087646484,
+        "language": "zh-CN",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "dawn",
+        "top": 144.6354217529297,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 1232
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "e4418f13f920d79384b1658f6a87e2e1171a065ff8360e015c41ddb7297c6602",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/09b-identity-platforms.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/09b-identity-platforms.json"
+    },
+    "zh-CN/dawn/10-content-time-edit": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-time",
+      "bounds": {
+        "bottom": 796.90625,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 372.90625,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 637
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "e9e0cc7f99070ae74763e6a2670eb1e7174301c374029328cae88f35807a0dad",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/10-content-time-edit.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/10-content-time-edit.json"
+    },
+    "zh-CN/dawn/11-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-conversation-time-open]",
+      "bounds": {
+        "bottom": 623.2396240234375,
+        "language": "zh-CN",
+        "left": 628.3333740234375,
+        "right": 767.3333740234375,
+        "theme": "dawn",
+        "top": 567.2396240234375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 210,
+        "height": 85
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "507baab5e3b65d2ebbede65892210d33d13d33be46b86fb4bcc3507288d1838f",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/11-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/11-entry.json"
+    },
+    "zh-CN/dawn/11-time-create": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-actions",
+      "bounds": {
+        "bottom": 1076,
+        "language": "zh-CN",
+        "left": 724,
+        "right": 1348,
+        "theme": "dawn",
+        "top": 948,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 936,
+        "height": 192
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "2815c29c0b88eef192b754412aaffb62dbe32230f3d5ea1dcf5e712aa916c02f",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/11-time-create.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/11-time-create.json"
+    },
+    "zh-CN/dawn/11-time-sovereign": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-sovereign .time-cover-bank-header,[data-time-sovereign-list] > *",
+      "bounds": {
+        "bottom": 426,
+        "language": "zh-CN",
+        "left": 1324,
+        "right": 1648,
+        "theme": "dawn",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 561
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "5ac0398c33517793e5a19115e95f727aa46908e71a7d809aea1fe92e51d42069",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/11-time-sovereign.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/11-time-sovereign.json"
+    },
+    "zh-CN/dawn/11-time-terran": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-terran .time-cover-bank-header,[data-time-terran-list] > *",
+      "bounds": {
+        "bottom": 1076,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 748,
+        "theme": "dawn",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 1536
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "1eb053205df8fbc16a483c83197edbe5cacd5ef20432b51ad24120c6c2c4b5be",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/11-time-terran.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/11-time-terran.json"
+    },
+    "zh-CN/dawn/11b-time-editor": {
+      "kind": "native-webview-crop",
+      "selector": "[data-time-editor-body] > .time-editor-section",
+      "bounds": {
+        "bottom": 774.3333587646484,
+        "language": "zh-CN",
+        "left": 744,
+        "right": 1328,
+        "theme": "dawn",
+        "top": 276,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 876,
+        "height": 748
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "b8c4519f5303373f036251b0394cc6964d3163549964da43f9be7409dbbda4cc",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/11b-time-editor.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/11b-time-editor.json"
+    },
+    "zh-CN/dawn/12-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-shell-action=change-library]",
+      "bounds": {
+        "bottom": 47.33333492279053,
+        "language": "zh-CN",
+        "left": 1069.666748046875,
+        "right": 1183.666748046875,
+        "theme": "dawn",
+        "top": 0.6666669845581055,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 172,
+        "height": 71
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "aeedad7b370ec84a5013cf92a32ab5cd37eef78dbf0ab47cc6b751c2506fca97",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/12-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/12-entry.json"
+    },
+    "zh-CN/dawn/12-move-library": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 730.0521240234375,
+        "language": "zh-CN",
+        "left": 688,
+        "right": 1232,
+        "theme": "dawn",
+        "top": 349.94793701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 572
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "d6bdf270ae25a203e23d82c838677ae408f43b447512746368b075b9a84b49e2",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/12-move-library.png",
+      "capture": "artifacts/v1-visual-audit/features-move-preview-final/zh-CN-dawn/guide/12-move-library.json"
+    },
+    "zh-CN/dawn/13-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-route-target='system/log']",
+      "bounds": {
+        "bottom": 306,
+        "language": "zh-CN",
+        "left": 1680,
+        "right": 1912,
+        "theme": "dawn",
+        "top": 260,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 348,
+        "height": 69
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "c4593a35240ad230cda02f3afd951935c0fc29164eeb02bb5212459ff13e8de4",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/13-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/13-entry.json"
+    },
+    "zh-CN/dawn/13-system-log": {
+      "kind": "native-webview-crop",
+      "selector": ".system-log-header,.system-log-error-row,.system-log-file-heading",
+      "bounds": {
+        "bottom": 361,
+        "language": "zh-CN",
+        "left": 408,
+        "right": 1512,
+        "theme": "dawn",
+        "top": 118,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1656,
+        "height": 365
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "18307db5c2a6950112db0fb652b2cefa62ed2297f896b01772448e149eabd884",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/13-system-log.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/13-system-log.json"
+    },
+    "zh-CN/dawn/14-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-message-identity",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 575,
+        "right": 708.0208358764648,
+        "theme": "dawn",
+        "top": 247.35418701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 201,
+        "height": 90
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "5f0173b9e78c9912e16042d893f623683cc4f96c7b68d56d2079524e2068f4c1",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "a25ccda7f99d7a5e38ab88cfaed271222f8658a1d6f6f3399e7f8dce4ab06513",
+      "native_crop_pixels": {
+        "width": 201,
+        "height": 1249
+      },
+      "refinement": {
+        "y": 0,
+        "width": 201,
+        "height": 90,
+        "x": 0
+      },
+      "file": "zh-CN/dawn/14-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/14-entry.json"
+    },
+    "zh-CN/dawn/14-rename-in-conversation": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-header,.identity-editor-conversation",
+      "bounds": {
+        "bottom": 295.0625,
+        "language": "zh-CN",
+        "left": 408.66668701171875,
+        "right": 1511.3334350585938,
+        "theme": "dawn",
+        "top": 12.666667938232422,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1655,
+        "height": 424
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "b0b872121f231d16c55294a57b99755365d93a59ab01afad89c4c9fd0e6cd4a6",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/dawn/14-rename-in-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-dawn-zh/guide/14-rename-in-conversation.json"
+    },
+    "zh-CN/star-night/01-welcome": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identities,.welcome-primary-actions",
+      "bounds": {
+        "bottom": 814.9375,
+        "language": "zh-CN",
+        "left": 823,
+        "right": 1097,
+        "theme": "star-night",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 412,
+        "height": 298
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "3a365b4229ae4b3f30537f17e8d736bae4b1a8be28dc4f76bd31e29592628e37",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/01-welcome.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/01-welcome.json"
+    },
+    "zh-CN/star-night/03-batch-settings": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings-popover]",
+      "bounds": {
+        "bottom": 612.25,
+        "language": "zh-CN",
+        "left": 658,
+        "right": 1032,
+        "theme": "star-night",
+        "top": 150,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 561,
+        "height": 694
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "7c8cc46f73b0041dca3a7e1fb17ec78bf604c0242f5a1f5e407bc72594e4e6ac",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/03-batch-settings.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/03-batch-settings.json"
+    },
+    "zh-CN/star-night/03-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-parse-settings],[data-archiver-parse-all]",
+      "bounds": {
+        "bottom": 172.40625,
+        "language": "zh-CN",
+        "left": 875.1979370117188,
+        "right": 1024.0000228881836,
+        "theme": "star-night",
+        "top": 120.40625,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 225,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "3836c6936f557cf78fcb30a2759fdb658b1e930d5f74b29bab0c8edb428a4b7f",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/03-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/03-entry.json"
+    },
+    "zh-CN/star-night/03b-batch-confirm": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 750.75,
+        "language": "zh-CN",
+        "left": 688,
+        "right": 1232,
+        "theme": "star-night",
+        "top": 329.25,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 634
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "a354ce94971164a7474144111fb7829b8be4eb92ee064a76f024377c0b229b99",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/03b-batch-confirm.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/03b-batch-confirm.json"
+    },
+    "zh-CN/star-night/04-claude-json": {
+      "kind": "native-webview-crop",
+      "selector": "[data-claude-search],.archiver-claude-columns,[data-claude-row],[data-claude-one-click]",
+      "bounds": {
+        "bottom": 450.2395935058594,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 246.73959350585938,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 306
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "2c01f82b5774225496f78bbd7b5b5cdf88e684c6707723d99fe46ab81cd7d368",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/04-claude-json.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/04-claude-json.json"
+    },
+    "zh-CN/star-night/04-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-source-claude]",
+      "bounds": {
+        "bottom": 329,
+        "language": "zh-CN",
+        "left": 975,
+        "right": 1033,
+        "theme": "star-night",
+        "top": 271,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 88,
+        "height": 88
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/04-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/04-entry.json"
+    },
+    "zh-CN/star-night/05-reader-cover": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-catalog",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 0,
+        "right": 412,
+        "theme": "star-night",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 618,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "0c39ac7e79a103d736f1ba53d50d98232d00f7ea96dbc1d91f466c50e715ec1a",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/05-reader-cover.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/05-reader-cover.json"
+    },
+    "zh-CN/star-night/06-conversation": {
+      "kind": "native-webview-crop",
+      "selector": "[data-reader-conversation-scroll]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 388,
+        "right": 1684,
+        "theme": "star-night",
+        "top": 231.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 1273
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "a26ac17df2c9885eae79c005d4dd2d88060a29f1e334319579c728b74507ce37",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/06-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/06-conversation.json"
+    },
+    "zh-CN/star-night/07-branches": {
+      "kind": "native-webview-crop",
+      "selector": "[data-branch-parent]",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 623,
+        "right": 1499,
+        "theme": "star-night",
+        "top": 983.03125,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 220,
+        "height": 70
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "b329722d256b4433b3ebe40ac01474af2e8732716bb3717ac2cbc45fdbcc3ac8",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "448a5b720fa28a4b328110acf98d5cdc6ed4955db444c75f661394ea4f4fa326",
+      "native_crop_pixels": {
+        "width": 1315,
+        "height": 146
+      },
+      "refinement": {
+        "y": 10,
+        "width": 220,
+        "height": 70,
+        "x": 1085
+      },
+      "file": "zh-CN/star-night/07-branches.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/07-branches.json"
+    },
+    "zh-CN/star-night/07-navigation": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-navigation",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 1660,
+        "right": 1920,
+        "theme": "star-night",
+        "top": 36,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 390,
+        "height": 1566
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "ef94b8cc7748e0f149e401b9cedeadd2ebafba800b5ea521d30de4e1ead71127",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/07-navigation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/07-navigation.json"
+    },
+    "zh-CN/star-night/07-toolbar": {
+      "kind": "native-webview-crop",
+      "selector": ".reader-conversation-toolbar",
+      "bounds": {
+        "bottom": 255.59375,
+        "language": "zh-CN",
+        "left": 388,
+        "right": 1684,
+        "theme": "star-night",
+        "top": 183.59375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1944,
+        "height": 109
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "7f0b1c004009f05655b4de926662ece4761640e13121af29f4d27eda3d82ebb1",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/07-toolbar.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/07-toolbar.json"
+    },
+    "zh-CN/star-night/08-conversation-info": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-header,.conversation-info-metadata,[data-conversation-name],[data-conversation-models]",
+      "bounds": {
+        "bottom": 396.90625,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 518
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "79b46d4c3da375b7748dcd6e6b2f1b4e1368daf5e8273208b50924efeb3cba5d",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/08-conversation-info.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/08-conversation-info.json"
+    },
+    "zh-CN/star-night/08-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-action=edit-conversation]",
+      "bounds": {
+        "bottom": 107,
+        "language": "zh-CN",
+        "left": 1413,
+        "right": 1499,
+        "theme": "star-night",
+        "top": 55,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 130,
+        "height": 79
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "cd58ca161a4a3f1b2c39a012704e0168fbaf13dbe570510388fcbe9c8da20417",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/08-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/08-entry.json"
+    },
+    "zh-CN/star-night/09a-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".welcome-identity-user",
+      "bounds": {
+        "bottom": 750.9375,
+        "language": "zh-CN",
+        "left": 852,
+        "right": 956,
+        "theme": "star-night",
+        "top": 616.9375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 156,
+        "height": 202
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "db0d1b6ee4e15095003d8f81f6ec86fcad3bdc171922600793afaa249ae3ef2a",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/09a-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/09a-entry.json"
+    },
+    "zh-CN/star-night/09a-identity-global": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-global",
+      "bounds": {
+        "bottom": 765.9687957763672,
+        "language": "zh-CN",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "star-night",
+        "top": 124.66667175292969,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 962
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "dcbf9b5db4faf3669ffe0c9e4da913d25c5643fa28491574c64a50941b602d95",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/09a-identity-global.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/09a-identity-global.json"
+    },
+    "zh-CN/star-night/09b-identity-platforms": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-platforms",
+      "bounds": {
+        "bottom": 965.3021087646484,
+        "language": "zh-CN",
+        "left": 438.66668701171875,
+        "right": 1473.3333740234375,
+        "theme": "star-night",
+        "top": 144.6354217529297,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1553,
+        "height": 1232
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "601fa6740746a3c07161dac5db80f7a6d684ce933def2bf3ea117b49b52c68f4",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/09b-identity-platforms.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/09b-identity-platforms.json"
+    },
+    "zh-CN/star-night/10-content-time-edit": {
+      "kind": "native-webview-crop",
+      "selector": ".conversation-info-time",
+      "bounds": {
+        "bottom": 796.90625,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 372.90625,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1836,
+        "height": 637
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "6e56d9ce7003e603c3de81e4081258b805092f1bfc27f719028f11d6ffa9e882",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/10-content-time-edit.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/10-content-time-edit.json"
+    },
+    "zh-CN/star-night/11-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-conversation-time-open]",
+      "bounds": {
+        "bottom": 623.2396240234375,
+        "language": "zh-CN",
+        "left": 628.3333740234375,
+        "right": 767.3333740234375,
+        "theme": "star-night",
+        "top": 567.2396240234375,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 210,
+        "height": 85
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "1bf455e9dfd78e044dabd77df3707e8f42ce2739d27e639fc469c03e532dc45d",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/11-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/11-entry.json"
+    },
+    "zh-CN/star-night/11-time-create": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-actions",
+      "bounds": {
+        "bottom": 1076,
+        "language": "zh-CN",
+        "left": 724,
+        "right": 1348,
+        "theme": "star-night",
+        "top": 948,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 936,
+        "height": 192
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "2f5bbfdbdccb6f2f37bf9b04b66d642d277a411bf721771171e9e0b469906cdf",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/11-time-create.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/11-time-create.json"
+    },
+    "zh-CN/star-night/11-time-sovereign": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-sovereign .time-cover-bank-header,[data-time-sovereign-list] > *",
+      "bounds": {
+        "bottom": 426,
+        "language": "zh-CN",
+        "left": 1324,
+        "right": 1648,
+        "theme": "star-night",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 561
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "75f640868f2589afe2d2dc572d6116fac88cfe610a964beac33e5379d64888ae",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/11-time-sovereign.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/11-time-sovereign.json"
+    },
+    "zh-CN/star-night/11-time-terran": {
+      "kind": "native-webview-crop",
+      "selector": ".time-cover-terran .time-cover-bank-header,[data-time-terran-list] > *",
+      "bounds": {
+        "bottom": 1076,
+        "language": "zh-CN",
+        "left": 424,
+        "right": 748,
+        "theme": "star-night",
+        "top": 52,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 486,
+        "height": 1536
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "f004be0cc79687f28a7cd2b6a8894acfebbac906989d59f5e826f334922deaf2",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/11-time-terran.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/11-time-terran.json"
+    },
+    "zh-CN/star-night/11b-time-editor": {
+      "kind": "native-webview-crop",
+      "selector": "[data-time-editor-body] > .time-editor-section",
+      "bounds": {
+        "bottom": 774.3333587646484,
+        "language": "zh-CN",
+        "left": 744,
+        "right": 1328,
+        "theme": "star-night",
+        "top": 276,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 876,
+        "height": 748
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "bda208a5e2f095ab6405995234dd4ca2d024dea1b5ade4bd9366667ec6a21c80",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/11b-time-editor.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/11b-time-editor.json"
+    },
+    "zh-CN/star-night/12-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-archiver-shell-action=change-library]",
+      "bounds": {
+        "bottom": 47.33333492279053,
+        "language": "zh-CN",
+        "left": 1068.3333740234375,
+        "right": 1182.3333740234375,
+        "theme": "star-night",
+        "top": 0.6666669845581055,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 172,
+        "height": 71
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "6ea72ad44e4fb249e0f835b5506094e74c895311788dec65779f7fa31e551ead",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/12-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/12-entry.json"
+    },
+    "zh-CN/star-night/12-move-library": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-dialog",
+      "bounds": {
+        "bottom": 730.0521240234375,
+        "language": "zh-CN",
+        "left": 688,
+        "right": 1232,
+        "theme": "star-night",
+        "top": 349.94793701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 816,
+        "height": 572
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "d26c2051ef54060831f5a692c2d7a3c59a02739ab874c14f2f268b600a52f904",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/12-move-library.png",
+      "capture": "artifacts/v1-visual-audit/features-move-preview-final/zh-CN-star-night/guide/12-move-library.json"
+    },
+    "zh-CN/star-night/13-entry": {
+      "kind": "native-webview-crop",
+      "selector": "[data-route-target='system/log']",
+      "bounds": {
+        "bottom": 306,
+        "language": "zh-CN",
+        "left": 1680,
+        "right": 1912,
+        "theme": "star-night",
+        "top": 260,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 348,
+        "height": 69
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "662adc746a0cac8083e4ec180eee6af46fe32929b12f5dc48aae5a77be8d974f",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/13-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/13-entry.json"
+    },
+    "zh-CN/star-night/13-system-log": {
+      "kind": "native-webview-crop",
+      "selector": ".system-log-header,.system-log-error-row,.system-log-file-heading",
+      "bounds": {
+        "bottom": 361,
+        "language": "zh-CN",
+        "left": 408,
+        "right": 1512,
+        "theme": "star-night",
+        "top": 118,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1656,
+        "height": 365
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "fdf6c35afcd6ae2d2929940532464da42372f33789b946dc70522b07da9ac5cb",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/13-system-log.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/13-system-log.json"
+    },
+    "zh-CN/star-night/14-entry": {
+      "kind": "native-webview-crop",
+      "selector": ".cloudig-message-identity",
+      "bounds": {
+        "bottom": 1080,
+        "language": "zh-CN",
+        "left": 575,
+        "right": 708.0208358764648,
+        "theme": "star-night",
+        "top": 247.35418701171875,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 201,
+        "height": 90
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "6d9a490a5db0a1dca1e1dec5a722b17d1a7bcb1f1064f47558ee98fe0f107715",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "native_crop_sha256": "1f51d3934cf54c4ad49261279627cc11f35c6d625a72f0b90bb96f606d9e7073",
+      "native_crop_pixels": {
+        "width": 201,
+        "height": 1249
+      },
+      "refinement": {
+        "y": 0,
+        "width": 201,
+        "height": 90,
+        "x": 0
+      },
+      "file": "zh-CN/star-night/14-entry.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/14-entry.json"
+    },
+    "zh-CN/star-night/14-rename-in-conversation": {
+      "kind": "native-webview-crop",
+      "selector": ".identity-editor-header,.identity-editor-conversation",
+      "bounds": {
+        "bottom": 295.0625,
+        "language": "zh-CN",
+        "left": 408.66668701171875,
+        "right": 1511.3334350585938,
+        "theme": "star-night",
+        "top": 12.666667938232422,
+        "viewport": {
+          "height": 1080,
+          "width": 1920
+        }
+      },
+      "pixels": {
+        "width": 1655,
+        "height": 424
+      },
+      "ui_sha256": "1bf0a7fa0667273cada48bb4898a7a96d1f650f86187f16e638183c6fedbdf22",
+      "sha256": "f91a4a80a1d2617dae96ebc454cb7ed7c3f7514d3b08bcc2a0275a6d45e28819",
+      "executable_sha256": "dcb8e27512dd77ba0d847af2d9c48af6f2a85c4bba6b030caf83feaab480c992",
+      "file": "zh-CN/star-night/14-rename-in-conversation.png",
+      "capture": "artifacts/v1-visual-audit/features-capture-final-night-zh/guide/14-rename-in-conversation.json"
+    }
+  },
+  "nonvisual_updates": [
+    {
+      "file": "shell.js",
+      "before": "13b287fef3ffe31f8f99f582d3e65a8d91f7d66d0e4d7a1e32b9600002847769",
+      "after": "5deae5582032022033f61f23a3b512d5ad16700197e8463f30aeed70f9a12c22",
+      "reason": "Welcome documentation opens Archiver; explicit update action imports and opens its separate dialog. Removing these two dispatches and the update-check import restores the captured shell; no captured guide view changes."
+    },
+    {
+      "file": "index.html",
+      "before": "7b64e700d8af33d70b12026a9fdb1206bf549161c634a4a9b6e427d3c6cb9650",
+      "after": "e81e6950ce5417f4a117ea97f4b2d33b316cc55a14b70b461d8b755c039c28a7",
+      "reason": "The Zhihu and GitHub footer labels became external anchors. Replacing all four with their original button/span restores captured source; idle text and geometry are retained."
+    },
+    {
+      "file": "shell.css",
+      "before": "4c8ce3c6f9fcd9af48e0406c0a3b5d87fdf644e7278ccf7e9f52eb85957824e0",
+      "after": "c0aba6e2c4ff103cf5aab9f14b8e0cccdd72b359acf17556d7c5fa60cb0eef69",
+      "reason": "Three cloudig-contact-link rules retain idle footer styling; four scoped update-dialog rules affect only the explicit check dialog, absent in guide captures. Removing these seven lines restores the captured stylesheet."
+    },
+    {
+      "file": "update-check.js",
+      "before": null,
+      "after": "6525141dbc0ab5019c79a465bf5438b19483c065ed5392579c417c7e7256d1db",
+      "reason": "New hash-verified module creates no DOM or network request on import; it mounts only when Check for Updates is clicked, outside existing guide captures."
+    }
+  ]
+}

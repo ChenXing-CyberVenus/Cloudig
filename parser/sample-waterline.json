@@ -1,0 +1,309 @@
+{
+  "format": "cloudig/parser-sample-waterline",
+  "version": "0.1.0",
+  "batch_id": "2026-08-24",
+  "parser_version": "0.5.3",
+  "summary": {
+    "files": 37,
+    "cases": 15,
+    "platforms": 12,
+    "profile_counts": {
+      "light": 14,
+      "full": 14,
+      "all_branches": 9
+    },
+    "paired_light_full_cases": 14,
+    "paired_full_all_branches_cases": 8,
+    "standalone_cases": 1
+  },
+  "sources": [
+    {
+      "platform": "chatglm",
+      "profile": "light",
+      "payload_schema": "osis.chatglm.chat-export/light-messages-v2",
+      "exporter_versions": [
+        "2.5.8-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "chatglm",
+      "profile": "full",
+      "payload_schema": "osis.chatglm.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.4-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "chatgpt",
+      "profile": "light",
+      "payload_schema": "osis.chatgpt.chat-export/light-items-v2",
+      "exporter_versions": [
+        "3.7.27-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "chatgpt",
+      "profile": "full",
+      "payload_schema": "osis.chatgpt.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.23-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "chatgpt",
+      "profile": "all_branches",
+      "payload_schema": "osis.chatgpt.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.0.24-all-branches"
+      ],
+      "samples": 2
+    },
+    {
+      "platform": "claude",
+      "profile": "light",
+      "payload_schema": "osis.claude.chat-export/light-dom-v1",
+      "exporter_versions": [
+        "1.1.27-light"
+      ],
+      "samples": 2
+    },
+    {
+      "platform": "claude",
+      "profile": "full",
+      "payload_schema": "osis.claude.chat-export/full-capture-v1",
+      "exporter_versions": [
+        "1.1.27-full"
+      ],
+      "samples": 2
+    },
+    {
+      "platform": "claude",
+      "profile": "all_branches",
+      "payload_schema": "osis.claude.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.1.27-all-branches"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "deepseek",
+      "profile": "light",
+      "payload_schema": "osis.deepseek.chat-export/light-messages-v2",
+      "exporter_versions": [
+        "2.8.9-light"
+      ],
+      "samples": 2
+    },
+    {
+      "platform": "deepseek",
+      "profile": "full",
+      "payload_schema": "osis.deepseek.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.6-full"
+      ],
+      "samples": 2
+    },
+    {
+      "platform": "deepseek",
+      "profile": "all_branches",
+      "payload_schema": "osis.deepseek.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.0.6-all-branches"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "doubao",
+      "profile": "light",
+      "payload_schema": "osis.doubao.chat-export/light-dom-v2",
+      "exporter_versions": [
+        "3.5.6-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "doubao",
+      "profile": "full",
+      "payload_schema": "osis.doubao.chat-export/full-dom-v1",
+      "exporter_versions": [
+        "1.0.4-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "gemini",
+      "profile": "light",
+      "payload_schema": "osis.gemini.chat-export/light-dom-v2",
+      "exporter_versions": [
+        "2.7.9-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "gemini",
+      "profile": "full",
+      "payload_schema": "osis.gemini.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.5-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "grok",
+      "profile": "light",
+      "payload_schema": "osis.grok.chat-export/light-dom-v2",
+      "exporter_versions": [
+        "2.8.8-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "grok",
+      "profile": "full",
+      "payload_schema": "osis.grok.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.6-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "grok",
+      "profile": "all_branches",
+      "payload_schema": "osis.grok.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.0.6-all-branches"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "kimi",
+      "profile": "light",
+      "payload_schema": "osis.kimi.chat-export/light-dom-v2",
+      "exporter_versions": [
+        "2.9.8-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "kimi",
+      "profile": "full",
+      "payload_schema": "osis.kimi.chat-export/full-dom-v1",
+      "exporter_versions": [
+        "1.0.4-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "kimi",
+      "profile": "all_branches",
+      "payload_schema": "osis.kimi.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.0.4-all-branches"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "mistral",
+      "profile": "light",
+      "payload_schema": "osis.mistral.chat-export/light-dom-rsc-v2",
+      "exporter_versions": [
+        "2.5.11-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "mistral",
+      "profile": "full",
+      "payload_schema": "osis.mistral.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.7-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "mistral",
+      "profile": "all_branches",
+      "payload_schema": "osis.mistral.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.0.7-all-branches"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "qwen",
+      "profile": "light",
+      "payload_schema": "osis.qwen.chat-export/light-messages-v2",
+      "exporter_versions": [
+        "2.6.9-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "qwen",
+      "profile": "full",
+      "payload_schema": "osis.qwen.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.6-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "qwen",
+      "profile": "all_branches",
+      "payload_schema": "osis.qwen.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.0.6-all-branches"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "yuanbao",
+      "profile": "light",
+      "payload_schema": "osis.yuanbao.chat-export/light-dom-v2",
+      "exporter_versions": [
+        "2.10.9-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "yuanbao",
+      "profile": "full",
+      "payload_schema": "osis.yuanbao.chat-export/full-dom-v1",
+      "exporter_versions": [
+        "1.0.7-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "zai",
+      "profile": "light",
+      "payload_schema": "osis.zai.chat-export/light-messages-v2",
+      "exporter_versions": [
+        "2.7.9-light"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "zai",
+      "profile": "full",
+      "payload_schema": "osis.zai.chat-export/full-v1",
+      "exporter_versions": [
+        "1.0.5-full"
+      ],
+      "samples": 1
+    },
+    {
+      "platform": "zai",
+      "profile": "all_branches",
+      "payload_schema": "osis.zai.chat-export/all-branches-v1",
+      "exporter_versions": [
+        "1.0.5-all-branches"
+      ],
+      "samples": 1
+    }
+  ]
+}

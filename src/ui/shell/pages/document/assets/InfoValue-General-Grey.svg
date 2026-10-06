@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 280.77 256">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: rgba(255, 245, 191, .7);
+      }
+
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke-miterlimit: 3.35;
+        stroke-width: 1.25px;
+      }
+
+      .cls-3 {
+        fill: #666666;
+        opacity: .75;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        isolation: isolate;
+      }
+
+      .cls-4 {
+        fill: #9e9e9e;
+        opacity: .6;
+      }
+
+      .cls-2 {
+        stroke: rgba(18, 79, 120, .35);
+      }
+
+      .cls-5 {
+        fill: #cbcbcb;
+        opacity: .44;
+      }
+
+      .cls-7 {
+        fill: url(#_未命名的渐变_23);
+      }
+
+      .cls-6 {
+        fill: #c7c7c7;
+        opacity: .62;
+      }
+
+      .cls-8 {
+        fill: url(#_未命名的渐变_22);
+      }
+
+      .cls-9 {
+        fill: url(#_未命名的渐变_21);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_23" data-name="未命名的渐变 23" x1="200.73" y1="49.7" x2="337.83" y2="-202.56" gradientTransform="translate(-144.48 80.81) scale(.84 -.84)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b3b3b3"/>
+      <stop offset=".5" stop-color="#8d8d8d"/>
+      <stop offset="1" stop-color="#707070"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_22" data-name="未命名的渐变 22" x1="300.07" y1="73.64" x2="464.58" y2="-222.49" gradientTransform="translate(-144.48 80.81) scale(.84 -.84)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c6c6c6"/>
+      <stop offset=".5" stop-color="#a1a1a1"/>
+      <stop offset="1" stop-color="#757575"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_21" data-name="未命名的渐变 21" x1="340.51" y1="-90.95" x2="340.51" y2="-219.27" gradientTransform="translate(-144.48 80.81) scale(.84 -.84)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d7d7d7"/>
+      <stop offset=".5" stop-color="#c3c3c3"/>
+      <stop offset="1" stop-color="#a0a0a0"/>
+    </linearGradient>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="InfoValue-General">
+      <g id="General_体积底边" data-name="General 体积底边">
+        <polygon class="cls-3" points="140.39 5.51 280.77 256 0 256 140.39 5.51"/>
+      </g>
+      <g id="General_三原色切面" data-name="General 三原色切面">
+        <polygon class="cls-7" points="140.39 0 0 250.49 140.39 162.41 140.39 0"/>
+        <polygon class="cls-8" points="140.39 0 140.39 162.41 280.77 250.49 140.39 0"/>
+        <polygon class="cls-9" points="0 250.49 280.77 250.49 140.39 162.41 0 250.49"/>
+      </g>
+      <g id="General_斜切外缘" data-name="General 斜切外缘">
+        <polygon class="cls-6" points="140.39 0 0 250.49 7.34 245.91 140.39 10.09 140.39 0"/>
+        <polygon class="cls-5" points="140.39 0 280.77 250.49 272.52 244.99 140.39 10.09 140.39 0"/>
+        <polygon class="cls-4" points="0 250.49 280.77 250.49 272.52 244.99 7.34 244.99 0 250.49"/>
+      </g>
+      <g id="General_三道折棱" data-name="General 三道折棱">
+        <path class="cls-2" d="M140.39,11.01v151.4l132.13,82.58"/>
+        <path class="cls-1" d="M7.34,244.99l133.05-82.58"/>
+      </g>
+    </g>
+  </g>
+</svg>

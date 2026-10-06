@@ -1,0 +1,23 @@
+{
+  "schema": "cloudig/system-log/1.0.0",
+  "files": [
+    {
+      "path": "Inbox/chat.html",
+      "recorded_at": "2026-08-31T12:00:00.000Z",
+      "errors": [
+        {
+          "source": "exporter",
+          "code": "resource-unavailable",
+          "message": "一个资源未能保存",
+          "ref": "resource:3"
+        },
+        {
+          "source": "parser",
+          "code": "unknown-block",
+          "stage": "normalize",
+          "message": "一个来源节点已按 unknown 块保留"
+        }
+      ]
+    }
+  ]
+}

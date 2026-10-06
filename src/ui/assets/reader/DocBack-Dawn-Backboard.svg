@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 839.9 1820.01">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_未命名的渐变_53);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_53" x1="0" y1="910" x2="839.9" y2="910" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b78862"/>
+      <stop offset=".03" stop-color="#b88b67"/>
+      <stop offset=".14" stop-color="#bd9475"/>
+      <stop offset=".27" stop-color="#c09a7d"/>
+      <stop offset=".51" stop-color="#c19c80"/>
+      <stop offset=".78" stop-color="#c09a7e"/>
+      <stop offset=".89" stop-color="#be9677"/>
+      <stop offset=".96" stop-color="#ba8e6b"/>
+      <stop offset="1" stop-color="#b78862"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <g id="_功能文档背景装饰-破晓">
+      <path id="_背景木板-破晓" class="cls-1" d="M783.82,0H56.08C25.11,0,0,28.99,0,64.75v1690.5c0,35.76,25.11,64.75,56.08,64.75h727.74c30.97,0,56.08-28.99,56.08-64.75V64.75c0-35.76-25.11-64.75-56.08-64.75Z"/>
+    </g>
+  </g>
+</svg>

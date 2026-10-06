@@ -1,0 +1,86 @@
+/* Embedded into Cock.svg by derive-v1-assets.mjs. The drawing, feet and
+   viewBox stay untouched; only separate feather, crest and wattle details move. */
+.cls-34 { filter: none; }
+#Cock > path:is(:nth-child(n+22):nth-child(-n+24), :nth-child(n+65):nth-child(-n+69), :nth-child(n+73):nth-child(-n+86)) {
+  animation: rooster-head-response 4.6s ease-in-out infinite;
+}
+#Cock > path:nth-child(19) {
+  transform-box: view-box;
+  transform-origin: 15px 39px;
+  animation: rooster-crest-sway 4.6s cubic-bezier(.35, 0, .2, 1) infinite;
+}
+#Cock > path:nth-child(20) {
+  transform-box: view-box;
+  transform-origin: 16px 41px;
+  animation: rooster-wattle-sway 3.2s ease-in-out infinite;
+}
+#Cock > path:is(:nth-child(1), :nth-child(4)) { animation: rooster-tail-glint 4.6s ease-in-out infinite; }
+#Cock > path:is(:nth-child(5), :nth-child(15)) { animation: rooster-tail-glint 4.6s -.22s ease-in-out infinite; }
+.rooster-tail-source { filter: brightness(.58) saturate(.92); }
+.rooster-tail-feather-motion { fill: #ec6f20; }
+.rooster-tail-feather-motion, .rooster-tail-sheen-carrier {
+  transform-box: view-box;
+  transform-origin: 103.54px 80.08px;
+  animation: rooster-tail-feather-lift 4.6s cubic-bezier(.35, 0, .2, 1) infinite;
+}
+#Cock > path:is(:nth-child(87), :nth-child(88)) {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rooster-eye-blink 4.6s linear infinite;
+}
+.rooster-material-sheen {
+  mix-blend-mode: normal;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: center;
+  animation: rooster-feather-sheen 4.6s ease-in-out infinite;
+}
+@keyframes rooster-crest-sway {
+  0%, 14%, 58%, 100% { transform: rotate(0deg); }
+  23% { transform: rotate(-3.2deg); }
+  32% { transform: rotate(1.4deg); }
+  42% { transform: rotate(-.8deg); }
+  72% { transform: rotate(-1.5deg); }
+  82% { transform: rotate(.6deg); }
+}
+@keyframes rooster-wattle-sway {
+  0%, 100% { transform: rotate(-1deg); }
+  30% { transform: rotate(3deg); }
+  62% { transform: rotate(-2deg); }
+}
+@keyframes rooster-head-response {
+  0%, 12%, 56%, 100% { filter: brightness(1) saturate(1); }
+  26% { filter: brightness(1.12) saturate(1.17); }
+  76% { filter: brightness(1.07) saturate(1.1); }
+}
+@keyframes rooster-tail-feather-lift {
+  0%, 12%, 58%, 100% { filter: brightness(1) saturate(1); transform: rotate(0deg); }
+  24% { filter: brightness(1.23) saturate(1.3); transform: rotate(-3.3deg); }
+  34% { filter: brightness(1.13) saturate(1.16); transform: rotate(-1deg); }
+  42% { filter: brightness(1.2) saturate(1.25); transform: rotate(-2.3deg); }
+  77% { filter: brightness(1.14) saturate(1.2); transform: rotate(-1.6deg); }
+}
+@keyframes rooster-tail-glint {
+  0%, 12%, 58%, 100% { filter: brightness(1) saturate(1); }
+  26% { filter: brightness(1.3) saturate(1.35); }
+  42% { filter: brightness(1.14) saturate(1.2); }
+  78% { filter: brightness(1.2) saturate(1.25); }
+}
+@keyframes rooster-eye-blink {
+  0%, 17%, 21%, 67%, 71%, 100% { transform: scaleY(1); }
+  18%, 20%, 68%, 70% { transform: scaleY(.12); }
+}
+@keyframes rooster-feather-sheen {
+  0%, 12% { opacity: 0; transform: translateX(-74px) skewX(-10deg); }
+  20% { opacity: .38; }
+  30% { opacity: .65; }
+  43% { opacity: .15; transform: translateX(252px) skewX(-10deg); }
+  48%, 100% { opacity: 0; transform: translateX(252px) skewX(-10deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #Cock > path, .rooster-tail-feather-motion, .rooster-tail-sheen-carrier, .rooster-material-sheen {
+    animation: none !important;
+    transform: none !important;
+  }
+  .rooster-material-sheen { opacity: 0 !important; }
+}

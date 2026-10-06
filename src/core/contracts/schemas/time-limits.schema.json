@@ -1,0 +1,331 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/time-limits/1.0.0",
+  "title": "Cloudig time limits 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "calendar",
+    "relative",
+    "periodic",
+    "display_version"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/time-limits/1.0.0"
+    },
+    "calendar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ad_year_digits",
+        "bc_year_max",
+        "offset_minutes_max"
+      ],
+      "properties": {
+        "ad_year_digits": {
+          "const": 8
+        },
+        "bc_year_max": {
+          "const": 9999
+        },
+        "offset_minutes_max": {
+          "const": 840
+        }
+      }
+    },
+    "relative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fraction_digits",
+        "coefficient_max",
+        "units",
+        "before_units"
+      ],
+      "properties": {
+        "fraction_digits": {
+          "const": 1
+        },
+        "coefficient_max": {
+          "const": "9999.0"
+        },
+        "units": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/wan"
+            },
+            {
+              "$ref": "#/$defs/yi"
+            },
+            {
+              "$ref": "#/$defs/zhao"
+            },
+            {
+              "$ref": "#/$defs/jing"
+            },
+            {
+              "$ref": "#/$defs/gai"
+            },
+            {
+              "$ref": "#/$defs/zi"
+            },
+            {
+              "$ref": "#/$defs/rang"
+            },
+            {
+              "$ref": "#/$defs/gou"
+            },
+            {
+              "$ref": "#/$defs/jian"
+            },
+            {
+              "$ref": "#/$defs/zheng"
+            }
+          ],
+          "items": false
+        },
+        "before_units": {
+          "const": [
+            "wan",
+            "yi"
+          ]
+        }
+      }
+    },
+    "periodic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count_max",
+        "empty_expand_max"
+      ],
+      "properties": {
+        "count_max": {
+          "const": 99999999
+        },
+        "empty_expand_max": {
+          "const": 20
+        }
+      }
+    },
+    "display_version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "major_max",
+        "minor_max"
+      ],
+      "properties": {
+        "major_max": {
+          "const": 999
+        },
+        "minor_max": {
+          "const": 999
+        }
+      }
+    }
+  },
+  "$defs": {
+    "unitBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slug",
+        "exponent"
+      ],
+      "properties": {
+        "slug": {
+          "type": "string"
+        },
+        "exponent": {
+          "type": "integer"
+        }
+      }
+    },
+    "wan": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "wan"
+            },
+            "exponent": {
+              "const": 4
+            }
+          }
+        }
+      ]
+    },
+    "yi": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "yi"
+            },
+            "exponent": {
+              "const": 8
+            }
+          }
+        }
+      ]
+    },
+    "zhao": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "zhao"
+            },
+            "exponent": {
+              "const": 12
+            }
+          }
+        }
+      ]
+    },
+    "jing": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "jing"
+            },
+            "exponent": {
+              "const": 16
+            }
+          }
+        }
+      ]
+    },
+    "gai": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "gai"
+            },
+            "exponent": {
+              "const": 20
+            }
+          }
+        }
+      ]
+    },
+    "zi": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "zi"
+            },
+            "exponent": {
+              "const": 24
+            }
+          }
+        }
+      ]
+    },
+    "rang": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "rang"
+            },
+            "exponent": {
+              "const": 28
+            }
+          }
+        }
+      ]
+    },
+    "gou": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "gou"
+            },
+            "exponent": {
+              "const": 32
+            }
+          }
+        }
+      ]
+    },
+    "jian": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "jian"
+            },
+            "exponent": {
+              "const": 36
+            }
+          }
+        }
+      ]
+    },
+    "zheng": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/unitBase"
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "zheng"
+            },
+            "exponent": {
+              "const": 40
+            }
+          }
+        }
+      ]
+    }
+  }
+}

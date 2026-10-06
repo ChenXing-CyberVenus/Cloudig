@@ -1,0 +1,41 @@
+{
+  "schema": "cloudig/transaction/1.0.0",
+  "transaction": "x_ABCDEFGHIJKLMNOP",
+  "state": "planned",
+  "intent": "parse-source",
+  "created_at": "2026-08-31T12:00:00.000Z",
+  "updated_at": "2026-08-31T12:00:00.000Z",
+  "authority": {
+    "library": {
+      "state": "present",
+      "revision": 1,
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "time": {
+      "state": "present",
+      "revision": 1,
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  },
+  "targets": [
+    {
+      "action": "create",
+      "path": "Conversations/chat.json",
+      "status": "planned",
+      "expected_before": {
+        "state": "missing"
+      },
+      "source": {
+        "path": "Inbox/chat.html",
+        "bytes": 1024,
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "semantic": {
+        "kind": "conversation",
+        "archive": "a1",
+        "generation": 1,
+        "schema": "cloudig/conversation/1.0.0"
+      }
+    }
+  ]
+}

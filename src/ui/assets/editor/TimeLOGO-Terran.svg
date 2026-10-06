@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 73.11 100">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-2 {
+        fill: #8f736d;
+      }
+
+      .cls-3 {
+        fill: #e84d44;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-5 {
+        fill: #9e8682;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="-9.38" y1="20.82" x2="48.83" y2="45.48" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#76b9e0"/>
+      <stop offset="1" stop-color="#88c3eb"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="20.21" y1="39.84" x2="64.17" y2="39.84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#76b9e0"/>
+      <stop offset="1" stop-color="#6096cf"/>
+    </linearGradient>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="TimeLOGO-Terran">
+      <rect class="cls-5" x="31.62" y="76.46" width="6.83" height="17.32"/>
+      <polygon class="cls-2" points="38.45 73.55 38.45 83.87 31.62 84.85 31.62 73.55 38.45 73.55"/>
+      <path class="cls-5" d="M47.81,0l-2.66,6.29c17.62,7.47,25.85,27.8,18.38,45.42-7.47,17.62-27.8,25.85-45.42,18.38l-2.66,6.29c21.09,8.94,45.44-.91,54.37-22.01,8.94-21.09-.91-45.44-22.01-54.37Z"/>
+      <circle class="cls-4" cx="31.62" cy="38.19" r="31.61"/>
+      <rect class="cls-5" x="8.2" y="93.17" width="53.67" height="6.83"/>
+      <path class="cls-1" d="M44.88,9.47l-24.67,58.22c16.08,6.81,34.63-.7,41.44-16.77,6.81-16.08-.7-34.63-16.77-41.44Z"/>
+      <path class="cls-3" d="M47,41.2c3.54-3.54,3.54-9.29,0-12.83-3.54-3.54-9.29-3.54-12.83,0-.03.03-.06.06-.09.09l-2.45,2.45-2.54-2.54c-3.54-3.54-9.29-3.54-12.83,0-3.54,3.54-3.54,9.29,0,12.83l2.53,2.53,12.83,12.84,15.39-15.37Z"/>
+    </g>
+  </g>
+</svg>

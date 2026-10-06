@@ -1,0 +1,29 @@
+* text=auto eol=lf
+
+*.js text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+LICENSE text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.pdf binary
+*.docx binary
+
+# Preserve the author's copied original byte-for-byte; editorial whitespace is not code style.
+src/ui/documents/history/appeal.txt -text -whitespace
+# Published evidence must survive Windows checkout without newline conversion.
+src/ui/documents/examples/html/*.html -text -diff -whitespace
+src/ui/documents/examples/*.md -text -whitespace
+src/ui/documents/bookmarks/*.md -text -whitespace
+# Vendor font and license are preserved exactly, including upstream whitespace.
+src/ui/shell/fonts/bodoni-moda/OFL.txt -text -whitespace
+src/ui/shell/fonts/bodoni-moda/welcome-black.woff2 binary
+src/ui/runtime-dependencies/fonts/DMSans-OFL.txt -text -whitespace
+src/ui/runtime-dependencies/fonts/CormorantGaramond-OFL.txt -text -whitespace
+src/ui/runtime-dependencies/fonts/ZhiMangXing-OFL.txt -text -whitespace

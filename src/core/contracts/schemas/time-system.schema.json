@@ -1,0 +1,418 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/time-system/1.0.0",
+  "title": "Cloudig time system 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "revision",
+    "edited_at",
+    "next"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/time-system/1.0.0"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+    },
+    "next": {
+      "$ref": "#/$defs/nextWatermarks"
+    },
+    "terran_values": {
+      "$ref": "#/$defs/terranValues"
+    },
+    "lineages": {
+      "$ref": "#/$defs/lineagePool"
+    },
+    "variants": {
+      "$ref": "#/$defs/variantPool"
+    },
+    "times": {
+      "$ref": "#/$defs/timePool"
+    },
+    "contains": {
+      "$ref": "#/$defs/containsPool"
+    },
+    "counterparts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/counterpart"
+      }
+    },
+    "terran_mappings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/terranMapping"
+      }
+    },
+    "display_order": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/variantId"
+      }
+    }
+  },
+  "$defs": {
+    "nextWatermarks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lineage",
+        "variant",
+        "time"
+      ],
+      "properties": {
+        "lineage": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "variant": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "time": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "terranValues": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "enum": [
+          "p5",
+          "p6",
+          "p7",
+          "p8",
+          "p9",
+          "p10",
+          "p11",
+          "p12",
+          "p13",
+          "p14",
+          "p15",
+          "p16"
+        ]
+      },
+      "additionalProperties": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/terranRange"
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "current",
+        "next_variant"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/lineageId"
+        },
+        "current": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/variantId"
+        },
+        "next_variant": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "lineagePool": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/lineageId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/lineage"
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "lineage",
+        "number",
+        "revision",
+        "name",
+        "author",
+        "created_at",
+        "edited_at"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/variantId"
+        },
+        "lineage": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/lineageId"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "author": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "standard_name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]{0,2})\\.(?:0|[1-9][0-9]{0,2})$"
+        },
+        "created_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "edited_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        }
+      }
+    },
+    "variantPool": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/variantId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/variant"
+      }
+    },
+    "singleTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "owner",
+        "kind",
+        "name",
+        "created_at",
+        "edited_at"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/timeId"
+        },
+        "owner": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/variantId"
+        },
+        "kind": {
+          "const": "single"
+        },
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "created_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "edited_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        }
+      }
+    },
+    "periodicTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "owner",
+        "kind",
+        "name",
+        "created_at",
+        "edited_at",
+        "count"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/timeId"
+        },
+        "owner": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/variantId"
+        },
+        "kind": {
+          "const": "periodic"
+        },
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "created_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "edited_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99999999
+        },
+        "prefix": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "unit": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "display_empty": {
+          "const": true
+        }
+      }
+    },
+    "timeNode": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/singleTime"
+        },
+        {
+          "$ref": "#/$defs/periodicTime"
+        }
+      ]
+    },
+    "timePool": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/timeId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/timeNode"
+      }
+    },
+    "prefixSelector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "count"
+      ],
+      "properties": {
+        "mode": {
+          "const": "prefix"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "allSelector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "const": "all"
+        }
+      }
+    },
+    "containsRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node"
+      ],
+      "properties": {
+        "node": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/timeNodeId"
+        },
+        "occurrences": {
+          "$ref": "#/$defs/prefixSelector"
+        }
+      }
+    },
+    "containsPool": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/timeNodeId"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/$defs/containsRef"
+        }
+      }
+    },
+    "relationRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node"
+      ],
+      "properties": {
+        "node": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/timeNodeId"
+        },
+        "occurrences": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/allSelector"
+            },
+            {
+              "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/progressionSelector"
+            }
+          ]
+        }
+      }
+    },
+    "counterpart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left",
+        "right"
+      ],
+      "properties": {
+        "left": {
+          "$ref": "#/$defs/relationRef"
+        },
+        "right": {
+          "$ref": "#/$defs/relationRef"
+        }
+      }
+    },
+    "terranMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "range",
+        "edited_at"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/relationRef"
+        },
+        "range": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/terranRange"
+        },
+        "edited_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        }
+      }
+    }
+  }
+}

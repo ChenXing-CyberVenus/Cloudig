@@ -1,0 +1,386 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/library/1.0.0",
+  "title": "Cloudig Library 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "conversation_schema",
+    "next_archive",
+    "revision",
+    "edited_at",
+    "preferences",
+    "parse",
+    "content_time"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/library/1.0.0"
+    },
+    "conversation_schema": {
+      "const": "cloudig/conversation/1.0.0"
+    },
+    "next_archive": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+    },
+    "preferences": {
+      "$ref": "#/$defs/preferences"
+    },
+    "parse": {
+      "$ref": "#/$defs/parsePreferences"
+    },
+    "content_time": {
+      "$ref": "#/$defs/contentTimeDescriptor"
+    },
+    "identity": {
+      "$ref": "#/$defs/identity"
+    },
+    "workflow": {
+      "$ref": "#/$defs/workflow"
+    },
+    "onboarding": {
+      "$ref": "#/$defs/onboarding"
+    },
+    "archives": {
+      "$ref": "#/$defs/archives"
+    }
+  },
+  "$defs": {
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "theme"
+      ],
+      "properties": {
+        "language": {
+          "enum": [
+            "zh-CN",
+            "en"
+          ]
+        },
+        "theme": {
+          "enum": [
+            "dawn",
+            "star_night"
+          ]
+        }
+      }
+    },
+    "parseConfirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "parse_unparsed",
+        "parse_selected",
+        "update_outdated",
+        "preserve_previous"
+      ],
+      "properties": {
+        "parse_unparsed": {
+          "type": "boolean"
+        },
+        "parse_selected": {
+          "type": "boolean"
+        },
+        "update_outdated": {
+          "type": "boolean"
+        },
+        "preserve_previous": {
+          "type": "boolean"
+        }
+      }
+    },
+    "parsePreferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ordinary",
+        "claude"
+      ],
+      "properties": {
+        "ordinary": {
+          "$ref": "#/$defs/parseConfirmation"
+        },
+        "claude": {
+          "$ref": "#/$defs/parseConfirmation"
+        }
+      }
+    },
+    "contentTimeDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "revision",
+        "sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cloudig/time-system/1.0.0"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        }
+      }
+    },
+    "identityParty": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "avatar": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/managedRelativePath"
+        }
+      }
+    },
+    "globalAssistantIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "avatar": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/managedRelativePath"
+        },
+        "apply_to_all": {
+          "const": true
+        }
+      }
+    },
+    "globalIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "user": {
+          "$ref": "#/$defs/identityParty"
+        },
+        "assistant": {
+          "$ref": "#/$defs/globalAssistantIdentity"
+        }
+      }
+    },
+    "platformIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assistant"
+      ],
+      "properties": {
+        "assistant": {
+          "$ref": "#/$defs/identityParty"
+        }
+      }
+    },
+    "platformIdentities": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/platformIdentity"
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "global": {
+          "$ref": "#/$defs/globalIdentity"
+        },
+        "platforms": {
+          "$ref": "#/$defs/platformIdentities"
+        }
+      }
+    },
+    "timeField": {
+      "enum": [
+        "first_parsed_at",
+        "source_captured_at",
+        "cloudig_edited_at",
+        "message_start",
+        "message_end",
+        "content_time_start",
+        "content_time_end",
+        "file_modified_at"
+      ]
+    },
+    "sortOrder": {
+      "enum": [
+        "time_asc",
+        "time_desc",
+        "title"
+      ]
+    },
+    "ordinaryWorkflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "sort": {
+          "$ref": "#/$defs/sortOrder"
+        },
+        "time_field": {
+          "$ref": "#/$defs/timeField"
+        }
+      }
+    },
+    "claudeWorkflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "sort": {
+          "$ref": "#/$defs/sortOrder"
+        },
+        "time_field": {
+          "enum": [
+            "created_at",
+            "updated_at"
+          ]
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "parser": {
+          "$ref": "#/$defs/ordinaryWorkflow"
+        },
+        "archiver": {
+          "$ref": "#/$defs/ordinaryWorkflow"
+        },
+        "reader": {
+          "$ref": "#/$defs/ordinaryWorkflow"
+        },
+        "claude": {
+          "$ref": "#/$defs/claudeWorkflow"
+        }
+      }
+    },
+    "onboarding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "theme_switched"
+      ],
+      "properties": {
+        "theme_switched": {
+          "const": true
+        }
+      }
+    },
+    "names": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "user": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "assistant": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "archiveContentTime": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "range"
+          ],
+          "properties": {
+            "state": {
+              "const": "set"
+            },
+            "range": {
+              "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/range"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state"
+          ],
+          "properties": {
+            "state": {
+              "const": "cleared"
+            }
+          }
+        }
+      ]
+    },
+    "archiveState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "revision",
+        "edited_at"
+      ],
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "edited_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "conversation_name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "models": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+          }
+        },
+        "names": {
+          "$ref": "#/$defs/names"
+        },
+        "content_time": {
+          "$ref": "#/$defs/archiveContentTime"
+        }
+      }
+    },
+    "archives": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/archiveId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/archiveState"
+      }
+    }
+  }
+}

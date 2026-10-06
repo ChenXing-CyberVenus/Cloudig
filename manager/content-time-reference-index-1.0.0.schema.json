@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:content-time-reference-index:1.0.0",
+  "title": "Cloudig rebuildable content-time reference index 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "source_library_sha256", "source_time_system_revision", "by_conversation", "by_node", "by_timeline"],
+  "properties": {
+    "format": { "const": "cloudig/content-time-reference-index" },
+    "version": { "const": "1.0.0" },
+    "source_library_sha256": { "$ref": "#/$defs/sha256" },
+    "source_time_system_revision": { "type": "integer", "minimum": 0 },
+    "by_conversation": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/sha256" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["bindings"],
+        "properties": { "bindings": { "type": "array", "items": { "$ref": "#/$defs/conversationBinding" } } }
+      }
+    },
+    "by_node": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": { "$ref": "#/$defs/reverseReferences" }
+    },
+    "by_timeline": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["node_ids", "binding_ids", "conversation_keys"],
+        "properties": {
+          "node_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } },
+          "binding_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } },
+          "conversation_keys": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "selector": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["mode"], "properties": { "mode": { "const": "all" } } },
+        { "type": "object", "additionalProperties": false, "required": ["mode", "count"], "properties": { "mode": { "const": "prefix" }, "count": { "type": "integer", "minimum": 1 } } },
+        { "type": "object", "additionalProperties": false, "required": ["mode", "first", "step", "last"], "properties": { "mode": { "const": "progression" }, "first": { "type": "integer", "minimum": 1 }, "step": { "type": "integer", "minimum": 1 }, "last": { "type": "integer", "minimum": 1 } } }
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["archive_id", "relative_path", "snapshot_sha256"],
+      "properties": {
+        "archive_id": { "type": "string", "pattern": "^(?:|[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$" },
+        "relative_path": { "type": "string", "pattern": "^Conversations/.+\\.json$" },
+        "snapshot_sha256": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } }
+      }
+    },
+    "conversationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_id", "positions", "artifacts"],
+      "properties": {
+        "binding_id": { "$ref": "#/$defs/uuid" },
+        "node_id": { "$ref": "#/$defs/uuid" },
+        "timeline_id": { "$ref": "#/$defs/uuid" },
+        "occurrences": { "$ref": "#/$defs/selector" },
+        "positions": { "type": "array", "uniqueItems": true, "items": { "enum": ["start", "end", "unknown"] } },
+        "artifacts": { "type": "array", "items": { "$ref": "#/$defs/artifact" } }
+      }
+    },
+    "reverseReferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_ids", "conversation_keys"],
+      "properties": {
+        "binding_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } },
+        "conversation_keys": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } }
+      }
+    }
+  }
+}

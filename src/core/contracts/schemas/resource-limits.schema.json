@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/resource-limits/1.0.0",
+  "title": "Cloudig resource streaming limits 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "base64_decoded_chunk_bytes",
+    "canonical_json_line_max_bytes",
+    "ipc_json_line_max_bytes",
+    "ipc_json_depth_max",
+    "ipc_json_nodes_max",
+    "ipc_concurrent_commands_max",
+    "reader_message_page_max",
+    "reader_navigation_page_max",
+    "reader_branch_page_max",
+    "avatar_file_max_bytes"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/resource-limits/1.0.0"
+    },
+    "version": {
+      "const": "1.0.0"
+    },
+    "base64_decoded_chunk_bytes": {
+      "type": "integer",
+      "minimum": 3,
+      "multipleOf": 3
+    },
+    "canonical_json_line_max_bytes": {
+      "type": "integer",
+      "minimum": 1024
+    },
+    "ipc_json_line_max_bytes": {
+      "type": "integer",
+      "minimum": 65536
+    },
+    "ipc_json_depth_max": {
+      "type": "integer",
+      "minimum": 8
+    },
+    "ipc_json_nodes_max": {
+      "type": "integer",
+      "minimum": 1000
+    },
+    "ipc_concurrent_commands_max": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "reader_message_page_max": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "reader_navigation_page_max": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5000
+    },
+    "reader_branch_page_max": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "avatar_file_max_bytes": {
+      "type": "integer",
+      "minimum": 1048576
+    }
+  }
+}

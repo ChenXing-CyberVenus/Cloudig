@@ -1,0 +1,20 @@
+{
+  "schema": "cloudig/conversation/1.0.0",
+  "conversation_id": "01996688-0000-7000-8000-000000000a11",
+  "parser": { "version": "1.0.0", "adapter": { "id": "example-html", "version": "1.0.0" } },
+  "lifecycle": { "first_parsed_at": "2026-09-21T09:00:00Z", "last_parsed_at": "2026-09-21T09:00:00Z", "cloudig_edited_at": "2026-09-21T09:00:00Z" },
+  "source": { "file": "Reader boundary fixture.html", "sha256": "0000000000000000000000000000000000000000000000000000000000000000", "bytes": 1000, "format": "bookmark_html", "profile": "full" },
+  "platform": "chatgpt",
+  "title": { "filename": "Reader · 原文只读边界", "original": "Reader boundary fixture" },
+  "identity": [
+    { "schema": "cloudig/identity/1.0.0", "source_id": "user-1", "names": [], "kind": { "world": "terran", "subject": "human" }, "role": "user" },
+    { "schema": "cloudig/identity/1.0.0", "source_id": "assistant-1", "names": [{ "name": "ChatGPT", "claimers": [{ "name": "OpenAI" }] }], "display_name": 1, "kind": { "world": "terran", "subject": "ai" }, "role": "assistant" }
+  ],
+  "messages": {
+    "current": "m2",
+    "items": [
+      { "id": "m1", "speaker": "user-1", "content": [{ "type": "html", "html": "<section data-audit-witness=\"inert-record\"><button data-action=\"toggle-theme\">原文中的按钮文字（应为普通文字）</button><iframe src=\"https://example.org/frame\" title=\"原文框架说明\"></iframe><script>throw new Error('untrusted')</script><p><input type=\"checkbox\" checked>Completed <input type=\"checkbox\">Pending</p><table><tr><th>原文结构</th><th>读取结果</th></tr><tr><td>表格</td><td>保留</td></tr></table><img width=\"96\" height=\"32\" alt=\"Embedded badge\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='32'%3E%3Crect width='96' height='32' rx='6' fill='%23345272'/%3E%3Ctext x='10' y='22' fill='white' font-size='16'%3ECloudig%3C/text%3E%3C/svg%3E\"><img src=\"https://example.org/remote.png\" alt=\"远程图片说明\"></section>" }] },
+      { "id": "m2", "parent": "m1", "speaker": "assistant-1", "content": [{ "type": "markdown", "text": "正文、表格和内嵌图保留；原文控件不参与采云操作。\n\n```python\nprint('Readable, not executable')\n```\n\n公式：$E=mc^2$。" }] }
+    ]
+  }
+}

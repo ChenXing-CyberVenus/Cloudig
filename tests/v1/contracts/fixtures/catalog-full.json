@@ -1,0 +1,79 @@
+{
+  "schema": "cloudig/catalog-cache/1.0.0",
+  "built_at": "2026-08-31T12:00:00.000Z",
+  "adapter_bundle_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "sources": [
+    {
+      "path": "Inbox/chat.html",
+      "bytes": 1536,
+      "mtime_ns": "1788199200000000000",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "status": "complete",
+      "route": {
+        "format": "exporter-html",
+        "platform": "chatgpt",
+        "payload_schema": "ai-chat-archive/export-v1",
+        "profile": "light",
+        "adapter": {
+          "id": "chatgpt-light",
+          "version": "1.0.0"
+        }
+      },
+      "outputs": [
+        {
+          "archive": "a1",
+          "generation": 1,
+          "path": "Conversations/chat.json",
+          "conversation_schema": "cloudig/conversation/1.0.0",
+          "parser": "1.0.0",
+          "adapter": {
+            "id": "chatgpt-light",
+            "version": "1.0.0"
+          },
+          "exporter": {
+            "id": "chatgpt-light",
+            "version": "3.8.0-light"
+          },
+          "profile": "light",
+          "payload_schema": "ai-chat-archive/export-v1"
+        }
+      ]
+    }
+  ],
+  "archives": [
+    {
+      "path": "Conversations/chat.json",
+      "bytes": 3072,
+      "mtime_ns": "1788199201000000000",
+      "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "conversation_schema": "cloudig/conversation/1.0.0",
+      "archive": "a1",
+      "generation": 1,
+      "source_file": "chat.html",
+      "source_title": "奥思·绯缎缠骨",
+      "platform": "chatgpt",
+      "models": [
+        "GPT-5.6-Sol"
+      ],
+      "message_count": 12,
+      "resource_count": 1,
+      "times": {
+        "json_edited_at": "2026-08-31T12:00:01.000Z",
+        "json_created_at": "2026-08-31T12:00:00.000Z",
+        "source_captured_at": "2026-08-31T11:00:00.000Z",
+        "message_start": "2026-08-31T10:00:00.000Z",
+        "message_end": "2026-08-31T10:30:00.000Z",
+        "content": {
+          "start": {
+            "kind": "calendar",
+            "era": "AD",
+            "year": 2026,
+            "month": 8,
+            "day": 31
+          }
+        }
+      },
+      "archived": false
+    }
+  ]
+}

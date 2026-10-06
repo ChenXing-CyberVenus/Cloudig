@@ -1,0 +1,229 @@
+{
+  "format": "cloudig/terran-preset-timeline",
+  "version": "1.0.0",
+  "timeline": {
+    "timeline_id": "3ae3d5c2-3e98-458f-82d3-33ebe1b4b6af",
+    "standard_name": "采云此地时间轴",
+    "author": "Cloudig/采云",
+    "display_version": "V1.0",
+    "labels": {
+      "zh-CN": "采云此地时间轴",
+      "en": "Cloudig Terran Timeline"
+    }
+  },
+  "anchor_policy": "library_created_or_restore_local_date",
+  "nodes": [
+    {
+      "node_id": "7d3c3abb-f5db-4270-841b-5c4d4c5e969d",
+      "key": "whenever",
+      "ordinal": 1,
+      "role": "special",
+      "labels": { "zh-CN": "无论何时", "en": "Whenever" },
+      "featured": false,
+      "range_editable": false,
+      "deletable": false,
+      "default_range_template": { "start": { "kind": "whenever" } }
+    },
+    {
+      "node_id": "e63ea03b-9002-4103-88ef-a94db821e7c4",
+      "key": "unknown",
+      "ordinal": 2,
+      "role": "special",
+      "labels": { "zh-CN": "不知何时", "en": "Unknown Time" },
+      "featured": false,
+      "range_editable": false,
+      "deletable": false,
+      "default_range_template": { "start": { "kind": "unknown" } }
+    },
+    {
+      "node_id": "ae7164ce-a545-4c06-af56-b1956b699642",
+      "key": "infinite_past",
+      "ordinal": 3,
+      "role": "special",
+      "labels": { "zh-CN": "无限久前", "en": "Infinite Past" },
+      "featured": false,
+      "range_editable": false,
+      "deletable": false,
+      "default_range_template": { "start": { "kind": "infinite_past" } }
+    },
+    {
+      "node_id": "d077f2e5-872b-40bf-868a-3b4ac41f619a",
+      "key": "before_big_bang",
+      "ordinal": 4,
+      "role": "boundary",
+      "labels": { "zh-CN": "大爆炸前", "en": "Before the Big Bang" },
+      "featured": false,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_relative", "direction": "before", "unit": "yi", "coefficient": "9999.0", "anchor_policy": "materialize_on_apply" },
+        "end": { "kind": "terran_relative", "direction": "before", "unit": "yi", "coefficient": "138.0", "anchor_policy": "materialize_on_apply" }
+      }
+    },
+    {
+      "node_id": "0604d188-3080-4911-96e3-a98c0526cf07",
+      "key": "birth_of_universe",
+      "ordinal": 5,
+      "role": "preset",
+      "labels": { "zh-CN": "宇宙诞生", "en": "Birth of the Universe" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_relative", "direction": "before", "unit": "yi", "coefficient": "138.0", "anchor_policy": "materialize_on_apply" },
+        "end": { "kind": "terran_relative", "direction": "before", "unit": "yi", "coefficient": "35.0", "anchor_policy": "materialize_on_apply" }
+      }
+    },
+    {
+      "node_id": "306985e3-d663-427e-bbb5-5160970b775e",
+      "key": "origin_of_life",
+      "ordinal": 6,
+      "role": "preset",
+      "labels": { "zh-CN": "生命起源", "en": "Origin of Life" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_relative", "direction": "before", "unit": "yi", "coefficient": "35.0", "anchor_policy": "materialize_on_apply" },
+        "end": { "kind": "terran_relative", "direction": "before", "unit": "wan", "coefficient": "31.5", "anchor_policy": "materialize_on_apply" }
+      }
+    },
+    {
+      "node_id": "5cf85211-2533-425f-9bc1-fcfc1ffb5b7f",
+      "key": "prehistoric_civilization",
+      "ordinal": 7,
+      "role": "preset",
+      "labels": { "zh-CN": "史前文明", "en": "Prehistoric Civilization" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_relative", "direction": "before", "unit": "wan", "coefficient": "31.5", "anchor_policy": "materialize_on_apply" },
+        "end": { "kind": "terran_century", "era": "BC", "index": 8 }
+      }
+    },
+    {
+      "node_id": "9b106534-71e0-488c-9cfd-d9aac71fb9a3",
+      "key": "axial_age",
+      "ordinal": 8,
+      "role": "preset",
+      "labels": { "zh-CN": "轴心时代", "en": "Axial Age" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_century", "era": "BC", "index": 8 },
+        "end": { "kind": "terran_century", "era": "BC", "index": 3 }
+      }
+    },
+    {
+      "node_id": "c91aee2b-7563-4438-af24-7583859d702e",
+      "key": "rise_and_fall_of_empires",
+      "ordinal": 9,
+      "role": "preset",
+      "labels": { "zh-CN": "帝国兴亡", "en": "Rise and Fall of Empires" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_century", "era": "BC", "index": 3 },
+        "end": { "kind": "terran_century", "era": "AD", "index": 20 }
+      }
+    },
+    {
+      "node_id": "6d4197c3-3d32-4b60-ae63-31d607e0a29a",
+      "key": "industrial_revolution",
+      "ordinal": 10,
+      "role": "preset",
+      "labels": { "zh-CN": "工业革命", "en": "Industrial Revolution" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_century", "era": "AD", "index": 18 },
+        "end": { "kind": "terran_century", "era": "AD", "index": 20 }
+      }
+    },
+    {
+      "node_id": "fe895ee4-83fa-4850-a4bc-01ddabbd905a",
+      "key": "war_and_iron_curtain",
+      "ordinal": 11,
+      "role": "preset",
+      "labels": { "zh-CN": "硝烟铁幕", "en": "War and Iron Curtain" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_decade", "era": "AD", "index": 191 },
+        "end": { "kind": "terran_decade", "era": "AD", "index": 199 }
+      }
+    },
+    {
+      "node_id": "476c7c21-73a2-404f-9744-1c4416677cee",
+      "key": "modern_society",
+      "ordinal": 12,
+      "role": "preset",
+      "labels": { "zh-CN": "现代社会", "en": "Modern Society" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_decade", "era": "AD", "index": 194 },
+        "end": { "kind": "terran_now", "anchor_policy": "materialize_on_apply" }
+      }
+    },
+    {
+      "node_id": "ed199441-960a-403a-9f88-44aada3f90d8",
+      "key": "dawn_of_intelligence",
+      "ordinal": 13,
+      "role": "preset",
+      "labels": { "zh-CN": "智能初晓", "en": "Dawn of Intelligence" },
+      "featured": true,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_exact", "era": "AD", "year": 2017, "month": 6, "day": 12 },
+        "end": { "kind": "terran_now", "anchor_policy": "materialize_on_apply" }
+      }
+    },
+    {
+      "node_id": "d3f2a727-a524-4917-b6a0-57e73032946d",
+      "key": "looking_ahead",
+      "ordinal": 14,
+      "role": "boundary",
+      "labels": { "zh-CN": "展望未来", "en": "Looking Ahead" },
+      "featured": false,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_now", "anchor_policy": "materialize_on_apply" },
+        "end": { "kind": "terran_year_month", "era": "AD", "year": 9999 }
+      }
+    },
+    {
+      "node_id": "aeaba305-8ec6-4dde-ab65-a7a28c12f83c",
+      "key": "beyond_ten_thousand_years",
+      "ordinal": 15,
+      "role": "boundary",
+      "labels": { "zh-CN": "万年之后", "en": "Beyond Ten Thousand Years" },
+      "featured": false,
+      "range_editable": true,
+      "deletable": false,
+      "default_range_template": {
+        "start": { "kind": "terran_year_month", "era": "AD", "year": 9999 },
+        "end": { "kind": "terran_relative", "direction": "after", "unit": "zheng", "coefficient": "1.0", "anchor_policy": "materialize_on_apply" }
+      }
+    },
+    {
+      "node_id": "356371f6-ad0d-42bd-99d3-7586454462a9",
+      "key": "infinite_future",
+      "ordinal": 16,
+      "role": "special",
+      "labels": { "zh-CN": "无限久后", "en": "Infinite Future" },
+      "featured": false,
+      "range_editable": false,
+      "deletable": false,
+      "default_range_template": { "start": { "kind": "infinite_future" } }
+    }
+  ]
+}

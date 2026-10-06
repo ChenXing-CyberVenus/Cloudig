@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/records/content-time/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "node_id",
+    "kind",
+    "name",
+    "edited_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/content-time/1.0.0"
+    },
+    "node_id": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    },
+    "kind": {
+      "enum": [
+        "timeline",
+        "single",
+        "periodic"
+      ]
+    },
+    "name": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+    },
+    "author": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+    },
+    "standard_name": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+    },
+    "version": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/version"
+    },
+    "created_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "forked_from": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 99999999
+    },
+    "prefix": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+    },
+    "unit": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+    },
+    "display_empty": {
+      "type": "boolean"
+    },
+    "contains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "node"
+        ],
+        "properties": {
+          "node": {
+            "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 99999999
+          }
+        }
+      }
+    },
+    "counterparts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "properties": {
+          "target": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "node"
+            ],
+            "properties": {
+              "node": {
+                "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+              },
+              "occurrences": {
+                "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/selection"
+              }
+            }
+          },
+          "occurrences": {
+            "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/selection"
+          }
+        }
+      }
+    },
+    "terran_mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "range",
+          "edited_at"
+        ],
+        "properties": {
+          "range": {
+            "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/terranRange"
+          },
+          "edited_at": {
+            "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+          },
+          "occurrences": {
+            "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/selection"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "timeline"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "author",
+          "created_at"
+        ]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "author"
+              ]
+            },
+            {
+              "required": [
+                "standard_name"
+              ]
+            },
+            {
+              "required": [
+                "version"
+              ]
+            },
+            {
+              "required": [
+                "created_at"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "periodic"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "count"
+        ]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "count"
+              ]
+            },
+            {
+              "required": [
+                "prefix"
+              ]
+            },
+            {
+              "required": [
+                "unit"
+              ]
+            },
+            {
+              "required": [
+                "display_empty"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

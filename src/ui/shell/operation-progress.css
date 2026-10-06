@@ -1,0 +1,11 @@
+@layer components {
+  .cloudig-operation-progress { background: color-mix(in srgb, var(--archiver-card, #dbc2a5) 74%, var(--cloudig-page)); color: var(--cloudig-copy); display: grid; flex: none; gap: 8px 12px; grid-template-columns: minmax(0, 1fr) auto; padding: 9px 14px; }
+  .cloudig-operation-progress[hidden] { display: none; }
+  .cloudig-operation-progress > div { display: flex; gap: 12px; min-width: 0; }
+  .cloudig-operation-progress [data-progress-stage] { flex: none; }
+  .cloudig-operation-progress [data-progress-file] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cloudig-operation-progress progress { accent-color: var(--cloudig-purple); grid-column: 1; height: 12px; width: 100%; }
+  .cloudig-operation-progress button { appearance: none; background: transparent; border: 0; color: var(--cloudig-seal-red); cursor: pointer; font-weight: 700; grid-column: 2; grid-row: 1 / span 2; }
+  .cloudig-delete-progress { border: 2px solid var(--cloudig-seal-red); border-radius: 10px; filter: drop-shadow(0 5px 7px rgb(0 0 0 / 35%)); font-size: 16px; left: 50%; max-width: calc(100% - 48px); position: absolute; top: 50%; transform: translate(-50%, -50%); width: 520px; z-index: 95; }
+  :root[data-theme="star-night"] .cloudig-delete-progress { --archiver-card: #3b383c; border-color: var(--cloudig-orange); filter: drop-shadow(0 5px 7px rgb(0 0 0 / 76%)); }
+}

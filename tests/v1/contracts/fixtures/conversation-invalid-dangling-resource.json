@@ -1,0 +1,43 @@
+{
+  "schema": "cloudig/conversation/1.0.0",
+  "archive": "a1",
+  "generation": 1,
+  "content_sha256": "adb5eecb1c37e69da43b626b46c97b0fd4d8ebb61b5f3c6e6b7fa1724d7daaa5",
+  "parser": {
+    "version": "1.0.0",
+    "adapter": {
+      "version": "1.0.0",
+      "id": "chatgpt-html-light"
+    }
+  },
+  "lifecycle": {
+    "first_parsed_at": {
+      "basis": "parser",
+      "value": "2026-08-31T12:00:00.000Z"
+    },
+    "last_parsed_at": "2026-08-31T12:00:00.000Z",
+    "cloudig_edited_at": "2026-08-31T12:00:00.000Z"
+  },
+  "source": {
+    "format": "cloudig-html",
+    "bytes": 123,
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "file": "sample.html"
+  },
+  "content_time": {
+    "basis": "unavailable"
+  },
+  "provider": "openai",
+  "platform": "chatgpt",
+  "messages": [
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "image",
+          "resource": "r9"
+        }
+      ]
+    }
+  ]
+}

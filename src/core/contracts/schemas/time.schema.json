@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/time/1.0.0",
+  "title": "Cloudig content-time value 1.0.0",
+  "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/range"
+}

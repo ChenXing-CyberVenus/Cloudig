@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:sovereign-time-snapshot:1.0.0",
+  "title": "Cloudig bounded Sovereign time snapshot 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "captured_at", "payload", "sha256"],
+  "properties": {
+    "schema": { "const": "cloudig/sovereign-time-snapshot/1.0.0" },
+    "captured_at": { "$ref": "#/$defs/dateTime" },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timeline", "node", "ordinal_path", "direct_terran_mappings", "direct_neighbors"],
+      "properties": {
+        "timeline": { "$ref": "#/$defs/timeline" },
+        "node": { "$ref": "#/$defs/node" },
+        "occurrences": { "$ref": "#/$defs/selector" },
+        "ordinal_path": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["ordinal", "link_id"],
+            "properties": {
+              "ordinal": { "type": "integer", "minimum": 1 },
+              "link_id": { "$ref": "#/$defs/uuid" }
+            }
+          }
+        },
+        "direct_terran_mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["mapping_id", "range"],
+            "properties": {
+              "mapping_id": { "$ref": "#/$defs/uuid" },
+              "range": { "$ref": "content-time-1.0.0.schema.json#/$defs/terranRange" }
+            }
+          }
+        },
+        "direct_neighbors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["relation", "node_id", "name"],
+            "properties": {
+              "relation": { "enum": ["parent", "child", "counterpart"] },
+              "node_id": { "$ref": "#/$defs/uuid" },
+              "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+              "timeline_name": { "type": "string", "minLength": 1, "maxLength": 200 }
+            }
+          }
+        }
+      }
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  },
+  "$defs": {
+    "uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "dateTime": { "type": "string", "format": "date-time", "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$" },
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["major", "minor"],
+      "properties": {
+        "major": { "type": "integer", "minimum": 0, "maximum": 999 },
+        "minor": { "type": "integer", "minimum": 0, "maximum": 999 }
+      }
+    },
+    "timeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "lineage_id", "variant_no", "document_revision", "name", "author", "standard_name", "display_version"],
+      "properties": {
+        "node_id": { "$ref": "#/$defs/uuid" },
+        "lineage_id": { "$ref": "#/$defs/uuid" },
+        "variant_no": { "type": "integer", "minimum": 1 },
+        "document_revision": { "type": "integer", "minimum": 1 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "author": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "standard_name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "display_version": { "$ref": "#/$defs/version" }
+      }
+    },
+    "node": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["node_id", "kind", "name"],
+          "properties": {
+            "node_id": { "$ref": "#/$defs/uuid" },
+            "kind": { "const": "timeline" },
+            "name": { "type": "string", "minLength": 1, "maxLength": 200 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["node_id", "kind", "time_kind", "name"],
+          "properties": {
+            "node_id": { "$ref": "#/$defs/uuid" },
+            "kind": { "const": "time" },
+            "time_kind": { "enum": ["single", "periodic"] },
+            "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "period_count": { "type": "integer", "minimum": 1, "maximum": 99999999 }
+          },
+          "allOf": [
+            {
+              "if": { "properties": { "time_kind": { "const": "periodic" } }, "required": ["time_kind"] },
+              "then": { "required": ["period_count"] },
+              "else": { "not": { "required": ["period_count"] } }
+            }
+          ]
+        }
+      ]
+    },
+    "selector": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["mode"], "properties": { "mode": { "const": "all" } } },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "first", "step", "last"],
+          "properties": {
+            "mode": { "const": "progression" },
+            "first": { "type": "integer", "minimum": 1, "maximum": 99999999 },
+            "step": { "type": "integer", "minimum": 1, "maximum": 99999999 },
+            "last": { "type": "integer", "minimum": 1, "maximum": 99999999 }
+          }
+        }
+      ]
+    }
+  }
+}

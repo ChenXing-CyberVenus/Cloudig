@@ -1,0 +1,647 @@
+@layer components {
+.cloudig-conversation-renderer {
+  --cloudig-text: #292426;
+  --cloudig-muted: #786d70;
+  --cloudig-process-text: #51494d;
+  --cloudig-axis-x: 25.5px;
+  --cloudig-message-leading: 52px;
+  --cloudig-message-gap: 10px;
+  --cloudig-process-dot-size: 7px;
+  --cloudig-process-inset: 0px;
+  --cloudig-process-group-padding: 13px;
+  --cloudig-process-group-border: 1px;
+  --cloudig-process-group-indent: 10px;
+  --cloudig-panel-strong: #f0e3d2;
+  --cloudig-line: rgba(165, 37, 37, 0.34);
+  --cloudig-accent: #a52525;
+  --cloudig-panel: rgba(111, 81, 54, 0.08);
+  --cloudig-user-bubble: #e7cece;
+  --cloudig-code: #d0baa0;
+  --cloudig-code-text: #332c27;
+  --cloudig-code-border: #b39678;
+  --cloudig-code-comment: #554a40;
+  --cloudig-code-keyword: #832c2f;
+  --cloudig-code-string: #31533f;
+  --cloudig-code-number: #5c3d70;
+  --cloudig-code-name: #245169;
+  --cloudig-diagram-canvas: #f2e7d8;
+  --cloudig-diagram-local-canvas: #f2e7d8;
+  --cloudig-border: rgba(82, 64, 68, 0.24);
+  color: var(--cloudig-text);
+  font-family: var(--cloudig-font-ui, "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif);
+  font-size: 16px;
+  line-height: 1.72;
+  min-width: 0;
+}
+
+.cloudig-conversation-renderer[data-theme="star-night"] {
+  --cloudig-text: #e7e2e3;
+  --cloudig-muted: #aaa1a4;
+  --cloudig-process-text: #aaa1a4;
+  --cloudig-panel-strong: #45434a;
+  --cloudig-line: rgba(255, 169, 46, 0.35);
+  --cloudig-accent: #ffa92e;
+  --cloudig-panel: rgba(164, 177, 187, 0.08);
+  --cloudig-user-bubble: #4b3d58;
+  --cloudig-code: #292b2e;
+  --cloudig-code-text: #e3e1dc;
+  --cloudig-code-border: #45494d;
+  --cloudig-code-comment: #9ca5ac;
+  --cloudig-code-keyword: #edac91;
+  --cloudig-code-string: #adc7a4;
+  --cloudig-code-number: #c5b7df;
+  --cloudig-code-name: #a2c7dc;
+  --cloudig-diagram-canvas: #e8e5df;
+  --cloudig-diagram-local-canvas: #24282e;
+  --cloudig-border: rgba(231, 226, 227, 0.2);
+}
+
+.cloudig-conversation-renderer *,
+.cloudig-conversation-renderer *::before,
+.cloudig-conversation-renderer *::after {
+  box-sizing: border-box;
+}
+
+.cloudig-message-list {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+  position: relative;
+}
+
+.cloudig-message-list::before {
+  background: linear-gradient(to bottom, transparent, var(--cloudig-line) 4%, var(--cloudig-line) 96%, transparent);
+  content: "";
+  inset: 10px auto 10px calc(var(--cloudig-axis-x) - .5px);
+  pointer-events: none;
+  position: absolute;
+  width: 1px;
+}
+
+.cloudig-message {
+  display: grid;
+  gap: 10px var(--cloudig-message-gap);
+  grid-template-columns: var(--cloudig-message-leading) minmax(0, 1fr);
+  min-width: 0;
+  position: relative;
+}
+
+.cloudig-message-envelope {
+  display: grid;
+  grid-template-columns: var(--cloudig-message-leading) minmax(0, 1fr);
+  gap: 18px var(--cloudig-message-gap);
+  min-width: 0;
+  position: relative;
+}
+
+.cloudig-message-envelope > .cloudig-message { grid-column: 1 / -1; }
+
+.cloudig-message-system .cloudig-message-identity {
+  color: var(--cloudig-muted);
+  cursor: default;
+}
+
+.cloudig-message-header {
+  align-items: center;
+  display: contents;
+}
+
+.cloudig-message-identity {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  font-weight: 700;
+  gap: 5px;
+  grid-column: 1;
+  min-width: 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.cloudig-avatar {
+  align-items: center;
+  background: var(--cloudig-panel);
+  border: 1px solid var(--cloudig-border);
+  border-radius: 10px;
+  display: flex;
+  height: 42px;
+  justify-content: center;
+  overflow: hidden;
+  width: 42px;
+}
+
+.cloudig-avatar.cloudig-agent-avatar {
+  background: #17152b;
+  border-color: #d9a45b;
+}
+
+.cloudig-avatar img {
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.cloudig-message-name {
+  font-size: 12px;
+  line-height: 1.2;
+  max-width: 52px;
+  overflow-wrap: anywhere;
+}
+
+.cloudig-message-meta {
+  align-self: start;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  grid-column: 2;
+  justify-self: start;
+  min-width: 0;
+}
+
+.cloudig-model-tag {
+  border: 2px solid var(--cloudig-accent);
+  border-radius: 999px;
+  color: var(--cloudig-accent);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: -2px;
+  padding: 5px 9px;
+}
+
+.cloudig-message-time {
+  color: var(--cloudig-muted);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.cloudig-message-content {
+  display: grid;
+  gap: 12px;
+  grid-column: 2;
+  min-width: 0;
+}
+
+.cloudig-message-user .cloudig-message-content {
+  background: var(--cloudig-user-bubble);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.cloudig-message-assistant .cloudig-message-content {
+  background: transparent;
+}
+
+.cloudig-rich,
+.cloudig-text,
+.cloudig-inert-html,
+.cloudig-tool-data,
+.cloudig-code,
+.cloudig-diagram-source,
+.cloudig-diagram-fallback {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cloudig-rich > :first-child,
+.cloudig-inert-html > :first-child {
+  margin-top: 0;
+}
+
+.cloudig-rich > :last-child,
+.cloudig-inert-html > :last-child,
+.cloudig-text {
+  margin-bottom: 0;
+}
+
+.cloudig-text,
+.cloudig-rich .plain-text { white-space: pre-wrap; }
+.cloudig-rich p,
+.cloudig-rich .qwen-markdown-paragraph { margin: 0 0 .85em; }
+.cloudig-rich :is(h1, h2, h3, h4, h5, h6) { line-height: 1.4; margin: 1.15em 0 .5em; font-weight: 700; }
+.cloudig-rich h1 { font-size: 1.65em; }
+.cloudig-rich h2 { font-size: 1.4em; border-bottom: 1px solid var(--cloudig-border); padding-bottom: .3em; }
+.cloudig-rich h3 { font-size: 1.2em; }
+.cloudig-rich :is(h4, h5, h6) { font-size: 1.05em; }
+.cloudig-rich :is(ul, ol) { padding-left: 1.6em; margin: .5em 0 1em; }
+.cloudig-rich li { padding-left: .15em; margin: .28em 0; }
+.cloudig-rich li > p { margin-bottom: .35em; }
+.cloudig-rich blockquote { border-left: 3px solid var(--cloudig-accent); margin: .8em 0; padding: .55em 1em; color: var(--cloudig-muted); background: var(--cloudig-panel); border-radius: 0 7px 7px 0; }
+.cloudig-rich :not(pre) > code { background: var(--cloudig-code); border: 1px solid var(--cloudig-code-border); border-radius: 4px; color: var(--cloudig-code-text); padding: .08em .32em; font-family: "Cascadia Code", Consolas, monospace; font-size: .9em; }
+.cloudig-rich hr { border: 0; border-top: 1px solid var(--cloudig-border); margin: 1.4em 0; }
+.cloudig-rich .cloudig-code { margin: .8em 0; }
+.cloudig-code > code,
+.cloudig-diagram-source > code { font: inherit; line-height: 1.65; background: transparent; border: 0; padding: 0; }
+.cloudig-diagram-source { max-height: min(72vh, 980px); }
+.cloudig-writing .cloudig-diagram-display { display: block; max-height: none; background: var(--cloudig-panel); padding: 18px 22px; }
+.cloudig-writing .writing-bar { display: flex; gap: 12px; border-bottom: 1px solid var(--cloudig-border); color: var(--cloudig-muted); font-size: 13px; font-weight: 700; margin-bottom: 14px; padding-bottom: 8px; }
+.cloudig-rich .osis-temml-display { display: block; max-width: 100%; margin: 14px 0; text-align: center; }
+.cloudig-rich .osis-temml { max-width: 100%; font-family: "STIX Two Math", "Cambria Math", "Times New Roman", serif; line-height: 1.35; }
+.cloudig-rich .osis-temml-inline { display: inline-flex; margin: 0 .12em; vertical-align: -.08em; }
+.cloudig-rich .osis-temml-display { overflow-x: auto; overflow-y: hidden; line-height: 1.55; }
+.cloudig-rich .osis-temml-display > math { display: inline-block; max-width: none; margin: 0 auto; text-align: left; vertical-align: middle; }
+.cloudig-rich .osis-temml-frame { display: inline-block; max-width: 100%; padding: var(--osis-frame-padding, .18em .34em); border: var(--osis-frame-border, .065em solid currentColor); border-radius: .04em; overflow-wrap: anywhere; }
+.cloudig-rich .osis-temml-frame > math { display: inline-block; margin: 0; }
+.cloudig-rich .osis-temml-frame-color { background: var(--osis-frame-color, var(--cloudig-panel)); }
+.cloudig-rich .osis-temml-textbox-content { display: block; max-width: 100%; line-height: 1.65; text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.cloudig-rich .osis-temml-textbox-content.osis-centered { text-align: center; }
+.cloudig-rich .osis-temml-textbox-content code { font-size: .9em; line-height: 1.5; }
+.cloudig-rich .osis-temml-vspace { display: block; height: .5em; }
+.cloudig-rich .osis-temml-small { font-size: .82em; color: inherit; }
+.cloudig-rich .osis-katex-shell { max-width: 100%; font-family: KaTeX_Main, "Cambria Math", "STIX Two Math", serif; }
+.cloudig-rich .osis-katex-shell.osis-math-inline { display: inline-flex; margin: 0 .12em; vertical-align: -.08em; }
+.cloudig-rich .osis-katex-shell.osis-math-display { display: block; max-width: 100%; overflow: auto hidden; margin: 14px 0; text-align: center; }
+.cloudig-rich .osis-katex-shell .katex { font-size: 1.08em; }
+.cloudig-rich .osis-katex-shell .katex-html { max-width: 100%; }
+.cloudig-rich .osis-katex-static-frame-shell { overflow: visible; padding: 8px 10px; text-align: center; }
+.cloudig-rich .osis-katex-static-frame { display: inline-block; max-width: 100%; box-sizing: border-box; padding: .28em .46em; border: .06em solid currentColor; white-space: normal; overflow-wrap: anywhere; text-align: left; line-height: 1.55; }
+
+.cloudig-table-scroll {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.cloudig-table-scroll > table {
+  border-collapse: collapse;
+  display: table;
+  width: 100%;
+}
+
+.cloudig-rich th,
+.cloudig-rich td,
+.cloudig-inert-html th,
+.cloudig-inert-html td {
+  border: 1px solid var(--cloudig-border);
+  padding: 6px 10px;
+}
+
+.cloudig-rich :is(th, td)[data-osis-align="left"] { text-align: left; }
+.cloudig-rich :is(th, td)[data-osis-align="center"] { text-align: center; }
+.cloudig-rich :is(th, td)[data-osis-align="right"] { text-align: right; }
+
+.cloudig-rich a,
+.cloudig-source-link,
+.cloudig-external-resource {
+  color: var(--cloudig-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.cloudig-code,
+.cloudig-tool-data,
+.cloudig-diagram-source,
+.cloudig-diagram-fallback {
+  background: var(--cloudig-code);
+  border: 1px solid var(--cloudig-code-border);
+  border-radius: 9px;
+  color: var(--cloudig-code-text);
+  font-family: "Cascadia Code", "SFMono-Regular", Consolas, "Microsoft YaHei UI", "Microsoft YaHei", monospace;
+  font-size: 0.9em;
+  margin: 0;
+  overflow: auto;
+  padding: 14px;
+  white-space: pre;
+}
+
+.cloudig-code[data-filename]::before,
+.cloudig-code[data-language]:not([data-filename])::before {
+  color: var(--cloudig-code-comment);
+  content: attr(data-filename);
+  display: block;
+  font-family: inherit;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.cloudig-code[data-language]:not([data-filename])::before { content: attr(data-language); }
+
+.cloudig-process,
+.cloudig-references {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+  position: relative;
+}
+.cloudig-process > .cloudig-fold-body { color: var(--cloudig-process-text); }
+.cloudig-platform-context > .cloudig-fold-body > .cloudig-text { margin: 0; }
+.cloudig-process .cloudig-tool-data { color: var(--cloudig-process-text); }
+.cloudig-process-group { border: 0; outline: var(--cloudig-process-group-border) solid var(--cloudig-border); outline-offset: calc(0px - var(--cloudig-process-group-border)); border-radius: 9px; background: var(--cloudig-panel); padding: 9px var(--cloudig-process-group-padding); min-width: 0; }
+.cloudig-process-axis-row { min-width: 0; position: relative; }
+.cloudig-process-axis-row::before { background: var(--cloudig-accent); border-radius: 50%; content: ""; height: var(--cloudig-process-dot-size); left: calc(var(--cloudig-axis-x) - var(--cloudig-process-dot-size) / 2); position: absolute; top: calc(7px + 25px + 6px); width: var(--cloudig-process-dot-size); z-index: 5; }
+.cloudig-process-group-axis-avatar { align-items: center; background: var(--cloudig-panel-strong); border: 1px solid var(--cloudig-border); border-radius: 7px; display: inline-flex; height: 25px; justify-content: center; left: calc(var(--cloudig-axis-x) - 12.5px); overflow: hidden; position: absolute; top: 7px; width: 25px; z-index: 4; }
+.cloudig-process-group-identity { align-items: center; display: inline-flex; flex: none; gap: 6px; margin-right: 7px; max-width: min(220px, 42%); vertical-align: middle; }
+.cloudig-process-group-avatar { align-items: center; background: var(--cloudig-panel-strong); border: 1px solid var(--cloudig-border); border-radius: 5px; display: inline-flex; flex: none; height: 22px; justify-content: center; overflow: hidden; width: 22px; }
+.cloudig-process-group-avatar img { display: block; height: 100%; object-fit: contain; width: 100%; }
+.cloudig-conversation-renderer .cloudig-process-group-avatar:has(img[src$="platform-kimi-code.svg"]),
+.cloudig-conversation-renderer .cloudig-process-group-avatar:has(img[src$="platform-claude-code.svg"]) { background: #17152b; border-color: #d9a45b; }
+.cloudig-conversation-renderer .cloudig-process-group-avatar:has(img[src$="platform-agent-instance.svg"]) { background: #17152b; border-color: #d9a45b; }
+.cloudig-conversation-renderer[data-theme="star-night"] .cloudig-process-group-avatar:has(img[src$="platform-cline.svg"]),
+.cloudig-conversation-renderer[data-theme="star-night"] .cloudig-process-group-avatar:has(img[src$="platform-codex.svg"]) { background: #e2e1e1; border-color: #ffa92e; }
+.cloudig-process-group-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cloudig-process-group-preview { color: var(--cloudig-process-text); display: inline-block; font-size: .86em; font-weight: 400; margin-left: 6px; max-width: min(58%, 560px); overflow: hidden; text-overflow: ellipsis; vertical-align: middle; white-space: nowrap; }
+.cloudig-process-group > .cloudig-fold-body {
+  --cloudig-process-inset: calc(var(--cloudig-process-group-padding) + var(--cloudig-process-group-indent));
+  gap: 10px;
+  padding-left: var(--cloudig-process-group-indent);
+}
+.cloudig-process-group > .cloudig-fold-title { padding-left: 31px; }
+.cloudig-tool-message-group > .cloudig-fold-body { gap: 12px; }
+.cloudig-tool-message-group > .cloudig-fold-body > .cloudig-message[data-process-continuation] { padding-top: 0; }
+
+.cloudig-process::before {
+  background: var(--cloudig-accent);
+  border-radius: 50%;
+  content: "";
+  height: var(--cloudig-process-dot-size);
+  left: calc(var(--cloudig-axis-x) - var(--cloudig-message-leading) - var(--cloudig-message-gap) - var(--cloudig-process-inset) - var(--cloudig-process-dot-size) / 2);
+  position: absolute;
+  top: 12px;
+  width: var(--cloudig-process-dot-size);
+}
+
+/* A process group already has a real source avatar.  Do not add a second
+   red/orange dot that users could mistake for another speaker or identity. */
+.cloudig-process-axis-row::before,
+.cloudig-process::before,
+.cloudig-process-axis-row > .cloudig-process .cloudig-process::before { display: none; }
+
+.cloudig-fold-title {
+  color: var(--cloudig-muted);
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 700;
+  list-style: none;
+}
+
+.cloudig-fold-title::-webkit-details-marker {
+  display: none;
+}
+
+.cloudig-fold-title::before {
+  content: "＋";
+  display: inline-block;
+  margin-right: 7px;
+}
+
+:is(.cloudig-process, .cloudig-nested-process) > .cloudig-fold-title { display: flex; align-items: flex-start; min-width: 0; }
+:is(.cloudig-process, .cloudig-nested-process) > .cloudig-fold-title::before { flex: none; }
+:is(.cloudig-process, .cloudig-nested-process) > .cloudig-fold-title > .cloudig-fold-label { min-width: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+:is(.cloudig-process, .cloudig-nested-process):not([open]) > .cloudig-fold-title > .cloudig-fold-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cloudig-nested-process { margin: 8px 0; min-width: 0; }
+.cloudig-nested-process > :not(summary) { margin-block: 6px 0; padding-inline-start: 20px; }
+.cloudig-process-label { color: var(--cloudig-muted); font-size: 0.9em; font-weight: 700; }
+.cloudig-summary-sequence > .cloudig-fold-body { gap: 14px; color: var(--cloudig-process-text); }
+.cloudig-summary-entry { min-width: 0; }
+.cloudig-summary-entry + .cloudig-summary-entry { padding-top: 12px; border-top: 1px solid var(--cloudig-border); }
+.cloudig-summary-entry > .cloudig-fold-body { margin-top: 4px; color: var(--cloudig-process-text); }
+.cloudig-summary-entry > .cloudig-fold-body:first-child { margin-top: 0; }
+.cloudig-summary-entry :is(p, .cloudig-text):first-child { margin-top: 0; }
+.cloudig-summary-entry :is(p, .cloudig-text):last-child { margin-bottom: 0; }
+.cloudig-summary-messages { display: grid; grid-template-columns: var(--cloudig-message-leading) minmax(0,1fr); gap: 10px var(--cloudig-message-gap); min-width: 0; position: relative; }
+.cloudig-summary-message-fold { grid-column: 2; }
+.cloudig-summary-message { display: block; }
+.cloudig-summary-message + .cloudig-summary-message { border-top: 1px solid var(--cloudig-border); padding-top: 12px; }
+.cloudig-summary-message > .cloudig-message-header { display: block; margin-bottom: 8px; }
+.cloudig-summary-message > .cloudig-message-header .cloudig-message-identity,
+.cloudig-summary-message > .cloudig-message-header .cloudig-model-tag { display: none; }
+
+details[open] > .cloudig-fold-title::before {
+  content: "−";
+}
+
+.cloudig-fold-body {
+  display: grid;
+  gap: 9px;
+  margin-top: 8px;
+  min-width: 0;
+}
+
+.cloudig-source-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 24px;
+}
+
+.cloudig-source-snippet {
+  color: var(--cloudig-muted);
+  font-size: 0.88em;
+  margin: 2px 0 0;
+}
+
+/* The exporter marks complete emoji graphemes; do not split ZWJ/skin-tone pairs. */
+.cloudig-conversation-renderer .osis-emoji {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+.cloudig-schedule { display: grid; gap: 10px; border: 1px solid var(--cloudig-border); border-radius: 12px; padding: 14px; background: var(--cloudig-panel); }
+.cloudig-schedule-header { align-items: center; display: flex; gap: 10px; }
+.cloudig-schedule-header h2 { font: inherit; font-weight: 700; margin: 0; }
+.cloudig-schedule-prompt-label { margin: 8px 0 0; }
+.cloudig-schedule-icon { color: var(--cloudig-accent); font-size: 1.3em; }
+.cloudig-schedule-task {
+  border: 1px solid var(--cloudig-border);
+  border-radius: 10px;
+  background: var(--cloudig-panel);
+  min-width: 0;
+  padding: 12px 14px;
+}
+.cloudig-schedule-task > .cloudig-fold-title { color: var(--cloudig-text); }
+.cloudig-schedule-summary {
+  color: var(--cloudig-muted);
+  display: block;
+  font-size: 0.9em;
+  font-weight: 400;
+  margin: 4px 0 0 1.4em;
+  white-space: pre-wrap;
+}
+.cloudig-schedule-state { color: var(--cloudig-muted); margin: 0; }
+.cloudig-schedule-meta { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 0; }
+.cloudig-schedule-meta dt { color: var(--cloudig-muted); }
+.cloudig-schedule-meta dd { margin: 0; overflow-wrap: anywhere; }
+.cloudig-schedule-prompt { margin: 0; }
+
+.cloudig-media,
+.cloudig-diagram {
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.cloudig-conversation-images {
+  margin: 0 0 24px;
+  border: 1px solid var(--cloudig-code-border);
+  border-radius: 10px;
+  background: var(--cloudig-code);
+  padding: 12px 16px;
+}
+.cloudig-conversation-images > summary { cursor: pointer; font-weight: 700; }
+.cloudig-conversation-images-note { color: var(--cloudig-muted); margin: 12px 0 16px; }
+.cloudig-conversation-images-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 24px; }
+.cloudig-conversation-images-grid .cloudig-media-viewport { justify-content: center; }
+.cloudig-conversation-images-grid figcaption { overflow-wrap: anywhere; text-align: center; margin-top: 8px; }
+
+.cloudig-diagram {
+  background: var(--cloudig-code);
+  border: 1px solid var(--cloudig-code-border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cloudig-diagram > [hidden] { display: none; }
+.cloudig-diagram-display {
+  background: var(--cloudig-diagram-canvas);
+  border-radius: 6px;
+  padding: 16px;
+}
+.cloudig-diagram-display[data-renderer="local"] { background: var(--cloudig-diagram-local-canvas); }
+  .cloudig-diagram-display > .cloudig-resource-image { margin-inline: auto; }
+  .cloudig-inline-resource > .cloudig-resource-image { display: inline-block; vertical-align: middle; }
+
+.cloudig-media-viewport,
+.cloudig-diagram-display {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  min-height: 42px;
+  min-width: 0;
+}
+
+.cloudig-resource-image,
+.cloudig-mermaid svg {
+  display: block;
+  height: auto;
+  max-height: min(72vh, 980px);
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.cloudig-resource-state {
+  color: var(--cloudig-muted);
+  font-size: 0.9em;
+}
+
+.cloudig-attachment {
+  align-items: center;
+  border: 1px solid var(--cloudig-border);
+  border-radius: 12px;
+  background: var(--cloudig-file-surface, #ead8c0);
+  color: var(--cloudig-text);
+  display: grid;
+  grid-template-columns: 42px minmax(0,1fr) 36px;
+  gap: 14px;
+  width: min(100%, 540px);
+  padding: 14px 16px;
+  box-shadow: 0 2px 5px #35231716;
+  transition: box-shadow .15s, border-color .15s, transform .15s;
+}
+.cloudig-conversation-renderer[data-theme="star-night"] { --cloudig-file-surface: #343039; }
+.cloudig-attachment:hover { border-color: var(--cloudig-accent); box-shadow: 0 4px 10px #17101826; transform: translateY(-1px); }
+.cloudig-file-info { min-width: 0; display: grid; gap: 5px; align-content: center; }
+.cloudig-attachment-name { font-size: 16px; font-weight: 700; line-height: 1.45; overflow-wrap: anywhere; }
+.cloudig-file-meta { font-size: 14px; font-weight: 400; line-height: 1.4; color: var(--cloudig-muted); }
+.cloudig-file-icon { width: 42px; height: 49px; color: var(--cloudig-accent); overflow: visible; filter: drop-shadow(0 2px 1px #0002); flex-shrink: 0; }
+.cloudig-file-paper { fill: color-mix(in srgb,var(--cloudig-accent) 10%,var(--cloudig-file-surface,#ead8c0)); stroke: currentColor; stroke-width: 1.4; }
+.cloudig-file-fold { fill: color-mix(in srgb,var(--cloudig-accent) 22%,var(--cloudig-file-surface,#ead8c0)); stroke: currentColor; stroke-width: 1.2; }
+.cloudig-file-mark { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cloudig-file-icon text { fill: currentColor; font: 700 8px var(--cloudig-font-ui,sans-serif); }
+.cloudig-attachment > .cloudig-attachment-open { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; color: var(--cloudig-accent); }
+.cloudig-attachment-open:hover:not(:disabled) { background: var(--cloudig-panel); }
+.cloudig-attachment-open svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cloudig-attachment-open:focus-visible { outline: 2px solid var(--cloudig-accent); outline-offset: 3px; }
+.cloudig-attachment-open:disabled { opacity: .45; cursor: default; }
+@media (prefers-reduced-motion:reduce) { .cloudig-attachment { transition: none; } .cloudig-attachment:hover { transform: none; } }
+
+.cloudig-attachment-thumbnail { flex: none; margin: 0; width: 44px; }
+.cloudig-attachment-thumbnail .cloudig-resource-image { max-height: 58px; max-width: 44px; }
+
+.cloudig-attachment-open,
+.cloudig-diagram-tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 4px 7px;
+}
+
+.cloudig-diagram-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 7px;
+}
+
+.cloudig-diagram-tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 4px 4px 0 0;
+  color: var(--cloudig-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: .9em;
+  font-weight: 700;
+  padding: 5px 12px;
+}
+
+.cloudig-diagram-tab.is-active {
+  border-bottom-color: var(--cloudig-accent);
+  color: var(--cloudig-accent);
+}
+.cloudig-diagram-zoom:first-of-type,
+.cloudig-diagram-tab:not(.cloudig-diagram-zoom) + .cloudig-diagram-zoom { margin-left: auto; }
+.cloudig-diagram:has(.cloudig-diagram-display[hidden]) .cloudig-diagram-zoom { display: none; }
+.cloudig-diagram-display { display: block; max-height: min(72vh, 980px); overflow: auto; }
+.cloudig-diagram-display > .cloudig-resource-image { max-height: none; }
+.cloudig-diagram-tab:is(:hover, :focus-visible) { color: var(--cloudig-accent); background: var(--cloudig-panel); }
+.cloudig-code :is(.hljs-comment, .hljs-quote) { color: var(--cloudig-code-comment); }
+.cloudig-code :is(.hljs-keyword, .hljs-selector-tag, .hljs-literal) { color: var(--cloudig-code-keyword); }
+.cloudig-code :is(.hljs-string, .hljs-doctag, .hljs-regexp) { color: var(--cloudig-code-string); }
+.cloudig-code :is(.hljs-number, .hljs-built_in, .hljs-type) { color: var(--cloudig-code-number); }
+.cloudig-code :is(.hljs-title, .hljs-attr, .hljs-name) { color: var(--cloudig-code-name); }
+
+.cloudig-math {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (max-width: 760px) {
+  .cloudig-conversation-renderer {
+    font-size: 15px;
+    --cloudig-axis-x: 20.5px;
+    --cloudig-message-leading: 42px;
+  }
+
+  .cloudig-avatar {
+    height: 36px;
+    width: 36px;
+  }
+
+  .cloudig-message-name {
+    max-width: 42px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloudig-conversation-renderer *,
+  .cloudig-conversation-renderer *::before,
+  .cloudig-conversation-renderer *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+}

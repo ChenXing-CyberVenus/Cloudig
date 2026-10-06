@@ -1,0 +1,30 @@
+{
+  "schema": "cloudig/library/1.0.0",
+  "conversation_schema": "cloudig/conversation/1.0.0",
+  "next_archive": 1,
+  "revision": 1,
+  "edited_at": "2026-08-31T12:00:00.000Z",
+  "preferences": {
+    "language": "zh-CN",
+    "theme": "dawn"
+  },
+  "parse": {
+    "ordinary": {
+      "parse_unparsed": true,
+      "parse_selected": true,
+      "update_outdated": false,
+      "preserve_previous": false
+    },
+    "claude": {
+      "parse_unparsed": true,
+      "parse_selected": true,
+      "update_outdated": false,
+      "preserve_previous": false
+    }
+  },
+  "content_time": {
+    "schema": "cloudig/time-system/1.0.0",
+    "revision": 1,
+    "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  }
+}

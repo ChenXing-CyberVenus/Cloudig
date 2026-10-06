@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 518.66 719.32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #ae8b7f;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #ae8b7f;
+      }
+
+      .cls-3 {
+        fill: #d3af95;
+      }
+    </style>
+  </defs>
+  <g>
+    <g id="_百叶窗">
+      <g id="_窗帘拉绳">
+        <line class="cls-1" x1="513.64" x2="513.64" y2="716.58"/>
+        <circle class="cls-2" cx="513.64" cy="714.3" r="5.02"/>
+      </g>
+      <g id="_百叶窗帘">
+        <rect class="cls-3" width="500" height="14.11"/>
+        <rect class="cls-2" y="5.43" width="500" height="14.11"/>
+        <rect class="cls-3" y="10.86" width="500" height="14.11"/>
+        <rect class="cls-2" y="16.3" width="500" height="14.11"/>
+        <rect class="cls-3" y="21.73" width="500" height="14.11"/>
+        <rect class="cls-2" y="27.16" width="500" height="14.11"/>
+        <rect class="cls-3" y="32.59" width="500" height="14.11"/>
+        <rect class="cls-2" y="38.03" width="500" height="14.11"/>
+        <rect class="cls-3" y="43.46" width="500" height="14.11"/>
+        <rect class="cls-2" y="48.89" width="500" height="14.11"/>
+        <rect class="cls-3" y="55.95" width="500" height="14.11"/>
+        <rect class="cls-2" y="63" width="500" height="14.11"/>
+        <rect class="cls-3" y="70.06" width="500" height="14.11"/>
+        <rect class="cls-2" y="77.12" width="500" height="14.11"/>
+        <rect class="cls-3" y="84.93" width="500" height="14.11"/>
+        <rect class="cls-2" y="91.99" width="500" height="14.11"/>
+        <rect class="cls-3" y="99.04" width="500" height="14.11"/>
+        <rect class="cls-2" y="106.1" width="500" height="14.11"/>
+        <rect class="cls-3" y="112.55" width="500" height="14.11"/>
+        <rect class="cls-2" y="119.61" width="500" height="14.11"/>
+        <rect class="cls-3" y="126.21" width="500" height="14.11"/>
+        <rect class="cls-2" y="135.26" width="500" height="14.11"/>
+        <rect class="cls-3" y="145.32" width="500" height="14.11"/>
+      </g>
+    </g>
+  </g>
+</svg>
