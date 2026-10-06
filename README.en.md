@@ -4,7 +4,7 @@
 
 ## Download
 
-Cloudig helps you collect, preserve, and read the history you created with AI.
+Cloudig: Free tool to export, organize & read AI conversations from 12 web platforms
 
 **Windows x64:** [Download Cloudig V1.0.4 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
@@ -18,10 +18,11 @@ Install bookmarks → Save conversations → Import files → Parse explicitly �
 
 Cloudig turns captured HTML, official platform exports, and Agent Tool files into independent Conversation JSON records while keeping source facts and user edits separate.
 
-<p align="center">
-  <img src="docs/assets/readme/Archiver-Dawn.webp" alt="Cloudig Archiver Dawn" width="49%">
-  <img src="docs/assets/readme/Archiver-StarNight.webp" alt="Cloudig Archiver StarNight" width="49%">
-</p>
+<p><strong>Archiver · Dawn</strong></p>
+<img src="docs/assets/readme/Archiver-Dawn.webp" alt="Cloudig Archiver Dawn" width="100%">
+
+<p><strong>Archiver · StarNight</strong></p>
+<img src="docs/assets/readme/Archiver-StarNight.webp" alt="Cloudig Archiver StarNight" width="100%">
 
 ## V1.0.4 highlights
 
@@ -45,35 +46,52 @@ Archiver's **Import Platform Files** entry routes each source to its correct inp
 
 ZIP files do not need to be extracted. The in-app guide explains the exact input expected by each source.
 
-<p align="center">
-  <img src="docs/assets/readme/Parser-Platform.webp" alt="Platform file import" width="58%">
-  <img src="docs/assets/readme/Parser-AgentTool.webp" alt="Agent Tool import" width="38%">
-</p>
+<p><strong>Platform file import</strong></p>
+<img src="docs/assets/readme/Parser-Platform.webp" alt="Platform file import" width="100%">
+
+<p><strong>Agent Tool import</strong></p>
+<img src="docs/assets/readme/Parser-AgentTool.webp" alt="Agent Tool import" width="100%">
 
 ### Faithful offline reading
 
 Reader displays parsed records offline while preserving branches, reasoning, tool calls, system context, formulas, diagrams, resources, and supported Card / Artifact content.
 
-<p align="center">
-  <img src="docs/assets/readme/Reader-Cover-Dawn.webp" alt="Cloudig Reader Dawn" width="49%">
-  <img src="docs/assets/readme/Reader-Cover-StarNight.webp" alt="Cloudig Reader StarNight" width="49%">
-</p>
+<p><strong>Reader · Dawn</strong></p>
+<img src="docs/assets/readme/Reader-Cover-Dawn.webp" alt="Cloudig Reader Dawn" width="100%">
+
+<p><strong>Reader · StarNight</strong></p>
+<img src="docs/assets/readme/Reader-Cover-StarNight.webp" alt="Cloudig Reader StarNight" width="100%">
 
 ### Structured content rendering
 
 Cloudig reuses captured static rendering whenever the source provides it. When a source provides only code, the offline runtime is used as a fallback.
 
-<p align="center">
-  <img src="docs/assets/readme/Claude-Card-01.webp" alt="Claude Card example" width="32%">
-  <img src="docs/assets/readme/Claude-Artifact-01.webp" alt="Claude Artifact example" width="32%">
-  <img src="docs/assets/readme/Mermaid-01.webp" alt="Mermaid diagram example" width="32%">
-</p>
+<p><strong>Claude Artifact · Dawn</strong></p>
+<img src="docs/assets/readme/Claude-Artifact-01.webp" alt="Claude Artifact Dawn example" width="100%">
 
-<p align="center">
-  <img src="docs/assets/readme/LaTeX-01.webp" alt="LaTeX example" width="32%">
-  <img src="docs/assets/readme/LaTeX-02.webp" alt="LaTeX example" width="32%">
-  <img src="docs/assets/readme/SVG-01.webp" alt="SVG content example" width="32%">
-</p>
+<p><strong>Claude Artifact · StarNight</strong></p>
+<img src="docs/assets/readme/Claude-Artifact-02.webp" alt="Claude Artifact StarNight example" width="100%">
+
+<p><strong>Claude Card · Example 1</strong></p>
+<img src="docs/assets/readme/Claude-Card-01.webp" alt="Claude Card example 1" width="100%">
+
+<p><strong>Claude Card · Example 2</strong></p>
+<img src="docs/assets/readme/Claude-Card-02.webp" alt="Claude Card example 2" width="100%">
+
+<p><strong>Claude Card · Map window</strong></p>
+<img src="docs/assets/readme/Claude-Card-03.webp" alt="Claude Card map window example" width="100%">
+
+<p><strong>Mermaid diagram</strong></p>
+<img src="docs/assets/readme/Mermaid-01.webp" alt="Mermaid diagram example" width="100%">
+
+<p><strong>LaTeX · Dawn</strong></p>
+<img src="docs/assets/readme/LaTeX-01.webp" alt="LaTeX Dawn example" width="100%">
+
+<p><strong>LaTeX · StarNight</strong></p>
+<img src="docs/assets/readme/LaTeX-02.webp" alt="LaTeX StarNight example" width="100%">
+
+<p><strong>SVG content</strong></p>
+<img src="docs/assets/readme/SVG-01.webp" alt="SVG content example" width="100%">
 
 ## Content time and independent data standards
 

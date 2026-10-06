@@ -4,7 +4,7 @@
 
 ## 下载
 
-采云帮助用户收集、保存和阅读自己与 AI 共同留下的历史。
+采云：免费的AI平台对话导出、管理与阅读工具。
 
 **Windows x64：** [下载采云 V1.0.4 东方既白 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [查看全部发布版本](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
@@ -20,10 +20,11 @@
 
 它把网页 HTML、AI 平台官方导出文件和 Agent Tool 文件转换为统一的 Conversation JSON，同时把原始对话与用户编辑分开保存。
 
-<p align="center">
-  <img src="docs/assets/readme/Archiver-Dawn.webp" alt="破晓主题档案馆" width="49%">
-  <img src="docs/assets/readme/Archiver-StarNight.webp" alt="星夜主题档案馆" width="49%">
-</p>
+<p><strong>档案馆 · 破晓 Dawn</strong></p>
+<img src="docs/assets/readme/Archiver-Dawn.webp" alt="破晓主题档案馆" width="100%">
+
+<p><strong>档案馆 · 星夜 StarNight</strong></p>
+<img src="docs/assets/readme/Archiver-StarNight.webp" alt="星夜主题档案馆" width="100%">
 
 <p align="center"><em>档案馆 Archiver：导入、解析、管理与导出。</em></p>
 
@@ -49,35 +50,52 @@ Archiver 的“导入平台文件”入口按来源选择文件类型：
 
 ZIP 无需解压，也不要求用户选择导出文件夹。每个平台的具体导入方式以应用内指南为准。
 
-<p align="center">
-  <img src="docs/assets/readme/Parser-Platform.webp" alt="平台文件导入入口" width="58%">
-  <img src="docs/assets/readme/Parser-AgentTool.webp" alt="Agent Tool 导入入口" width="38%">
-</p>
+<p><strong>平台文件导入入口</strong></p>
+<img src="docs/assets/readme/Parser-Platform.webp" alt="平台文件导入入口" width="100%">
+
+<p><strong>Agent Tool 导入入口</strong></p>
+<img src="docs/assets/readme/Parser-AgentTool.webp" alt="Agent Tool 导入入口" width="100%">
 
 ### 3. Reader 保真阅读
 
 Reader 离线阅读已经解析的档案，保留分支、思考、工具调用、系统信息、公式、图表、资源以及已接入的 Card / Artifact 内容。
 
-<p align="center">
-  <img src="docs/assets/readme/Reader-Cover-Dawn.webp" alt="破晓主题阅览室" width="49%">
-  <img src="docs/assets/readme/Reader-Cover-StarNight.webp" alt="星夜主题阅览室" width="49%">
-</p>
+<p><strong>阅览室 · 破晓 Dawn</strong></p>
+<img src="docs/assets/readme/Reader-Cover-Dawn.webp" alt="破晓主题阅览室" width="100%">
+
+<p><strong>阅览室 · 星夜 StarNight</strong></p>
+<img src="docs/assets/readme/Reader-Cover-StarNight.webp" alt="星夜主题阅览室" width="100%">
 
 ### 4. 结构化内容渲染
 
 采云优先复用来源中已有的静态渲染结果；来源只提供源码时，再使用离线运行时兜底。
 
-<p align="center">
-  <img src="docs/assets/readme/Claude-Card-01.webp" alt="Claude Card 示例" width="32%">
-  <img src="docs/assets/readme/Claude-Artifact-01.webp" alt="Claude Artifact 示例" width="32%">
-  <img src="docs/assets/readme/Mermaid-01.webp" alt="Mermaid 图表示例" width="32%">
-</p>
+<p><strong>Claude Artifact · 破晓</strong></p>
+<img src="docs/assets/readme/Claude-Artifact-01.webp" alt="Claude Artifact 破晓示例" width="100%">
 
-<p align="center">
-  <img src="docs/assets/readme/LaTeX-01.webp" alt="LaTeX 公式示例" width="32%">
-  <img src="docs/assets/readme/LaTeX-02.webp" alt="LaTeX 公式示例" width="32%">
-  <img src="docs/assets/readme/SVG-01.webp" alt="SVG 内容示例" width="32%">
-</p>
+<p><strong>Claude Artifact · 星夜</strong></p>
+<img src="docs/assets/readme/Claude-Artifact-02.webp" alt="Claude Artifact 星夜示例" width="100%">
+
+<p><strong>Claude Card · 示例 1</strong></p>
+<img src="docs/assets/readme/Claude-Card-01.webp" alt="Claude Card 示例 1" width="100%">
+
+<p><strong>Claude Card · 示例 2</strong></p>
+<img src="docs/assets/readme/Claude-Card-02.webp" alt="Claude Card 示例 2" width="100%">
+
+<p><strong>Claude Card · 地图窗口</strong></p>
+<img src="docs/assets/readme/Claude-Card-03.webp" alt="Claude Card 地图窗口示例" width="100%">
+
+<p><strong>Mermaid 图表</strong></p>
+<img src="docs/assets/readme/Mermaid-01.webp" alt="Mermaid 图表示例" width="100%">
+
+<p><strong>LaTeX · 破晓</strong></p>
+<img src="docs/assets/readme/LaTeX-01.webp" alt="LaTeX 破晓示例" width="100%">
+
+<p><strong>LaTeX · 星夜</strong></p>
+<img src="docs/assets/readme/LaTeX-02.webp" alt="LaTeX 星夜示例" width="100%">
+
+<p><strong>SVG 内容</strong></p>
+<img src="docs/assets/readme/SVG-01.webp" alt="SVG 内容示例" width="100%">
 
 ### 5. 内容时间与独立标准
 
