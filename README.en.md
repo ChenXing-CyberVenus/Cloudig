@@ -8,7 +8,7 @@ Cloudig: Free tool to export, organize & read AI conversations from 12 web platf
 
 **Windows x64:** [Download Cloudig V1.0.4 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
-Do not install it in `Program Files`; choose a directory where you have write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall.
+Do not install it in `Program Files`; choose a directory with write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall.
 
 ## What Cloudig does
 

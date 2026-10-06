@@ -8,7 +8,7 @@
 
 **Windows x64：** [下载采云 V1.0.4 东方既白 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.4/Cloudig-1.0.4-Setup.exe) · [查看全部发布版本](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
-建议安装到有写入权限的目录，不要选择 `Program Files`。采云是完整的便携目录：复制就是备份，移走就是搬家，删除就是卸载。
+不要安装到 `Program Files`，选择有写入权限的目录。采云是完整的便携目录：复制就是备份，移走就是搬家，删除就是卸载。
 
 ## 采云是什么
 
