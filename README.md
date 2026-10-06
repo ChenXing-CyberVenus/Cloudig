@@ -2,7 +2,7 @@
 
 [中文 README](README.zh-CN.md) · [English README](README.en.md)
 
-## 中文下载 Download
+## 下载
 
 采云：免费的AI平台对话导出、管理与阅读工具。
 
@@ -12,7 +12,7 @@
 
 **[源码 Source code · Cloudig V1.0.5](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.5)**
 
-## English
+## Download
 
 **[Source code · Cloudig V1.0.5](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.5)**
 
