@@ -100,13 +100,13 @@ Cloudig reuses captured static rendering whenever the source provides it. When a
 <p><strong>Claude Artifact · StarNight</strong></p>
 <img src="docs/assets/readme/Claude-Artifact-02.webp" alt="Claude Artifact StarNight example" width="100%">
 
-<p><strong>Claude Card · 示例 1</strong></p>
+<p><strong>Claude Card · Example 1</strong></p>
 <img src="docs/assets/readme/Claude-Card-01.webp" alt="Claude Card example 1" width="100%">
 
-<p><strong>Claude Card · 示例 2</strong></p>
+<p><strong>Claude Card · Example 2</strong></p>
 <img src="docs/assets/readme/Claude-Card-02.webp" alt="Claude Card example 2" width="100%">
 
-<p><strong>Claude Card · 地图窗口</strong></p>
+<p><strong>Claude Card · Map window</strong></p>
 <img src="docs/assets/readme/Claude-Card-03.webp" alt="Claude Card map window example" width="100%">
 
 <p><strong>Mermaid diagram</strong></p>
