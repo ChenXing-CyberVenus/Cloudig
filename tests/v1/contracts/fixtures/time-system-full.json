@@ -1,0 +1,168 @@
+{
+  "schema": "cloudig/time-system/1.0.0",
+  "revision": 5,
+  "edited_at": "2026-08-31T12:00:00.000Z",
+  "next": {
+    "lineage": 2,
+    "variant": 3,
+    "time": 4
+  },
+  "terran_values": {
+    "p13": {
+      "start": {
+        "kind": "decade",
+        "era": "AD",
+        "index": 194
+      },
+      "end": {
+        "kind": "now",
+        "anchor": {
+          "date": "2026-08-31",
+          "offset": "-07:00"
+        }
+      }
+    }
+  },
+  "lineages": {
+    "l1": {
+      "id": "l1",
+      "current": "v2",
+      "next_variant": 3
+    }
+  },
+  "variants": {
+    "v1": {
+      "id": "v1",
+      "lineage": "l1",
+      "number": 1,
+      "revision": 2,
+      "name": "星河纪元",
+      "author": "晨星",
+      "standard_name": "Star River Era",
+      "version": "1.1",
+      "created_at": "2026-08-30T10:00:00.000Z",
+      "edited_at": "2026-08-30T11:00:00.000Z"
+    },
+    "v2": {
+      "id": "v2",
+      "lineage": "l1",
+      "number": 2,
+      "revision": 3,
+      "name": "星河纪元·分叉",
+      "author": "晨星",
+      "version": "1.2",
+      "created_at": "2026-08-30T12:00:00.000Z",
+      "edited_at": "2026-08-31T10:00:00.000Z"
+    }
+  },
+  "times": {
+    "t1": {
+      "id": "t1",
+      "owner": "v2",
+      "kind": "single",
+      "name": "初见",
+      "created_at": "2026-08-30T12:10:00.000Z",
+      "edited_at": "2026-08-30T12:10:00.000Z"
+    },
+    "t2": {
+      "id": "t2",
+      "owner": "v2",
+      "kind": "periodic",
+      "name": "月相",
+      "created_at": "2026-08-30T12:20:00.000Z",
+      "edited_at": "2026-08-31T10:30:00.000Z",
+      "count": 12,
+      "prefix": "第",
+      "unit": "月",
+      "display_empty": true
+    },
+    "t3": {
+      "id": "t3",
+      "owner": "v1",
+      "kind": "single",
+      "name": "旧纪元",
+      "created_at": "2026-08-30T10:30:00.000Z",
+      "edited_at": "2026-08-30T10:30:00.000Z"
+    }
+  },
+  "contains": {
+    "v2": [
+      {
+        "node": "t1"
+      },
+      {
+        "node": "t2",
+        "occurrences": {
+          "mode": "prefix",
+          "count": 3
+        }
+      },
+      {
+        "node": "v2"
+      }
+    ],
+    "t1": [
+      {
+        "node": "v2"
+      }
+    ],
+    "t2": [
+      {
+        "node": "t1"
+      }
+    ]
+  },
+  "counterparts": [
+    {
+      "left": {
+        "node": "t1"
+      },
+      "right": {
+        "node": "t2",
+        "occurrences": {
+          "mode": "all"
+        }
+      }
+    },
+    {
+      "left": {
+        "node": "v2"
+      },
+      "right": {
+        "node": "v2"
+      }
+    }
+  ],
+  "terran_mappings": [
+    {
+      "target": {
+        "node": "t2",
+        "occurrences": {
+          "mode": "progression",
+          "first": 1,
+          "step": 1,
+          "last": 12
+        }
+      },
+      "range": {
+        "start": {
+          "kind": "calendar",
+          "era": "AD",
+          "year": 2026,
+          "month": 1
+        },
+        "end": {
+          "kind": "calendar",
+          "era": "AD",
+          "year": 2026,
+          "month": 12
+        }
+      },
+      "edited_at": "2026-08-31T11:00:00.000Z"
+    }
+  ],
+  "display_order": [
+    "v2",
+    "v1"
+  ]
+}

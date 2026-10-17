@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/records/identity-settings/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "edited_at",
+    "subject",
+    "assistant",
+    "apply_assistant_to_all",
+    "platforms"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/identity-settings/1.0.0"
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "subject": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    },
+    "assistant": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    },
+    "apply_assistant_to_all": {
+      "type": "boolean"
+    },
+    "platforms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chatgpt",
+        "deepseek",
+        "gemini",
+        "grok",
+        "doubao",
+        "kimi",
+        "qwen",
+        "chatglm",
+        "zai",
+        "yuanbao",
+        "mistral",
+        "claude"
+      ],
+      "properties": {
+        "chatgpt": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "deepseek": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "gemini": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "grok": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "doubao": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "kimi": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "qwen": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "chatglm": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "zai": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "yuanbao": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "mistral": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        },
+        "claude": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+        }
+      }
+    }
+  }
+}

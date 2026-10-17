@@ -1,0 +1,63 @@
+{
+  "schema": "ai-chat-archive/conversation/0.1.2",
+  "conversation_key": "0000000000000000000000000000000000000000000000000000000000000000",
+  "source_file": "conversation.html",
+  "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "source_size_bytes": 2048,
+  "content_time": "2026-01-01T00:00:00.000Z",
+  "title": "A compact grouped conversation",
+  "provider": "example",
+  "platform": "example",
+  "models": [
+    "Example Model"
+  ],
+  "messages": [
+    {
+      "turn_id": "turn_000001_user",
+      "role": "user",
+      "timestamp": "2026-01-01T00:00:00.000Z",
+      "content": [
+        {
+          "type": "markdown",
+          "text": "Explain this idea."
+        }
+      ]
+    },
+    {
+      "turn_id": "turn_000001_assistant",
+      "role": "assistant",
+      "model": "Example Model",
+      "content": [
+        {
+          "type": "reasoning_summary",
+          "text": "Use a concrete analogy."
+        }
+      ]
+    },
+    {
+      "turn_id": "turn_000001_assistant",
+      "role": "tool",
+      "content": [
+        {
+          "type": "tool",
+          "kind": "result",
+          "name": "lookup",
+          "title": "Reference checked",
+          "success": true
+        }
+      ]
+    },
+    {
+      "turn_id": "turn_000001_assistant",
+      "role": "assistant",
+      "model": "Example Model",
+      "timestamp": "2026-01-01T00:01:00.000Z",
+      "content": [
+        {
+          "type": "markdown",
+          "text": "The explanation is the visible answer."
+        }
+      ]
+    }
+  ]
+}

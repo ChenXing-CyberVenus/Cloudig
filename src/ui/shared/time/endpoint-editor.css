@@ -1,0 +1,101 @@
+@layer components {
+  .cloudig-endpoint-editor {
+    --endpoint-accent: #a52525;
+    --endpoint-input-border: #a52525;
+    --endpoint-input-copy: #2d2d2d;
+    --endpoint-input-fill: #ae8b7f;
+    --endpoint-tag-off: #d68c80;
+    --endpoint-tag-copy: #777777;
+    --endpoint-tag-on: #a52525;
+    --endpoint-tag-copy-on: #ffffff;
+    --endpoint-zone-fill: #f1ded2;
+    color: inherit; display: grid; gap: 20px; min-width: 0;
+  }
+  :root[data-theme="star-night"] .cloudig-endpoint-editor {
+    --endpoint-accent: #ffa92e;
+    --endpoint-input-border: #5125a5;
+    --endpoint-input-copy: #e2e1e1;
+    --endpoint-input-fill: #2d2d2d;
+    --endpoint-tag-off: #7e5eff;
+    --endpoint-tag-copy: #000000;
+    --endpoint-tag-on: #5125a5;
+    --endpoint-tag-copy-on: #ffa92e;
+    --endpoint-zone-fill: #2d2d2d;
+  }
+  [data-endpoint-sections] { display: grid; gap: 20px; }
+  .cloudig-endpoint-section { min-width: 0; }
+  .cloudig-endpoint-section > header { align-items: center; display: flex; flex-wrap: wrap; font-size: 18px; gap: 10px; margin-bottom: 12px; }
+  .cloudig-endpoint-section .cloudig-choice { flex: none; font-size: 18px; font-weight: 400; }
+  .cloudig-endpoint-editor button, .cloudig-endpoint-editor input, .cloudig-endpoint-editor select { font-family: inherit; }
+  .cloudig-endpoint-fields { min-width: 0; }
+  .cloudig-endpoint-calendar-row { align-items: center; display: flex; gap: 10px; min-width: 0; }
+  .cloudig-endpoint-input-frame {
+    align-items: center; background: var(--endpoint-input-fill); border: 2px solid var(--endpoint-input-border); border-radius: 12px; color: var(--endpoint-input-copy); display: flex; flex: 1; font-size: 18px; gap: 8px; height: 42px; min-width: 0; padding: 0 10px;
+  }
+  .cloudig-endpoint-editor input { border: 0; border-radius: 0; background: transparent; color: var(--endpoint-input-copy); font-size: 18px; font-weight: 400; height: 34px; min-width: 0; outline: none; padding: 0; text-align: center; }
+  .cloudig-endpoint-editor input::placeholder { color: var(--endpoint-input-copy); opacity: .75; }
+  .cloudig-endpoint-date-fields, .cloudig-endpoint-clock-fields { align-items: center; display: flex; flex: 1; gap: 2px; min-width: 0; white-space: nowrap; }
+  .cloudig-endpoint-date-fields { flex: 1.6; }
+  .cloudig-endpoint-date-fields input { width: 2.1ch; }
+  .cloudig-endpoint-date-fields [data-endpoint-field="year"] { flex: 1; width: 8ch; }
+  .cloudig-endpoint-clock-fields input { flex: 1; width: 2ch; }
+  .cloudig-endpoint-input-frame > [data-endpoint-field="offset"] { background: var(--endpoint-zone-fill); border: 1px solid var(--endpoint-input-border); border-radius: 7px; color: var(--endpoint-input-copy); cursor: pointer; flex: 0 1 142px; font-size: 15px; height: 32px; min-width: 118px; padding: 0 7px; width: 142px; }
+  .cloudig-endpoint-zone, .cloudig-endpoint-zone::picker(select) { appearance: base-select; }
+  .cloudig-endpoint-zone { align-items: center; gap: 7px; white-space: nowrap; }
+  .cloudig-endpoint-zone::picker-icon { color: var(--endpoint-accent); font-size: 13px; }
+  .cloudig-endpoint-zone::picker(select) {
+    background: var(--endpoint-zone-fill); border: 2px solid var(--endpoint-input-border); border-radius: 10px;
+    color: var(--endpoint-input-copy); filter: drop-shadow(0 3px 4px rgb(0 0 0 / 24%));
+    font-family: var(--cloudig-font-ui); font-size: 15px; font-weight: 400; margin-block: 5px;
+    max-height: min(288px, 45vh); min-width: 168px; overflow-y: auto; overscroll-behavior: contain; padding: 5px;
+  }
+  .cloudig-endpoint-zone option { align-items: center; background: transparent; border-radius: 5px; color: var(--endpoint-input-copy); gap: 7px; min-height: 30px; padding: 4px 7px; }
+  .cloudig-endpoint-zone option:checked { background: var(--endpoint-tag-on); color: var(--endpoint-tag-copy-on); }
+  .cloudig-endpoint-zone option:not(:checked):is(:hover, :focus) { background: color-mix(in srgb, var(--endpoint-accent) 16%, var(--endpoint-zone-fill)); }
+  .cloudig-endpoint-zone option::checkmark { font-size: 13px; }
+  .cloudig-endpoint-zone:focus-visible { outline: 2px solid var(--endpoint-accent); outline-offset: 1px; }
+  .cloudig-endpoint-tag { appearance: none; background: var(--endpoint-tag-off); border: 2px solid transparent; border-radius: 12px; color: var(--endpoint-tag-copy); cursor: pointer; flex: none; font-size: 18px; font-weight: 700; min-height: 40px; min-width: 40px; padding: 3px 6px; }
+  .cloudig-endpoint-tag[aria-pressed="true"] { background: var(--endpoint-tag-on); color: var(--endpoint-tag-copy-on); }
+  .cloudig-endpoint-tag:hover { filter: brightness(1.1); }
+  .cloudig-endpoint-editor button:focus-visible { outline: 2px solid var(--endpoint-accent); outline-offset: 3px; }
+  .cloudig-endpoint-precision-menu { justify-content: space-between; gap: 6px; }
+  .cloudig-endpoint-precision-menu .cloudig-endpoint-tag, .cloudig-endpoint-input-frame .cloudig-endpoint-precision-change { background: transparent; border: 0; color: var(--endpoint-accent); font-size: 18px; font-weight: 400; min-width: 0; padding: 0; }
+  .cloudig-endpoint-precision-change { margin-right: 5px; }
+  .cloudig-endpoint-relative-row { align-items: center; display: flex; gap: 10px; font-size: 18px; }
+  .cloudig-endpoint-relative-row > input { background: var(--endpoint-input-fill); border: 2px solid var(--endpoint-input-border); border-radius: 12px; height: 42px; padding-inline: 8px; width: 100px; }
+  .cloudig-endpoint-units { display: grid; gap: 7px; grid-template-columns: repeat(5, 40px); }
+  .cloudig-endpoint-units:has(> :last-child:nth-child(2)) { grid-template-columns: repeat(2, 40px); }
+  .cloudig-endpoint-specials { display: flex; flex-wrap: wrap; gap: 9px; }
+  .cloudig-endpoint-specials .cloudig-endpoint-tag { font-size: 18px; min-width: 0; }
+  .cloudig-endpoint-preview { border: 2px solid var(--endpoint-input-border); border-radius: 12px; background: var(--endpoint-input-fill); color: var(--endpoint-input-copy); font-size: 18px; font-weight: 400; line-height: 26px; margin: 0; min-height: 42px; overflow-wrap: anywhere; padding: 5px 10px; white-space: pre-line; }
+  .cloudig-endpoint-preview[data-state="error"], .cloudig-endpoint-preview[data-state="warning"] { color: var(--cloudig-seal-red); }
+  :root[data-theme="star-night"] .cloudig-endpoint-preview[data-state="error"], :root[data-theme="star-night"] .cloudig-endpoint-preview[data-state="warning"] { color: var(--cloudig-orange); }
+  .cloudig-endpoint-editor > footer { align-items: center; display: flex; gap: 30px; justify-content: center; }
+  .cloudig-endpoint-editor > footer .cloudig-button { font-size: 18px; height: 32px; width: 167px; }
+  .cloudig-endpoint-editor > footer .cloudig-button-filled { --cloudig-button-fill: var(--cloudig-seal-red); color: #ffffff; }
+  .cloudig-endpoint-editor > footer .cloudig-button-outline, .cloudig-endpoint-cancel { color: var(--endpoint-accent); }
+  .cloudig-endpoint-cancel { appearance: none; border: 0; background: transparent; cursor: pointer; font-size: 18px; font-weight: 700; padding: 4px 0; }
+  :root[data-theme="star-night"] .cloudig-endpoint-editor > footer .cloudig-button-filled { --cloudig-button-fill: var(--cloudig-purple); color: var(--cloudig-orange); }
+  :root[lang="en"] .cloudig-endpoint-section > header { column-gap: 14px; row-gap: 8px; }
+  :root[lang="en"] .cloudig-endpoint-section .cloudig-choice { font-size: 16px; }
+  :root[lang="en"] .cloudig-endpoint-relative-row { flex-wrap: wrap; }
+  :root[lang="en"] .cloudig-endpoint-units { grid-template-columns: repeat(5, minmax(40px, 1fr)); }
+
+  .cloudig-point-editor { gap: 13px; }
+  .cloudig-point-editor section > header { align-items: center; display: flex; flex-wrap: wrap; font-size: 18px; gap: 8px 13px; margin-bottom: 9px; }
+  .cloudig-point-editor section > header .cloudig-choice { font-size: 18px; font-weight: 400; }
+  .cloudig-point-editor .cloudig-endpoint-input-frame { height: 40px; }
+  .cloudig-point-editor .cloudig-endpoint-relative-row { flex-wrap: wrap; font-size: 16px; gap: 8px; }
+  .cloudig-point-editor .cloudig-endpoint-relative-row > input { width: 82px; }
+  .cloudig-point-editor .cloudig-endpoint-units { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cloudig-point-editor .cloudig-endpoint-tag { font-size: 18px; height: 40px; min-height: 40px; min-width: 38px; padding-inline: 5px; }
+  .cloudig-point-editor .cloudig-endpoint-input-frame { justify-content: center; }
+  .cloudig-point-editor .cloudig-endpoint-date-fields, .cloudig-point-editor .cloudig-endpoint-clock-fields { flex: 0 1 auto; }
+  .cloudig-point-editor .cloudig-endpoint-date-fields [data-endpoint-field="year"] { flex: 0 1 auto; }
+  .cloudig-point-editor .cloudig-endpoint-input-frame > [data-endpoint-field="offset"] { flex: 0 1 auto; }
+  .cloudig-point-ancient { align-items: center; display: flex; flex-wrap: wrap; font-size: 16px; gap: 7px; }
+  .cloudig-point-ancient > input { background: var(--endpoint-input-fill); border: 2px solid var(--endpoint-input-border); border-radius: 12px; height: 40px; padding-inline: 7px; width: 78px; }
+  .cloudig-point-editor .cloudig-endpoint-precision-menu { flex-wrap: wrap; height: auto; min-height: 40px; }
+  :root[lang="en"] .cloudig-point-editor .cloudig-endpoint-tag { font-size: 14px; }
+  :root[lang="en"] .cloudig-point-editor section > header, :root[lang="en"] .cloudig-point-editor section > header .cloudig-choice { font-size: 14px; }
+}

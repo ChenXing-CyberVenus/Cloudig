@@ -1,0 +1,31 @@
+@layer components {
+.cloudig-interactive-window { width: min(1440px, calc(100vw - 64px)); height: min(960px, calc(100dvh - 48px)); max-width: none; max-height: none; padding: 0; border: 2px solid var(--cloudig-border); border-radius: 14px; background: var(--cloudig-diagram-local-canvas); color: var(--cloudig-text); box-shadow: 0 12px 50px #0006; }
+.cloudig-interactive-window[open] { display: grid; grid-template-rows: auto minmax(0,1fr); }
+.cloudig-interactive-window::backdrop { background: #17141aa8; }
+.cloudig-interactive-header { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--cloudig-border); }
+.cloudig-interactive-header h2 { margin: 0; min-width: 0; flex: 1; font: 700 20px/1.4 var(--cloudig-font-ui,sans-serif); overflow-wrap: anywhere; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+.cloudig-interactive-window:not(.cloudig-interactive-box) .cloudig-interactive-enlarge { display:none; }
+.cloudig-interactive-toolbar { display: flex; gap: 10px; }
+.cloudig-interactive-button { font: 700 14px/1.4 var(--cloudig-font-ui,sans-serif); color: var(--cloudig-accent); background: transparent; border: 2px solid currentColor; border-radius: 8px; padding: 7px 14px; cursor: pointer; text-shadow: none; box-shadow: 1px 2px 3px #0002; }
+.cloudig-interactive-close { display: grid; place-items: center; padding: 0; width: 34px; height: 34px; border: 0; border-radius: 8px; background: transparent; color: var(--cloudig-text); font: 28px/1 sans-serif; cursor: pointer; }
+.cloudig-interactive-close:hover,.cloudig-interactive-button:hover { background: var(--cloudig-panel); }
+.cloudig-interactive-window button:focus-visible { outline: 2px solid var(--cloudig-accent); outline-offset: 3px; }
+.cloudig-interactive-body { position: relative; min-height: 0; min-width: 0; overflow: hidden; }
+.cloudig-interactive-frame { width: 100%; height: 100%; border: 0; display: block; background: transparent; }
+.cloudig-interactive-window[data-theme="dawn"] .cloudig-interactive-frame { color-scheme: light; }
+.cloudig-interactive-window[data-theme="star-night"] .cloudig-interactive-frame { color-scheme: dark; }
+.cloudig-interactive-status { position: absolute; inset: 0; margin: 0; padding: 30px; display: grid; place-content: center; text-align: center; background: var(--cloudig-diagram-local-canvas); z-index: 1; }
+.cloudig-interactive-status[hidden] { display: none; }
+.cloudig-interactive-window[data-state="loading"] .cloudig-interactive-status { gap:16px; justify-items:center; }
+.cloudig-interactive-window[data-state="loading"] .cloudig-interactive-status::before { content:""; width:30px; height:30px; border:3px solid var(--cloudig-border); border-top-color:var(--cloudig-accent); border-radius:50%; animation:cloudig-work-opening 900ms linear infinite; }
+@keyframes cloudig-work-opening { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion:reduce) { .cloudig-interactive-window[data-state="loading"] .cloudig-interactive-status::before { animation:none; } }
+.cloudig-interactive-source { box-sizing: border-box; width: 100%; height: 100%; overflow: auto; white-space: pre; margin: 0; padding: 20px; color: var(--cloudig-code-text); background: var(--cloudig-code); font: 14px/1.6 Consolas,monospace; }
+.cloudig-interactive-window.cloudig-interactive-box { position: static; inset: auto; margin: 0; width: 100%; height: auto; box-sizing: border-box; box-shadow: none; border: 0; border-radius: 0; background: transparent; }
+.cloudig-interactive-box .cloudig-interactive-body { height: var(--cloudig-inline-height,320px); }
+.cloudig-interactive-box .cloudig-interactive-body[hidden] { display: none; }
+.cloudig-interactive-box .cloudig-interactive-header { padding: 10px 12px; }
+.cloudig-interactive-box .cloudig-interactive-header h2 { font-size: 16px; }
+.cloudig-interactive-box .cloudig-interactive-button { border: 0; box-shadow: none; padding: 5px 8px; font-weight: 400; }
+@media (max-width: 700px) { .cloudig-interactive-window { width: calc(100vw - 20px); height: calc(100dvh - 20px); } .cloudig-interactive-header { padding: 10px 12px; gap: 8px; } }
+}

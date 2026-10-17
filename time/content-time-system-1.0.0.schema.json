@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:content-time-system:1.0.0",
+  "title": "Cloudig content-time system 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "revision", "terran", "sovereign"],
+  "properties": {
+    "format": { "const": "cloudig/content-time-system" },
+    "version": { "const": "1.0.0" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "terran": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preset_version", "default_anchor", "preset_anchor_overrides", "preset_overrides"],
+      "properties": {
+        "preset_version": { "const": "1.0.0" },
+        "default_anchor": { "$ref": "content-time-1.0.0.schema.json#/$defs/anchor" },
+        "preset_anchor_overrides": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/uuid" },
+          "additionalProperties": { "$ref": "content-time-1.0.0.schema.json#/$defs/anchor" }
+        },
+        "preset_overrides": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/uuid" },
+          "additionalProperties": { "$ref": "content-time-1.0.0.schema.json#/$defs/terranRange" }
+        }
+      }
+    },
+    "sovereign": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lineages", "nodes", "containment_links", "counterpart_links", "terran_mappings", "conversation_bindings", "display_order"],
+      "properties": {
+        "lineages": { "$ref": "#/$defs/lineageMap" },
+        "nodes": { "$ref": "#/$defs/nodeMap" },
+        "containment_links": { "$ref": "#/$defs/containmentMap" },
+        "counterpart_links": { "$ref": "#/$defs/counterpartMap" },
+        "terran_mappings": { "$ref": "#/$defs/mappingMap" },
+        "conversation_bindings": { "$ref": "#/$defs/bindingMap" },
+        "display_order": { "$ref": "#/$defs/displayOrder" }
+      }
+    }
+  },
+  "$defs": {
+    "uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "dateTime": { "type": "string", "format": "date-time", "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$" },
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["major", "minor"],
+      "properties": {
+        "major": { "type": "integer", "minimum": 0, "maximum": 999 },
+        "minor": { "type": "integer", "minimum": 0, "maximum": 999 }
+      }
+    },
+    "lineageMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["next_variant_no"],
+        "properties": { "next_variant_no": { "type": "integer", "minimum": 2, "maximum": 1001 } }
+      }
+    },
+    "timelineNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "lineage_id", "variant_no", "document_revision", "name", "author", "standard_name", "display_version", "created_at", "edited_at"],
+      "properties": {
+        "kind": { "const": "timeline" },
+        "lineage_id": { "$ref": "#/$defs/uuid" },
+        "variant_no": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "document_revision": { "type": "integer", "minimum": 1 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "author": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "standard_name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "display_version": { "$ref": "#/$defs/version" },
+        "created_at": { "$ref": "#/$defs/dateTime" },
+        "edited_at": { "$ref": "#/$defs/dateTime" }
+      }
+    },
+    "timeNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "owner_timeline_id", "time_kind", "name", "created_at", "edited_at"],
+      "properties": {
+        "kind": { "const": "time" },
+        "owner_timeline_id": { "$ref": "#/$defs/uuid" },
+        "time_kind": { "enum": ["single", "periodic"] },
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "prefix": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "unit_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "period_count": { "type": "integer", "minimum": 1, "maximum": 99999999 },
+        "empty_occurrence_display": { "enum": ["collapse_unmapped", "expand_all_empty"] },
+        "created_at": { "$ref": "#/$defs/dateTime" },
+        "edited_at": { "$ref": "#/$defs/dateTime" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "time_kind": { "const": "periodic" } }, "required": ["time_kind"] },
+          "then": { "required": ["period_count"] },
+          "else": { "not": { "anyOf": [{ "required": ["period_count"] }, { "required": ["prefix"] }, { "required": ["unit_name"] }] } }
+        }
+      ]
+    },
+    "nodeMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": { "oneOf": [{ "$ref": "#/$defs/timelineNode" }, { "$ref": "#/$defs/timeNode" }] }
+    },
+    "selector": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["mode"], "properties": { "mode": { "const": "all" } } },
+        { "type": "object", "additionalProperties": false, "required": ["mode", "count"], "properties": { "mode": { "const": "prefix" }, "count": { "type": "integer", "minimum": 1, "maximum": 99999999 } } },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "first", "step", "last"],
+          "properties": {
+            "mode": { "const": "progression" },
+            "first": { "type": "integer", "minimum": 1, "maximum": 99999999 },
+            "step": { "type": "integer", "minimum": 1, "maximum": 99999999 },
+            "last": { "type": "integer", "minimum": 1, "maximum": 99999999 }
+          }
+        }
+      ]
+    },
+    "nodeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id"],
+      "properties": {
+        "node_id": { "$ref": "#/$defs/uuid" },
+        "occurrences": { "$ref": "#/$defs/selector" }
+      }
+    },
+    "containmentMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["parent_node_id", "child", "ordinal", "created_at", "edited_at"],
+        "properties": {
+          "parent_node_id": { "$ref": "#/$defs/uuid" },
+          "child": { "$ref": "#/$defs/nodeRef" },
+          "ordinal": { "type": "integer", "minimum": 1 },
+          "created_at": { "$ref": "#/$defs/dateTime" },
+          "edited_at": { "$ref": "#/$defs/dateTime" }
+        }
+      }
+    },
+    "counterpartMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["left", "right", "created_at", "edited_at"],
+        "properties": {
+          "left": { "$ref": "#/$defs/nodeRef" },
+          "right": { "$ref": "#/$defs/nodeRef" },
+          "created_at": { "$ref": "#/$defs/dateTime" },
+          "edited_at": { "$ref": "#/$defs/dateTime" }
+        }
+      }
+    },
+    "mappingMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["node_ref", "range", "edited_at"],
+        "properties": {
+          "node_ref": { "$ref": "#/$defs/nodeRef" },
+          "range": { "$ref": "content-time-1.0.0.schema.json#/$defs/terranRange" },
+          "edited_at": { "$ref": "#/$defs/dateTime" }
+        }
+      }
+    },
+    "bindingMap": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/uuid" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["conversation_key", "node_ref", "created_at", "edited_at"],
+        "properties": {
+          "conversation_key": { "$ref": "#/$defs/sha256" },
+          "node_ref": { "$ref": "#/$defs/nodeRef" },
+          "created_at": { "$ref": "#/$defs/dateTime" },
+          "edited_at": { "$ref": "#/$defs/dateTime" }
+        }
+      }
+    },
+    "displayOrder": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["mode"], "properties": { "mode": { "const": "last_edited_desc" } } },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "timeline_ids"],
+          "properties": {
+            "mode": { "const": "manual" },
+            "timeline_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/uuid" } }
+          }
+        }
+      ]
+    }
+  }
+}

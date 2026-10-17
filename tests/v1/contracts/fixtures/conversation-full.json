@@ -1,0 +1,214 @@
+{
+  "schema": "cloudig/conversation/1.0.0",
+  "archive": "a2",
+  "generation": 3,
+  "content_sha256": "31b668f8f39898d9c90e1482a8fd33845ad89c59a62a5d42a8d88cdb6ab876c8",
+  "parser": {
+    "version": "1.2.0",
+    "adapter": {
+      "version": "1.3.0",
+      "id": "chatgpt-html-tree"
+    }
+  },
+  "lifecycle": {
+    "first_parsed_at": {
+      "basis": "parser",
+      "value": "2026-08-30T10:00:00.000Z"
+    },
+    "last_parsed_at": "2026-08-31T12:00:00.000Z",
+    "cloudig_edited_at": "2026-08-31T12:00:00.000Z"
+  },
+  "source": {
+    "format": "cloudig-html",
+    "bytes": 4096,
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "url": "https://chatgpt.com/c/example",
+    "file": "scheduled-tree.html",
+    "payload": "chatgpt",
+    "profile": "tree",
+    "exporter": {
+      "version": "1.0.24-all-branches",
+      "id": "cloudig-chatgpt"
+    },
+    "locator": {
+      "kind": "conversation-key",
+      "value": "example"
+    },
+    "captured_at": {
+      "basis": "manifest",
+      "value": "2026-08-31T11:00:00.000Z",
+      "field": "exported_at"
+    },
+    "conversation_created_at": "2026-08-30T09:00:00.000Z",
+    "conversation_updated_at": "2026-08-31T10:00:00.000Z"
+  },
+  "content_time": {
+    "basis": "message_start",
+    "range": {
+      "start": {
+        "kind": "calendar",
+        "era": "AD",
+        "year": 2026,
+        "month": 8,
+        "day": 30,
+        "hour": 9,
+        "minute": 0,
+        "second": 0,
+        "offset": "Z"
+      }
+    }
+  },
+  "provider": "openai",
+  "platform": "chatgpt",
+  "title": "Scheduled tree example",
+  "models": [
+    "GPT-5.6-Sol"
+  ],
+  "message_time": {
+    "start": "2026-08-30T09:00:00.000Z",
+    "end": "2026-08-31T10:00:00.000Z"
+  },
+  "current_message": "m2",
+  "messages": [
+    {
+      "id": "m1",
+      "role": "user",
+      "timestamp": "2026-08-30T09:00:00.000Z",
+      "content": [
+        {
+          "type": "markdown",
+          "text": "Please inspect the result."
+        },
+        {
+          "type": "attachment",
+          "text": "report.pdf",
+          "resource": "r2"
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "parent": "m1",
+      "role": "assistant",
+      "model": "GPT-5.6-Sol",
+      "timestamp": "2026-08-31T10:00:00.000Z",
+      "content": [
+        {
+          "title": "思考",
+          "type": "reasoning_summary",
+          "text": "检查资料并整理结论。"
+        },
+        {
+          "sources": [
+            "s1"
+          ],
+          "type": "search",
+          "query": "Cloudig",
+          "status": "completed"
+        },
+        {
+          "name": "document",
+          "type": "tool",
+          "kind": "call",
+          "call": "x1",
+          "input": {
+            "path": "report.pdf"
+          }
+        },
+        {
+          "type": "tool",
+          "kind": "result",
+          "call": "x1",
+          "success": true,
+          "output": {
+            "pages": 1
+          }
+        },
+        {
+          "source": "graph TD; A-->B",
+          "type": "diagram",
+          "format": "mermaid",
+          "rendered": "r1"
+        },
+        {
+          "type": "markdown",
+          "text": "结论保存在这里。"
+        },
+        {
+          "sources": [
+            "s1"
+          ],
+          "type": "citations",
+          "label": "参考"
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "parent": "m1",
+      "role": "other",
+      "name": "OtherAgent",
+      "content": []
+    }
+  ],
+  "resources": [
+    {
+      "id": "r1",
+      "name": "diagram.png",
+      "kind": "image",
+      "availability": "embedded",
+      "mime": "image/png",
+      "bytes": 2,
+      "sha256": "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
+      "data_base64": [
+        "aGk="
+      ],
+      "dimensions": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    {
+      "id": "r2",
+      "name": "report.pdf",
+      "kind": "file",
+      "availability": "metadata_only",
+      "mime": "application/pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Cloudig",
+      "id": "s1",
+      "kind": "web",
+      "url": "https://example.com/cloudig",
+      "snippet": "A local archive."
+    },
+    {
+      "title": "Preference",
+      "id": "s2",
+      "kind": "saved_memory",
+      "text": "Keep visible content."
+    }
+  ],
+  "limitations": [
+    {
+      "code": "source-parent-omitted",
+      "at": "/messages/2/parent",
+      "detail": "The source omitted an unavailable ancestor."
+    }
+  ],
+  "user": {
+    "content_time": {
+      "state": "cleared"
+    },
+    "models": [],
+    "revision": 2,
+    "edited_at": "2026-08-31T12:00:00.000Z",
+    "conversation_name": "My scheduled example",
+    "names": {
+      "user": "晨星",
+      "assistant": "奥思"
+    }
+  }
+}

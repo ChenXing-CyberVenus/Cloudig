@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:terran-preset-timeline:1.0.0",
+  "title": "Cloudig built-in Terran preset timeline 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "timeline", "anchor_policy", "nodes"],
+  "properties": {
+    "format": { "const": "cloudig/terran-preset-timeline" },
+    "version": { "const": "1.0.0" },
+    "timeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timeline_id", "standard_name", "author", "display_version", "labels"],
+      "properties": {
+        "timeline_id": { "$ref": "#/$defs/uuid" },
+        "standard_name": { "const": "采云此地时间轴" },
+        "author": { "const": "Cloudig/采云" },
+        "display_version": { "const": "V1.0" },
+        "labels": { "$ref": "#/$defs/labels" }
+      }
+    },
+    "anchor_policy": { "const": "library_created_or_restore_local_date" },
+    "nodes": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "items": { "$ref": "#/$defs/node" }
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["zh-CN", "en"],
+      "properties": {
+        "zh-CN": { "type": "string", "minLength": 1 },
+        "en": { "type": "string", "minLength": 1 }
+      }
+    },
+    "relativeTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "direction", "unit", "coefficient", "anchor_policy"],
+      "properties": {
+        "kind": { "const": "terran_relative" },
+        "direction": { "enum": ["before", "after"] },
+        "unit": { "enum": ["wan", "yi", "zhao", "jing", "gai", "zi", "rang", "gou", "jian", "zheng"] },
+        "coefficient": { "type": "string", "pattern": "^(?:0\\.[1-9]|[1-9][0-9]{0,3}\\.[0-9])$" },
+        "anchor_policy": { "const": "materialize_on_apply" }
+      }
+    },
+    "nowTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "anchor_policy"],
+      "properties": {
+        "kind": { "const": "terran_now" },
+        "anchor_policy": { "const": "materialize_on_apply" }
+      }
+    },
+    "ordinaryEndpoint": {
+      "oneOf": [
+        { "$ref": "content-time-1.0.0.schema.json#/$defs/exact" },
+        { "$ref": "content-time-1.0.0.schema.json#/$defs/yearMonth" },
+        { "$ref": "content-time-1.0.0.schema.json#/$defs/decade" },
+        { "$ref": "content-time-1.0.0.schema.json#/$defs/century" },
+        { "$ref": "content-time-1.0.0.schema.json#/$defs/bare" }
+      ]
+    },
+    "templateEndpoint": {
+      "oneOf": [
+        { "$ref": "#/$defs/ordinaryEndpoint" },
+        { "$ref": "#/$defs/relativeTemplate" },
+        { "$ref": "#/$defs/nowTemplate" }
+      ]
+    },
+    "rangeTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start"],
+      "properties": {
+        "start": { "$ref": "#/$defs/templateEndpoint" },
+        "end": { "$ref": "#/$defs/templateEndpoint" }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "key", "ordinal", "role", "labels", "featured", "range_editable", "deletable", "default_range_template"],
+      "properties": {
+        "node_id": { "$ref": "#/$defs/uuid" },
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "ordinal": { "type": "integer", "minimum": 1, "maximum": 16 },
+        "role": { "enum": ["special", "boundary", "preset"] },
+        "labels": { "$ref": "#/$defs/labels" },
+        "featured": { "type": "boolean" },
+        "range_editable": { "type": "boolean" },
+        "deletable": { "const": false },
+        "default_range_template": { "$ref": "#/$defs/rangeTemplate" }
+      }
+    }
+  }
+}

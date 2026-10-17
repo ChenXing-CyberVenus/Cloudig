@@ -1,0 +1,1013 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-chat-archive:schema:conversation:0.1.3",
+  "title": "AIChatArchive unified conversation 0.1.3",
+  "description": "Sparse, human-readable, offline-first normalized conversation JSON.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "parser_version",
+    "conversation_key",
+    "source_file",
+    "source_sha256",
+    "source_size_bytes",
+    "content_time",
+    "title",
+    "provider",
+    "platform",
+    "messages"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ai-chat-archive/conversation/0.1.3"
+    },
+    "parser_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\\+([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$",
+      "description": "Cloudig Parser version that produced this canonical JSON."
+    },
+    "exporter_version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S",
+      "description": "Exact exporter version from the source HTML manifest when the input was produced by a Cloudig bookmark."
+    },
+    "conversation_key": {
+      "$ref": "#/$defs/sha256",
+      "description": "Required privacy-preserving stable conversation identity. It is distinct from the source container and is never a vendor-private raw ID."
+    },
+    "source_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^\\\\/]+$",
+      "description": "Source basename only; never an absolute local path."
+    },
+    "source_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "source_size_bytes": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "source_url": {
+      "$ref": "#/$defs/httpUrl"
+    },
+    "exported_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "content_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Deterministic conversation content time: first message timestamp, otherwise the original imported file creation time."
+    },
+    "title": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "provider": {
+      "$ref": "#/$defs/slug"
+    },
+    "platform": {
+      "$ref": "#/$defs/slug"
+    },
+    "models": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "messages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/message"
+      }
+    },
+    "resources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/resource"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/warning"
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "httpUrl": {
+      "type": "string",
+      "pattern": "^https?://",
+      "format": "uri"
+    },
+    "message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "turn_id",
+        "role",
+        "content"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "turn_id": {
+          "$ref": "#/$defs/identifier",
+          "description": "Stable Reader grouping identity. All records belonging to one user or assistant answer cycle share one turn_id."
+        },
+        "role": {
+          "enum": [
+            "user",
+            "assistant",
+            "system",
+            "developer",
+            "tool",
+            "other"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "model": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "content": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/contentBlock"
+          }
+        }
+      }
+    },
+    "contentBlock": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/markdownBlock"
+        },
+        {
+          "$ref": "#/$defs/textBlock"
+        },
+        {
+          "$ref": "#/$defs/reasoningBlock"
+        },
+        {
+          "$ref": "#/$defs/reasoningSummaryBlock"
+        },
+        {
+          "$ref": "#/$defs/statusBlock"
+        },
+        {
+          "$ref": "#/$defs/codeBlock"
+        },
+        {
+          "$ref": "#/$defs/mathBlock"
+        },
+        {
+          "$ref": "#/$defs/imageBlock"
+        },
+        {
+          "$ref": "#/$defs/attachmentBlock"
+        },
+        {
+          "$ref": "#/$defs/searchBlock"
+        },
+        {
+          "$ref": "#/$defs/citationsBlock"
+        },
+        {
+          "$ref": "#/$defs/toolBlock"
+        },
+        {
+          "$ref": "#/$defs/diagramBlock"
+        },
+        {
+          "$ref": "#/$defs/htmlBlock"
+        },
+        {
+          "$ref": "#/$defs/unknownBlock"
+        }
+      ]
+    },
+    "markdownBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "const": "markdown"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "textBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "const": "text"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "atMostOneRichBody": {
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "text",
+              "markdown"
+            ]
+          },
+          {
+            "required": [
+              "text",
+              "html"
+            ]
+          },
+          {
+            "required": [
+              "markdown",
+              "html"
+            ]
+          }
+        ]
+      }
+    },
+    "reasoningBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "reasoning"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "markdown": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "html": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "effort": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/atMostOneRichBody"
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "title"
+              ]
+            },
+            {
+              "required": [
+                "text"
+              ]
+            },
+            {
+              "required": [
+                "markdown"
+              ]
+            },
+            {
+              "required": [
+                "html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "reasoningSummaryBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "reasoning_summary"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "markdown": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "html": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "effort": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/atMostOneRichBody"
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "title"
+              ]
+            },
+            {
+              "required": [
+                "text"
+              ]
+            },
+            {
+              "required": [
+                "markdown"
+              ]
+            },
+            {
+              "required": [
+                "html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "statusBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "status"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "markdown": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "html": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "effort": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/atMostOneRichBody"
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "title"
+              ]
+            },
+            {
+              "required": [
+                "text"
+              ]
+            },
+            {
+              "required": [
+                "markdown"
+              ]
+            },
+            {
+              "required": [
+                "html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "codeBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "code"
+      ],
+      "properties": {
+        "type": {
+          "const": "code"
+        },
+        "code": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "language": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "filename": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "mathBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "math"
+        },
+        "tex": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mathml": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "display": {
+          "const": true
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "tex"
+          ]
+        },
+        {
+          "required": [
+            "mathml"
+          ]
+        }
+      ]
+    },
+    "imageBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "resource_id"
+      ],
+      "properties": {
+        "type": {
+          "const": "image"
+        },
+        "resource_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "purpose": {
+          "enum": [
+            "uploaded",
+            "generated",
+            "inline",
+            "search",
+            "diagram"
+          ]
+        },
+        "alt": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "caption": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "attachmentBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "resource_id"
+      ],
+      "properties": {
+        "type": {
+          "const": "attachment"
+        },
+        "resource_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "searchBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "search"
+        },
+        "query": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          }
+        },
+        "status": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "query"
+          ]
+        },
+        {
+          "required": [
+            "source_ids"
+          ]
+        }
+      ]
+    },
+    "citationsBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "source_ids"
+      ],
+      "properties": {
+        "type": {
+          "const": "citations"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          }
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "toolBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "kind"
+      ],
+      "properties": {
+        "type": {
+          "const": "tool"
+        },
+        "kind": {
+          "enum": [
+            "call",
+            "result",
+            "activity"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "markdown": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "html": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/atMostOneRichBody"
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "name"
+              ]
+            },
+            {
+              "required": [
+                "title"
+              ]
+            },
+            {
+              "required": [
+                "text"
+              ]
+            },
+            {
+              "required": [
+                "markdown"
+              ]
+            },
+            {
+              "required": [
+                "html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "diagramBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "format"
+      ],
+      "properties": {
+        "type": {
+          "const": "diagram"
+        },
+        "format": {
+          "enum": [
+            "mermaid",
+            "markmap",
+            "svg",
+            "html",
+            "image",
+            "canvas",
+            "writing_block",
+            "other"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "svg": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "html": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "resource_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "source"
+          ]
+        },
+        {
+          "required": [
+            "svg"
+          ]
+        },
+        {
+          "required": [
+            "html"
+          ]
+        },
+        {
+          "required": [
+            "resource_id"
+          ]
+        }
+      ]
+    },
+    "htmlBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "html"
+      ],
+      "properties": {
+        "type": {
+          "const": "html"
+        },
+        "html": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "unknownBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "label"
+      ],
+      "properties": {
+        "type": {
+          "const": "unknown"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "html": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "not": {
+        "required": [
+          "text",
+          "html"
+        ]
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "availability"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "kind": {
+          "enum": [
+            "image",
+            "attachment"
+          ]
+        },
+        "availability": {
+          "enum": [
+            "embedded",
+            "metadata_only",
+            "missing"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mime_type": {
+          "type": "string",
+          "pattern": "^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "original_size_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "data_url": {
+          "type": "string",
+          "pattern": "^data:image/[A-Za-z0-9.+-]+;base64,[A-Za-z0-9+/]+={0,2}$"
+        },
+        "url": {
+          "$ref": "#/$defs/httpUrl"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "original_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "original_height": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "embedded"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "image"
+              },
+              "mime_type": {
+                "pattern": "^image/"
+              }
+            },
+            "required": [
+              "mime_type",
+              "size_bytes",
+              "sha256",
+              "data_url"
+            ],
+            "not": {
+              "required": [
+                "url"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "metadata_only"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "data_url"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "missing"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "data_url"
+                  ]
+                },
+                {
+                  "required": [
+                    "url"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "url"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "url": {
+          "$ref": "#/$defs/httpUrl"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "site_name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "snippet": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/slug"
+        },
+        "message": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "message_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resource_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    }
+  }
+}

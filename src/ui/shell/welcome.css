@@ -1,0 +1,92 @@
+@layer pages {
+  [data-page="welcome"],
+  [data-page="welcome"] .welcome-background,
+  [data-page="welcome"] .welcome-background-set,
+  [data-page="welcome"] .welcome-background-layer {
+    height: 100%; inset: 0; position: absolute; width: 100%;
+  }
+  [data-page="welcome"] { background: var(--cloudig-page); overflow: hidden; }
+  [data-page="welcome"] .welcome-background { pointer-events: none; }
+  [data-page="welcome"] .welcome-background-set { opacity: 0; transition: opacity 260ms ease; }
+  :root[data-ready="false"] [data-page="welcome"] .welcome-background-set,
+  :root[data-screenshot-phase] [data-page="welcome"] .welcome-background-set { transition: none; }
+  :root[data-theme="dawn"] [data-page="welcome"] .welcome-background-dawn,
+  :root[data-theme="star-night"] [data-page="welcome"] .welcome-background-star-night { opacity: 1; }
+  [data-page="welcome"] .welcome-background-layer { background-position: center center; background-repeat: no-repeat; background-size: cover; will-change: opacity; }
+  [data-page="welcome"] .welcome-background-dawn .welcome-background-first { background-image: url("/assets/welcome/Back-Light-start-1920.png"); }
+  [data-page="welcome"] .welcome-background-dawn .welcome-background-second { background-image: url("/assets/welcome/Back-Light-1920.png"); }
+  [data-page="welcome"] .welcome-background-star-night .welcome-background-first { background-image: url("/assets/welcome/Back-Abyss-1920.png"); }
+  [data-page="welcome"] .welcome-background-star-night .welcome-background-second { background-image: url("/assets/welcome/Back-Horizon-1920.png"); }
+  [data-page="welcome"] .welcome-background-first { animation: welcome-background-first 24s linear infinite; }
+  [data-page="welcome"] .welcome-background-second { animation: welcome-background-second 24s linear infinite; }
+  @keyframes welcome-background-first {
+    0%, 18% { opacity: 1; animation-timing-function: ease-in-out; }
+    50%, 68% { opacity: 0; animation-timing-function: ease-in-out; }
+    100% { opacity: 1; }
+  }
+  @keyframes welcome-background-second {
+    0%, 18% { opacity: 0; animation-timing-function: ease-in-out; }
+    50%, 68% { opacity: 1; animation-timing-function: ease-in-out; }
+    100% { opacity: 0; }
+  }
+  [data-page="welcome"] .welcome-stage {
+    height: 1080px;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%) scale(var(--welcome-scale, 1));
+    transform-origin: top center;
+    width: 1920px;
+  }
+  [data-page="welcome"] .welcome-stack { align-items: center; display: flex; flex-direction: column; left: 50%; position: absolute; top: 32px; transform: translateX(-50%); }
+  [data-page="welcome"] .welcome-brand { height: 400px; margin: 0; width: 400px; }
+  [data-page="welcome"] .welcome-brand img { display: block; height: 100%; object-fit: contain; width: 100%; }
+  [data-page="welcome"] .welcome-product-title { display: block; height: auto; margin-top: 12px; width: 201px; }
+  [data-page="welcome"] .welcome-greeting { color: var(--cloudig-light); font-size: 20px; line-height: 24px; margin: 32px 0 0; text-shadow: 1px 1px 0 rgb(0 0 0 / 75%); }
+  [data-page="welcome"] .welcome-identities { display: grid; gap: 32px; grid-template-columns: 80px 80px; margin-top: 12px; }
+  [data-page="welcome"] .welcome-identity {
+    appearance: none; background: transparent; border: 0; color: var(--cloudig-copy); cursor: pointer; display: block; height: 110px; line-height: normal; padding: 0; position: relative; width: 80px;
+  }
+  [data-page="welcome"] .welcome-portrait { display: block; height: 80px; left: 0; position: absolute; top: 0; transition: filter 150ms ease, transform 150ms ease; width: 80px; }
+  [data-page="welcome"] .welcome-avatar { height: 70px; inset: 5px; object-fit: cover; position: absolute; width: 70px; }
+  [data-page="welcome"] .welcome-frame { filter: drop-shadow(2px 3px 2px rgb(0 0 0 / 52%)); height: 80px; inset: 0; position: absolute; width: 80px; }
+  [data-page="welcome"] .welcome-frame-star-night { display: none; }
+  :root[data-theme="star-night"] [data-page="welcome"] .welcome-frame-dawn { display: none; }
+  :root[data-theme="star-night"] [data-page="welcome"] .welcome-frame-star-night { display: block; }
+  [data-page="welcome"] .welcome-identity-name {
+    bottom: 0; display: block; font-size: 18px; line-height: 22px; min-width: 80px; width: max-content; max-width: 190px; overflow: hidden; position: absolute; text-overflow: ellipsis; text-shadow: 1px 2px 2px rgb(0 0 0 / 30%); white-space: nowrap;
+  }
+  [data-page="welcome"] .welcome-identity-user .welcome-identity-name { right: 0; text-align: center; }
+  [data-page="welcome"] .welcome-identity-assistant .welcome-identity-name { left: 0; text-align: center; }
+  [data-page="welcome"] .welcome-identity-user .welcome-identity-name[data-name-overflow="true"] { text-align: right; }
+  [data-page="welcome"] .welcome-identity-assistant .welcome-identity-name[data-name-overflow="true"] { text-align: left; }
+  [data-page="welcome"] .welcome-identity:hover .welcome-portrait,
+  [data-page="welcome"] .welcome-identity:focus-visible .welcome-portrait { filter: brightness(1.06); transform: translateY(-1px); }
+  [data-page="welcome"] .welcome-primary-actions { display: flex; gap: 20px; margin-top: 32px; }
+  [data-page="welcome"] .welcome-introduction { align-items: center; display: flex; gap: 20px; margin-top: 20px; }
+  [data-page="welcome"] .welcome-theme-switch { appearance: none; background: transparent; border: 0; cursor: pointer; height: 48px; padding: 0; position: relative; width: 48px; }
+  [data-page="welcome"] .welcome-theme-switch::after { border: 2px solid transparent; border-radius: 50%; content: ""; inset: -5px; pointer-events: none; position: absolute; }
+  :root[data-theme-discovery="true"] [data-page="welcome"] .welcome-theme-switch::after { animation: welcome-theme-discovery 1.8s ease-in-out infinite; border-color: color-mix(in srgb, var(--cloudig-action) 58%, transparent); }
+  @keyframes welcome-theme-discovery { 0%, 100% { opacity: .26; transform: scale(.94); } 50% { opacity: .9; transform: scale(1.08); } }
+  [data-page="welcome"] .welcome-theme-icon { display: block; height: 48px; width: 48px; }
+  [data-page="welcome"] .welcome-theme-icon-star-night { display: none; }
+  :root[data-theme="star-night"] [data-page="welcome"] .welcome-theme-icon-dawn { display: none; }
+  :root[data-theme="star-night"] [data-page="welcome"] .welcome-theme-icon-star-night { display: block; }
+  [data-page="welcome"] .welcome-introduction-copy { color: var(--cloudig-copy); display: flex; flex-direction: column; font-size: 18px; line-height: 24px; margin: 0; white-space: nowrap; }
+  [data-page="welcome"] .welcome-footer { align-items: baseline; color: var(--cloudig-copy); display: flex; font-size: 16px; font-weight: 700; gap: 11px; margin-top: 20px; white-space: nowrap; }
+  [data-page="welcome"] .welcome-footer button { appearance: none; background: transparent; border: 0; color: var(--cloudig-action); cursor: pointer; font-weight: 700; padding: 0; }
+  :root[data-ready="false"] [data-page="welcome"] .welcome-stage { visibility: hidden; }
+  :root[data-screenshot-phase] [data-page="welcome"] .welcome-background-layer { animation: none; }
+  :root[data-screenshot-phase="start"] [data-page="welcome"] .welcome-background-first { opacity: 1; }
+  :root[data-screenshot-phase="start"] [data-page="welcome"] .welcome-background-second { opacity: 0; }
+  :root[data-screenshot-phase="second"] [data-page="welcome"] .welcome-background-first { opacity: 0; }
+  :root[data-screenshot-phase="second"] [data-page="welcome"] .welcome-background-second { opacity: 1; }
+  :root[data-screenshot-phase="middle"] [data-page="welcome"] .welcome-background-first,
+  :root[data-screenshot-phase="middle"] [data-page="welcome"] .welcome-background-second { opacity: .5; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-page="welcome"] .welcome-background-layer,
+    [data-page="welcome"] .welcome-theme-switch::after { animation: none; }
+    [data-page="welcome"] .welcome-background-second { opacity: 0; }
+    [data-page="welcome"] .welcome-identity:hover .welcome-portrait { transform: none; }
+  }
+}

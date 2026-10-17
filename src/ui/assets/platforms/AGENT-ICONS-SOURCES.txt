@@ -1,0 +1,19 @@
+Cloudig Agent Tool import icons
+
+platform-cline.svg
+  Source: Cline official repository
+  URL: https://github.com/cline/cline/blob/main/apps/cline-hub/src/webview/public/cline-logo-filled.svg
+  Repository license: Apache-2.0
+  Retrieved: 2026-09-30
+
+platform-sillytavern.svg
+  Source: SillyTavern official repository (release branch)
+  URL: https://github.com/SillyTavern/SillyTavern/blob/release/public/img/logo.svg
+  Repository license: AGPL-3.0
+  Retrieved: 2026-09-30
+
+platform-claude.svg, platform-kimi.svg, platform-kimi-code.svg, platform-codex.svg
+  Existing Cloudig platform assets. Agent variants reuse the corresponding
+  platform mark and add a distinct source label (Claude Code, Kimi Code, Codex).
+  Kimi Code uses the existing white Kimi mark on a black field so it
+  remains visible on both Cloudig themes.

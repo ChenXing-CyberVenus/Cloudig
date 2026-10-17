@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/records/content-time-order/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "edited_at",
+    "nodes"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/content-time-order/1.0.0"
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+      },
+      "uniqueItems": true
+    }
+  }
+}

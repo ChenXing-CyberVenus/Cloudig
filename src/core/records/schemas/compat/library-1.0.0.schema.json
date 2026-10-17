@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/records/library/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "cloudig_standard",
+    "schema",
+    "schemas",
+    "edited_at",
+    "settings"
+  ],
+  "properties": {
+    "cloudig_standard": {
+      "const": "1.0"
+    },
+    "schema": {
+      "const": "cloudig/library/1.0.0"
+    },
+    "schemas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "library",
+        "identity",
+        "content_time",
+        "conversation",
+        "mark"
+      ],
+      "properties": {
+        "library": {
+          "const": "1.0.0"
+        },
+        "identity": {
+          "const": "1.0.0"
+        },
+        "content_time": {
+          "const": "1.0.0"
+        },
+        "conversation": {
+          "const": "1.0.0"
+        },
+        "mark": {
+          "const": "1.0.0"
+        }
+      }
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "theme",
+        "theme_guide_completed",
+        "default_output_directory",
+        "time_type",
+        "sort",
+        "one_click_parse"
+      ],
+      "properties": {
+        "language": {
+          "enum": [
+            "zh-CN",
+            "en"
+          ]
+        },
+        "theme": {
+          "enum": [
+            "Dawn",
+            "StarNight"
+          ]
+        },
+        "theme_guide_completed": {
+          "type": "boolean"
+        },
+        "default_output_directory": {
+          "allOf": [
+            {
+              "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/relativePath"
+            },
+            {
+              "type": "string",
+              "pattern": "^Conversations(?:/[^/]+)*$"
+            }
+          ]
+        },
+        "time_type": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "archiver",
+            "reader",
+            "claude_json"
+          ],
+          "properties": {
+            "archiver": {
+              "enum": [
+                "first_parsed_at",
+                "source_captured_at",
+                "cloudig_edited_at",
+                "message_start",
+                "message_end",
+                "content_time_start",
+                "content_time_end",
+                "file_modified_at"
+              ]
+            },
+            "reader": {
+              "enum": [
+                "first_parsed_at",
+                "source_captured_at",
+                "cloudig_edited_at",
+                "message_start",
+                "message_end",
+                "content_time_start",
+                "content_time_end",
+                "file_modified_at"
+              ]
+            },
+            "claude_json": {
+              "enum": [
+                "conversation_created_at",
+                "conversation_updated_at"
+              ]
+            }
+          }
+        },
+        "sort": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parser",
+            "archiver",
+            "reader",
+            "claude_json"
+          ],
+          "properties": {
+            "parser": {
+              "enum": [
+                "time_desc",
+                "time_asc",
+                "title"
+              ]
+            },
+            "archiver": {
+              "enum": [
+                "time_desc",
+                "time_asc",
+                "title"
+              ]
+            },
+            "reader": {
+              "enum": [
+                "time_desc",
+                "time_asc",
+                "title"
+              ]
+            },
+            "claude_json": {
+              "enum": [
+                "time_desc",
+                "time_asc",
+                "title"
+              ]
+            }
+          }
+        },
+        "one_click_parse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parser",
+            "claude_json"
+          ],
+          "properties": {
+            "parser": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "include_unparsed",
+                "include_selected",
+                "include_outdated",
+                "keep_previous"
+              ],
+              "properties": {
+                "include_unparsed": {
+                  "type": "boolean"
+                },
+                "include_selected": {
+                  "type": "boolean"
+                },
+                "include_outdated": {
+                  "type": "boolean"
+                },
+                "keep_previous": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "claude_json": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "include_unparsed",
+                "include_selected",
+                "include_outdated",
+                "keep_previous"
+              ],
+              "properties": {
+                "include_unparsed": {
+                  "type": "boolean"
+                },
+                "include_selected": {
+                  "type": "boolean"
+                },
+                "include_outdated": {
+                  "type": "boolean"
+                },
+                "keep_previous": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

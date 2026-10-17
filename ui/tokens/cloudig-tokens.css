@@ -1,0 +1,85 @@
+:root {
+  color-scheme: light dark;
+
+  /* 老婆定稿的品牌色。 */
+  --cloudig-star-orange: #ffa92e;
+  --cloudig-night-purple: #5125a5;
+  --cloudig-cloud-blue: #7e5eff;
+  --cloudig-seal-red: #a52525;
+  --cloudig-ink-grey: #2d2d2d;
+  --cloudig-light-grey: #e2e1e1;
+  --cloudig-white: #fff;
+  --cloudig-black: #000;
+  --cloudig-claude: #d97757;
+
+  /* 1920 × 1080 是设计坐标；外窗最小 1280 × 720，内容区扣除 38px 标题栏。 */
+  --cloudig-design-width: 1920;
+  --cloudig-design-height: 1080;
+  --cloudig-min-window-width: 1280px;
+  --cloudig-min-window-height: 720px;
+  --cloudig-native-titlebar-height: 38px;
+  --cloudig-min-content-height: 682px;
+  --cloudig-viewport-width: 100vw;
+  --cloudig-viewport-height: 100vh;
+  --cloudig-viewport-offset-top: 0px;
+  --cloudig-viewport-offset-left: 0px;
+  --cloudig-device-pixel-ratio: 1;
+
+  --cloudig-font-ui: "Segoe UI Variable Text", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", sans-serif;
+  --cloudig-font-display: "Segoe UI Variable Display", DengXian, "Noto Sans SC", "Microsoft YaHei UI", sans-serif;
+  --cloudig-font-serif: Georgia, "Songti SC", "Noto Serif SC", serif;
+  --cloudig-font-latin-serif: "Times New Roman", Times, serif;
+  --cloudig-font-mono: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+
+  --cloudig-radius-small: 6px;
+  --cloudig-radius-control: 8px;
+  --cloudig-radius-panel: 14px;
+  --cloudig-scrollbar-width: 8px;
+  --cloudig-scrollbar-idle: #d3af95;
+  --cloudig-control-outline-width: 2px;
+  --cloudig-shadow-outline: 2px 2px 1px rgb(70 31 25 / 28%);
+  --cloudig-shadow-control: 0 2px 6px rgb(0 0 0 / 24%);
+  --cloudig-shadow-panel: 0 12px 32px rgb(0 0 0 / 24%);
+  --cloudig-motion-fast: 140ms;
+  --cloudig-motion-normal: 220ms;
+  --cloudig-ease: cubic-bezier(.2, .72, .24, 1);
+  --cloudig-layer-tooltip: 600;
+  --cloudig-layer-dialog: 700;
+  --cloudig-layer-toast: 800;
+}
+
+html[data-theme="dawn"],
+html[data-theme="light"] {
+  color-scheme: light;
+  --cloudig-text: var(--cloudig-ink-grey);
+  --cloudig-text-muted: #777;
+  --cloudig-page: #fff;
+  --cloudig-surface: #e8d6c4;
+  --cloudig-surface-raised: #fff;
+  --cloudig-primary: var(--cloudig-seal-red);
+  --cloudig-secondary: var(--cloudig-night-purple);
+  --cloudig-on-primary: var(--cloudig-white);
+  --cloudig-outline: #b78862;
+  --cloudig-focus: var(--cloudig-night-purple);
+  --cloudig-scrollbar-active: #d68c80;
+  --cloudig-shadow-panel: 0 12px 32px rgb(0 0 0 / 30%);
+}
+
+html[data-theme="star_night"],
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cloudig-text: var(--cloudig-light-grey);
+  --cloudig-text-muted: #b9b8ba;
+  --cloudig-page: #000;
+  --cloudig-surface: #3b383c;
+  --cloudig-surface-raised: #1e1e1e;
+  --cloudig-primary: var(--cloudig-cloud-blue);
+  --cloudig-secondary: var(--cloudig-star-orange);
+  --cloudig-on-primary: var(--cloudig-white);
+  --cloudig-outline: #555960;
+  --cloudig-focus: var(--cloudig-star-orange);
+  --cloudig-scrollbar-idle: #3b383c;
+  --cloudig-scrollbar-active: var(--cloudig-star-orange);
+  --cloudig-shadow-outline: 2px 2px 1px rgb(0 0 0 / 65%);
+  --cloudig-shadow-panel: 0 12px 34px rgb(0 0 0 / 80%);
+}

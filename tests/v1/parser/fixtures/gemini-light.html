@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Gemini Fixture</title></head>
+<body>
+<main>
+  <article class="message user" data-source-id="gemini-user-1">
+    <div class="attachment"><span class="attachment-name">notes.txt</span></div>
+    <div class="attachment attachment-image"><span class="attachment-name">fixture.png</span></div>
+    <p>Question</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="Fixture image" width="1" height="1">
+  </article>
+  <article class="message assistant" data-source-id="gemini-assistant-1"><p>Answer</p></article>
+</main>
+<script>globalThis.__gemini_must_not_run = true;</script>
+<script type="application/json" id="ai-chat-archive-manifest">{
+  "schema": "ai-chat-archive/manifest-v1",
+  "platform": "gemini",
+  "exporter": { "name": "Fixture Gemini Exporter", "version": "2.0.0-light", "mode": "light" },
+  "exported_at": "2026-09-01T00:00:00.000Z",
+  "source": { "url": "https://gemini.google.com/app/fixture", "title": "Gemini Fixture" },
+  "payload": { "script_id": "gemini-archive-data", "schema": "osis.gemini.chat-export/light-dom-v2" }
+}</script>
+<script type="application/json" id="gemini-archive-data">{
+  "format": "osis.gemini.chat-export/light-dom-v2",
+  "version": "2.0.0-light",
+  "exported_at": "2026-09-01T00:00:00.000Z",
+  "source_url": "https://gemini.google.com/app/fixture",
+  "title": "Gemini Fixture",
+  "current_dom_sequence_only": true,
+  "messages": [
+    {
+      "ordinal": 0,
+      "role": "user",
+      "source_id": "gemini-user-1",
+      "text": "Question",
+      "html": "<div class=\"attachment\"><span class=\"attachment-name\">notes.txt</span></div><div class=\"attachment attachment-image\"><span class=\"attachment-name\">fixture.png</span></div><p>Question</p>",
+      "thoughts": [],
+      "sources": [],
+      "attachments": [
+        { "kind": "attachment", "file_key": "fixture-file", "name": "notes.txt", "mime_type": "text/plain", "availability": "metadata_only" },
+        { "kind": "image", "image_key": "fixture-image", "name": "fixture.png", "mime_type": "image/png", "availability": "embedded_original" }
+      ]
+    },
+    {
+      "ordinal": 1,
+      "role": "assistant",
+      "source_id": "gemini-assistant-1",
+      "text": "Answer",
+      "html": "<p onclick=\"bad()\">Answer <a href=\"https://example.test/source\">source</a></p>\u003cscript>bad()\u003c/script>",
+      "thoughts": [
+        { "label": "Thinking", "body_available": true, "capture": "fixture", "html": "<p><strong>Public</strong> thought</p>" }
+      ],
+      "sources": [],
+      "attachments": []
+    }
+  ],
+  "images": [
+    { "key": "fixture-image", "name": "fixture.png", "mime_type": "image/png", "availability": "embedded_original", "width": 1, "height": 1 }
+  ],
+  "sources": [
+    { "label": "Fixture source", "url": "https://example.test/source" }
+  ],
+  "unknown_visible_components": [],
+  "artifacts": []
+}</script>
+</body>
+</html>

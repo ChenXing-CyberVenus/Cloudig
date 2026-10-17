@@ -1,0 +1,25 @@
+{
+  "timeline": {
+    "lineage": "l1",
+    "variant": "v2",
+    "number": 2,
+    "revision": 3,
+    "name": "星河纪元",
+    "author": "晨星",
+    "standard_name": "Star River Era",
+    "version": "1.2"
+  },
+  "target": {
+    "id": "t1",
+    "kind": "single",
+    "name": "初见"
+  },
+  "sort": {
+    "start": {
+      "kind": "calendar",
+      "era": "AD",
+      "year": 2024,
+      "month": 11
+    }
+  }
+}

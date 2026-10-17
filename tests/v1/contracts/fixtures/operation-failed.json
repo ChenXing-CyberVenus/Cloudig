@@ -1,0 +1,19 @@
+{
+  "schema": "cloudig/operation/1.0.0",
+  "operation": "o_ABCDEFGHIJKLMNOP",
+  "phase": "extract",
+  "state": "failed",
+  "bytes": {
+    "completed": 1048577,
+    "total": 2097152
+  },
+  "error": {
+    "code": "capacity-resource-bytes",
+    "retry": "after_adapter_change",
+    "path": "/resources/3",
+    "capacity": {
+      "observed": 1048577,
+      "limit": 1048576
+    }
+  }
+}

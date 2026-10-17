@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:library:0.1.2",
+  "title": "Cloudig library overlay 0.1.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "user"],
+  "properties": {
+    "format": { "const": "cloudig/library" },
+    "version": { "const": "0.1.2" },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name"],
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" }
+      }
+    },
+    "assistant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name"],
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "icon": { "$ref": "#/$defs/assetPath" },
+        "cover": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": { "$ref": "#/$defs/assetPath" },
+            "fit": { "enum": ["contain", "stretch"] }
+          },
+          "minProperties": 1
+        }
+      },
+      "minProperties": 1
+    },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "language": { "enum": ["zh-CN", "en"] },
+        "theme": { "enum": ["platform", "dawn", "star_night"] },
+        "name_rule_ack_version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Highest conversation-name rule notice version acknowledged by the user."
+        }
+      },
+      "minProperties": 1
+    },
+    "platform_overrides": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["icon"],
+        "properties": { "icon": { "$ref": "#/$defs/assetPath" } }
+      }
+    },
+    "conversation_overrides": {
+      "type": "object",
+      "description": "Sparse user edits keyed by the conversation JSON conversation_key.",
+      "propertyNames": { "pattern": "^[0-9a-f]{64}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "conversation_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "User-set conversation name. Omit it to fall back to the Parser fact title."
+          },
+          "content_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "User-edited effective content time; this sparse overlay has priority over the Parser fact."
+          },
+          "provider": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "platform": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "models": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "minProperties": 1
+      }
+    }
+  },
+  "$defs": {
+    "assetPath": {
+      "type": "string",
+      "pattern": "^Data/Assets/(Covers|Avatars|PlatformIcons)/[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    }
+  }
+}

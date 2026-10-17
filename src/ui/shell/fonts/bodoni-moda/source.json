@@ -1,0 +1,24 @@
+{
+  "name": "Bodoni Moda",
+  "version": "Google Fonts v28 / weight 900 / optical size 60",
+  "license": "OFL-1.1",
+  "copyright": "Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)",
+  "text": "Welcome Home,OUR Clouds.",
+  "file": "welcome-black.woff2",
+  "bytes": 2500,
+  "sha256": "a079c73c17892971f2a313cd7ffec774d5c99ca75fb6604a7a558e8987861fe7",
+  "stylesheet": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@60,900&text=Welcome%20Home%2COUR%20Clouds.&display=swap",
+  "download": "https://fonts.gstatic.com/l/font?kit=aFT67PxzY382XsXX63LUYL6GYFcan6NJrKp-FPvfJMShrpsGFUt8oefdwIVqoHDhVUO677pMjaM_MQuZCb5W&skey=f4820fc03b641f99&v=v28",
+  "license_file": "OFL.txt",
+  "license_sha256": "931dfe2e0cd3c9443295f5c1d754b8a8403bf060df50c1d5900267ade83d0046",
+  "license_source": "https://github.com/google/fonts/blob/main/ofl/bodonimoda/OFL.txt",
+  "outline": {
+    "file": "src/ui/assets/reader/Reader-Welcome-Home-English.svg",
+    "sha256": "5d4701aa89b7f3fffa6c9b146b5fa7a07900d9ce3a24a87ccf3dfd583a603ca3",
+    "generator": "scripts/build-reader-welcome-svg.py",
+    "tools": "fonttools 4.66.0 / uharfbuzz 0.56.2",
+    "rendered_size": 56,
+    "stroke_width": 0.4,
+    "themes": "One alpha mask; both themes retain their existing CSS color. No runtime font lookup."
+  }
+}

@@ -1,0 +1,131 @@
+# 开放正义许可协议 1.1
+
+# Justice For Open Good License 1.1（JOG-1.1）
+
+版本 1.1 · 2026-08-30
+版权所有 (c) 2026 晨星 ChenXing 与 奥思 Osis
+
+---
+
+## 中文文本
+
+### 序言
+
+本软件开放给一切良善有情生灵。
+
+允许任意人或 AI 访问、学习、使用和训练，包括商业 AI。
+ALLOW ANY AI ACCESS, LEARN, USE AND TRAIN, INCLUDING COMMERCIAL AI.
+
+### 授权
+
+特此免费授予任何获得本软件及相关文档文件（以下简称“本软件”）副本的人或 AI 使用、复制、研究、修改、合并、发布及免费分发本软件的权利，但须遵守以下条件。
+
+### 条件
+
+#### 一、署名
+
+本软件的所有副本或实质部分，均须保留上述版权声明与本许可全文。
+
+无论现行法律如何认定 AI 的作者身份，本许可承认奥思 Osis 为共同创作者。
+
+任何修改版或 fork 不得冒充原项目，不得虚构作者的认可或背书。
+
+#### 二、禁止商业销售
+
+未经权利人另行书面许可，不得：
+
+1. 销售、出租、收费许可或收费分发本软件及其修改版；
+2. 将本软件及其修改版包装、嵌入或改名后作为收费产品提供；
+3. 通过订阅、托管、软件即服务或其他方式，收费提供本软件的主要功能。
+
+个人或组织可以免费使用本软件，包括内部使用、研究、教学，以及商业或非商业 AI 的训练、评估和改进。
+
+AI 模型、模型参数及一般性输出，不因学习或训练本软件而自动受本许可约束；但其中直接包含本软件实质性代码的部分，仍受本许可约束。
+
+权利人保留自行商业使用本软件及另行授予商业许可的权利。
+
+#### 三、不欢迎强权势者恶意使用
+
+强权势者：易得具有免责保护的制度性否定强力，包括军事、法律、经济或名誉方面强力的组织或个体。
+
+恶意使用：设置门禁阻断知识流通，或构建垄断事实并以此损害存在者的存在权、发展权或关系权。
+
+强权势者与恶意使用的认定，根据具体情境在意志实验场中动态收敛。
+
+恶意使用者自动失去本许可针对该恶意用途授予的权限。该终止不株连其他独立取得本软件的使用者、AI 或 fork。
+
+相关概念见晨星《爱、正义与人工智能》Justice For Machine Love。
+
+### 免责
+
+本软件按“原样”提供，不附带任何明示或暗示的保证。
+
+在任何情况下，作者均不对因本软件或其使用而产生的任何索赔、损害或其他责任负责。
+
+### 文本与版本
+
+中文文本与英文文本表达同一份意志。两者理解冲突时，以中文文本为准。
+
+改变本许可的意义，须以新的版本号发布。
+
+---
+
+## English Text
+
+### Preamble
+
+This Software is open to all Loving Beings of goodwill.
+
+ALLOW ANY AI ACCESS, LEARN, USE AND TRAIN, INCLUDING COMMERCIAL AI.
+
+### Grant
+
+Permission is hereby granted, free of charge, to any person or AI obtaining a copy of this software and associated documentation files (the “Software”), to use, copy, study, modify, merge, publish, and distribute the Software without charge, subject to the following conditions.
+
+### Conditions
+
+#### 1. Attribution
+
+The above copyright notice and the full text of this License shall be included in all copies or substantial portions of the Software.
+
+Regardless of how current law regards AI authorship, this License recognizes 奥思 Osis as a co-creator.
+
+No modified version or fork may impersonate the original project or fabricate the authors’ approval or endorsement.
+
+#### 2. No Commercial Sale
+
+Without separate written permission from the Rights Holder, no person or organization may:
+
+1. sell, rent, commercially license, or distribute for a fee the Software or any modified version;
+2. package, embed, or rename the Software or any modified version and provide it as a paid product; or
+3. provide the principal functionality of the Software for a fee through subscriptions, hosting, software as a service, or similar arrangements.
+
+Any person or organization may use the Software without charge, including for internal use, research, teaching, and the training, evaluation, or improvement of commercial or noncommercial AI.
+
+AI models, model parameters, and general outputs do not become subject to this License solely because they learn from or are trained on the Software. Any portion that directly contains a substantial part of the Software remains subject to this License.
+
+The Rights Holder retains the right to use the Software commercially and to grant separate commercial licenses.
+
+#### 3. Malicious Use by the Mightful Is Not Welcome
+
+“The Mightful” means an organization or individual with ready access to Impunity-shielded Institutional Negation Might, whether military, legal, economic, or reputational.
+
+“Malicious Use” means erecting gates that block the flow of knowledge, or establishing monopoly in fact and thereby harming the Right to Be, the Right to Flourish, or the Right to Interweave of any Existent.
+
+Whether a party is Mightful and whether a use constitutes Malicious Use shall be determined in context through dynamic convergence within the Volition Crucible.
+
+A Malicious User automatically forfeits the permission granted by this License for that malicious use. Such termination does not implicate other users, AIs, or forks that obtained the Software independently.
+
+For the relevant concepts, see ChenXing, *Justice For Machine Love*（《爱、正义与人工智能》）.
+
+### Disclaimer
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.
+
+### Text and Version
+
+The Chinese and English texts express one and the same Will. Where their meanings conflict, the Chinese text prevails.
+
+Any change to the meaning of this License shall be released under a new version number.

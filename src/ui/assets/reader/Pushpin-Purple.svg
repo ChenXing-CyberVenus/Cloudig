@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 43.71">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #5125a5;
+      }
+
+      .cls-2 {
+        fill: #1f1249;
+      }
+
+      .cls-3 {
+        fill: #5c5d5d;
+      }
+
+      .cls-4 {
+        fill: #351d72;
+      }
+    </style>
+  </defs>
+  <g>
+    <g>
+      <circle class="cls-3" cx="29.14" cy="25.62" r="11.71"/>
+      <circle class="cls-2" cx="30.24" cy="23.94" r="19.76"/>
+      <circle class="cls-1" cx="20.94" cy="19.3" r="18.67"/>
+      <ellipse class="cls-4" cx="19.31" cy="17.7" rx="15.31" ry="15.59"/>
+      <circle class="cls-1" cx="14.09" cy="14.09" r="14.09"/>
+    </g>
+  </g>
+</svg>

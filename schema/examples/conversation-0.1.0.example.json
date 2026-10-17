@@ -1,0 +1,180 @@
+{
+  "schema": "ai-chat-archive/conversation/0.1.0",
+  "source_file": "synthetic-conversation.html",
+  "source_sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+  "source_size_bytes": 1,
+  "source_url": "https://example.invalid/chat/synthetic",
+  "exported_at": "2026-07-20T12:00:00+08:00",
+  "title": "离线能力合成验收",
+  "provider": "example-labs",
+  "platform": "synthetic",
+  "models": [
+    "Example-1"
+  ],
+  "messages": [
+    {
+      "id": "message-1",
+      "role": "user",
+      "timestamp": "2026-07-20T11:59:00+08:00",
+      "content": [
+        {
+          "type": "markdown",
+          "text": "请分析上传的图片与附件，并引用网络资料。\n\n- 保留列表\n- 保留段落"
+        },
+        {
+          "type": "image",
+          "resource_id": "image-inline",
+          "purpose": "uploaded",
+          "alt": "用户上传图片缩略图"
+        },
+        {
+          "type": "attachment",
+          "resource_id": "attachment-pdf"
+        }
+      ]
+    },
+    {
+      "id": "message-2",
+      "role": "assistant",
+      "model": "Example-1",
+      "timestamp": "2026-07-20T12:00:00+08:00",
+      "content": [
+        {
+          "type": "reasoning_summary",
+          "title": "思考摘要",
+          "text": "先核对附件，再检索来源。"
+        },
+        {
+          "type": "reasoning",
+          "title": "公开思考",
+          "markdown": "图片可离线读取；PDF 只保留已有元数据。",
+          "duration_seconds": 2.5,
+          "effort": "high"
+        },
+        {
+          "type": "status",
+          "title": "资料检索完成"
+        },
+        {
+          "type": "search",
+          "query": "offline archive format",
+          "source_ids": [
+            "source-1"
+          ],
+          "status": "complete",
+          "duration_seconds": 1.25
+        },
+        {
+          "type": "markdown",
+          "text": "正文保留 **Markdown**、表格、列表与链接语义。"
+        },
+        {
+          "type": "text",
+          "text": "无法或无需解释为 Markdown 的内容可以保留为纯文本。"
+        },
+        {
+          "type": "citations",
+          "source_ids": [
+            "source-1"
+          ],
+          "label": "参考资料"
+        },
+        {
+          "type": "math",
+          "tex": "\\boxed{E = mc^2}",
+          "display": true
+        },
+        {
+          "type": "code",
+          "code": "export const answer = 42;",
+          "language": "javascript",
+          "filename": "answer.mjs"
+        },
+        {
+          "type": "image",
+          "resource_id": "image-inline",
+          "purpose": "generated",
+          "alt": "AI 生图离线占位样例"
+        },
+        {
+          "type": "image",
+          "resource_id": "image-remote",
+          "purpose": "search",
+          "alt": "仅保留地址的外部图片"
+        },
+        {
+          "type": "diagram",
+          "format": "mermaid",
+          "title": "离线流程",
+          "source": "graph TD\n  HTML --> JSON\n  JSON --> Reader"
+        },
+        {
+          "type": "tool",
+          "kind": "activity",
+          "name": "browser",
+          "text": "读取公开来源卡片。",
+          "status": "complete",
+          "success": true
+        },
+        {
+          "type": "html",
+          "label": "安全富文本兜底",
+          "html": "<table><tbody><tr><th>字段</th><td>值</td></tr></tbody></table>"
+        },
+        {
+          "type": "unknown",
+          "label": "future-component",
+          "text": "未识别但用户可见的组件占位。"
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "image-inline",
+      "kind": "image",
+      "availability": "embedded",
+      "name": "pixel.png",
+      "mime_type": "image/png",
+      "size_bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+      "data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "attachment-pdf",
+      "kind": "attachment",
+      "availability": "metadata_only",
+      "name": "example.pdf",
+      "mime_type": "application/pdf",
+      "size_bytes": 2048,
+      "url": "https://example.invalid/files/example.pdf"
+    },
+    {
+      "id": "image-remote",
+      "kind": "image",
+      "availability": "metadata_only",
+      "name": "remote.webp",
+      "mime_type": "image/webp",
+      "url": "https://example.invalid/images/remote.webp"
+    }
+  ],
+  "sources": [
+    {
+      "id": "source-1",
+      "url": "https://example.invalid/reference",
+      "title": "Synthetic reference",
+      "site_name": "example.invalid",
+      "snippet": "This source is deliberately synthetic."
+    }
+  ],
+  "warnings": [
+    {
+      "code": "remote-resource-not-embedded",
+      "message": "外部资源仅保留地址，Reader 不主动下载。",
+      "message_index": 1,
+      "resource_id": "image-remote"
+    }
+  ]
+}

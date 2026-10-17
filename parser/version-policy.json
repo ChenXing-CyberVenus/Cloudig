@@ -1,0 +1,173 @@
+{
+  "format": "cloudig/parser-version-policy",
+  "version": "0.6.0",
+  "rules": [
+    {
+      "id": "conversation-v1-envelope-0.6.0",
+      "action": "reparse",
+      "active_from_parser": "0.6.0",
+      "match": {
+        "minimum_schema_by_family": {
+          "ai-chat-archive/conversation/1.0": "ai-chat-archive/conversation/1.0.0"
+        }
+      },
+      "reason": "Conversation 1.0 is the common Parser 0.6 envelope. Migration-created V1 artifacts retain their historical Parser provenance and are not marked stale merely because the common envelope version changed."
+    },
+    {
+      "id": "three-profile-parser-contract-0.3.0",
+      "action": "reparse",
+      "active_from_parser": "0.3.0",
+      "match": {
+        "parser_version_before": "0.3.0",
+        "include_missing_parser_version": true,
+        "minimum_schema_by_family": {
+          "ai-chat-archive/conversation/0.1": "ai-chat-archive/conversation/0.1.3",
+          "ai-chat-archive/conversation/0.2": "ai-chat-archive/conversation/0.2.3"
+        },
+        "include_missing_schema": true
+      },
+      "reason": "Parser 0.3.0 adds explicit Light, Full, and AllBranches routing, stable cross-profile conversation identity, and deterministic branch projection. Existing exported HTML can be reparsed; no re-export is required."
+    },
+    {
+      "id": "parser-adapter-provenance-0.4.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.0",
+      "match": {
+        "parser_version_before": "0.4.0",
+        "include_missing_parser_version": true,
+        "include_missing_parser_adapter": true,
+        "minimum_schema_by_family": {
+          "ai-chat-archive/conversation/0.1": "ai-chat-archive/conversation/0.1.4",
+          "ai-chat-archive/conversation/0.2": "ai-chat-archive/conversation/0.2.4"
+        },
+        "include_missing_schema": true
+      },
+      "reason": "Parser 0.4.0 records the exact source adapter id and version in every canonical conversation and parse-state output. Existing source files can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-light-scheduled-1.1.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.1",
+      "match": {
+        "parser_adapter": "chatgpt-light-items-v2",
+        "parser_adapter_version_before": "1.1.0"
+      },
+      "reason": "ChatGPT Light adapter 1.1.0 preserves Scheduled task cards and separates AI-only automated runs. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-full-scheduled-1.1.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.1",
+      "match": {
+        "parser_adapter": "chatgpt-full-v1",
+        "parser_adapter_version_before": "1.1.0"
+      },
+      "reason": "ChatGPT Full adapter 1.1.0 preserves Scheduled task cards and separates AI-only automated runs. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-all-branches-scheduled-1.1.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.1",
+      "match": {
+        "parser_adapter": "chatgpt-all-branches-v1",
+        "parser_adapter_version_before": "1.1.0"
+      },
+      "reason": "ChatGPT AllBranches adapter 1.1.0 preserves Scheduled task timelines without requiring an ordinary branch graph. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "gemini-light-public-thinking-1.1.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.2",
+      "match": {
+        "parser_adapter": "gemini-light-dom-v2",
+        "parser_adapter_version_before": "1.1.0"
+      },
+      "reason": "Gemini Light adapter 1.1.0 preserves public thinking bodies exported as static HTML. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "gemini-full-public-thinking-1.1.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.2",
+      "match": {
+        "parser_adapter": "gemini-full-v1",
+        "parser_adapter_version_before": "1.1.0"
+      },
+      "reason": "Gemini Full adapter 1.1.0 preserves public thinking bodies exported as static HTML while retaining embedded image bytes. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-light-memory-placeholder-1.2.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.2",
+      "match": {
+        "parser_adapter": "chatgpt-light-items-v2",
+        "parser_adapter_version_before": "1.2.0"
+      },
+      "reason": "ChatGPT Light adapter 1.2.0 omits the exporter's inert memory-source placeholder from visible message text. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-full-memory-placeholder-1.2.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.2",
+      "match": {
+        "parser_adapter": "chatgpt-full-v1",
+        "parser_adapter_version_before": "1.2.0"
+      },
+      "reason": "ChatGPT Full adapter 1.2.0 omits the exporter's inert memory-source placeholder from visible message text. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-all-branches-memory-placeholder-1.2.0",
+      "action": "reparse",
+      "active_from_parser": "0.4.2",
+      "match": {
+        "parser_adapter": "chatgpt-all-branches-v1",
+        "parser_adapter_version_before": "1.2.0"
+      },
+      "reason": "ChatGPT AllBranches adapter 1.2.0 omits the exporter's inert memory-source placeholder from visible message text. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "parser-generation-time-0.5.0",
+      "action": "reparse",
+      "active_from_parser": "0.5.0",
+      "match": {
+        "parser_version_before": "0.5.0",
+        "include_missing_parser_version": true,
+        "minimum_schema_by_family": {
+          "ai-chat-archive/conversation/0.1": "ai-chat-archive/conversation/0.1.5",
+          "ai-chat-archive/conversation/0.2": "ai-chat-archive/conversation/0.2.5"
+        },
+        "include_missing_schema": true
+      },
+      "reason": "Parser 0.5.0 records the successful canonical JSON generation time as parsed_at. Existing source files can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-light-mermaid-snapshot-1.3.0",
+      "action": "reparse",
+      "active_from_parser": "0.5.3",
+      "match": {
+        "parser_adapter": "chatgpt-light-items-v2",
+        "parser_adapter_version_before": "1.3.0"
+      },
+      "reason": "ChatGPT Light adapter 1.3.0 restores each native Mermaid SVG beside its exact source at the original message position. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-full-mermaid-snapshot-1.3.0",
+      "action": "reparse",
+      "active_from_parser": "0.5.3",
+      "match": {
+        "parser_adapter": "chatgpt-full-v1",
+        "parser_adapter_version_before": "1.3.0"
+      },
+      "reason": "ChatGPT Full adapter 1.3.0 restores each native Mermaid SVG beside its exact source at the original message position. Existing exported HTML can be reparsed; re-export is not required."
+    },
+    {
+      "id": "chatgpt-tree-mermaid-snapshot-1.3.0",
+      "action": "reparse",
+      "active_from_parser": "0.5.3",
+      "match": {
+        "parser_adapter": "chatgpt-all-branches-v1",
+        "parser_adapter_version_before": "1.3.0"
+      },
+      "reason": "ChatGPT Tree adapter 1.3.0 restores each native Mermaid SVG beside its exact source at the original branch-message position. Existing exported HTML can be reparsed; re-export is not required."
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "format": "cloudig/bookmark-package",
+  "version": "0.2.0",
+  "bookmark_set_version": "2026.10.17.1",
+  "default_profile": "light",
+  "profiles": [
+    "light",
+    "full",
+    "all_branches"
+  ],
+  "platform_count": 12,
+  "variant_count": 32,
+  "effective_count_per_profile": 12,
+  "platforms": [
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT",
+      "title_zh": "保存 ChatGPT 会话-Cloudig",
+      "title_en": "Save ChatGPT conversation-Cloudig",
+      "variants": [
+        {
+          "id": "chatgpt:light",
+          "profile": "light",
+          "version": "3.7.62-light",
+          "artifact": "chatgpt/light.min.js",
+          "sha256": "0b881f103b93dce28eab52823d19d8ea511cd760440f3656b7e9751acd462a46",
+          "bytes": 477242,
+          "characters": 467927
+        },
+        {
+          "id": "chatgpt:full",
+          "profile": "full",
+          "version": "1.0.59-full",
+          "artifact": "chatgpt/full.min.js",
+          "sha256": "fc588492ca6745ef2fee0f2353a767c76dd0faf2d1c44bdede0716df973a1ec8",
+          "bytes": 487701,
+          "characters": 478182
+        },
+        {
+          "id": "chatgpt:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.59-all-branches",
+          "artifact": "chatgpt/all_branches.min.js",
+          "sha256": "80d19464f8262060e94bc620622cabcd1791ce7ec7593ced1b2f1996569897ad",
+          "bytes": 501243,
+          "characters": 491270
+        }
+      ]
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "title_zh": "保存 Claude 会话-Cloudig",
+      "title_en": "Save Claude conversation-Cloudig",
+      "variants": [
+        {
+          "id": "claude:light",
+          "profile": "light",
+          "version": "1.1.72-light",
+          "artifact": "claude/light.min.js",
+          "sha256": "c5c8293c1098d9208fac28986a8300ac9a6db6299ad35a36b099aeb831704a76",
+          "bytes": 454113,
+          "characters": 446675
+        },
+        {
+          "id": "claude:full",
+          "profile": "full",
+          "version": "1.1.72-full",
+          "artifact": "claude/full.min.js",
+          "sha256": "8016d84f40ee155e0c218c0db2356b33207e1719cbed5b82d1fb1c1a2f843270",
+          "bytes": 457261,
+          "characters": 449815
+        },
+        {
+          "id": "claude:all_branches",
+          "profile": "all_branches",
+          "version": "1.1.72-all-branches",
+          "artifact": "claude/all_branches.min.js",
+          "sha256": "667740287abe97be549800c81ce0cb3ecf0d94a25fb7c6c62d3d474454eb8051",
+          "bytes": 467793,
+          "characters": 460152
+        }
+      ]
+    },
+    {
+      "id": "deepseek",
+      "label": "DeepSeek",
+      "title_zh": "保存 DeepSeek 会话-Cloudig",
+      "title_en": "Save DeepSeek conversation-Cloudig",
+      "variants": [
+        {
+          "id": "deepseek:light",
+          "profile": "light",
+          "version": "2.8.10-light",
+          "artifact": "deepseek/light.min.js",
+          "sha256": "64de4e7913f15c9204a7181f58a88ef9986d664e455cab504b545e4417d96fcc",
+          "bytes": 217991,
+          "characters": 213327
+        },
+        {
+          "id": "deepseek:full",
+          "profile": "full",
+          "version": "1.0.7-full",
+          "artifact": "deepseek/full.min.js",
+          "sha256": "faeff65ac840705d205bdecaf30a2f600403c4b8570f37b1c6ca214c5e725367",
+          "bytes": 222150,
+          "characters": 217260
+        },
+        {
+          "id": "deepseek:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.8-all-branches",
+          "artifact": "deepseek/all_branches.min.js",
+          "sha256": "7479301ff7ff81d77b7b961b1344d8b4b71e6c096da197eaf8a6f600d7c405a1",
+          "bytes": 229024,
+          "characters": 223610
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "title_zh": "保存 Gemini 会话-Cloudig",
+      "title_en": "Save Gemini conversation-Cloudig",
+      "variants": [
+        {
+          "id": "gemini:light",
+          "profile": "light",
+          "version": "2.7.12-light",
+          "artifact": "gemini/light.min.js",
+          "sha256": "f0065dbc7038e8a91add81a3248b81b04763c120e58c8f35fee227fe043df458",
+          "bytes": 236947,
+          "characters": 230642
+        },
+        {
+          "id": "gemini:full",
+          "profile": "full",
+          "version": "1.0.8-full",
+          "artifact": "gemini/full.min.js",
+          "sha256": "5b1cc06bb7cfca6d0af9bc53b48f777e771e569bd8a951f1cd182a2a5789dd81",
+          "bytes": 249776,
+          "characters": 243118
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "grok",
+      "label": "Grok",
+      "title_zh": "保存 Grok 会话-Cloudig",
+      "title_en": "Save Grok conversation-Cloudig",
+      "variants": [
+        {
+          "id": "grok:light",
+          "profile": "light",
+          "version": "2.8.10-light",
+          "artifact": "grok/light.min.js",
+          "sha256": "7411e8d637c595b2d255a18ddec65350eae5f9682966cf30e49b0ac41d32479a",
+          "bytes": 239564,
+          "characters": 234034
+        },
+        {
+          "id": "grok:full",
+          "profile": "full",
+          "version": "1.0.8-full",
+          "artifact": "grok/full.min.js",
+          "sha256": "f4727b138362d7c23f6f09bb274342d0871d4c9625765a5fd53214e8e472866f",
+          "bytes": 245747,
+          "characters": 240187
+        },
+        {
+          "id": "grok:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.10-all-branches",
+          "artifact": "grok/all_branches.min.js",
+          "sha256": "6d56220256e593e56ac36600649aa5634997ef8d7a33192651fea2013b3401eb",
+          "bytes": 263725,
+          "characters": 257894
+        }
+      ]
+    },
+    {
+      "id": "doubao",
+      "label": "豆包",
+      "title_zh": "保存 豆包 会话-Cloudig",
+      "title_en": "Save 豆包 conversation-Cloudig",
+      "variants": [
+        {
+          "id": "doubao:light",
+          "profile": "light",
+          "version": "3.5.7-light",
+          "artifact": "doubao/light.min.js",
+          "sha256": "b8da9079ba3cde2164b6eb97066456730166e8d6133314f02eb8cb17f0b1bc06",
+          "bytes": 239952,
+          "characters": 234812
+        },
+        {
+          "id": "doubao:full",
+          "profile": "full",
+          "version": "1.0.5-full",
+          "artifact": "doubao/full.min.js",
+          "sha256": "87b349770adebb81dcf7854602c16aca9d39b1a4ab302e4880d6d31f183c599f",
+          "bytes": 243813,
+          "characters": 238509
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi",
+      "title_zh": "保存 Kimi 会话-Cloudig",
+      "title_en": "Save Kimi conversation-Cloudig",
+      "variants": [
+        {
+          "id": "kimi:light",
+          "profile": "light",
+          "version": "2.9.11-light",
+          "artifact": "kimi/light.min.js",
+          "sha256": "34986a60e1cb95dc526d9b85ad2c3784d826ab355d2abe27546cecfe8a1eebb2",
+          "bytes": 229252,
+          "characters": 224279
+        },
+        {
+          "id": "kimi:full",
+          "profile": "full",
+          "version": "1.0.7-full",
+          "artifact": "kimi/full.min.js",
+          "sha256": "176c2779dee50c5664178f45e32883645bbc0e7bb44128c2d3b7f0026bc1b4f6",
+          "bytes": 237157,
+          "characters": 231618
+        },
+        {
+          "id": "kimi:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.7-all-branches",
+          "artifact": "kimi/all_branches.min.js",
+          "sha256": "65ec4fa78ef7d3a41bb2175c9f99a260583bbf1810796c43a72d26d9d5dee4d9",
+          "bytes": 248910,
+          "characters": 243157
+        }
+      ]
+    },
+    {
+      "id": "qwen",
+      "label": "Qwen",
+      "title_zh": "保存 Qwen 会话-Cloudig",
+      "title_en": "Save Qwen conversation-Cloudig",
+      "variants": [
+        {
+          "id": "qwen:light",
+          "profile": "light",
+          "version": "2.6.14-light",
+          "artifact": "qwen/light.min.js",
+          "sha256": "41e738935c2f5d2f629d77efd8ac2a264dfd17b2c8376868d3d318e528df200c",
+          "bytes": 216700,
+          "characters": 212231
+        },
+        {
+          "id": "qwen:full",
+          "profile": "full",
+          "version": "1.0.11-full",
+          "artifact": "qwen/full.min.js",
+          "sha256": "8547b2d7704d858dcf772238ad99acb12f66a60a73626f41a4c859ea4816bf64",
+          "bytes": 219424,
+          "characters": 214897
+        },
+        {
+          "id": "qwen:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.11-all-branches",
+          "artifact": "qwen/all_branches.min.js",
+          "sha256": "e48baf7b7203f242d0093e6afaac9590e9714eeff5bd0a25e68661a77080e258",
+          "bytes": 235018,
+          "characters": 230052
+        }
+      ]
+    },
+    {
+      "id": "chatglm",
+      "label": "ChatGLM",
+      "title_zh": "保存 ChatGLM 会话-Cloudig",
+      "title_en": "Save ChatGLM conversation-Cloudig",
+      "variants": [
+        {
+          "id": "chatglm:light",
+          "profile": "light",
+          "version": "2.5.12-light",
+          "artifact": "chatglm/light.min.js",
+          "sha256": "96a237502654d6fbce6f3f968c55573de1dc9aa4843bfcd1853cf3e12295a58e",
+          "bytes": 232352,
+          "characters": 227705
+        },
+        {
+          "id": "chatglm:full",
+          "profile": "full",
+          "version": "1.0.8-full",
+          "artifact": "chatglm/full.min.js",
+          "sha256": "76d2c90d2e773a943e7dfb5f4e2ce4baed6f1fd57a672114620fed9a74a6729b",
+          "bytes": 233095,
+          "characters": 228420
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "zai",
+      "label": "Z.ai",
+      "title_zh": "保存 Z.ai 会话-Cloudig",
+      "title_en": "Save Z.ai conversation-Cloudig",
+      "variants": [
+        {
+          "id": "zai:light",
+          "profile": "light",
+          "version": "2.7.12-light",
+          "artifact": "zai/light.min.js",
+          "sha256": "44001deadcd0350e36599994578c5bfb61072f7adfd86fb218f25357a785c6d6",
+          "bytes": 238938,
+          "characters": 234054
+        },
+        {
+          "id": "zai:full",
+          "profile": "full",
+          "version": "1.0.8-full",
+          "artifact": "zai/full.min.js",
+          "sha256": "a6a73504693143750833d5569e65cc7edc1014ecc419b17acf34f264ca524591",
+          "bytes": 254409,
+          "characters": 248987
+        },
+        {
+          "id": "zai:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.8-all-branches",
+          "artifact": "zai/all_branches.min.js",
+          "sha256": "04c851b5d3be430f0d0f2202dec5f4a2de2e112e9aca29e6ccba95e722f939bb",
+          "bytes": 254410,
+          "characters": 248998
+        }
+      ]
+    },
+    {
+      "id": "yuanbao",
+      "label": "腾讯元宝",
+      "title_zh": "保存 腾讯元宝 会话-Cloudig",
+      "title_en": "Save 腾讯元宝 conversation-Cloudig",
+      "variants": [
+        {
+          "id": "yuanbao:light",
+          "profile": "light",
+          "version": "2.10.10-light",
+          "artifact": "yuanbao/light.min.js",
+          "sha256": "2ccd811c22ae769901299333c8034bf316d80468f3a15ea7b14daf9efe169d41",
+          "bytes": 251015,
+          "characters": 245249
+        },
+        {
+          "id": "yuanbao:full",
+          "profile": "full",
+          "version": "1.0.9-full",
+          "artifact": "yuanbao/full.min.js",
+          "sha256": "f15d977497e9b690691689f9502367a6e2cca69c1a455db23151b198b2c6888d",
+          "bytes": 254097,
+          "characters": 248303
+        }
+      ],
+      "fallback": {
+        "all_branches": "full"
+      }
+    },
+    {
+      "id": "mistral",
+      "label": "Mistral",
+      "title_zh": "保存 Mistral 会话-Cloudig",
+      "title_en": "Save Mistral conversation-Cloudig",
+      "variants": [
+        {
+          "id": "mistral:light",
+          "profile": "light",
+          "version": "2.5.13-light",
+          "artifact": "mistral/light.min.js",
+          "sha256": "62fca381a70993974f8257795678dea2e880f7e0bd15fb99d6344cb302ad272e",
+          "bytes": 266010,
+          "characters": 260434
+        },
+        {
+          "id": "mistral:full",
+          "profile": "full",
+          "version": "1.0.9-full",
+          "artifact": "mistral/full.min.js",
+          "sha256": "6b763fa91c45d87be9c6b3a0dbcab066784997b3a7138e72c401a8353aa1a553",
+          "bytes": 270444,
+          "characters": 265056
+        },
+        {
+          "id": "mistral:all_branches",
+          "profile": "all_branches",
+          "version": "1.0.9-all-branches",
+          "artifact": "mistral/all_branches.min.js",
+          "sha256": "033e5ce2268a291178d2840acd8d2220f207a0b41c03c088a16ef90b5db1494c",
+          "bytes": 283058,
+          "characters": 277227
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "timeline": {
+    "lineage": "l1",
+    "variant": "v1",
+    "number": 1,
+    "revision": 1,
+    "name": "错误快照",
+    "author": "Cloudig"
+  },
+  "target": {
+    "id": "v1",
+    "kind": "single",
+    "name": "错误节点"
+  },
+  "path": []
+}

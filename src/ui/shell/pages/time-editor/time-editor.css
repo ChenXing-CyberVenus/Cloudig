@@ -1,0 +1,169 @@
+@layer pages {
+  .time-editor-layer { align-items: center; background: rgb(35 27 31 / 52%); bottom: 0; display: flex; justify-content: center; left: 0; padding: 0 248px 0 400px; pointer-events: auto; position: absolute; right: 0; top: 48px; z-index: 96; }
+  :root[data-theme="star-night"] .time-editor-layer { background: rgb(0 0 0 / 74%); }
+  .time-editor-dialog {
+    --time-editor-copy: #2d2d2d;
+    --time-editor-accent: var(--cloudig-seal-red);
+    --time-bank-left-a: #661010;
+    --time-bank-left-b: #84201e;
+    --time-bank-right-a: #2f5b5b;
+    --time-bank-right-b: #4b7f82;
+    --time-terran-copy: #d68c80;
+    --time-sovereign-copy: #a6c9c9;
+    --time-input-fill: #ae8b7f;
+    --time-input-border: #a52525;
+    --time-input-copy: #2d2d2d;
+    background: linear-gradient(180deg, #e8d6c4 0%, #ae8b7f 100%);
+    border: 0;
+    border-radius: 13.16px;
+    color: var(--time-editor-copy);
+    display: grid;
+    flex: none;
+    filter: drop-shadow(2px 12px 13px rgb(0 0 0 / 46%));
+    grid-template-columns: 300px 600px 300px;
+    height: min(1000px, calc(100vh - 48px));
+    isolation: isolate;
+    margin: 0;
+    max-width: calc(100vw - 48px);
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    width: 1200px;
+  }
+  :root[data-theme="star-night"] .time-editor-dialog { --time-editor-copy: var(--cloudig-light); --time-editor-accent: var(--cloudig-base-blue); --time-bank-left-a: #383838; --time-bank-left-b: #615c70; --time-bank-right-a: #615c70; --time-bank-right-b: #383838; --time-terran-copy: #e2e1e1; --time-sovereign-copy: #e2e1e1; --time-input-fill: #2d2d2d; --time-input-border: #5125a5; --time-input-copy: #e2e1e1; background: #1e1e1e; filter: drop-shadow(2px 14px 16px rgb(0 0 0 / 82%)); }
+  .time-editor-dialog[data-busy="true"]::after { background: rgb(255 255 255 / 18%); content: ""; inset: 0; position: absolute; z-index: 40; }
+  :root[data-theme="star-night"] .time-editor-dialog { --time-delete-fill: #5125a5; }
+  :root[data-theme="star-night"] .time-editor-dialog[data-busy="true"]::after { background: rgb(0 0 0 / 32%); }
+  .time-editor-bank { grid-template-rows: 200px minmax(0, 1fr); }
+  .time-editor-bank [data-time-editor-cover] { appearance: none; background: transparent; border: 0; color: var(--time-terran-copy); cursor: pointer; height: 102px; padding: 0; position: absolute; top: 47px; width: 116px; }
+  .time-cover-terran.time-editor-bank [data-time-editor-cover] { right: 29px; }
+  .time-cover-sovereign.time-editor-bank [data-time-editor-cover] { color: var(--time-sovereign-copy); left: 37.6px; }
+  .time-editor-bank [data-time-editor-cover] span { bottom: 0; font-size: 18px; left: 0; line-height: 25px; position: absolute; right: 0; }
+  .time-editor-bank-row { align-items: stretch; color: var(--time-terran-copy); display: grid; grid-template-columns: minmax(0, 1fr) auto; min-height: 50px; position: relative; width: 100%; }
+  .time-cover-terran .time-editor-bank-row:nth-child(odd) { background: var(--time-bank-left-b); }
+  .time-cover-terran .time-editor-bank-row:nth-child(even) { background: var(--time-bank-left-a); }
+  .time-cover-sovereign .time-editor-bank-row { color: var(--time-sovereign-copy); }
+  .time-cover-sovereign .time-editor-bank-row:nth-child(odd) { background: var(--time-bank-right-b); }
+  .time-cover-sovereign .time-editor-bank-row:nth-child(even) { background: var(--time-bank-right-a); }
+  .time-editor-bank-row:hover, .time-editor-bank-row:focus-within { color: #ffffff; filter: brightness(1.08); }
+  .time-editor-bank-row-body { align-items: center; appearance: none; background: transparent; border: 0; color: inherit; cursor: pointer; display: flex; gap: 4px; min-width: 0; padding: 5px 16px 5px 20px; text-align: left; }
+  .time-editor-bank-row strong { flex: none; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .time-editor-bank-row span { font-size: 14px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .time-editor-bank-delete { align-self: center; appearance: none; background: transparent; border: 0; color: #ffffff; cursor: pointer; height: 24px; margin-right: 10px; opacity: 0; padding: 2px; width: 24px; }
+  .time-editor-bank-delete svg { fill: currentColor; height: 20px; width: 20px; }
+  .time-editor-bank-row:hover strong { flex: 0 1 auto; }
+  .time-editor-bank-row:hover .time-editor-bank-delete, .time-editor-bank-delete:focus-visible { opacity: 1; }
+
+  .time-editor-center { background: transparent; display: grid; grid-template-rows: 200px minmax(0, 1fr) 82px; min-height: 0; min-width: 0; position: relative; z-index: 3; }
+  .time-editor-title-scene { min-width: 0; overflow: visible; position: relative; z-index: 5; }
+  .time-editor-title-art { filter: drop-shadow(3px 5px 3px rgb(0 0 0 / 65%)); height: 172px; left: 0; object-fit: fill; pointer-events: none; position: absolute; top: 0; width: 615px; }
+  .time-editor-title-art-night { display: none; }
+  :root[data-theme="star-night"] .time-editor-title-art-dawn { display: none; }
+  :root[data-theme="star-night"] .time-editor-title-art-night { display: block; }
+  .time-editor-title-scene h1 { bottom: 14px; color: #ffffff; filter: drop-shadow(3px 4px 3px rgb(0 0 0 / 58%)); font-size: 20px; left: 25.3px; line-height: 28px; margin: 0; position: absolute; z-index: 3; }
+  .time-editor-title-scene .cloudig-button { --cloudig-button-fill: var(--cloudig-seal-red); bottom: 11px; color: #ffffff; font-size: 18px; height: 32px; position: absolute; right: 20px; width: 150px; z-index: 4; }
+  :root[data-theme="star-night"] .time-editor-title-scene .cloudig-button { --cloudig-button-fill: var(--cloudig-purple); color: var(--cloudig-orange); }
+  :root[lang="en"] .time-editor-title-scene .cloudig-button { font-size: 15px; width: 180px; }
+
+  .time-editor-body { min-height: 0; overflow: auto; padding: 24px 20px 22px; }
+  .time-editor-section { border-bottom: 1px solid #ae8b7f; padding: 14px 0 18px; }
+  :root[data-theme="star-night"] .time-editor-section { border-bottom-color: #2d2d2d; }
+  .time-editor-section > header { align-items: center; display: flex; gap: 16px; justify-content: space-between; }
+  .time-editor-section-actions { align-items: center; display: flex; gap: 12px; }
+  .time-editor-section h2 { font-size: 18px; margin: 0; }
+  .time-editor-section header button, .time-editor-section > button { appearance: none; background: transparent; border: 0; color: var(--time-editor-accent); cursor: pointer; font-size: 16px; font-weight: 700; padding: 3px 0; }
+  .time-editor-metadata { padding-top: 0; }
+  .time-editor-metadata > p { border: 2px solid var(--time-editor-accent); border-radius: 9px; display: inline-block; font-size: 13px; margin: 0 12px 0 0; padding: 7px 10px; }
+  .time-editor-field-grid { align-items: end; display: grid; gap: 10px; grid-template-columns: 2fr 1.35fr 1.15fr; }
+  .time-editor-field-grid[data-kind="timeline"] { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) 132px; }
+  .time-editor-field-grid label { display: grid; font-size: 16px; font-weight: 400; gap: 6px; min-width: 0; position: relative; }
+  .time-editor-field > span { clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+  .time-editor-field-grid input:not([type="checkbox"]):not([type="radio"]), .time-editor-field-grid select, .time-editor-node-picker input:not([type="radio"]):not([type="checkbox"]) { background: var(--time-input-fill); border: 2px solid var(--time-input-border); border-radius: 12px; color: var(--time-input-copy); font-family: inherit; font-size: 18px; font-weight: 400; height: 42px; min-width: 0; outline: 0; padding: 0 12px; text-align: center; width: 100%; }
+  .time-editor-field-grid input::placeholder { color: var(--time-input-copy); opacity: .85; }
+  .time-editor-version { align-items: center; background: var(--time-input-fill); border: 2px solid var(--time-input-border); border-radius: 12px; color: var(--time-input-copy); display: flex; gap: 4px; height: 42px; padding: 0 10px; width: 132px; }
+  .time-editor-version > span { flex: none; font-size: 18px; }
+  .time-editor-field-grid .time-editor-version input[name="version"] { background: transparent; border: 0; border-radius: 0; flex: 1; font-variant-numeric: tabular-nums; height: 38px; min-width: 0; padding: 0; text-align: left; width: 7ch; }
+  .time-editor-field-grid [data-field="standard_name"], .time-editor-field-grid:not([data-kind="timeline"]) [data-field="name"] { grid-column: 1 / -1; }
+  .time-editor-field-grid[data-kind="single"] { grid-template-columns: minmax(0, 1fr); }
+  .time-editor-field-grid .time-editor-checkbox { align-items: center; display: flex; font-size: 16px; grid-column: 1 / -1; margin-top: 6px; }
+  .time-editor-kind-choice { align-items: center; display: flex; flex-wrap: wrap; font-size: 18px; gap: 15px; margin-bottom: 12px; }
+  .time-editor-kind-choice button { align-items: center; appearance: none; background: transparent; border: 0; color: var(--cloudig-choice-copy); cursor: pointer; display: inline-flex; font-size: 18px; gap: 7px; padding: 0; }
+  .time-editor-kind-choice button::before { background: var(--cloudig-choice-off); border-radius: 50%; content: ""; height: 18px; width: 18px; }
+  .time-editor-kind-choice button[aria-pressed="true"] { color: var(--cloudig-choice-copy-on); }
+  .time-editor-kind-choice button[aria-pressed="true"]::before { background: radial-gradient(circle, #ffffff 0 4px, var(--cloudig-choice-on) 4.5px 100%); }
+
+  .time-editor-list { display: grid; gap: 10px; margin-top: 12px; }
+  [data-time-editor-references] { gap: 0; margin-top: 7px; max-height: 180px; overflow: auto; }
+  .time-editor-list-row { align-items: center; border-top: 1px solid #ae8b7f; display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr) auto; min-height: 42px; padding: 5px 0; }
+  :root[data-theme="star-night"] .time-editor-list-row { border-top-color: #2d2d2d; }
+  .time-editor-list-row[data-cancelled="true"] { opacity: .5; text-decoration: line-through; }
+  .time-editor-list-row strong { font-size: 18px; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .time-editor-list-row button { appearance: none; background: transparent; border: 0; color: var(--time-editor-accent); cursor: pointer; font-size: 16px; font-weight: 700; padding: 2px; }
+  .time-editor-mapping-pill, .time-editor-node-pill, .time-editor-selected-name { align-items: center; background: var(--time-input-fill); border: 2px solid var(--time-input-border); border-radius: 12px; color: var(--time-input-copy); display: flex; font-size: 18px; font-weight: 400; justify-content: center; min-height: 42px; min-width: 0; padding: 5px 12px; position: relative; text-align: center; }
+  .time-editor-mapping-pill strong, .time-editor-node-pill strong { font-size: 18px; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .time-editor-mapping-pill:hover strong, .time-editor-mapping-pill:focus-within strong { padding-right: 55px; }
+  .time-editor-pill-actions { align-items: center; display: flex; gap: 6px; opacity: 0; position: absolute; right: 6px; }
+  .time-editor-pill-actions button, .time-editor-pill-remove { appearance: none; background: transparent; border: 0; color: #ffffff; cursor: pointer; height: 24px; padding: 0; width: 24px; }
+  .time-editor-pill-actions svg, .time-editor-pill-remove svg { fill: currentColor; height: 24px; width: 24px; }
+  .time-editor-pill-remove { opacity: 0; position: absolute; right: -8px; top: -8px; }
+  .time-editor-mapping-pill:hover .time-editor-pill-actions, .time-editor-mapping-pill:focus-within .time-editor-pill-actions, .time-editor-node-pill:hover .time-editor-pill-remove, .time-editor-node-pill:focus-within .time-editor-pill-remove { opacity: 1; }
+  [data-time-editor-counterparts] { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
+  [data-time-editor-counterparts] > .time-editor-empty { grid-column: 1 / -1; }
+  .time-editor-child-row { align-items: center; display: grid; gap: 12px; grid-template-columns: 80px minmax(0, 1fr) 80px; min-height: 50px; }
+  .time-editor-child-ordinal { font-size: 18px; text-align: center; }
+  .time-editor-order-arrows { display: flex; gap: 7px; }
+  .time-editor-order-arrows button { appearance: none; background: transparent; border: 0; color: var(--time-editor-accent); cursor: pointer; font-size: 20px; padding: 4px; }
+  .time-editor-order-arrows button:disabled { cursor: default; opacity: .35; }
+  .time-editor-empty { font-size: 15px; line-height: 24px; margin: 10px 0 0; text-align: left; }
+  .time-editor-inline-editor { margin-top: 20px; padding: 0; }
+  .time-editor-node-picker { display: grid; gap: 16px; }
+  .time-editor-preset-tags { display: flex; flex-wrap: wrap; column-gap: 24px; row-gap: 12px; }
+  .time-editor-preset-tags button { appearance: none; background: #d68c80; border: 2px solid #a52525; border-radius: 12px; color: #a52525; cursor: pointer; font-size: 16px; min-height: 30px; padding: 1px 10px; }
+  .time-editor-preset-tags button[aria-pressed="true"] { background: #a52525; color: #ffffff; }
+  :root[data-theme="star-night"] .time-editor-preset-tags button { background: #7e5eff; border-color: #7e5eff; color: #000000; }
+  :root[data-theme="star-night"] .time-editor-preset-tags button[aria-pressed="true"] { background: #5125a5; border-color: #5125a5; color: #ffa92e; }
+  .time-editor-node-selection { align-items: center; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) 167px; }
+  .time-editor-selected-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+  .time-editor-periodic-selection { align-items: center; display: flex; flex-wrap: wrap; font-size: 18px; gap: 12px; }
+  .time-editor-periodic-selection .cloudig-choice { font-size: 18px; }
+  .time-editor-periodic-selection > .time-editor-field { flex: 1; min-width: 0; }
+  .time-editor-periodic-inputs { display: grid; flex-basis: 100%; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .time-editor-node-results { display: grid; max-height: 200px; overflow: auto; }
+  .time-editor-node-results button { align-items: center; appearance: none; background: transparent; border: 0; border-bottom: 1px solid #ae8b7f; color: inherit; cursor: pointer; display: flex; font-size: 18px; gap: 12px; min-height: 42px; padding: 7px 10px; text-align: left; }
+  .time-editor-node-results small { font-size: 14px; margin-left: auto; }
+  :root[data-theme="star-night"] .time-editor-node-results button { border-bottom-color: #2d2d2d; }
+  .time-editor-node-results button[aria-pressed="true"], .time-editor-node-results button:hover { background: var(--time-input-fill); color: var(--time-editor-accent); }
+  .time-editor-node-picker .cloudig-button { --cloudig-button-fill: #a52525; color: #ffffff; font-size: 18px; height: 32px; width: 167px; }
+  :root[lang="en"] .time-editor-node-picker .cloudig-button { font-size: 15px; padding-inline: 8px; white-space: nowrap; }
+  :root[data-theme="star-night"] .time-editor-node-picker .cloudig-button { --cloudig-button-fill: #5125a5; color: #ffa92e; }
+  .time-editor-picker-cancel { appearance: none; border: 0; background: transparent; color: var(--time-editor-accent); cursor: pointer; font-size: 18px; justify-self: end; }
+  .time-editor-picker-error { color: var(--time-editor-accent); font-size: 16px; margin: 0; }
+
+  .time-editor-footer { align-content: center; display: grid; gap: 6px; justify-items: center; padding: 8px 22px 10px; }
+  .time-editor-footer > p { color: var(--time-editor-accent); font-size: 12px; font-weight: 700; margin: 0; }
+  .time-editor-footer > p:empty { display: none; }
+  .time-editor-footer > div { display: flex; gap: 36px; }
+  .time-editor-footer .cloudig-button { --cloudig-button-fill: var(--cloudig-seal-red); font-size: 18px; height: 32px; width: 167.44px; }
+  .time-editor-footer .time-editor-cancel { --cloudig-button-fill: #6d6d6d; width: 115px; }
+  :root[data-theme="star-night"] .time-editor-footer .cloudig-button-filled:not(.time-editor-cancel) { --cloudig-button-fill: var(--cloudig-purple); color: var(--cloudig-orange); }
+  :root[data-theme="star-night"] .time-editor-footer .time-editor-cancel { --cloudig-button-fill: #6d6d6d; color: #ffffff; }
+
+  .time-editor-impact { background: #f2e3d2; border: 1px solid #b78862; border-radius: 16px; color: var(--cloudig-ink); filter: drop-shadow(0 12px 13px rgb(0 0 0 / 50%)); left: 50%; padding: 24px 28px; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 520px; z-index: 100; }
+  :root[data-theme="star-night"] .time-editor-impact { background: #3b383c; border-color: #815947; color: var(--cloudig-light); filter: drop-shadow(0 14px 16px rgb(0 0 0 / 82%)); }
+  .time-editor-impact h2 { color: var(--time-editor-accent); font-size: 21px; margin: 0 0 12px; }
+  .time-editor-impact [data-time-editor-impact-body] { display: grid; font-size: 13px; gap: 8px; max-height: 390px; overflow: auto; }
+  .time-editor-impact label { align-items: center; display: flex; gap: 8px; }
+  .time-editor-impact footer { display: flex; gap: 16px; justify-content: flex-end; margin-top: 18px; }
+  .time-editor-impact .cloudig-button { font-size: 13px; width: 126px; }
+
+  @media (max-height: 820px) {
+    .time-editor-center { grid-template-rows: 200px minmax(0, 1fr) 66px; }
+  }
+  @media (max-width: 1600px) {
+    .time-editor-layer { padding-inline: 320px 216px; }
+  }
+  @media (max-width: 1320px) {
+    .time-editor-layer { padding-inline: 16px; }
+    .time-editor-dialog { max-width: calc(100vw - 32px); }
+  }
+}

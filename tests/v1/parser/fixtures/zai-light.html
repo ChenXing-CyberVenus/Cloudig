@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture Z.ai</title></head>
+<body>
+  <article class="turn user" data-message-id="zai-user">
+    <div class="message-content"><p>User prompt.</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="fixture-upload.png" width="1" height="1"></div>
+  </article>
+  <article class="turn assistant" data-message-id="zai-assistant">
+    <div class="message-content">
+      <details class="osis-thinking"><summary>思考</summary><p>Duplicate DOM thought.</p></details>
+      <p>Formula rendered in DOM.</p>
+      <img class="osis-media osis-inline-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="fixture-generated.png" width="1" height="1">
+      <div class="osis-mermaid-card" data-osis-archive-owned="mermaid">
+        <div class="osis-mermaid-panel"><svg class="osis-mermaid-svg" data-osis-static-diagram="true" xmlns="http://www.w3.org/2000/svg"><text>fixture</text></svg></div>
+        <div class="osis-mermaid-panel"><pre class="osis-code"><code>graph TD
+  A--&gt;B</code></pre></div>
+      </div>
+    </div>
+  </article>
+  <script>globalThis.__zai_must_not_run = true;</script>
+  <script id="ai-chat-archive-manifest" type="application/json">{
+    "schema": "ai-chat-archive/manifest-v1",
+    "platform": "zai",
+    "exporter": { "name": "Fixture Z.ai Exporter", "version": "2.7.9-light", "mode": "light" },
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source": { "url": "https://chat.z.ai/c/fixture", "title": "Fixture Z.ai", "conversation_id": "fixture-zai-conversation" }
+  }</script>
+  <script id="zai-export-data" type="application/json">{
+    "schema": "osis.zai.chat-export/light-messages-v2",
+    "version": "2.7.9-light",
+    "reasoning_effort": "high",
+    "thinking_enabled": true,
+    "message_order": ["zai-user", "zai-assistant"],
+    "messages": [
+      {
+        "id": "zai-user", "role": "user", "model": "glm-5.2", "timestamp": "2026-08-31T20:58:00.000Z",
+        "content_markdown": "User prompt.", "public_processes": [], "search_queries": [], "sources": [],
+        "attachments": [
+          { "id": "fixture-file", "kind": "file", "name": "notes.txt", "extension": "txt", "mime": "text/plain", "size": 5, "status": "metadata-only" },
+          { "id": "fixture-upload", "kind": "image", "name": "fixture-upload.png", "extension": "png", "mime": "image/png", "size": 68, "status": "embedded-webp" }
+        ],
+        "media": [{ "kind": "attachment-image", "name": "fixture-upload.png", "status": "embedded-webp", "message_id": "zai-user" }]
+      },
+      {
+        "id": "zai-assistant", "role": "assistant", "model": "glm-5.2", "timestamp": "2026-08-31T20:59:00.000Z",
+        "content_markdown": "Formula $$x^2$$.\n\n![fixture-generated.png](https://example.test/generated.png)\n\n```mermaid\ngraph TD\n  A-->B\n```\n\nAssistant answer.",
+        "public_processes": [{ "kind": "public_reasoning", "title": "思考", "content": "Visible public thought.", "duration_seconds": 2.5 }],
+        "search_queries": ["fixture query"],
+        "sources": [{ "url": "https://example.test/zai-source", "title": "Fixture source", "snippet": "Useful source.", "hostname": "example.test" }],
+        "attachments": [],
+        "media": [{ "kind": "inline-image", "name": "fixture-generated.png", "status": "embedded-webp", "message_id": "zai-assistant", "inline": true }]
+      }
+    ]
+  }</script>
+</body>
+</html>

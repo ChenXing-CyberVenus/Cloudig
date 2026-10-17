@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture ChatGLM</title></head>
+<body>
+  <article class="turn user" data-message-id="chatglm-user">
+    <div class="message-content rich-content user-plain">
+      <figure><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="fixture-upload.png" width="1" height="1"><figcaption>fixture-upload.png</figcaption></figure>
+      <section class="attachments">
+        <div class="osis-attachment"><strong>notes.txt</strong><span>txt · 5 B</span></div>
+        <div class="osis-attachment"><strong>fixture-upload.png</strong><span>png</span></div>
+      </section>
+      <p>User <strong>rich body</strong>.</p>
+    </div>
+  </article>
+  <article class="turn assistant" data-message-id="chatglm-assistant">
+    <div class="message-content rich-content">
+      <details class="osis-thinking"><summary>思考</summary><p>Duplicate DOM thought.</p></details>
+      <div class="osis-tool-state">Duplicate tool state.</div>
+      <div class="osis-search-state">Duplicate search state.</div>
+      <div class="osis-sources">Duplicate sources.</div>
+      <p>Formula <span class="osis-math osis-temml osis-temml-inline" data-tex="x^2" data-math-display="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>x</mi><mn>2</mn></msup></math></span>.</p>
+      <div class="osis-mermaid-card">
+        <div class="osis-mermaid-panel"><figure class="osis-diagram"><svg xmlns="http://www.w3.org/2000/svg"><text>fixture</text></svg></figure></div>
+        <div class="osis-mermaid-panel"><pre><code class="language-mermaid">graph TD
+  A--&gt;B</code></pre></div>
+      </div>
+      <p>Assistant <em>rich body</em>.</p>
+    </div>
+  </article>
+  <script>globalThis.__chatglm_must_not_run = true;</script>
+  <script id="ai-chat-archive-manifest" type="application/json">{
+    "schema": "ai-chat-archive/manifest-v1",
+    "platform": "chatglm",
+    "exporter": { "name": "Fixture ChatGLM Exporter", "version": "2.5.8-light", "mode": "light" },
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source": { "url": "https://chatglm.cn/main/gdetail/fixture", "title": "Fixture ChatGLM", "conversation_id": "fixture-chatglm-conversation" }
+  }</script>
+  <script id="chatglm-export-data" type="application/json">{
+    "schema": "osis.chatglm.chat-export/light-messages-v2",
+    "version": "2.5.8-light",
+    "message_order": ["chatglm-user", "chatglm-assistant"],
+    "messages": [
+      {
+        "id": "chatglm-user", "pair_id": "fixture-pair", "role": "user", "parent_id": null,
+        "model": "moe_52", "timestamp": "2026-08-31T20:58:00.000Z", "content_markdown": "User rich body.",
+        "public_processes": [], "tool_events": [], "search_queries": [], "sources": [],
+        "attachments": [
+          { "id": "fixture-file", "kind": "file", "name": "notes.txt", "extension": "txt", "mime": "text/plain", "size": 5, "status": "metadata-only", "order": 0 },
+          { "id": "fixture-image", "kind": "image", "name": "fixture-upload.png", "extension": "png", "mime": "image/png", "size": 68, "status": "embedded-webp", "order": 1, "width": 1, "height": 1 }
+        ],
+        "media": [{ "kind": "attachment-image", "name": "fixture-upload.png", "status": "embedded-webp", "message_id": "chatglm-user" }]
+      },
+      {
+        "id": "chatglm-assistant", "pair_id": "fixture-pair", "role": "assistant", "parent_id": "chatglm-user",
+        "model": "moe_52", "timestamp": "2026-08-31T20:59:00.000Z", "content_markdown": "Formula $x^2$.\n\n```mermaid\ngraph TD\n  A-->B\n```\n\nAssistant rich body.",
+        "public_processes": [{ "kind": "displayed_reasoning", "title": "思考", "content": "Visible public thought with $y^2$.", "status": "finished", "model": "moe_52" }],
+        "tool_events": [{ "name": "search", "label": "搜索网页", "status": "finish" }],
+        "search_queries": ["fixture query"], "search_duration_seconds": 1.5,
+        "sources": [{ "id": "fixture-source", "url": "https://example.test/chatglm-source", "title": "Fixture source", "snippet": "Useful source.", "hostname": "example.test" }],
+        "attachments": [],
+        "media": [{ "kind": "diagram", "name": "fixture-diagram", "status": "embedded-webp", "message_id": "chatglm-assistant" }]
+      }
+    ]
+  }</script>
+</body>
+</html>

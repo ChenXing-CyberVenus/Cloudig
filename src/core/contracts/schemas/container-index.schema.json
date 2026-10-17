@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/container-index/1.0.0",
+  "title": "Cloudig rebuildable container index state 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "format",
+    "source",
+    "adapter",
+    "built_at",
+    "records"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/container-index/1.0.0"
+    },
+    "format": {
+      "const": "anthropic/claude-conversations-export"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/managedRelativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        }
+      }
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "const": "anthropic-claude-export-json"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        }
+      }
+    },
+    "built_at": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+    },
+    "records": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/output"
+      }
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/failure"
+      }
+    }
+  },
+  "$defs": {
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selector",
+        "code",
+        "attempts",
+        "adapter_version",
+        "failed_at"
+      ],
+      "properties": {
+        "selector": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        },
+        "code": {
+          "enum": ["claude-record-invalid", "claude-record-failed"]
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "adapter_version": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "failed_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selector",
+        "archive",
+        "generation",
+        "path",
+        "conversation_schema",
+        "parser",
+        "adapter"
+      ],
+      "properties": {
+        "selector": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        },
+        "archive": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/archiveId"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "path": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/managedRelativePath"
+        },
+        "conversation_schema": {
+          "const": "cloudig/conversation/1.0.0"
+        },
+        "parser": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "adapter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "version"
+          ],
+          "properties": {
+            "id": {
+              "const": "anthropic-claude-export-json"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

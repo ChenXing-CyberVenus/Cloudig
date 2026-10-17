@@ -1,0 +1,83 @@
+@layer pages {
+  [data-system-log-layer] {
+    align-items: center;
+    background: rgb(36 24 27 / 48%);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 24px;
+    pointer-events: auto;
+    position: absolute;
+    z-index: 84;
+  }
+  :root[data-theme="star-night"] [data-system-log-layer] { background: rgb(0 0 0 / 72%); }
+  [data-system-log-layer] .system-log-dialog {
+    --system-log-accent: var(--cloudig-seal-red);
+    --system-log-copy: #34302f;
+    background: linear-gradient(155deg, #f2e4d3 0%, #ead6c0 52%, #caa596 100%);
+    border: 0;
+    border-radius: 18px;
+    color: var(--system-log-copy);
+    display: grid;
+    filter: drop-shadow(2px 12px 14px rgb(0 0 0 / 42%));
+    grid-template-rows: 78px minmax(0, 1fr) 32px;
+    height: min(820px, calc(100vh - 48px));
+    isolation: isolate;
+    margin: 0;
+    max-width: calc(100vw - 48px);
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    width: min(1080px, calc(100vw - 48px));
+  }
+  :root[data-theme="star-night"] [data-system-log-layer] .system-log-dialog {
+    --system-log-accent: var(--cloudig-base-blue);
+    --system-log-copy: var(--cloudig-light);
+    background: linear-gradient(155deg, #555159 0%, #3c3940 52%, #171618 100%);
+    filter: drop-shadow(2px 13px 15px rgb(0 0 0 / 82%));
+  }
+  [data-system-log-layer] .system-log-header { align-items: center; display: flex; gap: 24px; justify-content: space-between; padding: 18px 26px 12px; }
+  [data-system-log-layer] .system-log-header h1 { color: var(--system-log-accent); font-size: 25px; font-weight: 700; line-height: 1; margin: 0; }
+  [data-system-log-layer] .system-log-header-actions { display: flex; gap: 12px; }
+  [data-system-log-layer] .system-log-confirmation { align-items: center; background: #ead6c0; border: 2px solid var(--system-log-accent); border-radius: 10px; display: flex; filter: drop-shadow(0 6px 10px rgb(0 0 0 / 35%)); gap: 14px; left: 26px; padding: 18px; position: absolute; right: 26px; top: 76px; z-index: 3; }
+  :root[data-theme="star-night"] [data-system-log-layer] .system-log-confirmation { background: #3c3940; }
+  [data-system-log-layer] .system-log-confirmation p { flex: 1; font-size: 15px; line-height: 1.5; margin: 0; }
+  [data-system-log-layer] .system-log-confirmation .cloudig-button { color: var(--system-log-accent); flex: none; height: 34px; padding: 0 14px; }
+  [data-system-log-layer] .system-log-confirmation .cloudig-button-filled { --cloudig-button-fill: var(--system-log-accent); color: #ffffff; }
+  [data-system-log-layer] .system-log-header .cloudig-button { color: var(--system-log-accent); flex: none; font-size: 16px; height: 34px; width: 92px; }
+  [data-system-log-layer] .system-log-list { align-content: start; display: grid; gap: 14px; min-height: 0; overflow: auto; padding: 8px 26px 24px; }
+  [data-system-log-layer] .system-log-empty { align-self: center; font-size: 17px; margin: 0; opacity: .76; text-align: center; }
+  [data-system-log-layer] .system-log-file-card {
+    align-self: start;
+    background: rgb(255 255 255 / 28%);
+    border-left: 4px solid var(--system-log-accent);
+    border-radius: 12px;
+    filter: drop-shadow(1px 4px 5px rgb(0 0 0 / 18%));
+    padding: 16px 18px;
+  }
+  :root[data-theme="star-night"] [data-system-log-layer] .system-log-file-card { background: rgb(22 21 24 / 54%); }
+  [data-system-log-layer] .system-log-file-card > header { align-items: center; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) max-content; }
+  [data-system-log-layer] .system-log-file-card h2 { font-size: 16px; line-height: 1.35; margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  [data-system-log-layer] .system-log-file-card header > div { display: flex; gap: 10px; }
+  [data-system-log-layer] .system-log-file-card .cloudig-button { color: var(--system-log-accent); flex: none; font-size: 13px; height: 30px; min-width: 98px; padding: 0 12px; width: auto; }
+  [data-system-log-layer] .system-log-file-card .cloudig-button-filled { --cloudig-button-fill: var(--system-log-accent); color: #ffffff; }
+  :root[data-theme="star-night"] [data-system-log-layer] .system-log-file-card .cloudig-button-filled { color: #ffffff; }
+  [data-system-log-layer] .system-log-file-card > time { display: block; font-size: 11px; margin-top: 4px; opacity: .62; }
+  [data-system-log-layer] .system-log-errors { display: grid; gap: 10px; margin-top: 12px; }
+  [data-system-log-layer] .system-log-error-row { border-top: 1px solid color-mix(in srgb, var(--system-log-accent) 42%, transparent); padding-top: 10px; }
+  [data-system-log-layer] .system-log-error-heading { align-items: center; display: flex; gap: 12px; justify-content: space-between; }
+  [data-system-log-layer] .system-log-error-heading > span { color: var(--system-log-accent); font-size: 12px; font-weight: 700; }
+  [data-system-log-layer] .system-log-copy-button { appearance: none; background: transparent; border: 0; color: var(--system-log-accent); cursor: pointer; flex: none; font-size: 12px; font-weight: 700; padding: 2px 0; }
+  [data-system-log-layer] .system-log-error-row p { font-size: 14px; line-height: 1.5; margin: 6px 0 0; overflow-wrap: anywhere; }
+  [data-system-log-layer] .system-log-error-row small { display: block; font-size: 11px; margin-top: 4px; opacity: .68; overflow-wrap: anywhere; }
+  [data-system-log-layer] .system-log-status { align-items: center; color: var(--system-log-accent); display: flex; font-size: 12px; font-weight: 700; margin: 0; padding: 0 26px 12px; }
+
+  @media (max-width: 760px) {
+    [data-system-log-layer] { padding: 12px; }
+    [data-system-log-layer] .system-log-dialog { grid-template-rows: 70px minmax(0, 1fr) 30px; height: calc(100vh - 24px); max-width: calc(100vw - 24px); width: calc(100vw - 24px); }
+    [data-system-log-layer] .system-log-header { padding-inline: 18px; }
+    [data-system-log-layer] .system-log-list { padding-inline: 18px; }
+    [data-system-log-layer] .system-log-file-card > header { align-items: start; grid-template-columns: 1fr; }
+    [data-system-log-layer] .system-log-file-card header > div { flex-wrap: wrap; }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "cloudig/library/1.0.0",
+  "schemas": {
+    "library": "1.0.0",
+    "identity": "1.0.0",
+    "content_time": "1.0.0",
+    "conversation": "1.0.0",
+    "mark": "1.0.0"
+  },
+  "edited_at": "2026-09-11T09:00:00Z",
+  "settings": {
+    "language": "zh-CN",
+    "theme": "Dawn",
+    "theme_guide_completed": false,
+    "default_output_directory": "Conversations",
+    "time_type": {
+      "archiver": "file_modified_at",
+      "reader": "file_modified_at",
+      "claude_json": "conversation_updated_at"
+    },
+    "sort": {
+      "parser": "time_desc",
+      "archiver": "time_desc",
+      "reader": "time_desc",
+      "claude_json": "time_desc"
+    },
+    "one_click_parse": {
+      "parser": {
+        "include_unparsed": true,
+        "include_selected": true,
+        "include_outdated": false,
+        "keep_previous": false
+      },
+      "claude_json": {
+        "include_unparsed": true,
+        "include_selected": true,
+        "include_outdated": false,
+        "keep_previous": false
+      }
+    }
+  },
+  "cloudig_standard": "1.0"
+}

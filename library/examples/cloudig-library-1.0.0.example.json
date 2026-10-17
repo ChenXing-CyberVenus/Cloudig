@@ -1,0 +1,91 @@
+{
+  "format": "cloudig/library",
+  "version": "1.0.0",
+  "conversation_schema": "ai-chat-archive/conversation/1.0.0",
+  "content_time_schema": "cloudig/content-time/1.0.0",
+  "edited_at": "2026-08-25T12:05:00.000Z",
+  "user": {
+    "display_name": "采云用户"
+  },
+  "assistant": {
+    "display_name": "智能伙伴",
+    "apply_to_all": false
+  },
+  "preferences": {
+    "language": "zh-CN",
+    "theme": "dawn",
+    "name_rule_ack_version": 1
+  },
+  "workflow_preferences": {
+    "time_fields": {
+      "archiver": "content_time",
+      "claude": "source_conversation_created_at",
+      "reader": "content_time"
+    },
+    "sorts": {
+      "parser": "time_desc",
+      "archiver": "time_desc",
+      "claude": "time_desc",
+      "reader": "time_asc"
+    },
+    "parse_batch": {
+      "archive_directory": "",
+      "parse_unparsed": true,
+      "parse_selected": true,
+      "update_outdated": false,
+      "preserve_previous": false
+    },
+    "claude_batch": {
+      "parse_unparsed": true,
+      "parse_selected": true,
+      "update_outdated": false,
+      "preserve_previous": false
+    }
+  },
+  "conversation_overrides": {
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+      "conversation_name": "用户设定的会话名",
+      "content_time": {
+        "edit_id": "7c745ea4-1606-40f8-a358-f3f3417e0889",
+        "edited_at": "2026-08-25T12:05:00.000Z",
+        "state": "set",
+        "range": {
+          "start": {
+            "kind": "terran_year_month",
+            "era": "AD",
+            "year": 2026,
+            "month": 8
+          },
+          "is_collapsed": true,
+          "is_reversed": false
+        }
+      }
+    }
+  },
+  "content_time_system": {
+    "format": "cloudig/content-time-system",
+    "version": "1.0.0",
+    "revision": 1,
+    "terran": {
+      "preset_version": "1.0.0",
+      "default_anchor": {
+        "date": "2026-08-25",
+        "captured_at": "2026-08-25T12:00:00.000Z",
+        "utc_offset": "+08:00"
+      },
+      "preset_anchor_overrides": {},
+      "preset_overrides": {}
+    },
+    "sovereign": {
+      "lineages": {},
+      "nodes": {},
+      "containment_links": {},
+      "counterpart_links": {},
+      "terran_mappings": {},
+      "conversation_bindings": {},
+      "display_order": {
+        "mode": "last_edited_desc"
+      }
+    }
+  }
+}

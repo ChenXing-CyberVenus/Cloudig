@@ -1,0 +1,51 @@
+{
+  "format": "cloudig/time-limits",
+  "version": "1.0.0",
+  "terran": {
+    "common_calendar_max_year": 9999,
+    "ad_year_max_digits": 8,
+    "bc_year_max": 9999,
+    "decade_ad_max_digits": 7,
+    "century_ad_max_digits": 6,
+    "utc_offset_max_minutes": 840,
+    "relative_decimal_places": 1,
+    "relative_coefficient_max": "9999.0",
+    "big_bang_billion_years": "138.0",
+    "relative_units": [
+      { "id": "wan", "zh": "万", "en": "wan", "power10": 4 },
+      { "id": "yi", "zh": "亿", "en": "yi", "power10": 8 },
+      { "id": "zhao", "zh": "兆", "en": "zhao", "power10": 12 },
+      { "id": "jing", "zh": "京", "en": "jing", "power10": 16 },
+      { "id": "gai", "zh": "垓", "en": "gai", "power10": 20 },
+      { "id": "zi", "zh": "秭", "en": "zi", "power10": 24 },
+      { "id": "rang", "zh": "穰", "en": "rang", "power10": 28 },
+      { "id": "gou", "zh": "沟", "en": "gou", "power10": 32 },
+      { "id": "jian", "zh": "涧", "en": "jian", "power10": 36 },
+      { "id": "zheng", "zh": "正", "en": "zheng", "power10": 40 }
+    ]
+  },
+  "sovereign": {
+    "timeline_name_codepoints": 200,
+    "time_name_codepoints": 200,
+    "author_name_codepoints": 100,
+    "standard_name_codepoints": 200,
+    "prefix_codepoints": 100,
+    "unit_name_codepoints": 100,
+    "display_version_major_max": 999,
+    "display_version_minor_max": 999,
+    "period_count_max": 99999999,
+    "empty_period_expand_max": 20,
+    "timeline_variants_max": 1000,
+    "physical_nodes_max": 10000,
+    "physical_links_max": 50000,
+    "traversal_edge_visits_max": 100000
+  },
+  "user_state": {
+    "library_max_bytes": 16777216,
+    "history_max_versions": 12,
+    "history_max_total_bytes": 134217728
+  },
+  "validation": {
+    "max_errors": 100
+  }
+}

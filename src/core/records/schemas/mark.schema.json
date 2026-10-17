@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/records/mark/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "mark_id",
+    "target",
+    "edited_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/mark/1.0.0"
+    },
+    "mark_id": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    },
+    "target": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    },
+    "edited_at": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+    },
+    "conversation_title": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/titleText"
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/modelFront"
+      }
+    },
+    "names": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "user": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+        },
+        "assistant": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+        }
+      },
+      "minProperties": 1
+    },
+    "content_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "range"
+      ],
+      "properties": {
+        "range": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/range"
+        }
+      }
+    }
+  }
+}

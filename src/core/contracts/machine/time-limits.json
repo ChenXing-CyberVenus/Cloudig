@@ -1,0 +1,66 @@
+{
+  "schema": "cloudig/time-limits/1.0.0",
+  "calendar": {
+    "ad_year_digits": 8,
+    "bc_year_max": 9999,
+    "offset_minutes_max": 840
+  },
+  "relative": {
+    "fraction_digits": 1,
+    "coefficient_max": "9999.0",
+    "units": [
+      {
+        "slug": "wan",
+        "exponent": 4
+      },
+      {
+        "slug": "yi",
+        "exponent": 8
+      },
+      {
+        "slug": "zhao",
+        "exponent": 12
+      },
+      {
+        "slug": "jing",
+        "exponent": 16
+      },
+      {
+        "slug": "gai",
+        "exponent": 20
+      },
+      {
+        "slug": "zi",
+        "exponent": 24
+      },
+      {
+        "slug": "rang",
+        "exponent": 28
+      },
+      {
+        "slug": "gou",
+        "exponent": 32
+      },
+      {
+        "slug": "jian",
+        "exponent": 36
+      },
+      {
+        "slug": "zheng",
+        "exponent": 40
+      }
+    ],
+    "before_units": [
+      "wan",
+      "yi"
+    ]
+  },
+  "periodic": {
+    "count_max": 99999999,
+    "empty_expand_max": 20
+  },
+  "display_version": {
+    "major_max": 999,
+    "minor_max": 999
+  }
+}

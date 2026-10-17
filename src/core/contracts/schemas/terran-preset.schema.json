@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/terran-preset/1.0.0",
+  "title": "Cloudig Terran preset 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "author",
+    "standard_name",
+    "version",
+    "nodes"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/terran-preset/1.0.0"
+    },
+    "author": {
+      "const": "Cloudig/采云"
+    },
+    "standard_name": {
+      "const": "采云此地时间轴"
+    },
+    "version": {
+      "const": "1.0"
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "items": {
+        "$ref": "#/$defs/presetNode"
+      }
+    }
+  },
+  "$defs": {
+    "templateRelative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "direction",
+        "unit",
+        "value"
+      ],
+      "properties": {
+        "kind": {
+          "const": "relative"
+        },
+        "direction": {
+          "enum": [
+            "before",
+            "after"
+          ]
+        },
+        "unit": {
+          "enum": [
+            "wan",
+            "yi",
+            "zhao",
+            "jing",
+            "gai",
+            "zi",
+            "rang",
+            "gou",
+            "jian",
+            "zheng"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^(?:0\\.[1-9]|[1-9][0-9]{0,2}\\.[0-9]|[1-9][0-9]{3}\\.[0-9])$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "direction": {
+                "const": "before"
+              }
+            },
+            "required": [
+              "direction"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unit": {
+                "enum": [
+                  "wan",
+                  "yi"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "templateNow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "const": "now"
+        }
+      }
+    },
+    "templateEndpoint": {
+      "oneOf": [
+        {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/calendarEndpoint"
+        },
+        {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/decadeEndpoint"
+        },
+        {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/centuryEndpoint"
+        },
+        {
+          "$ref": "#/$defs/templateRelative"
+        },
+        {
+          "$ref": "#/$defs/templateNow"
+        }
+      ]
+    },
+    "templateRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/templateEndpoint"
+        },
+        "end": {
+          "$ref": "#/$defs/templateEndpoint"
+        }
+      }
+    },
+    "timelineNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/presetId"
+        },
+        "kind": {
+          "const": "timeline"
+        },
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "specialNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "endpoint"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/presetId"
+        },
+        "kind": {
+          "const": "special"
+        },
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "endpoint": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/specialEndpoint"
+        }
+      }
+    },
+    "rangeNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "range"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/presetId"
+        },
+        "kind": {
+          "const": "range"
+        },
+        "name": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "range": {
+          "$ref": "#/$defs/templateRange"
+        }
+      }
+    },
+    "presetNode": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/timelineNode"
+        },
+        {
+          "$ref": "#/$defs/specialNode"
+        },
+        {
+          "$ref": "#/$defs/rangeNode"
+        }
+      ]
+    }
+  }
+}

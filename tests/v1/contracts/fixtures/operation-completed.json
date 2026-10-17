@@ -1,0 +1,19 @@
+{
+  "schema": "cloudig/operation/1.0.0",
+  "operation": "o_ABCDEFGHIJKLMNOP",
+  "phase": "verify",
+  "state": "completed",
+  "file": {
+    "index": 3,
+    "completed": 3,
+    "total": 3
+  },
+  "bytes": {
+    "completed": 1000,
+    "total": 1000
+  },
+  "items": {
+    "completed": 12,
+    "total": 12
+  }
+}

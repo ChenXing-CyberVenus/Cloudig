@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cloudig:schema:library:0.1.0",
+  "title": "Cloudig library overlay 0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "user"],
+  "properties": {
+    "format": { "const": "cloudig/library" },
+    "version": { "const": "0.1.0" },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name"],
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" }
+      }
+    },
+    "assistant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name"],
+      "properties": {
+        "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatar": { "$ref": "#/$defs/assetPath" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "icon": { "$ref": "#/$defs/assetPath" },
+        "cover": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": { "$ref": "#/$defs/assetPath" },
+            "fit": { "enum": ["contain", "stretch"] }
+          },
+          "minProperties": 1
+        }
+      },
+      "minProperties": 1
+    },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "language": { "enum": ["zh-CN", "en"] },
+        "theme": { "enum": ["platform", "dawn", "star_night"] }
+      },
+      "minProperties": 1
+    },
+    "platform_overrides": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["icon"],
+        "properties": { "icon": { "$ref": "#/$defs/assetPath" } }
+      }
+    },
+    "conversation_overrides": {
+      "type": "object",
+      "description": "Sparse edits keyed by conversation_id for one-to-many inputs, otherwise source_sha256.",
+      "propertyNames": { "pattern": "^[0-9a-f]{64}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "date": {
+            "type": "string",
+            "anyOf": [
+              { "format": "date" },
+              { "format": "date-time" }
+            ]
+          },
+          "provider": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "platform": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "models": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "minProperties": 1
+      }
+    }
+  },
+  "$defs": {
+    "assetPath": {
+      "type": "string",
+      "pattern": "^Data/Assets/(Covers|Avatars|PlatformIcons)/[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    }
+  }
+}

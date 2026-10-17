@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture Doubao</title></head>
+<body>
+  <article class="turn user" data-message-id="doubao-user">
+    <div class="message-shell"><div class="message-content"><div class="rich-content">
+      <div class="osis-expanded-attachments" data-osis-api-attachments="true">
+        <div class="osis-attachment-item"><div class="osis-attachment-label">notes.txt</div></div>
+        <div class="osis-attachment-item"><div class="osis-attachment-label">fixture.png</div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="Fixture upload" width="1" height="1"></div>
+      </div>
+      <p>User rich <strong>message</strong>.</p>
+    </div></div></div>
+  </article>
+  <article class="turn assistant" data-message-id="doubao-assistant">
+    <div class="message-shell"><div class="assistant-model">Doubao</div><div class="message-content"><div class="rich-content">
+      <details class="osis-thinking" open><summary>思考</summary><div>
+        <p>Reasoning from the visible page.</p>
+        <section class="osis-mermaid-card">
+          <div><svg xmlns="http://www.w3.org/2000/svg"><text>fixture</text></svg></div>
+          <div><pre><code>graph TD
+  A--&gt;B</code></pre></div>
+        </section>
+      </div></details>
+      <h2>Assistant heading</h2><p>Assistant <em>rich body</em>.</p>
+    </div></div></div>
+  </article>
+  <script>globalThis.__doubao_must_not_run = true;</script>
+  <script id="ai-chat-archive-manifest" type="application/json">{
+    "schema": "ai-chat-archive/manifest-v1",
+    "platform": "doubao",
+    "exporter": { "name": "Fixture Doubao Exporter", "version": "3.5.6-light", "mode": "light" },
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source": {
+      "url": "https://www.doubao.com/chat/fixture",
+      "title": "Fixture Doubao",
+      "conversation_id": "fixture-doubao-conversation"
+    }
+  }</script>
+  <script id="doubao-export-data" type="application/json">{
+    "schema": "osis.doubao.chat-export/light-dom-v2",
+    "version": "3.5.6-light",
+    "message_order": ["doubao-user", "doubao-assistant"],
+    "messages": [
+      {
+        "id": "doubao-user",
+        "role": "user",
+        "public_thought_label": "",
+        "public_thought_text": "",
+        "public_thought_body_available": false,
+        "attachments": [
+          { "identifier": "fixture-file", "kind": "file", "name": "notes.txt", "extension": "txt", "size": 5, "status": "metadata-only", "resource_locator": "" },
+          { "identifier": "fixture-image", "kind": "image", "name": "fixture.png", "extension": "png", "size": null, "status": "embedded-webp", "resource_locator": "" }
+        ]
+      },
+      {
+        "id": "doubao-assistant",
+        "role": "assistant",
+        "public_thought_label": "思考",
+        "public_thought_text": "Reasoning from the visible page.\n\n```mermaid\ngraph TD\n  A-->B\n```",
+        "public_thought_body_available": true,
+        "attachments": []
+      }
+    ]
+  }</script>
+</body>
+</html>

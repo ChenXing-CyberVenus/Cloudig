@@ -1,0 +1,258 @@
+{
+  "schema": "cloudig/content-time-presets/1.0.0",
+  "nodes": [
+    {
+      "node_id": "01a09091-c29c-7177-b237-40941de50264",
+      "kind": "timeline",
+      "name": "采云此地时间轴"
+    },
+    {
+      "node_id": "01a09091-c29c-7402-867c-ca7b2af6d596",
+      "kind": "single",
+      "name": "无论何时",
+      "range": {
+        "start": {
+          "kind": "whenever"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-7bd6-9bcb-74e61ef4c158",
+      "kind": "single",
+      "name": "不知何时",
+      "range": {
+        "start": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-7a29-afa9-efee9d075b78",
+      "kind": "single",
+      "name": "无限久前",
+      "range": {
+        "start": {
+          "kind": "infinite_past"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-7c44-aab0-b8da7ee0951a",
+      "kind": "single",
+      "name": "大爆炸前",
+      "range": {
+        "start": {
+          "kind": "relative",
+          "direction": "before",
+          "unit": "yi",
+          "value": "9999.0"
+        },
+        "end": {
+          "kind": "relative",
+          "direction": "before",
+          "unit": "yi",
+          "value": "138.0"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-748c-a189-d62f5b4091c8",
+      "kind": "single",
+      "name": "宇宙诞生",
+      "range": {
+        "start": {
+          "kind": "relative",
+          "direction": "before",
+          "unit": "yi",
+          "value": "138.0"
+        },
+        "end": {
+          "kind": "relative",
+          "direction": "before",
+          "unit": "yi",
+          "value": "35.0"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-799e-9241-baae49115b77",
+      "kind": "single",
+      "name": "生命起源",
+      "range": {
+        "start": {
+          "kind": "relative",
+          "direction": "before",
+          "unit": "yi",
+          "value": "35.0"
+        },
+        "end": {
+          "kind": "relative",
+          "direction": "before",
+          "unit": "wan",
+          "value": "31.5"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-740a-bd86-d35c5ec70d35",
+      "kind": "single",
+      "name": "史前文明",
+      "range": {
+        "start": {
+          "kind": "relative",
+          "direction": "before",
+          "unit": "wan",
+          "value": "31.5"
+        },
+        "end": {
+          "kind": "century",
+          "era": "BC",
+          "index": 8
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-7f15-923a-05718f812fa4",
+      "kind": "single",
+      "name": "轴心时代",
+      "range": {
+        "start": {
+          "kind": "century",
+          "era": "BC",
+          "index": 8
+        },
+        "end": {
+          "kind": "century",
+          "era": "BC",
+          "index": 3
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-702e-b05f-3347a0f9316b",
+      "kind": "single",
+      "name": "帝国兴亡",
+      "range": {
+        "start": {
+          "kind": "century",
+          "era": "BC",
+          "index": 3
+        },
+        "end": {
+          "kind": "century",
+          "era": "AD",
+          "index": 20
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29c-7589-9f58-0d8628dd6751",
+      "kind": "single",
+      "name": "工业革命",
+      "range": {
+        "start": {
+          "kind": "century",
+          "era": "AD",
+          "index": 18
+        },
+        "end": {
+          "kind": "century",
+          "era": "AD",
+          "index": 20
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29d-7fe2-a727-a70e6f3a491d",
+      "kind": "single",
+      "name": "硝烟铁幕",
+      "range": {
+        "start": {
+          "kind": "decade",
+          "era": "AD",
+          "index": 191
+        },
+        "end": {
+          "kind": "decade",
+          "era": "AD",
+          "index": 199
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29d-7386-b45f-29d7ba9a6be0",
+      "kind": "single",
+      "name": "现代社会",
+      "range": {
+        "start": {
+          "kind": "decade",
+          "era": "AD",
+          "index": 194
+        },
+        "end": {
+          "kind": "now"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29d-78c0-8c02-936daa30027b",
+      "kind": "single",
+      "name": "智能初晓",
+      "range": {
+        "start": {
+          "kind": "calendar",
+          "era": "AD",
+          "year": 2017,
+          "month": 6,
+          "day": 12
+        },
+        "end": {
+          "kind": "now"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29d-71ef-8692-08825ffca595",
+      "kind": "single",
+      "name": "展望未来",
+      "range": {
+        "start": {
+          "kind": "now"
+        },
+        "end": {
+          "kind": "calendar",
+          "era": "AD",
+          "year": 9999
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29d-78c9-923e-5095d709333b",
+      "kind": "single",
+      "name": "万年之后",
+      "range": {
+        "start": {
+          "kind": "calendar",
+          "era": "AD",
+          "year": 9999
+        },
+        "end": {
+          "kind": "relative",
+          "direction": "after",
+          "unit": "zheng",
+          "value": "1.0"
+        }
+      }
+    },
+    {
+      "node_id": "01a09091-c29d-7b3b-9eb5-8ef49610e5ab",
+      "kind": "single",
+      "name": "无限久后",
+      "range": {
+        "start": {
+          "kind": "infinite_future"
+        }
+      }
+    }
+  ]
+}

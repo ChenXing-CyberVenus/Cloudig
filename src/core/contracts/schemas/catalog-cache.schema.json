@@ -1,0 +1,388 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/schema/catalog-cache/1.0.0",
+  "title": "Cloudig rebuildable Catalog snapshot 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "built_at",
+    "adapter_bundle_sha256",
+    "sources",
+    "archives"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/catalog-cache/1.0.0"
+    },
+    "built_at": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+    },
+    "adapter_bundle_sha256": {
+      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "archives": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/archive"
+      }
+    }
+  },
+  "$defs": {
+    "mtimeNs": {
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)$"
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "version": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/strictSemver"
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "platform",
+        "adapter"
+      ],
+      "properties": {
+        "format": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "platform": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "payload_schema": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "profile": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "adapter": {
+          "$ref": "#/$defs/adapter"
+        }
+      }
+    },
+    "exporter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "version": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "archive",
+        "generation",
+        "path",
+        "conversation_schema",
+        "parser",
+        "adapter"
+      ],
+      "properties": {
+        "archive": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/archiveId"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "path": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/managedRelativePath"
+        },
+        "conversation_schema": {
+          "const": "cloudig/conversation/1.0.0"
+        },
+        "parser": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/strictSemver"
+        },
+        "adapter": {
+          "$ref": "#/$defs/adapter"
+        },
+        "exporter": {
+          "$ref": "#/$defs/exporter"
+        },
+        "profile": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "payload_schema": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "selector": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        }
+      }
+    },
+    "catalogError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "phase",
+        "retry"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "phase": {
+          "enum": [
+            "discover",
+            "probe",
+            "fingerprint",
+            "extract",
+            "normalize",
+            "validate",
+            "plan",
+            "stage",
+            "commit",
+            "verify"
+          ]
+        },
+        "retry": {
+          "enum": [
+            "immediate",
+            "after_source_change",
+            "after_adapter_change",
+            "after_conflict_resolution",
+            "after_recovery",
+            "never_for_this_version"
+          ]
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "mtime_ns",
+        "status"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/managedRelativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mtime_ns": {
+          "$ref": "#/$defs/mtimeNs"
+        },
+        "sha256": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "complete",
+            "update_action",
+            "failed",
+            "missing",
+            "unsupported"
+          ]
+        },
+        "route": {
+          "$ref": "#/$defs/route"
+        },
+        "action": {
+          "enum": [
+            "reparse_source",
+            "redownload_source",
+            "upgrade_cloudig"
+          ]
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/output"
+          }
+        },
+        "error": {
+          "$ref": "#/$defs/catalogError"
+        },
+        "failure": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_sha256", "watermark", "attempts"],
+          "properties": {
+            "source_sha256": { "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256" },
+            "watermark": { "type": "string", "minLength": 1, "maxLength": 2048 },
+            "attempts": { "type": "integer", "minimum": 0, "maximum": 2 }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "update_action"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "action"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "action"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "archiveTimes": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "json_edited_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "json_created_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "source_captured_at": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "message_start": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "message_end": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
+        },
+        "content": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/range"
+        }
+      }
+    },
+    "archive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "mtime_ns",
+        "sha256",
+        "conversation_schema",
+        "archive",
+        "generation",
+        "source_file",
+        "platform",
+        "message_count",
+        "resource_count",
+        "archived"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/managedRelativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mtime_ns": {
+          "$ref": "#/$defs/mtimeNs"
+        },
+        "sha256": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        },
+        "conversation_schema": {
+          "const": "cloudig/conversation/1.0.0"
+        },
+        "archive": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/archiveId"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_file": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/safeBasename"
+        },
+        "parser": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/strictSemver"
+        },
+        "adapter": {
+          "$ref": "#/$defs/adapter"
+        },
+        "source_title": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+        },
+        "platform": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/slug"
+        },
+        "models": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/nonEmptyString"
+          }
+        },
+        "message_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resource_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selector": {
+          "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+        },
+        "times": {
+          "$ref": "#/$defs/archiveTimes"
+        },
+        "archived": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

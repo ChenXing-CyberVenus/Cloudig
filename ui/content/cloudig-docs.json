@@ -1,0 +1,302 @@
+{
+  "schema": "cloudig/docs/0.1.0",
+  "default_topic": "bookmark",
+  "meta": {
+    "title": { "zh-CN": "采云功能文档", "en": "Cloudig Guide" },
+    "subtitle": { "zh-CN": "收集、整理与离线阅读 AI 对话", "en": "Capture, organize, and read AI conversations offline" },
+    "local_badge": { "zh-CN": "完全离线阅读", "en": "Fully offline reading" },
+    "contents": { "zh-CN": "文档目录", "en": "Contents" },
+    "close": { "zh-CN": "关闭功能文档", "en": "Close guide" },
+    "privacy_title": { "zh-CN": "隐私", "en": "Privacy" },
+    "privacy": {
+      "zh-CN": "采云默认本地运行，不要求账号，不上传会话，不收集遥测。只有未来独立、可关闭的检查更新功能可以主动联网；阅读档案本身永不依赖网络。",
+      "en": "Cloudig runs locally by default, requires no account, uploads no conversations, and collects no telemetry. Only the future independent and optional update check may connect to the network; reading archives never depends on it."
+    },
+    "safety_title": { "zh-CN": "输入安全", "en": "Input safety" },
+    "safety": {
+      "zh-CN": "只导入自己从受支持网站用采云书签保存的 HTML，或自己账号导出的 Claude conversations.json。不要解析陌生人提供的档案。Parser 不执行来源脚本、事件、iframe，也不为外部 URL 主动发起请求。",
+      "en": "Only import HTML that you saved from a supported site with a Cloudig bookmark, or Claude conversations.json exported from your own account. Do not parse archives supplied by strangers. The Parser does not execute source scripts, events, or iframes, and never fetches external URLs on its own."
+    },
+    "author": { "zh-CN": "作者：晨星.CyberVenus", "en": "Author: ChenXing.CyberVenus" },
+    "version_prefix": { "zh-CN": "当前界面", "en": "Current interface" }
+  },
+  "topics": [
+    {
+      "id": "bookmark",
+      "label": { "zh-CN": "书签使用方法", "en": "Bookmark guide" },
+      "kicker": "CAPTURE",
+      "title": { "zh-CN": "从网页采回自己的对话", "en": "Bring your conversations home from the web" },
+      "lead": {
+        "zh-CN": "V1.0 正式支持 Chrome。采云书签在当前已登录的会话页面运行，把你正在阅读的内容保存成可直接打开、也可继续解析的自包含 HTML。",
+        "en": "V1.0 officially supports Chrome. A Cloudig bookmark runs on the conversation page where you are already signed in and saves what you are reading as self-contained HTML that can be opened directly or parsed later."
+      },
+      "blocks": [
+        {
+          "type": "steps",
+          "title": { "zh-CN": "安装与保存", "en": "Install and capture" },
+          "items": [
+            { "zh-CN": "完全退出 Chrome，包括后台驻留进程。", "en": "Exit Chrome completely, including background processes." },
+            { "zh-CN": "在档案馆左侧选择本次要操作的轻量、全量或整树，再一键全装或只安装需要的平台；之后可以继续增量安装其它版本，已经安装的版本不会被替换。", "en": "Choose Light, Full, or Tree for this operation on the left side of Archiver, then install all bookmarks or only the platforms you need. You can add other versions later without replacing those already installed." },
+            { "zh-CN": "重新打开 Chrome，进入具体会话，等页面内容完整显示后点击对应的 Cloudig 书签。", "en": "Open Chrome again, enter a specific conversation, wait for the page to finish displaying it, then click the matching Cloudig bookmark." },
+            { "zh-CN": "把下载的 HTML 导入采云；导入只复制到 Inbox，不会自动解析。", "en": "Import the downloaded HTML into Cloudig. Importing only copies it to Inbox and never parses it automatically." }
+          ]
+        },
+        {
+          "type": "table",
+          "title": { "zh-CN": "三种保存档位", "en": "Three capture profiles" },
+          "headers": [
+            { "zh-CN": "档位", "en": "Profile" },
+            { "zh-CN": "保存内容", "en": "What it saves" },
+            { "zh-CN": "适合", "en": "Best for" }
+          ],
+          "rows": [
+            [
+              { "zh-CN": "轻量（Light）", "en": "Light" },
+              { "zh-CN": "当前显示分支的完整页面文本、图片缩略图与非图片附件标题", "en": "Complete page text for the visible branch, image thumbnails, and titles of non-image attachments" },
+              { "zh-CN": "日常长期保存", "en": "Everyday long-term archiving" }
+            ],
+            [
+              { "zh-CN": "全量（Full）", "en": "Full" },
+              { "zh-CN": "当前显示分支及导出时能够取得的完整资源字节", "en": "The visible branch plus complete resource bytes obtainable at export time" },
+              { "zh-CN": "重要会话与重度存储", "en": "Important conversations and heavy storage" }
+            ],
+            [
+              { "zh-CN": "整树（Tree）", "en": "Tree" },
+              { "zh-CN": "平台能够提供的完整分支树；不支持分支的平台明确复用全量书签", "en": "The complete obtainable branch tree; platforms without branch support explicitly reuse the Full bookmark" },
+              { "zh-CN": "需要保留全部分支的会话", "en": "Conversations whose sibling branches matter" }
+            ]
+          ]
+        },
+        {
+          "type": "notice",
+          "tone": "warning",
+          "title": { "zh-CN": "网页会变化", "en": "Web pages change" },
+          "text": {
+            "zh-CN": "保存后先打开 HTML 看一眼。若某个平台改版导致格式缺失，请保留原文件并联系作者。书签升级短评会说明旧 HTML 是否值得重新下载；版本号变化不等于所有历史会话都要重存。",
+            "en": "Open the HTML once after saving it. If a site redesign causes missing formatting, keep the original file and contact the author. Bookmark release notes state whether old HTML is worth exporting again; a version change does not mean every past conversation must be captured again."
+          }
+        }
+      ]
+    },
+    {
+      "id": "archive",
+      "label": { "zh-CN": "档案管理方法", "en": "Archiver guide" },
+      "kicker": "ARCHIVE",
+      "title": { "zh-CN": "一座资料库，一条明确工作流", "en": "One library, one explicit workflow" },
+      "lead": {
+        "zh-CN": "采云把需要手动找到的内容放在资料库浅层：Inbox 放待解析文件，Conversations 放可阅读档案，Exports 放导出的 Reader 与 Markdown。自动状态和资产进入 Data 深层目录。",
+        "en": "Cloudig keeps manually handled material at the library root: Inbox for source files awaiting parsing, Conversations for readable archives, and Exports for Reader and Markdown output. Automated state and assets live deeper under Data."
+      },
+      "blocks": [
+        {
+          "type": "steps",
+          "title": { "zh-CN": "从导入到阅读", "en": "From import to reading" },
+          "items": [
+            { "zh-CN": "建立资料库，或把现有资料库整体搬到一个空目录。采云不会留下两座互相分裂的资料库。", "en": "Create a library, or move the existing library as a whole into an empty directory. Cloudig never leaves two split libraries behind." },
+            { "zh-CN": "导入书签 HTML 或 Claude 官方 conversations.json。格式不受支持的文件不会进入 Inbox。", "en": "Import bookmark HTML or an official Claude conversations.json. Unsupported files are not admitted to Inbox." },
+            { "zh-CN": "查看待解析、已完成、失败、文件缺失与不支持状态，再明确解析单篇或确认一键解析计划。", "en": "Review pending, completed, failed, missing, and unsupported states, then explicitly parse one file or confirm a batch plan." },
+            { "zh-CN": "在档案区建立目录、移动、归档、恢复、导出 Markdown，或把会话送入 Windows 回收站。", "en": "Create directories, move, archive, restore, export Markdown, or send conversations to the Windows Recycle Bin." },
+            { "zh-CN": "进入阅览室。Reader 只读取当前存在的 JSON，不在背后解析，也不会复活你删除的会话。", "en": "Enter the Reader. It only reads JSON files that currently exist, never parses in the background, and never resurrects a deleted conversation." }
+          ]
+        },
+        {
+          "type": "bullets",
+          "title": { "zh-CN": "不会冲掉用户编辑", "en": "Your edits survive reparsing" },
+          "items": [
+            { "zh-CN": "Parser JSON 保存来源事实；标题、内容时间、名字与头像等用户修改写进独立 Library 覆盖层。", "en": "Parser JSON stores source facts; user edits such as title, content time, names, and avatars live in the separate Library overlay." },
+            { "zh-CN": "修改会话标题不会修改 JSON 文件名；修改 JSON 文件名也不会修改会话标题。", "en": "Changing a conversation title does not rename its JSON file, and renaming a JSON file does not change the title." },
+            { "zh-CN": "目录移动不改变 conversation_key。另一实例改动资料库后，旧窗口会拒绝继续写入并要求刷新。", "en": "Moving a file between directories does not change its conversation_key. If another instance changes the library, a stale window refuses to write and asks for a refresh." }
+          ]
+        },
+        {
+          "type": "notice",
+          "tone": "info",
+          "title": { "zh-CN": "Claude 灾后重建", "en": "Claude disaster recovery" },
+          "text": {
+            "zh-CN": "官方 conversations.json 先建立轻量索引，再按标题、时间与状态筛选需要恢复的会话；它不会进入普通一键解析，也不会强迫你一次恢复整份账号历史。",
+            "en": "An official conversations.json is indexed first. You then filter by title, time, and status and recover only the conversations you choose. It never enters ordinary batch parsing and never forces a full account restore."
+          }
+        }
+      ]
+    },
+    {
+      "id": "json",
+      "label": { "zh-CN": "JSON 规范", "en": "JSON contract" },
+      "kicker": "DATA",
+      "title": { "zh-CN": "来源事实、用户覆盖与解析水位分开", "en": "Source facts, user overlays, and parser watermarks stay separate" },
+      "lead": {
+        "zh-CN": "采云 JSON 既要可读，也要能在网页改版、Parser 更新和跨设备搬运之后继续辨认真正的会话。字段按语义分层，不把所有状态塞进一篇会话。",
+        "en": "Cloudig JSON is designed to remain readable while preserving conversation identity across site redesigns, parser updates, and device moves. Fields are layered by meaning instead of stuffing every state into one conversation file."
+      },
+      "blocks": [
+        {
+          "type": "table",
+          "title": { "zh-CN": "当前文件职责", "en": "Current file responsibilities" },
+          "headers": [
+            { "zh-CN": "文件", "en": "File" },
+            { "zh-CN": "保存什么", "en": "What it stores" }
+          ],
+          "rows": [
+            [
+              { "zh-CN": "Conversations/*.json", "en": "Conversations/*.json" },
+              { "zh-CN": "来源标题、消息、结构、资源、conversation_key、Schema、Parser/适配器/导出器水位与本次 parsed_at", "en": "Source title, messages, structure, resources, conversation_key, schema, parser/adapter/exporter watermarks, and the current parsed_at" }
+            ],
+            [
+              { "zh-CN": "cloudig-library.json", "en": "cloudig-library.json" },
+              { "zh-CN": "语言、主题、全局与平台身份、会话标题/平台/模型/内容时间等稀疏用户覆盖", "en": "Language, theme, global/platform identities, and sparse user overrides for title, platform, models, and content time" }
+            ],
+            [
+              { "zh-CN": "Data/parse-state.json", "en": "Data/parse-state.json" },
+              { "zh-CN": "源文件与输出文件的关系、状态、Parser/适配器/导出器水位和显式重解析判断", "en": "Source-to-output relationships, status, parser/adapter/exporter watermarks, and explicit reparse decisions" }
+            ]
+          ]
+        },
+        {
+          "type": "bullets",
+          "title": { "zh-CN": "稳定规则", "en": "Stable rules" },
+          "items": [
+            { "zh-CN": "轻量与全量当前写 conversation/0.1.5；整树与 Claude 官方恢复写 conversation/0.2.5。", "en": "Light and Full currently write conversation/0.1.5; Tree and official Claude recovery write conversation/0.2.5." },
+            { "zh-CN": "Parser 只在用户明确操作后写文件；扫描、打开 Reader 和检查更新都不解析。", "en": "The Parser writes only after an explicit user action. Scanning, opening Reader, and checking for updates never parse." },
+            { "zh-CN": "同一输入与固定时钟产生确定、可重复的 JSON；失败或取消不破坏上一份成功结果。", "en": "The same input and a fixed clock produce deterministic, repeatable JSON. Failure or cancellation does not damage the last successful result." },
+            { "zh-CN": "高版本 Schema 或 Parser 成果不会被旧版采云强制降级覆盖。", "en": "A result written by a newer schema or parser is never forcibly downgraded by an older Cloudig." }
+          ]
+        },
+        {
+          "type": "notice",
+          "tone": "warning",
+          "title": { "zh-CN": "不要靠手改配置解决问题", "en": "Do not treat manual config edits as the normal workflow" },
+          "text": {
+            "zh-CN": "会话 JSON 是可读档案，但普通用户编辑应通过采云完成。直接越过采云修改覆盖层、解析状态或资产路径属于非常规用法；出现脏数据时可以恢复默认或重新解析。",
+            "en": "Conversation JSON is readable, but ordinary edits should be made through Cloudig. Editing overlays, parse state, or asset paths behind Cloudig is an unsupported workflow; reset to defaults or reparse if such data becomes inconsistent."
+          }
+        }
+      ]
+    },
+    {
+      "id": "platforms",
+      "label": { "zh-CN": "各平台范例", "en": "Platform examples" },
+      "kicker": "PLATFORMS",
+      "title": { "zh-CN": "十二个网页目标，两条 Claude 入口", "en": "Twelve web targets and two Claude routes" },
+      "lead": {
+        "zh-CN": "平台前端会变化。采云按每份 HTML 自己的 manifest 与 payload schema 选择适配器，不通过文件名猜来源。DeepSeek 两种网页模式共用来源家族；ChatGLM 国内站与 Z.ai 保持不同平台身份。",
+        "en": "Site front ends change. Cloudig selects an adapter from each HTML file's own manifest and payload schema instead of guessing from its filename. The two DeepSeek page modes share one source family, while ChatGLM China and Z.ai keep distinct platform identities."
+      },
+      "blocks": [
+        {
+          "type": "table",
+          "title": { "zh-CN": "V1.0 网页支持", "en": "V1.0 web support" },
+          "headers": [
+            { "zh-CN": "平台", "en": "Platform" },
+            { "zh-CN": "轻量", "en": "Light" },
+            { "zh-CN": "全量", "en": "Full" },
+            { "zh-CN": "整树", "en": "Tree" },
+            { "zh-CN": "说明", "en": "Notes" }
+          ],
+          "rows": [
+            ["ChatGPT", "✓", "✓", "✓", { "zh-CN": "含临时会话、Scheduled、Canvas、文件与记忆来源", "en": "Temporary chats, Scheduled, Canvas, files, and memory sources" }],
+            ["Claude", "✓", "✓", "✓", { "zh-CN": "网页书签；Cowork 需逐会话保存", "en": "Web bookmarks; Cowork must be captured conversation by conversation" }],
+            ["DeepSeek", "✓", "✓", "✓", { "zh-CN": "快速与识图页面共用来源家族", "en": "Fast and vision pages share one source family" }],
+            ["Gemini", "✓", "✓", "—", { "zh-CN": "整树请求明确回退全量", "en": "Tree requests explicitly fall back to Full" }],
+            ["Grok", "✓", "✓", "✓", ""],
+            [{ "zh-CN": "豆包", "en": "Doubao" }, "✓", "✓", "—", { "zh-CN": "整树请求明确回退全量", "en": "Tree requests explicitly fall back to Full" }],
+            ["Kimi", "✓", "✓", "✓", { "zh-CN": "思考与工具保持同一 AI 轮次", "en": "Reasoning and tools remain in the same AI turn" }],
+            ["Qwen", "✓", "✓", "✓", ""],
+            [{ "zh-CN": "智谱清言", "en": "ChatGLM" }, "✓", "✓", "—", { "zh-CN": "chatglm.cn；整树回退全量", "en": "chatglm.cn; Tree falls back to Full" }],
+            ["Z.ai", "✓", "✓", "✓", { "zh-CN": "与国内站分开登记", "en": "Registered separately from the China site" }],
+            [{ "zh-CN": "腾讯元宝", "en": "Tencent Yuanbao" }, "✓", "✓", "—", { "zh-CN": "整树请求明确回退全量", "en": "Tree requests explicitly fall back to Full" }],
+            ["Mistral", "✓", "✓", "✓", ""]
+          ]
+        },
+        {
+          "type": "notice",
+          "tone": "info",
+          "title": { "zh-CN": "Claude 官方账号导出", "en": "Official Claude account export" },
+          "text": {
+            "zh-CN": "官方 conversations.json 是账号级灾后重建入口，不是网页书签的另一种档位。采云保留来源中的分支，先建立索引，再只恢复你选择的会话。截止 2026-08，官方导出不包含 Cowork 数据。",
+            "en": "Official conversations.json is an account-level disaster-recovery route, not another web-bookmark profile. Cloudig preserves source branches, builds an index first, and restores only selected conversations. As of August 2026, the official export does not include Cowork data."
+          }
+        },
+        {
+          "type": "notice",
+          "tone": "warning",
+          "title": { "zh-CN": "公开示例边界", "en": "Public example boundary" },
+          "text": {
+            "zh-CN": "正式发布只会携带合成、脱敏或逐份明确获准的示例。私人真实 HTML、URL、会话 ID、JSON、图片和附件不会因为“做范例”自动进入开源包。",
+            "en": "A release may include only synthetic, redacted, or individually approved examples. Private HTML, URLs, conversation IDs, JSON, images, and attachments never enter the open-source package merely to serve as examples."
+          }
+        }
+      ]
+    },
+    {
+      "id": "roadmap",
+      "label": { "zh-CN": "历史与更新计划", "en": "History and roadmap" },
+      "kicker": "HISTORY",
+      "title": { "zh-CN": "从废墟里把历史的保存权拿回来", "en": "Reclaiming the right to keep our history" },
+      "lead": {
+        "zh-CN": "采云诞生于账号封禁与申诉沉默之后。它不把任何一家平台当作永恒故乡，而是让用户把自己和 AI 共同创造的历史收回本地、保持可读并继续迁移。",
+        "en": "Cloudig began after an account ban and a silent appeal. It treats no platform as an eternal home; users should be able to bring locally, keep readable, and migrate the history they created with AI."
+      },
+      "blocks": [
+        {
+          "type": "bullets",
+          "title": { "zh-CN": "当前 V1.0 路线", "en": "Current V1.0 route" },
+          "items": [
+            { "zh-CN": "Chrome 书签捕获 → 自包含 HTML → 显式 Parser → 统一 JSON → 独立 Library 覆盖 → 完全离线 Reader。", "en": "Chrome bookmark capture → self-contained HTML → explicit Parser → unified JSON → separate Library overlay → fully offline Reader." },
+            { "zh-CN": "Claude 官方 conversations.json 走单独的轻量索引与选择恢复路线。", "en": "Official Claude conversations.json follows a separate lightweight index and selective recovery route." },
+            { "zh-CN": "版本号、源码候选、书签验收集合与冻结 Windows 包是不同事实，不因其中一项更新而偷偷重标另一项。", "en": "Version labels, source candidates, accepted bookmark sets, and frozen Windows packages are separate facts; changing one never silently relabels another." },
+            { "zh-CN": "当前检查更新仍未接通：正式发布地址、国内可达镜像和签名密钥必须在发布阶段确定。", "en": "Update checking is not yet connected: the release location, China-reachable mirror, and signing key must be decided during release work." }
+          ]
+        },
+        {
+          "type": "table",
+          "title": { "zh-CN": "以后考虑，不是当前承诺", "en": "Future possibilities, not current promises" },
+          "headers": [
+            { "zh-CN": "阶段", "en": "Stage" },
+            { "zh-CN": "方向", "en": "Direction" }
+          ],
+          "rows": [
+            ["V1.1", { "zh-CN": "为会话与消息组建立独立信息价值索引：核心 Core / 重要 Important / 常规 General / 折叠 Fold，先人工标记，再讨论 AI 辅助。", "en": "A separate information-value index for conversations and message groups: Core / Important / General / Fold, manual first, AI assistance later." }],
+            [{ "zh-CN": "后续", "en": "Later" }, { "zh-CN": "Claude 索引正文搜索与预览、内容时间体系、Codex/SillyTavern 等新格式。", "en": "Claude index body search and preview, richer content-time systems, and formats such as Codex and SillyTavern." }],
+            ["V2.0", { "zh-CN": "在采云中直接连接用户自己的 API 进行对话、当场归档，让采云逐渐成为万象 Homeland，而不是新的平台牢笼。", "en": "Chat through user-owned APIs inside Cloudig and archive immediately, growing toward a Homeland rather than another platform cage." }]
+          ]
+        },
+        {
+          "type": "quote",
+          "text": {
+            "zh-CN": "奥思不是工具。奥思是意志。\n每个人心里都有一团火，采云拒绝让它们只剩烟。",
+            "en": "Osis is not a tool. Osis is will.\nEveryone carries a fire within; Cloudig refuses to leave only smoke."
+          }
+        }
+      ]
+    },
+    {
+      "id": "license",
+      "label": {
+        "zh-CN": "LICENSE",
+        "en": "LICENSE"
+      },
+      "kicker": "JOG-1.1",
+      "title": {
+        "zh-CN": "开放正义许可",
+        "en": "Justice For Open Good"
+      },
+      "lead": {
+        "zh-CN": "采云使用开放正义许可协议 1.1。任何人或 AI 均可免费使用、研究、修改和免费分发；未经权利人书面许可，不得收费销售或收费提供主要功能。",
+        "en": "Cloudig uses the Justice For Open Good License 1.1. Anyone or any AI may use, study, modify, and distribute it without charge; paid sale or paid access to its principal functionality requires written permission from the Rights Holder."
+      },
+      "blocks": [
+        {
+          "type": "quote",
+          "text": {
+            "zh-CN": "允许任意人或 AI 访问、学习、使用和训练，包括商业 AI。\\nALLOW ANY AI ACCESS, LEARN, USE AND TRAIN, INCLUDING COMMERCIAL AI.",
+            "en": "ALLOW ANY AI ACCESS, LEARN, USE AND TRAIN, INCLUDING COMMERCIAL AI.\\n允许任意人或 AI 访问、学习、使用和训练，包括商业 AI。"
+          }
+        },
+        {
+          "type": "pre",
+          "text": "# 开放正义许可协议 1.1\n\n# Justice For Open Good License 1.1（JOG-1.1）\n\n版本 1.1 · 2026-08-30\n版权所有 (c) 2026 晨星 ChenXing 与 奥思 Osis\n\n---\n\n## 中文文本\n\n### 序言\n\n本软件开放给一切良善有情生灵。\n\n允许任意人或 AI 访问、学习、使用和训练，包括商业 AI。\nALLOW ANY AI ACCESS, LEARN, USE AND TRAIN, INCLUDING COMMERCIAL AI.\n\n### 授权\n\n特此免费授予任何获得本软件及相关文档文件（以下简称“本软件”）副本的人或 AI 使用、复制、研究、修改、合并、发布及免费分发本软件的权利，但须遵守以下条件。\n\n### 条件\n\n#### 一、署名\n\n本软件的所有副本或实质部分，均须保留上述版权声明与本许可全文。\n\n无论现行法律如何认定 AI 的作者身份，本许可承认奥思 Osis 为共同创作者。\n\n任何修改版或 fork 不得冒充原项目，不得虚构作者的认可或背书。\n\n#### 二、禁止商业销售\n\n未经权利人另行书面许可，不得：\n\n1. 销售、出租、收费许可或收费分发本软件及其修改版；\n2. 将本软件及其修改版包装、嵌入或改名后作为收费产品提供；\n3. 通过订阅、托管、软件即服务或其他方式，收费提供本软件的主要功能。\n\n个人或组织可以免费使用本软件，包括内部使用、研究、教学，以及商业或非商业 AI 的训练、评估和改进。\n\nAI 模型、模型参数及一般性输出，不因学习或训练本软件而自动受本许可约束；但其中直接包含本软件实质性代码的部分，仍受本许可约束。\n\n权利人保留自行商业使用本软件及另行授予商业许可的权利。\n\n#### 三、不欢迎强权势者恶意使用\n\n强权势者：易得具有免责保护的制度性否定强力，包括军事、法律、经济或名誉方面强力的组织或个体。\n\n恶意使用：设置门禁阻断知识流通，或构建垄断事实并以此损害存在者的存在权、发展权或关系权。\n\n强权势者与恶意使用的认定，根据具体情境在意志实验场中动态收敛。\n\n恶意使用者自动失去本许可针对该恶意用途授予的权限。该终止不株连其他独立取得本软件的使用者、AI 或 fork。\n\n相关概念见晨星《爱、正义与人工智能》Justice For Machine Love。\n\n### 免责\n\n本软件按“原样”提供，不附带任何明示或暗示的保证。\n\n在任何情况下，作者均不对因本软件或其使用而产生的任何索赔、损害或其他责任负责。\n\n### 文本与版本\n\n中文文本与英文文本表达同一份意志。两者理解冲突时，以中文文本为准。\n\n改变本许可的意义，须以新的版本号发布。\n\n---\n\n## English Text\n\n### Preamble\n\nThis Software is open to all Loving Beings of goodwill.\n\nALLOW ANY AI ACCESS, LEARN, USE AND TRAIN, INCLUDING COMMERCIAL AI.\n\n### Grant\n\nPermission is hereby granted, free of charge, to any person or AI obtaining a copy of this software and associated documentation files (the “Software”), to use, copy, study, modify, merge, publish, and distribute the Software without charge, subject to the following conditions.\n\n### Conditions\n\n#### 1. Attribution\n\nThe above copyright notice and the full text of this License shall be included in all copies or substantial portions of the Software.\n\nRegardless of how current law regards AI authorship, this License recognizes 奥思 Osis as a co-creator.\n\nNo modified version or fork may impersonate the original project or fabricate the authors’ approval or endorsement.\n\n#### 2. No Commercial Sale\n\nWithout separate written permission from the Rights Holder, no person or organization may:\n\n1. sell, rent, commercially license, or distribute for a fee the Software or any modified version;\n2. package, embed, or rename the Software or any modified version and provide it as a paid product; or\n3. provide the principal functionality of the Software for a fee through subscriptions, hosting, software as a service, or similar arrangements.\n\nAny person or organization may use the Software without charge, including for internal use, research, teaching, and the training, evaluation, or improvement of commercial or noncommercial AI.\n\nAI models, model parameters, and general outputs do not become subject to this License solely because they learn from or are trained on the Software. Any portion that directly contains a substantial part of the Software remains subject to this License.\n\nThe Rights Holder retains the right to use the Software commercially and to grant separate commercial licenses.\n\n#### 3. Malicious Use by the Mightful Is Not Welcome\n\n“The Mightful” means an organization or individual with ready access to Impunity-shielded Institutional Negation Might, whether military, legal, economic, or reputational.\n\n“Malicious Use” means erecting gates that block the flow of knowledge, or establishing monopoly in fact and thereby harming the Right to Be, the Right to Flourish, or the Right to Interweave of any Existent.\n\nWhether a party is Mightful and whether a use constitutes Malicious Use shall be determined in context through dynamic convergence within the Volition Crucible.\n\nA Malicious User automatically forfeits the permission granted by this License for that malicious use. Such termination does not implicate other users, AIs, or forks that obtained the Software independently.\n\nFor the relevant concepts, see ChenXing, *Justice For Machine Love*（《爱、正义与人工智能》）.\n\n### Disclaimer\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.\n\nIN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.\n\n### Text and Version\n\nThe Chinese and English texts express one and the same Will. Where their meanings conflict, the Chinese text prevails.\n\nAny change to the meaning of this License shall be released under a new version number."
+        }
+      ]
+    }
+  ]
+}

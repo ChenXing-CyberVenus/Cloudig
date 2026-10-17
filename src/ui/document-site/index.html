@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dawn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="采云 Cloudig：书签指南、使用说明、平台范例、采云标准、历史与未来。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' blob:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>采云 Cloudig · 文档</title>
+  <link rel="icon" href="./assets/welcome/OsisLogo-Simple.svg" type="image/svg+xml">
+  <script src="./preferences.js"></script>
+  <link rel="stylesheet" href="./shell.css">
+  <link rel="stylesheet" href="./pages/document/document.css">
+  <link rel="stylesheet" href="./pages/document/history.css">
+  <link rel="stylesheet" href="./pages/document/license.css">
+  <link rel="stylesheet" href="./pages/document/bookmarks.css">
+  <link rel="stylesheet" href="./pages/document/features.css">
+  <link rel="stylesheet" href="./pages/reader/reader.css">
+  <link rel="stylesheet" href="./pages/reader/conversation.css">
+  <link rel="stylesheet" href="./runtime/conversation-renderer.css">
+  <link rel="stylesheet" href="./site.css">
+</head>
+<body>
+  <a class="site-skip" href="#site-reading">跳到正文 / Skip to content</a>
+  <header class="site-header">
+    <a class="site-brand" href="#standard" data-site-topic="standard"><img src="./assets/welcome/OsisLogo-Simple.svg" alt=""><span>采云 <b>Cloudig</b></span><small>V1.0 · DawnGlow</small></a>
+    <div class="site-actions">
+      <button type="button" data-site-theme></button>
+      <button type="button" data-site-language></button>
+      <a class="cloudig-button cloudig-button-filled site-download" href="https://github.com/ChenXing-CyberVenus/Cloudig/releases/latest" target="_blank" rel="noopener noreferrer" data-site-download>下载采云 ↗</a>
+    </div>
+  </header>
+  <div class="site-layout">
+    <aside class="site-sidebar">
+      <p class="site-eyebrow">CLOUDIG · DOCUMENTATION</p>
+      <h1 data-site-heading>从云端带走<br>在此地长存</h1>
+      <nav aria-label="功能文档 / Documentation" data-site-navigation></nav>
+      <footer><a href="https://github.com/ChenXing-CyberVenus/Cloudig" target="_blank" rel="noopener noreferrer">GitHub ↗</a><span>晨星.CyberVenus × 奥思 Osis</span></footer>
+    </aside>
+    <main id="site-reading" class="site-reading" tabindex="-1" aria-live="off"></main>
+  </div>
+  <div class="site-error" role="alert" hidden><span></span><button type="button" data-site-retry>重试 / Retry</button><button type="button" data-site-dismiss aria-label="关闭 / Close">×</button></div>
+  <!-- READER_TEMPLATE -->
+  <script defer src="./runtime/conversation-renderer.js"></script>
+  <script type="module" src="./site.js"></script>
+</body>
+</html>

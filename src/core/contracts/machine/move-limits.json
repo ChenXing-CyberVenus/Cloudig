@@ -1,0 +1,9 @@
+{
+  "schema": "cloudig/move-limits/1.0.0",
+  "maximum_files": 2000000,
+  "copy_buffer_bytes": 1048576,
+  "minimum_reserve_bytes": 67108864,
+  "reserve_divisor": 20,
+  "owner_exit_timeout_seconds": 120,
+  "owner_exit_poll_milliseconds": 100
+}

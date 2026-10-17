@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture Yuanbao</title></head>
+<body>
+  <article class="osis-turn user" data-message-id="yuanbao-user">
+    <div class="osis-message"><div class="osis-rich osis-user-plain">
+      <p>Visible duplicate.</p><p>Visible duplicate.</p>
+      <p>展开</p><details><summary>展开</summary><p>Author details.</p></details>
+      <button class="agent-chat__conv--human__expand-toggle">展开</button>
+      <figure class="osis-image"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="fixture-upload.png" width="1" height="1"></figure>
+      <section class="osis-attachments"><div class="osis-attachment"><strong class="osis-file-name">notes.txt</strong></div></section>
+    </div></div>
+  </article>
+  <article class="osis-turn assistant" data-message-id="yuanbao-assistant">
+    <div class="osis-message">
+      <details class="osis-thinking"><summary>思考</summary><div class="osis-thinking-body">Duplicate DOM thought.</div></details>
+      <div class="osis-rich">
+        <p>Exact formula <span class="osis-math" data-tex="x^2" data-math-display="false"><math><msup><mi>x</mi><mn>2</mn></msup></math></span>.</p>
+        <p>Rendered-only formula <span class="osis-math"><math><mi>y</mi></math></span>.</p>
+        <div class="osis-mermaid-card"><div class="osis-mermaid-panel"><svg xmlns="http://www.w3.org/2000/svg"><text>fixture</text></svg></div><div class="osis-mermaid-panel"><pre><code>graph TD
+  A--&gt;B</code></pre></div></div>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="generated.png" width="1" height="1">
+        <sup class="osis-reference">[2]</sup><sup class="osis-reference">[1]</sup>
+      </div>
+      <section class="osis-sources"><p>Duplicate source panel.</p></section>
+    </div>
+  </article>
+  <script>globalThis.__yuanbao_must_not_run = true;</script>
+  <script id="ai-chat-archive-manifest" type="application/json">{
+    "schema": "ai-chat-archive/manifest-v1",
+    "platform": "yuanbao",
+    "exporter": { "name": "Fixture Yuanbao Exporter", "version": "2.10.9-light", "mode": "light" },
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source": { "url": "https://yuanbao.tencent.com/chat/fixture", "title": "Fixture Yuanbao", "conversation_id": "fixture-yuanbao-conversation" }
+  }</script>
+  <script id="yuanbao-export-data" type="application/json">{
+    "schema": "osis.yuanbao.chat-export/light-dom-v2",
+    "version": "2.10.9-light",
+    "message_order": ["yuanbao-user", "yuanbao-assistant"],
+    "messages": [
+      {
+        "id": "yuanbao-user", "index": 1, "role": "user",
+        "public_reasoning_label": "", "public_reasoning_html": "", "public_reasoning_text": "",
+        "local_reference_indices": [], "reference_indices": [], "search_events": 0, "source_indices": [], "diagrams": [],
+        "attachments": [
+          { "kind": "image", "type": "image", "name": "fixture-upload.png", "extension": "png", "size": 68, "status": "pending-thumbnail" },
+          { "kind": "file", "type": "text/plain", "name": "notes.txt", "extension": "txt", "size": 5, "status": "metadata-only" }
+        ]
+      },
+      {
+        "id": "yuanbao-assistant", "index": 2, "role": "assistant",
+        "public_reasoning_label": "思考", "public_reasoning_html": "<p>Visible <strong>rich thought</strong>.</p>\u003cscript>bad()\u003c/script>", "public_reasoning_text": "Visible rich thought.",
+        "local_reference_indices": [2, 1], "reference_indices": [2, 1], "search_events": 1, "source_indices": [1, 2],
+        "diagrams": [{ "kind": "mermaid", "role": "flowchart", "source": "graph TD\n  A-->B", "rendered": true, "render_mode": "captured", "view_box": "0 0 100 40" }],
+        "attachments": []
+      }
+    ],
+    "sources": [
+      { "index": 1, "local_index": 1, "message_id": "yuanbao-assistant", "title": "Source one", "url": "https://example.test/one", "summary": "One.", "source": "example.test" },
+      { "index": 2, "local_index": 2, "message_id": "yuanbao-assistant", "title": "Source two", "url": "https://example.test/two", "summary": "Two.", "source": "example.test" }
+    ],
+    "resource_policy": { "uploaded_images": "thumbnail", "generated_images": "thumbnail", "non_image_attachments": "metadata-only" }
+  }</script>
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>采云 Cloudig · Reader</title>
+  <script>
+    (() => {
+      const requested = new URLSearchParams(globalThis.location.search).get("theme");
+      let theme = requested === "star_night" || requested === "dark"
+        ? "dark"
+        : requested === "dawn" || requested === "light" ? "light" : "";
+      if (!theme) {
+        try {
+          const stored = localStorage.getItem("ai-chat-archive-reader-theme");
+          if (stored === "light" || stored === "dark") theme = stored;
+        } catch { /* file mode may deny storage */ }
+      }
+      if (!theme) theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <style>/*__READER_CSS__*/</style>
+</head>
+<body>
+  <div class="cloudig-boot-screen" id="cloudig-boot-screen" role="status" aria-label="采云正在加载" data-i18n-aria-label="aria.loading">
+    <img class="cloudig-waiting-sun" data-reader-asset="brand.waiting_sun" width="232" height="122" alt="">
+  </div>
+  <svg class="reader-icon-sprite" aria-hidden="true">
+    <symbol id="reader-icon-upload" viewBox="0 0 24 24"><path d="M4 17.5V20h16v-2.5M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/></symbol>
+    <symbol id="reader-icon-reset" viewBox="0 0 24 24"><path d="M5 8V4m0 0h4M5 4l3 3a7 7 0 1 1-1.5 7.5"/></symbol>
+    <symbol id="reader-icon-close" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
+  </svg>
+  <div class="app-shell">
+    <header class="rr-topbar" id="reader-topbar">
+      <button class="rr-brand" id="reader-brand-home" type="button" aria-label="返回采云封面" data-i18n-aria-label="aria.open_reader_cover" data-cloudig-tooltip-auto>
+        <img class="rr-brand-logo reader-theme-dawn" data-reader-asset="cover.OsisLogo-Cloudig-RedBackWhiteAbyss.svg" alt="">
+        <img class="rr-brand-logo reader-theme-night" data-reader-asset="cover.OsisLogo-Cloudig-PurpleBackOrangeAbyss.svg" alt="">
+        <img class="rr-brand-title reader-theme-dawn" data-reader-asset="cover.Cloudig-Title-Chinese-Grey-Dark-1024.png" alt="">
+        <img class="rr-brand-title reader-theme-night" data-reader-asset="cover.Cloudig-Title-Chinese-Grey-Light-1024.png" alt="">
+        <img class="rr-brand-slogan reader-theme-dawn" data-reader-asset="cover.Cloudig-Slogan-Chinese-Grey-Dark-1024.png" alt="">
+        <img class="rr-brand-slogan reader-theme-night" data-reader-asset="cover.Cloudig-Slogan-Chinese-Grey-Light-1024.png" alt="">
+        <span id="reader-brand-mark" hidden></span>
+        <img id="reader-brand-icon" hidden alt="">
+        <span id="reader-brand-title" hidden>采云 Cloudig</span>
+      </button>
+      <div class="rr-total" aria-live="polite"><i aria-hidden="true"></i><span id="total-conversation-count">总0篇对话</span></div>
+      <nav class="rr-top-actions" aria-label="Reader 全局操作" data-i18n-aria-label="aria.reader_global_actions">
+        <button class="rr-manage" id="return-manager" type="button">管理档案</button>
+        <span class="rr-version"><span>V1.0.0-dev</span><small data-i18n="brand.milestone">内容时间</small></span>
+        <button class="rr-text-action" id="reader-check-updates" type="button" disabled data-i18n="action.check_updates">检查更新</button>
+        <button class="rr-text-action" id="toggle-language" type="button">ENGLISH</button>
+        <button class="rr-theme" id="toggle-theme" type="button" aria-label="切换破晓/星夜主题" data-i18n-aria-label="aria.switch_theme" data-cloudig-tooltip-auto>
+          <img class="reader-theme-dawn" data-reader-asset="cover.OsisLogo-Simple-Mono-Red.svg" alt="">
+          <img class="reader-theme-night" data-reader-asset="cover.OsisLogo-Simple-Mono-Orange.svg" alt="">
+        </button>
+      </nav>
+      <button class="catalog-mobile-toggle mobile-only" id="toggle-library" type="button" aria-label="打开对话目录" data-i18n-aria-label="aria.open_catalog" data-cloudig-tooltip-auto>☰</button>
+    </header>
+    <aside class="cloudig-theme-coachmark" id="reader-theme-coachmark" role="dialog" aria-modal="false" aria-labelledby="reader-theme-coachmark-text" data-placement="bottom" hidden>
+      <p id="reader-theme-coachmark-text" data-i18n="onboarding.theme_switch">点击这里切换破晓 / 星夜主题</p>
+      <button id="reader-theme-coachmark-close" type="button" data-i18n-aria-label="onboarding.dismiss_for_session">×</button>
+    </aside>
+
+    <div class="workspace" id="workspace">
+      <aside class="rr-catalog" id="library" aria-label="对话目录" data-i18n-aria-label="aria.catalog">
+        <div class="rr-catalog-body">
+          <button class="catalog-close mobile-only" id="close-library" type="button" aria-label="关闭对话目录" data-i18n-aria-label="aria.close_catalog" data-cloudig-tooltip-auto>×</button>
+          <button class="compatibility-banner" id="compatibility-banner" type="button" hidden>
+            <span class="compatibility-banner-mark" aria-hidden="true">!</span>
+            <strong id="compatibility-banner-text">有 0 篇需要更新采云</strong>
+            <span class="compatibility-banner-action" data-i18n="dialog.compatibility.view">查看</span>
+          </button>
+          <div class="rr-search" id="catalog-search-shell">
+            <input id="library-search" type="search" autocomplete="off" data-i18n-placeholder="catalog.search_placeholder" placeholder="搜索标题或正文">
+            <span class="rr-search-actions">
+              <button id="library-search-go" type="button" aria-label="搜索会话目录" data-i18n-aria-label="aria.search_catalog" data-cloudig-tooltip-auto><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4.5 4.5"/></svg></button>
+              <button id="library-search-clear" type="button" aria-label="清除目录搜索" data-i18n-aria-label="aria.clear_catalog_search" data-cloudig-tooltip-auto><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 4 12 12M16 4 4 16"/></svg></button>
+            </span>
+          </div>
+          <div class="rr-platforms" id="platform-filter">
+            <span id="platform-filter-label" hidden></span>
+            <div class="rr-platform-grid" id="platform-filter-options" aria-label="平台筛选" data-i18n-aria-label="aria.platform_filter"></div>
+          </div>
+          <section class="rr-directories" id="directory-selector" aria-label="目录选择" data-i18n-aria-label="aria.directory_selector">
+            <div class="rr-directory-shelf">
+              <button class="rr-all-directory" id="all-directories" type="button" aria-current="true">
+                <img class="reader-theme-dawn" data-reader-asset="cover.AllDirectory-Selected-Dawn.svg" alt="">
+                <img class="reader-theme-night" data-reader-asset="cover.AllDirectory-Selected-StarNight.svg" alt="">
+                <strong data-i18n="catalog.all_directories">所有目录</strong>
+              </button>
+              <div class="rr-directory-books" id="directory-book-slots" aria-label="尚未建立自定义目录" data-i18n-aria-label="aria.empty_directories">
+                <i><img class="reader-theme-dawn" data-reader-asset="cover.Directory-UnSelected-Dawn-01.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.Directory-UnSelected-StarNight-01.svg" alt=""></i>
+                <i><img class="reader-theme-dawn" data-reader-asset="cover.Directory-UnSelected-Dawn-02.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.Directory-UnSelected-StarNight-02.svg" alt=""></i>
+                <i><img class="reader-theme-dawn" data-reader-asset="cover.Directory-UnSelected-Dawn-01.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.Directory-UnSelected-StarNight-01.svg" alt=""></i>
+                <i><img class="reader-theme-dawn" data-reader-asset="cover.Directory-UnSelected-Dawn-02.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.Directory-UnSelected-StarNight-02.svg" alt=""></i>
+              </div>
+            </div>
+            <div class="rr-directory-actions" aria-label="目录操作" data-i18n-aria-label="aria.directory_actions">
+              <button id="create-directory" type="button" aria-haspopup="dialog" aria-controls="directory-manager-dialog" data-i18n="catalog.create_directory">新建目录</button>
+              <button id="expand-directories" type="button" data-i18n="catalog.expand_directories">展开目录</button>
+              <button id="manage-directories" type="button" aria-haspopup="dialog" aria-controls="directory-manager-dialog" data-i18n="catalog.manage_directories">管理目录</button>
+            </div>
+            <section class="rr-directory-panel" id="directory-panel" aria-label="展开目录选择" data-i18n-aria-label="aria.directory_panel" hidden>
+              <div class="rr-directory-panel-list" id="directory-panel-list"></div>
+              <footer>
+                <button id="directory-panel-confirm" type="button" data-i18n="catalog.confirm_selection">确认选择</button>
+                <button id="directory-panel-cancel" type="button" data-i18n="catalog.cancel">取消</button>
+              </footer>
+            </section>
+          </section>
+          <div class="rr-list-toolbar">
+            <span class="library-summary" id="library-summary">显示 0/0 篇</span>
+            <button class="rr-time-kind" type="button" aria-label="排序依据：内容时间" data-i18n-aria-label="aria.sort_content_time" data-cloudig-tooltip-auto><img data-reader-asset="cover.Button-Time-LightCone.svg" alt=""></button>
+            <span class="catalog-sort-buttons rr-sort" aria-label="排序" data-i18n-aria-label="aria.sort">
+              <button type="button" data-catalog-sort="oldest" aria-label="按内容时间顺序排列" data-i18n-aria-label="aria.sort_oldest" data-cloudig-tooltip-auto><img data-reader-asset="cover.Button-Time-Clock.svg" alt=""></button>
+              <button type="button" data-catalog-sort="newest" aria-label="按内容时间倒序排列" data-i18n-aria-label="aria.sort_newest" data-cloudig-tooltip-auto><img data-reader-asset="cover.Button-Time-Tea.svg" alt=""></button>
+              <button type="button" data-catalog-sort="title" aria-label="按标题排列" data-i18n-aria-label="aria.sort_title" data-cloudig-tooltip-auto><img data-reader-asset="cover.Button-Name-Flower.svg" alt=""></button>
+            </span>
+            <select id="sort-select" class="sr-only" aria-label="排序" data-i18n-aria-label="aria.sort">
+              <option value="oldest" data-i18n="catalog.sort_oldest">时间顺序</option>
+              <option value="newest" data-i18n="catalog.sort_newest">时间倒序</option>
+              <option value="title" data-i18n="catalog.sort_title">标题排列</option>
+            </select>
+          </div>
+          <div class="library-list rr-list" id="library-list"></div>
+        </div>
+        <div class="rr-folded-navigation" role="group" aria-label="折叠目录会话导航" data-i18n-aria-label="aria.folded_conversation_navigation">
+          <button id="previous-conversation" type="button" aria-label="上一篇会话" data-i18n-aria-label="aria.previous_conversation" data-cloudig-tooltip-auto><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 13 6-7 6 7z"/></svg></button>
+          <button id="next-conversation" type="button" aria-label="下一篇会话" data-i18n-aria-label="aria.next_conversation" data-cloudig-tooltip-auto><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 7 6 7 6-7z"/></svg></button>
+        </div>
+        <div class="rr-catalog-toggle-zone">
+          <button class="rr-catalog-toggle rr-collapse" id="collapse-library" type="button" aria-controls="library" aria-label="折叠对话目录" data-i18n-aria-label="aria.collapse_catalog" data-cloudig-tooltip-auto><svg viewBox="0 0 20 44" aria-hidden="true"><rect x="1" y="1" width="18" height="42" rx="7"/><path d="m12.5 14-7 8 7 8z"/></svg></button>
+          <button class="rr-catalog-toggle rr-expand" id="expand-library" type="button" aria-controls="library" aria-label="展开对话目录" data-i18n-aria-label="aria.expand_catalog" data-cloudig-tooltip-auto><svg viewBox="0 0 20 44" aria-hidden="true"><rect x="1" y="1" width="18" height="42" rx="7"/><path d="m7.5 14 7 8-7 8z"/></svg></button>
+        </div>
+      </aside>
+
+      <main class="reader rr-main" id="reader">
+        <section class="welcome reader-cover" id="welcome">
+          <span id="cover-summary" hidden></span>
+          <div class="rr-scene-viewport" id="reader-cover-stage">
+            <div class="rr-scene-design" aria-label="采云阅览室封面" data-i18n-aria-label="aria.reader_cover">
+              <img class="rr-scene-image reader-theme-dawn" data-reader-asset="cover.Cloudig-Reader-Cover-Scene-Dawn.png" alt="">
+              <img class="rr-scene-image reader-theme-night" data-reader-asset="cover.Cloudig-Reader-Cover-Scene-StarNight.png" alt="">
+              <img class="rr-dawn-window-light reader-theme-dawn" data-reader-asset="cover.RCSD-破晓窗户.svg" alt="">
+              <img class="rr-night-light-cone reader-theme-night" data-reader-asset="cover.RCSS-光锥.svg" alt="">
+              <span class="rr-ambient-dust rr-dawn-dust reader-theme-dawn" aria-hidden="true">
+                <i style="--x:120px;--y:220px;--size:2.1px;--dx1:6px;--dy1:-8px;--dx2:-5px;--dy2:4px;--dx3:3px;--dy3:-3px;--duration:10.8s;--delay:-1.4s;--alpha:0.72"></i>
+                <i style="--x:170px;--y:300px;--size:1.6px;--dx1:-4px;--dy1:7px;--dx2:6px;--dy2:-5px;--dx3:-3px;--dy3:2px;--duration:9.4s;--delay:-5.2s;--alpha:0.58"></i>
+                <i style="--x:240px;--y:410px;--size:2.4px;--dx1:7px;--dy1:5px;--dx2:-6px;--dy2:-7px;--dx3:3px;--dy3:6px;--duration:11.6s;--delay:-3.1s;--alpha:0.76"></i>
+                <i style="--x:320px;--y:250px;--size:1.7px;--dx1:-6px;--dy1:-4px;--dx2:5px;--dy2:7px;--dx3:-2px;--dy3:-6px;--duration:8.9s;--delay:-6.4s;--alpha:0.56"></i>
+                <i style="--x:400px;--y:520px;--size:2.2px;--dx1:5px;--dy1:-7px;--dx2:-4px;--dy2:6px;--dx3:7px;--dy3:-2px;--duration:12.2s;--delay:-8.1s;--alpha:0.7"></i>
+                <i style="--x:520px;--y:350px;--size:1.5px;--dx1:-5px;--dy1:6px;--dx2:7px;--dy2:-3px;--dx3:-4px;--dy3:-6px;--duration:9.8s;--delay:-2.6s;--alpha:0.52"></i>
+                <i style="--x:150px;--y:650px;--size:2.3px;--dx1:6px;--dy1:-5px;--dx2:-7px;--dy2:3px;--dx3:4px;--dy3:7px;--duration:11.1s;--delay:-7.3s;--alpha:0.68"></i>
+                <i style="--x:290px;--y:690px;--size:1.8px;--dx1:-4px;--dy1:-7px;--dx2:6px;--dy2:4px;--dx3:-2px;--dy3:6px;--duration:10.2s;--delay:-4.5s;--alpha:0.6"></i>
+                <i style="--x:470px;--y:720px;--size:2.1px;--dx1:7px;--dy1:4px;--dx2:-5px;--dy2:-6px;--dx3:3px;--dy3:-5px;--duration:12.7s;--delay:-9.2s;--alpha:0.66"></i>
+                <i style="--x:560px;--y:580px;--size:1.6px;--dx1:-6px;--dy1:5px;--dx2:4px;--dy2:-7px;--dx3:7px;--dy3:3px;--duration:9.1s;--delay:-1.8s;--alpha:0.54"></i>
+                <i style="--x:720px;--y:170px;--size:1.3px;--dx1:5px;--dy1:-5px;--dx2:-4px;--dy2:7px;--dx3:3px;--dy3:2px;--duration:13.4s;--delay:-8.7s;--alpha:0.38"></i>
+                <i style="--x:850px;--y:310px;--size:1.5px;--dx1:-4px;--dy1:6px;--dx2:6px;--dy2:-2px;--dx3:-5px;--dy3:-4px;--duration:11.9s;--delay:-5.8s;--alpha:0.42"></i>
+                <i style="--x:1080px;--y:220px;--size:1.2px;--dx1:4px;--dy1:5px;--dx2:-6px;--dy2:-4px;--dx3:3px;--dy3:-6px;--duration:14.1s;--delay:-10.4s;--alpha:0.34"></i>
+                <i style="--x:680px;--y:610px;--size:1.4px;--dx1:-5px;--dy1:-3px;--dx2:4px;--dy2:6px;--dx3:6px;--dy3:-2px;--duration:12.8s;--delay:-7.9s;--alpha:0.4"></i>
+                <i style="--x:940px;--y:520px;--size:1.3px;--dx1:6px;--dy1:-4px;--dx2:-3px;--dy2:5px;--dx3:-5px;--dy3:3px;--duration:13.7s;--delay:-3.7s;--alpha:0.36"></i>
+                <i style="--x:1180px;--y:660px;--size:1.5px;--dx1:-4px;--dy1:5px;--dx2:5px;--dy2:-6px;--dx3:3px;--dy3:4px;--duration:10.7s;--delay:-6.9s;--alpha:0.42"></i>
+                <i style="--x:780px;--y:850px;--size:1.2px;--dx1:5px;--dy1:-6px;--dx2:-4px;--dy2:3px;--dx3:6px;--dy3:5px;--duration:14.6s;--delay:-11.2s;--alpha:0.34"></i>
+                <i style="--x:1120px;--y:890px;--size:1.4px;--dx1:-6px;--dy1:-4px;--dx2:5px;--dy2:6px;--dx3:-3px;--dy3:2px;--duration:12.4s;--delay:-4.2s;--alpha:0.38"></i>
+              </span>
+              <span class="rr-ambient-dust rr-night-dust reader-theme-night" aria-hidden="true">
+                <i style="--x:180px;--y:900px;--size:1.7px;--dx1:6px;--dy1:-8px;--dx2:-5px;--dy2:5px;--dx3:4px;--dy3:-3px;--duration:10.9s;--delay:-2.4s;--alpha:0.66"></i>
+                <i style="--x:280px;--y:820px;--size:1.3px;--dx1:-4px;--dy1:7px;--dx2:6px;--dy2:-5px;--dx3:-3px;--dy3:2px;--duration:9.6s;--delay:-6.1s;--alpha:0.52"></i>
+                <i style="--x:380px;--y:950px;--size:1.9px;--dx1:7px;--dy1:5px;--dx2:-6px;--dy2:-7px;--dx3:3px;--dy3:6px;--duration:12.1s;--delay:-4.4s;--alpha:0.7"></i>
+                <i style="--x:480px;--y:780px;--size:1.4px;--dx1:-6px;--dy1:-4px;--dx2:5px;--dy2:7px;--dx3:-2px;--dy3:-6px;--duration:9.2s;--delay:-7.5s;--alpha:0.5"></i>
+                <i style="--x:580px;--y:900px;--size:1.8px;--dx1:5px;--dy1:-7px;--dx2:-4px;--dy2:6px;--dx3:7px;--dy3:-2px;--duration:12.8s;--delay:-9.3s;--alpha:0.64"></i>
+                <i style="--x:680px;--y:760px;--size:1.2px;--dx1:-5px;--dy1:6px;--dx2:7px;--dy2:-3px;--dx3:-4px;--dy3:-6px;--duration:10.1s;--delay:-3.7s;--alpha:0.48"></i>
+                <i style="--x:760px;--y:860px;--size:1.7px;--dx1:6px;--dy1:-5px;--dx2:-7px;--dy2:3px;--dx3:4px;--dy3:7px;--duration:11.4s;--delay:-8.4s;--alpha:0.62"></i>
+                <i style="--x:850px;--y:720px;--size:1.4px;--dx1:-4px;--dy1:-7px;--dx2:6px;--dy2:4px;--dx3:-2px;--dy3:6px;--duration:10.5s;--delay:-5.6s;--alpha:0.5"></i>
+                <i style="--x:920px;--y:800px;--size:1.8px;--dx1:7px;--dy1:4px;--dx2:-5px;--dy2:-6px;--dx3:3px;--dy3:-5px;--duration:13.1s;--delay:-10.1s;--alpha:0.64"></i>
+                <i style="--x:990px;--y:650px;--size:1.3px;--dx1:-6px;--dy1:5px;--dx2:4px;--dy2:-7px;--dx3:7px;--dy3:3px;--duration:9.5s;--delay:-2.9s;--alpha:0.5"></i>
+                <i style="--x:1000px;--y:930px;--size:1.6px;--dx1:5px;--dy1:-5px;--dx2:-4px;--dy2:7px;--dx3:3px;--dy3:2px;--duration:13.6s;--delay:-9.8s;--alpha:0.58"></i>
+                <i style="--x:700px;--y:990px;--size:1.2px;--dx1:-4px;--dy1:6px;--dx2:6px;--dy2:-2px;--dx3:-5px;--dy3:-4px;--duration:12.2s;--delay:-6.7s;--alpha:0.46"></i>
+                <i style="--x:140px;--y:160px;--size:1.1px;--dx1:4px;--dy1:5px;--dx2:-6px;--dy2:-4px;--dx3:3px;--dy3:-6px;--duration:14.4s;--delay:-11.5s;--alpha:0.3"></i>
+                <i style="--x:300px;--y:360px;--size:1.2px;--dx1:-5px;--dy1:-3px;--dx2:4px;--dy2:6px;--dx3:6px;--dy3:-2px;--duration:13.1s;--delay:-8.8s;--alpha:0.34"></i>
+                <i style="--x:520px;--y:210px;--size:1.1px;--dx1:6px;--dy1:-4px;--dx2:-3px;--dy2:5px;--dx3:-5px;--dy3:3px;--duration:14.8s;--delay:-4.6s;--alpha:0.3"></i>
+                <i style="--x:730px;--y:330px;--size:1.3px;--dx1:-4px;--dy1:5px;--dx2:5px;--dy2:-6px;--dx3:3px;--dy3:4px;--duration:11.2s;--delay:-7.8s;--alpha:0.36"></i>
+                <i style="--x:900px;--y:220px;--size:1.1px;--dx1:5px;--dy1:-6px;--dx2:-4px;--dy2:3px;--dx3:6px;--dy3:5px;--duration:15.2s;--delay:-12.3s;--alpha:0.28"></i>
+                <i style="--x:1120px;--y:350px;--size:1.2px;--dx1:-6px;--dy1:-4px;--dx2:5px;--dy2:6px;--dx3:-3px;--dy3:2px;--duration:12.9s;--delay:-5.1s;--alpha:0.34"></i>
+                <i style="--x:1180px;--y:700px;--size:1.3px;--dx1:4px;--dy1:-5px;--dx2:-5px;--dy2:4px;--dx3:3px;--dy3:6px;--duration:13.9s;--delay:-9.1s;--alpha:0.36"></i>
+                <i style="--x:240px;--y:600px;--size:1.1px;--dx1:-5px;--dy1:4px;--dx2:6px;--dy2:-3px;--dx3:-4px;--dy3:-5px;--duration:14.3s;--delay:-3.3s;--alpha:0.3"></i>
+              </span>
+              <img class="rr-night-screen reader-theme-night" data-reader-asset="cover.RCSS-部分光锥影响下的屏幕.svg" alt="">
+              <img class="rr-dawn-window-foreground reader-theme-dawn" data-reader-asset="cover.Dawn-Window-Foreground.png" alt="">
+              <span class="rr-dawn-cat-wall-patch reader-theme-dawn" aria-hidden="true"></span>
+              <img class="rr-dawn-cat-photo reader-theme-dawn" data-reader-asset="cover.RCSD-肥肥相片.svg" alt="">
+              <img class="rr-dawn-cat-frame reader-theme-dawn" data-reader-asset="cover.RCSD-肥肥相框.svg" alt="">
+              <img class="rr-dawn-frame-cat reader-theme-dawn" data-reader-asset="cover.RCSD-爬相框的猫.svg" alt="">
+              <span class="rr-night-parrot-cleanup reader-theme-night" aria-hidden="true">
+                <img class="rr-night-parrot-cleanup-window" data-reader-asset="cover.RCSS-星夜窗户.svg" alt="">
+                <img class="rr-night-parrot-cleanup-city" data-reader-asset="cover.RCSS-时光建筑群.svg" alt="">
+                <img class="rr-night-parrot-cleanup-computer" data-reader-asset="cover.RCSS-桌面与电脑-黑灯.svg" alt="">
+              </span>
+              <img class="rr-night-parrot reader-theme-night" data-reader-asset="cover.RCSS-鹦鹉.svg" alt="">
+              <span class="rr-audio-reactor rr-radio-reactor reader-theme-dawn" aria-hidden="true">
+                <i class="rr-audio-cone rr-radio-cone-left"></i>
+                <i class="rr-audio-cone rr-radio-cone-right"></i>
+                <i class="rr-radio-needle"></i>
+              </span>
+              <span class="rr-audio-reactor rr-speaker-reactor reader-theme-night" aria-hidden="true">
+                <i class="rr-audio-cone rr-speaker-cone-left"></i>
+                <i class="rr-audio-cone rr-speaker-cone-right"></i>
+              </span>
+              <span class="rr-music-notes rr-radio-notes reader-theme-dawn" aria-hidden="true">
+                <svg class="rr-music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="rr-music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="rr-music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+              </span>
+              <span class="rr-music-notes rr-speaker-notes reader-theme-night" aria-hidden="true">
+                <svg class="rr-music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="rr-music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="rr-music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="rr-music-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+              </span>
+              <span class="rr-identity-name-mask reader-theme-dawn" aria-hidden="true"></span>
+              <img class="rr-identity-shelf reader-theme-dawn" data-reader-asset="cover.RCSD-墙面架子.svg" alt="">
+              <span class="rr-night-name-repair reader-theme-night" aria-hidden="true">
+                <img class="rr-night-name-floor rr-night-name-floor-base" data-reader-asset="cover.RCSS-桌面与电脑-黑灯.svg" alt="">
+                <img class="rr-night-name-floor rr-night-name-floor-light" data-reader-asset="cover.RCSS-光锥蒙版下的桌面与电脑.svg" alt="">
+                <img class="rr-night-name-floor rr-night-name-floor-beam" data-reader-asset="cover.RCSS-光锥.svg" alt="">
+              </span>
+              <button class="rr-archive-hotspot" type="button" data-cover-action="archive" aria-label="管理档案" data-i18n-aria-label="aria.manage_archive" data-cloudig-tooltip-auto>
+                <span class="rr-archive-wake" aria-hidden="true"></span>
+                <span class="rr-archive-copy"><strong>管理档案</strong><small class="cover-library-path"></small></span>
+              </button>
+              <div class="rr-scene-identities">
+                <button class="rr-scene-person rr-scene-user" type="button" data-cover-action="identity" aria-label="编辑用户头像与名称" data-i18n-aria-label="aria.edit_user_identity" data-cloudig-tooltip-auto>
+                  <span class="rr-scene-avatar"><img class="cover-user-avatar" data-reader-asset="cover.OsisLogo-Cloudig-1024.png" alt=""></span>
+                  <img class="rr-scene-frame reader-theme-dawn" data-reader-asset="cover.Cover-PhotoFrame-Dawn.svg" alt="">
+                  <img class="rr-scene-frame reader-theme-night" data-reader-asset="cover.Cover-PhotoFrame-StarNight.svg" alt="">
+                  <strong class="cover-user-name">采云用户</strong>
+                </button>
+                <button class="rr-scene-person rr-scene-assistant" type="button" data-cover-action="identity" aria-label="编辑智能头像与名称" data-i18n-aria-label="aria.edit_assistant_identity" data-cloudig-tooltip-auto>
+                  <span class="rr-scene-avatar"><img class="cover-assistant-avatar" data-reader-asset="cover.OsisLogo-Simple.svg" alt=""></span>
+                  <img class="rr-scene-frame reader-theme-dawn" data-reader-asset="cover.Cover-PhotoFrame-Dawn.svg" alt="">
+                  <img class="rr-scene-frame reader-theme-night" data-reader-asset="cover.Cover-PhotoFrame-StarNight.svg" alt="">
+                  <strong class="cover-assistant-name">智能伙伴</strong>
+                </button>
+              </div>
+              <button class="rr-cat-hotspot reader-theme-dawn" type="button" aria-describedby="cover-cat-note"><span class="cover-cat-note" id="cover-cat-note">肥肥，威武雄壮有绅士精神的棕虎斑英国短毛猫，14岁时去了猫星。</span></button>
+            </div>
+          </div>
+        </section>
+
+        <article class="conversation" id="conversation" hidden>
+          <header class="conversation-header">
+            <img class="conversation-title-pattern reader-theme-dawn" data-reader-asset="cover.Conversation-Title-Back-Dawn.svg" alt="">
+            <img class="conversation-title-pattern reader-theme-night" data-reader-asset="cover.Conversation-Title-Back-StarNight.svg" alt="">
+            <div class="conversation-title-stack">
+              <div class="conversation-identity-row">
+                <div class="conversation-kicker">
+                  <span class="platform-icon-frame"><img id="conversation-platform-icon" alt=""></span>
+                  <span class="cloudig-tag is-filled platform-badge" id="platform-badge"></span>
+                  <span class="conversation-model-list" id="conversation-models" role="list" aria-label="模型" data-i18n-aria-label="aria.models"></span>
+                </div>
+                <div class="conversation-actions">
+                  <button class="cloudig-button is-outline conversation-action-export" id="save-markdown" type="button">导出 Markdown</button>
+                  <button class="cloudig-button primary is-filled conversation-action-edit" id="edit-conversation" type="button">编辑</button>
+                </div>
+              </div>
+              <h1 id="conversation-title"></h1>
+              <div class="conversation-meta" id="conversation-meta"></div>
+            </div>
+          </header>
+          <div class="conversation-toolbar">
+            <label class="conversation-search">
+              <input id="message-search" type="search" autocomplete="off" data-i18n-placeholder="conversation.search_placeholder" placeholder="在当前会话中搜索">
+              <button class="conversation-search-action search-submit" id="message-search-go" type="button" aria-label="搜索当前会话" data-i18n-aria-label="aria.search_messages" data-cloudig-tooltip-auto>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 5 5"></path></svg>
+              </button>
+              <button class="conversation-search-action search-clear" id="message-search-clear" type="button" aria-label="清除当前会话搜索" data-i18n-aria-label="aria.clear_message_search" data-cloudig-tooltip-auto>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+              </button>
+            </label>
+            <div class="match-navigation">
+              <button class="nav-button" id="next-match" type="button" aria-label="下一个搜索命中" data-i18n-aria-label="aria.next_match" data-cloudig-tooltip-auto><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5"></path></svg></button>
+              <button class="nav-button" id="previous-match" type="button" aria-label="上一个搜索命中" data-i18n-aria-label="aria.previous_match" data-cloudig-tooltip-auto><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H6m5-5-5 5 5 5"></path></svg></button>
+              <span class="match-summary" id="match-summary"></span>
+            </div>
+            <div class="toolbar-popover" id="expand-disclosure">
+              <button class="toolbar-menu-trigger" id="expand-disclosure-button" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="expand-disclosure-menu" data-i18n="conversation.expand_controls">展开思考与工具</button>
+              <div class="toolbar-menu" id="expand-disclosure-menu" role="group" aria-labelledby="expand-disclosure-button">
+                <label class="toggle"><input id="expand-reasoning" type="checkbox"><span data-i18n="conversation.expand_reasoning">展开思考</span></label>
+                <label class="toggle"><input id="expand-activities" type="checkbox"><span data-i18n="conversation.expand_tools">展开工具</span></label>
+                <label class="toggle"><input id="expand-sources" type="checkbox"><span data-i18n="conversation.expand_references">展开参考</span></label>
+              </div>
+            </div>
+            <div class="toolbar-popover" id="hide-disclosure">
+              <button class="toolbar-menu-trigger" id="hide-disclosure-button" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="hide-disclosure-menu" data-i18n="conversation.hide_controls">隐藏思考与工具</button>
+              <div class="toolbar-menu" id="hide-disclosure-menu" role="group" aria-labelledby="hide-disclosure-button">
+                <label class="toggle"><input id="hide-reasoning" type="checkbox"><span data-i18n="conversation.hide_reasoning">隐藏思维</span></label>
+                <label class="toggle"><input id="hide-activities" type="checkbox"><span data-i18n="conversation.hide_tools">隐藏工具</span></label>
+              </div>
+            </div>
+            <button id="show-sources" type="button" hidden>来源</button>
+            <button id="show-markdown" type="button" hidden>查看 Markdown</button>
+            <button id="copy-markdown" type="button" hidden>复制 Markdown</button>
+          </div>
+          <div class="conversation-scroll" id="conversation-scroll">
+            <div class="branch-navigation" id="branch-navigation" hidden>
+              <span class="branch-mark" aria-hidden="true">⑂</span>
+              <div><strong data-i18n="branch.title">会话分支</strong><small id="branch-summary"></small></div>
+              <button class="nav-button" id="previous-branch" type="button" aria-label="上一条分支" data-i18n-aria-label="aria.previous_branch" data-cloudig-tooltip-auto>←</button>
+              <label><span class="sr-only" data-i18n="branch.select">选择分支</span><select id="branch-select"></select></label>
+              <button class="nav-button" id="next-branch" type="button" aria-label="下一条分支" data-i18n-aria-label="aria.next_branch" data-cloudig-tooltip-auto>→</button>
+            </div>
+            <section class="warnings" id="warnings" hidden></section>
+            <section class="timeline" id="timeline" aria-live="polite"></section>
+            <footer class="conversation-footer" hidden></footer>
+          </div>
+        </article>
+      </main>
+
+      <aside class="rr-docs" id="cover-navigation" aria-label="采云功能文档" data-i18n-aria-label="aria.docs">
+        <div class="rr-docs-design" id="cover-navigation-layout">
+          <img class="rr-windbell reader-theme-dawn" data-reader-asset="cover.Windbell-Dawn.svg" alt="">
+          <img class="rr-windbell reader-theme-night" data-reader-asset="cover.Windbell-StarNight.svg" alt="">
+          <section class="rr-doc-board">
+            <img class="rr-doc-assembly reader-theme-dawn" data-reader-asset="cover.DocBack-Dawn.svg" alt="">
+            <img class="rr-doc-assembly reader-theme-night" data-reader-asset="cover.DocBack-StarNight.svg" alt="">
+            <div class="rr-doc-paper">
+              <header>
+                <span><strong data-i18n="cover.docs_title">采云功能文档</strong><small>V1.0.0-dev <span data-i18n="brand.milestone">内容时间</span></small></span>
+              </header>
+              <div class="rr-doc-content cover-doc-content">
+                <ul>
+                  <li><button type="button" data-reader-doc-topic="bookmark"><i></i><span data-i18n="cover.docs_bookmark">书签使用方法</span><img class="reader-theme-dawn" data-reader-asset="cover.SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.SmallButterfly-StarNight.svg" alt=""></button></li>
+                  <li><button type="button" data-reader-doc-topic="archive"><i></i><span data-i18n="cover.docs_archive">档案管理方法</span><img class="reader-theme-dawn" data-reader-asset="cover.SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.SmallButterfly-StarNight.svg" alt=""></button></li>
+                  <li><button type="button" data-reader-doc-topic="json"><i></i><span data-i18n="cover.docs_json">JSON规范</span><img class="reader-theme-dawn" data-reader-asset="cover.SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.SmallButterfly-StarNight.svg" alt=""></button></li>
+                  <li><button type="button" data-reader-doc-topic="platforms"><i></i><span data-i18n="cover.docs_platforms">各平台范例</span><img class="reader-theme-dawn" data-reader-asset="cover.SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.SmallButterfly-StarNight.svg" alt=""></button></li>
+                  <li><button type="button" data-reader-doc-topic="roadmap"><i></i><span data-i18n="cover.docs_roadmap">历史与更新计划</span><img class="reader-theme-dawn" data-reader-asset="cover.SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.SmallButterfly-StarNight.svg" alt=""></button></li>
+                  <li><button type="button" data-reader-doc-topic="license"><i></i><span>LICENSE</span><img class="reader-theme-dawn" data-reader-asset="cover.SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-night" data-reader-asset="cover.SmallButterfly-StarNight.svg" alt=""></button></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+          <footer class="rr-contact">
+            <span class="rr-contact-avatar"><img data-reader-asset="cover.ChenXing-Avatar.png" alt=""></span>
+            <span><strong class="cover-contact-name">晨星.CyberVenus</strong><small><span data-i18n="cover.contact_zhihu">知乎留言</span><span>GitHub</span></small></span>
+          </footer>
+        </div>
+      </aside>
+
+      <aside class="outline" id="outline" aria-label="会话路标" data-i18n-aria-label="aria.outline">
+        <div class="outline-cover-scene">
+          <img class="outline-birds reader-theme-dawn" data-reader-asset="cover.ThreeBird-Dawn.svg" alt="">
+          <img class="outline-birds reader-theme-night" data-reader-asset="cover.ThreeBird-StarNight.svg" alt="">
+          <button class="cloudig-button is-outline return-cover" id="return-cover" type="button">返回封面</button>
+          <img class="outline-book reader-theme-dawn" data-reader-asset="cover.DecBook-Dawn.svg" alt="">
+          <img class="outline-book reader-theme-night" data-reader-asset="cover.DecBook-StarNight.svg" alt="">
+          <span class="outline-cover-rail" aria-hidden="true"></span>
+        </div>
+        <div class="role-visibility">
+          <label><input id="show-user-messages" type="checkbox" checked><span data-i18n="outline.user">用户</span></label>
+          <label><input id="show-ai-messages" type="checkbox" checked><span data-i18n="outline.assistant">智能</span></label>
+          <label><input id="show-process-messages" type="checkbox"><span data-i18n="outline.process">过程</span></label>
+        </div>
+        <div class="outline-actions" aria-label="会话导航" data-i18n-aria-label="aria.outline_navigation">
+          <button class="nav-button" id="scroll-top" type="button" aria-label="回到会话顶部" data-i18n-aria-label="aria.scroll_top" data-cloudig-tooltip-auto><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M12 19V8m0 0-4 4m4-4 4 4"></path></svg></button>
+          <button class="nav-button" id="previous-message" type="button" aria-label="上一条消息" data-i18n-aria-label="aria.previous_message" data-cloudig-tooltip-auto><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18V6m0 0-5 5m5-5 5 5"></path></svg></button>
+          <button class="nav-button" id="next-message" type="button" aria-label="下一条消息" data-i18n-aria-label="aria.next_message" data-cloudig-tooltip-auto><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12m0 0-5-5m5 5 5-5"></path></svg></button>
+          <button class="nav-button" id="scroll-bottom" type="button" aria-label="前往会话底部" data-i18n-aria-label="aria.scroll_bottom" data-cloudig-tooltip-auto><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h14M12 5v11m0 0-4-4m4 4 4-4"></path></svg></button>
+        </div>
+        <div id="outline-stats" hidden></div>
+        <nav class="outline-list" id="outline-list" aria-label="消息路标" data-i18n-aria-label="aria.outline_list"></nav>
+        <div class="outline-preview-popover" id="outline-preview-popover" role="tooltip" hidden></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="reader-utility" hidden>
+    <button id="save-json" type="button" data-i18n="action.open_json">打开 JSON 文件</button>
+    <button id="open-folder" type="button" data-i18n="action.open_library">打开档案文件夹</button>
+    <button id="change-folder" type="button" data-i18n="action.change_folder">更改文件夹</button>
+    <button id="open-files" type="button" data-i18n="action.add_json">追加 JSON</button>
+    <button id="library-change-folder" type="button" data-i18n="action.change_folder">更改目录</button>
+    <button id="edit-profile" type="button" aria-haspopup="dialog" aria-controls="profile-edit-dialog" data-i18n="action.library_settings">资料库设置</button>
+    <button id="welcome-manager" type="button" data-i18n="action.capture_parse">采集与解析</button>
+    <button id="welcome-folder" type="button" data-i18n="action.open_default_library">打开资料库</button>
+    <button id="welcome-change-folder" type="button" data-i18n="action.choose_library_folder">选择资料库</button>
+    <button id="welcome-open" type="button" data-i18n="action.add_json">追加 JSON</button>
+    <strong id="default-directory-label" data-i18n="welcome.not_selected">尚未选择</strong>
+    <small id="default-directory-note"></small>
+    <div class="drop-zone" id="drop-zone"></div>
+    <input id="file-input" type="file" accept=".json,application/json" multiple>
+    <input id="folder-input" type="file" accept=".json,application/json" webkitdirectory directory multiple>
+  </div>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog class="reader-directory-dialog" id="directory-manager-dialog" aria-labelledby="directory-manager-title" aria-describedby="directory-manager-intro">
+    <form class="reader-directory-card" id="directory-manager-form" novalidate>
+      <header class="reader-directory-header">
+        <div>
+          <span class="eyebrow" data-i18n="directory_manager.eyebrow">DIRECTORY MANAGEMENT</span>
+          <h2 id="directory-manager-title" data-i18n="directory_manager.title">管理目录</h2>
+        </div>
+        <button class="reader-directory-close" id="directory-manager-close" type="button" aria-label="关闭目录管理" data-i18n-aria-label="directory_manager.close" data-cloudig-tooltip-auto>×</button>
+      </header>
+      <p class="reader-directory-intro" id="directory-manager-intro" data-i18n="directory_manager.intro">目录只整理会话位置，不改变会话身份、标题或用户编辑。</p>
+      <div class="reader-directory-layout">
+        <section class="reader-directory-list-pane" aria-labelledby="directory-manager-list-title">
+          <header>
+            <strong id="directory-manager-list-title"><span data-i18n="directory_manager.user_directories">用户目录</span><b id="directory-manager-count">0</b></strong>
+            <button id="directory-manager-new" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg><span data-i18n="catalog.create_directory">新建目录</span></button>
+          </header>
+          <div class="reader-directory-list" id="directory-manager-list" role="listbox"></div>
+          <p class="reader-directory-empty" id="directory-manager-empty" data-i18n="directory_manager.empty">尚未建立目录。</p>
+        </section>
+        <section class="reader-directory-edit-pane" aria-live="polite">
+          <div class="reader-directory-editor-empty" id="directory-manager-editor-empty">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 13h16l5 6h17v22H5z"/><path d="M5 19h38"/></svg>
+            <strong data-i18n="directory_manager.choose">选择一个目录进行管理</strong>
+            <span data-i18n="directory_manager.choose_hint">也可以新建目录；只有完全空的目录可以删除。</span>
+          </div>
+          <div class="reader-directory-editor" id="directory-manager-editor" hidden>
+            <span class="eyebrow" id="directory-manager-mode">EDIT DIRECTORY</span>
+            <label><span data-i18n="directory_manager.name">目录名称</span><input id="directory-manager-name" maxlength="80" autocomplete="off" required></label>
+            <dl class="reader-directory-facts">
+              <div><dt data-i18n="directory_manager.conversations">对话数</dt><dd id="directory-manager-files">0</dd></div>
+              <div><dt data-i18n="directory_manager.size">文件夹大小</dt><dd id="directory-manager-size">0 B</dd></div>
+            </dl>
+            <p class="reader-directory-error" id="directory-manager-error" role="alert" hidden></p>
+          </div>
+        </section>
+      </div>
+      <footer class="reader-directory-actions-row">
+        <button class="reader-directory-delete" id="directory-manager-delete" type="button" data-i18n="directory_manager.delete_empty">删除空目录</button>
+        <span></span>
+        <button class="reader-directory-cancel" id="directory-manager-cancel" type="button" data-i18n="catalog.cancel">取消</button>
+        <button class="reader-directory-save" id="directory-manager-save" type="submit" data-i18n="directory_manager.save">保存</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog class="compatibility-dialog" id="compatibility-dialog" aria-labelledby="compatibility-title" aria-describedby="compatibility-note">
+    <section class="dialog-card compatibility-dialog-card">
+      <header>
+        <div>
+          <span class="eyebrow" data-i18n="dialog.compatibility.eyebrow">版本兼容</span>
+          <h2 id="compatibility-title" data-i18n="dialog.compatibility.title">部分会话暂时无法阅读</h2>
+        </div>
+      </header>
+      <p class="dialog-note" id="compatibility-note" data-i18n="dialog.compatibility.note">以下 JSON 使用当前 Reader 尚不支持的会话格式，或文件已经损坏。它们没有被删除或改写，其余兼容会话仍可正常阅读。</p>
+      <ul class="compatibility-list" id="compatibility-list"></ul>
+      <p class="compatibility-action" data-i18n="dialog.compatibility.action">未来格式请升级采云后重新打开；损坏文件请回到采集与解析重新生成或从备份恢复。不要使用旧版 Parser 覆盖新版文件。</p>
+      <div class="dialog-actions">
+        <button class="cloudig-button primary" id="compatibility-close" type="button" data-i18n="action.close">关闭</button>
+      </div>
+    </section>
+  </dialog>
+
+  <dialog class="source-dialog" id="source-dialog">
+    <form method="dialog" class="dialog-card">
+      <header><div><span class="eyebrow" data-i18n="dialog.sources.eyebrow">外部地址仅供查阅</span><h2 data-i18n="dialog.sources.title">搜索、引用与附件来源</h2></div><button class="icon-button" value="close" aria-label="关闭" data-i18n-aria-label="action.close" data-cloudig-tooltip-auto>×</button></header>
+      <p class="dialog-note" data-i18n="dialog.sources.note">Reader 不会主动打开或下载这些地址。</p>
+      <div id="source-dialog-body" class="source-dialog-body"></div>
+    </form>
+  </dialog>
+
+  <dialog class="markdown-dialog" id="markdown-dialog">
+    <form method="dialog" class="dialog-card markdown-dialog-card">
+      <header><div><span class="eyebrow" data-i18n="dialog.markdown.eyebrow">由当前会话确定生成</span><h2 data-i18n="dialog.markdown.title">Markdown 预览</h2></div><button class="icon-button" value="close" aria-label="关闭" data-i18n-aria-label="action.close" data-cloudig-tooltip-auto>×</button></header>
+      <p class="dialog-note" data-i18n="dialog.markdown.note"></p>
+      <textarea id="markdown-preview" readonly spellcheck="false" aria-label="当前会话 Markdown" data-i18n-aria-label="aria.markdown_preview"></textarea>
+      <div class="dialog-actions">
+        <button class="cloudig-button" id="dialog-copy-markdown" type="button" data-i18n="action.copy_markdown">复制 Markdown</button>
+        <button class="cloudig-button primary" id="dialog-save-markdown" type="button" data-i18n="action.save_markdown">保存 Markdown</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="image-dialog" id="image-dialog">
+    <form method="dialog" class="image-dialog-card">
+      <button class="icon-button image-close" value="close" aria-label="关闭大图" data-i18n-aria-label="aria.close_image" data-cloudig-tooltip-auto>×</button>
+      <img id="image-dialog-image" alt="">
+      <p id="image-dialog-caption"></p>
+    </form>
+  </dialog>
+
+  <dialog class="conversation-info-dialog" id="conversation-edit-dialog">
+    <form class="conversation-info-card" id="conversation-edit-form">
+      <div class="conversation-info-title-frame">
+        <label class="sr-only" for="edit-conversation-title" data-i18n="field.title">会话标题</label>
+        <input id="edit-conversation-title" type="text" maxlength="500" required>
+      </div>
+
+      <div class="conversation-info-labels">
+        <img id="edit-conversation-platform-icon" alt="">
+        <label class="conversation-info-platform-tag">
+          <span class="sr-only" data-i18n="field.platform">平台</span>
+          <input id="edit-conversation-platform" type="text" maxlength="100" required>
+        </label>
+        <div class="conversation-info-models" id="edit-conversation-models" aria-label="模型" data-i18n-aria-label="aria.models"></div>
+        <button class="conversation-info-add-model" id="edit-conversation-add-model" type="button" data-i18n="dialog.edit.add_model">+ 添加模型</button>
+      </div>
+
+      <ul class="conversation-info-facts">
+        <li><span id="edit-conversation-json-times"></span><span id="edit-conversation-message-times"></span></li>
+        <li><span data-i18n="dialog.edit.current_json">当前 JSON 文件名：</span><code id="edit-conversation-file-name"></code><strong data-i18n="dialog.edit.filename_note">修改标题不会修改 JSON 文件名</strong></li>
+        <li><span id="edit-conversation-source-file"></span><span id="edit-conversation-source-time"></span></li>
+      </ul>
+
+      <section class="conversation-time-editor" aria-labelledby="conversation-time-heading">
+        <div class="conversation-time-preview-column">
+          <header><h3 id="conversation-time-heading" data-i18n="field.content_time">内容时间</h3><button id="edit-time-system" type="button" data-i18n="dialog.edit.open_time_system">编辑时间轴</button><button id="edit-time-clear" type="button" data-i18n="dialog.edit.clear_time">清空</button></header>
+          <output id="edit-time-preview" data-i18n="dialog.edit.time_placeholder">内容覆盖的时间</output>
+          <p id="edit-time-warning" hidden></p>
+        </div>
+        <div class="conversation-time-controls">
+          <div class="conversation-time-heading-row">
+            <strong data-i18n="dialog.edit.start">起点</strong>
+            <label><input type="radio" name="edit-start-type" value="exact" checked><span data-i18n="dialog.edit.exact">确切时间</span></label>
+            <label><input type="radio" name="edit-start-type" value="general"><span data-i18n="dialog.edit.general">模糊时间</span></label>
+            <label><input type="radio" name="edit-start-type" value="unknown"><span data-i18n="dialog.edit.unknown">未知</span></label>
+            <button id="edit-time-confirm" type="button" data-i18n="action.confirm">确定</button>
+          </div>
+          <div class="conversation-time-fields" id="edit-start-fields">
+            <select id="edit-start-precision" aria-label="时间精度" data-i18n-aria-label="aria.time_precision">
+              <option value="month" data-i18n="dialog.edit.precision_month">年月</option>
+              <option value="year" data-i18n="dialog.edit.precision_year">年份</option>
+              <option value="decade" data-i18n="dialog.edit.precision_decade">年代</option>
+            </select>
+            <input id="edit-start-year" inputmode="numeric" type="number" min="1" max="9999" placeholder="年" data-i18n-placeholder="dialog.edit.unit_year">
+            <input id="edit-start-month" inputmode="numeric" type="number" min="1" max="12" placeholder="月" data-i18n-placeholder="dialog.edit.unit_month">
+            <input id="edit-start-day" inputmode="numeric" type="number" min="1" max="31" placeholder="日" data-i18n-placeholder="dialog.edit.unit_day">
+            <input id="edit-start-hour" inputmode="numeric" type="number" min="0" max="23" placeholder="时" data-i18n-placeholder="dialog.edit.unit_hour">
+            <span class="conversation-time-colon">:</span>
+            <input id="edit-start-minute" inputmode="numeric" type="number" min="0" max="59" placeholder="分" data-i18n-placeholder="dialog.edit.unit_minute">
+            <select id="edit-start-timezone" aria-label="时区" data-i18n-aria-label="aria.timezone">
+              <option value="" data-i18n="dialog.edit.ignore_timezone">忽略时区</option>
+              <option value="Z">UTC</option>
+              <option value="-12:00">UTC−12:00</option><option value="-08:00">UTC−08:00</option>
+              <option value="-05:00">UTC−05:00</option><option value="+00:00">UTC+00:00</option>
+              <option value="+05:30">UTC+05:30</option><option value="+08:00">UTC+08:00</option>
+              <option value="+09:00">UTC+09:00</option><option value="+10:00">UTC+10:00</option>
+              <option value="+12:00">UTC+12:00</option><option value="+14:00">UTC+14:00</option>
+            </select>
+            <div class="conversation-time-era" role="group" aria-label="纪元" data-i18n-aria-label="aria.era">
+              <label><input type="radio" name="edit-start-era" value="AD" checked><span>AD</span></label>
+              <label><input type="radio" name="edit-start-era" value="BC"><span>BC</span></label>
+            </div>
+          </div>
+
+          <div class="conversation-time-heading-row conversation-time-end-heading">
+            <strong data-i18n="dialog.edit.end">终点</strong>
+            <label><input type="radio" name="edit-end-type" value="same" checked><span data-i18n="dialog.edit.same_start">同起点</span></label>
+            <label><input type="radio" name="edit-end-type" value="exact"><span data-i18n="dialog.edit.exact">确切时间</span></label>
+            <label><input type="radio" name="edit-end-type" value="general"><span data-i18n="dialog.edit.general">模糊时间</span></label>
+            <label><input type="radio" name="edit-end-type" value="unknown"><span data-i18n="dialog.edit.unknown">未知</span></label>
+          </div>
+          <div class="conversation-time-fields" id="edit-end-fields" hidden>
+            <select id="edit-end-precision" aria-label="时间精度" data-i18n-aria-label="aria.time_precision">
+              <option value="month" data-i18n="dialog.edit.precision_month">年月</option>
+              <option value="year" data-i18n="dialog.edit.precision_year">年份</option>
+              <option value="decade" data-i18n="dialog.edit.precision_decade">年代</option>
+            </select>
+            <input id="edit-end-year" inputmode="numeric" type="number" min="1" max="9999" placeholder="年" data-i18n-placeholder="dialog.edit.unit_year">
+            <input id="edit-end-month" inputmode="numeric" type="number" min="1" max="12" placeholder="月" data-i18n-placeholder="dialog.edit.unit_month">
+            <input id="edit-end-day" inputmode="numeric" type="number" min="1" max="31" placeholder="日" data-i18n-placeholder="dialog.edit.unit_day">
+            <input id="edit-end-hour" inputmode="numeric" type="number" min="0" max="23" placeholder="时" data-i18n-placeholder="dialog.edit.unit_hour">
+            <span class="conversation-time-colon">:</span>
+            <input id="edit-end-minute" inputmode="numeric" type="number" min="0" max="59" placeholder="分" data-i18n-placeholder="dialog.edit.unit_minute">
+            <select id="edit-end-timezone" aria-label="时区" data-i18n-aria-label="aria.timezone">
+              <option value="" data-i18n="dialog.edit.ignore_timezone">忽略时区</option>
+              <option value="Z">UTC</option>
+              <option value="-12:00">UTC−12:00</option><option value="-08:00">UTC−08:00</option>
+              <option value="-05:00">UTC−05:00</option><option value="+00:00">UTC+00:00</option>
+              <option value="+05:30">UTC+05:30</option><option value="+08:00">UTC+08:00</option>
+              <option value="+09:00">UTC+09:00</option><option value="+10:00">UTC+10:00</option>
+              <option value="+12:00">UTC+12:00</option><option value="+14:00">UTC+14:00</option>
+            </select>
+            <div class="conversation-time-era" role="group" aria-label="纪元" data-i18n-aria-label="aria.era">
+              <label><input type="radio" name="edit-end-era" value="AD" checked><span>AD</span></label>
+              <label><input type="radio" name="edit-end-era" value="BC"><span>BC</span></label>
+            </div>
+          </div>
+          <p class="conversation-time-instruction" id="edit-time-instruction" data-i18n="dialog.edit.time_instruction">编辑后点击右上角的确定保存</p>
+        </div>
+      </section>
+
+      <div class="conversation-info-art" aria-hidden="true">
+        <img class="conversation-info-art-dawn" id="conversation-info-art-dawn" alt="">
+        <img class="conversation-info-art-night" id="conversation-info-art-night" alt="">
+      </div>
+      <div class="conversation-info-actions">
+        <button class="conversation-info-save" type="submit" data-i18n="action.save">保存</button>
+        <button class="conversation-info-cancel" type="button" data-close-dialog="conversation-edit-dialog" data-i18n="action.cancel">取消</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="name-rule-dialog" id="name-rule-dialog">
+    <section class="dialog-card name-rule-dialog-card">
+      <header>
+        <div><span class="eyebrow" data-i18n="dialog.name_rule.eyebrow">名称规则提醒</span><h2 data-i18n="dialog.name_rule.title">JSON 文件名与会话标题</h2></div>
+        <button class="icon-button" id="name-rule-close-icon" type="button" aria-label="关闭" data-i18n-aria-label="action.close" data-cloudig-tooltip-auto>×</button>
+      </header>
+      <div class="name-rule-copy">
+        <p data-i18n="dialog.name_rule.detected">检查到 JSON 文件名与会话标题不一致。</p>
+        <p data-i18n="dialog.name_rule.note">请注意，修改 JSON 文件名不会修改会话标题。<br>需要修改会话标题，请在 Reader 中选择会话后编辑标题名。<br>修改会话标题同样也不会修改 JSON 文件名。</p>
+      </div>
+      <label class="name-rule-ack"><input id="name-rule-ack" type="checkbox"><span data-i18n="dialog.name_rule.ack">已阅，不再提示</span></label>
+      <div class="dialog-actions">
+        <button class="cloudig-button primary" id="name-rule-close" type="button" data-i18n="action.close">关闭</button>
+      </div>
+    </section>
+  </dialog>
+
+  <dialog class="identity-dialog" id="profile-edit-dialog" aria-labelledby="identity-dialog-title" aria-describedby="identity-dialog-intro">
+    <form class="dialog-card identity-dialog-card" id="profile-edit-form">
+      <header class="identity-dialog-header">
+        <div>
+          <span class="eyebrow" data-i18n="identity.eyebrow">NAMES &amp; AVATARS</span>
+          <h2 id="identity-dialog-title" data-i18n="identity.global_title">全局名称与头像设定</h2>
+          <p id="identity-dialog-intro" data-i18n="identity.global_intro">设定跨会话使用的用户身份，以及智能伙伴的统一或后备身份。</p>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="profile-edit-dialog" data-i18n-aria-label="action.close" data-cloudig-tooltip-auto>×</button>
+      </header>
+
+      <div class="identity-dialog-body cloudig-scroll-region">
+      <section class="conversation-name-section" id="conversation-name-section" aria-labelledby="identity-conversation-heading" hidden>
+        <div class="identity-section-heading">
+          <div>
+            <span class="eyebrow" data-i18n="identity.conversation_eyebrow">THIS CONVERSATION</span>
+            <h3 id="identity-conversation-heading" data-i18n="identity.conversation_title">对话名称设定</h3>
+          </div>
+          <button class="identity-reset-button" id="identity-reset-conversation" type="button">
+            <svg class="reader-ui-icon"><use href="#reader-icon-reset"></use></svg>
+            <span data-i18n="identity.restore_conversation">恢复默认名字</span>
+          </button>
+        </div>
+        <div class="conversation-name-grid">
+          <label><span data-i18n="identity.conversation_user_name">本会话用户名称</span><input id="identity-conversation-user-name" type="text" maxlength="100"></label>
+          <label><span data-i18n="identity.conversation_assistant_name">本会话智能名称</span><input id="identity-conversation-assistant-name" type="text" maxlength="100"></label>
+        </div>
+        <p class="identity-callout"><i aria-hidden="true">i</i><span data-i18n="identity.conversation_note">本会话名称优先于全局与平台名称；恢复默认会删除相应覆盖字段。</span></p>
+      </section>
+
+      <section class="identity-global-grid" aria-labelledby="identity-global-heading">
+        <h3 id="identity-global-heading" class="sr-only" data-i18n="identity.global_title">全局名称与头像设定</h3>
+        <article class="identity-person-card user-card">
+          <div class="identity-avatar-editor">
+            <button class="identity-avatar-pick" id="identity-user-avatar-pick" type="button" data-i18n-aria-label="identity.upload_user_avatar" data-cloudig-tooltip-auto>
+              <img id="identity-user-avatar-preview" data-reader-asset="cover.OsisLogo-Cloudig-1024.png" alt="">
+              <span class="identity-avatar-overlay" aria-hidden="true"><svg class="reader-ui-icon"><use href="#reader-icon-upload"></use></svg></span>
+            </button>
+            <button class="identity-avatar-remove" id="identity-user-avatar-remove" type="button" data-i18n-aria-label="identity.remove_avatar" data-cloudig-tooltip-auto>
+              <svg class="reader-ui-icon"><use href="#reader-icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="identity-person-copy">
+            <span class="identity-card-kicker" data-i18n="identity.user">用户</span>
+            <label for="edit-user-name" data-i18n="identity.user_name">用户名称</label>
+            <div class="identity-name-line">
+              <input id="edit-user-name" type="text" maxlength="100" data-i18n-placeholder="identity.user_placeholder" placeholder="采云用户">
+              <button class="identity-reset-button" id="identity-reset-user" type="button">
+                <svg class="reader-ui-icon"><use href="#reader-icon-reset"></use></svg>
+                <span data-i18n="identity.restore_default">恢复默认</span>
+              </button>
+            </div>
+            <p data-i18n="identity.user_note">用户名称和头像应用于所有对话，本会话单独名称除外。</p>
+          </div>
+        </article>
+
+        <article class="identity-person-card assistant-card">
+          <div class="identity-avatar-editor">
+            <button class="identity-avatar-pick" id="identity-assistant-avatar-pick" type="button" data-i18n-aria-label="identity.upload_assistant_avatar" data-cloudig-tooltip-auto>
+              <img id="identity-assistant-avatar-preview" data-reader-asset="cover.OsisLogo-Simple.svg" alt="">
+              <span class="identity-avatar-overlay" aria-hidden="true"><svg class="reader-ui-icon"><use href="#reader-icon-upload"></use></svg></span>
+            </button>
+            <button class="identity-avatar-remove" id="identity-assistant-avatar-remove" type="button" data-i18n-aria-label="identity.remove_avatar" data-cloudig-tooltip-auto>
+              <svg class="reader-ui-icon"><use href="#reader-icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="identity-person-copy">
+            <span class="identity-card-kicker" data-i18n="identity.assistant">智能伙伴</span>
+            <label for="edit-assistant-name" data-i18n="identity.assistant_name">伙伴名称</label>
+            <div class="identity-name-line">
+              <input id="edit-assistant-name" type="text" maxlength="100" data-i18n-placeholder="identity.assistant_placeholder" placeholder="智能伙伴">
+              <button class="identity-reset-button" id="identity-reset-assistant" type="button">
+                <svg class="reader-ui-icon"><use href="#reader-icon-reset"></use></svg>
+                <span data-i18n="identity.restore_default">恢复默认</span>
+              </button>
+            </div>
+            <p data-i18n="identity.assistant_note">未启用统一身份时，这里只作为未单独设定平台的后备。</p>
+          </div>
+        </article>
+      </section>
+
+      <label class="identity-unify-option">
+        <input id="identity-apply-to-all" type="checkbox">
+        <span class="identity-checkbox-mark" aria-hidden="true"></span>
+        <span>
+          <strong data-i18n="identity.apply_all">所有对话使用统一智能头像与名称</strong>
+          <small data-i18n="identity.apply_all_note">勾选后，全局智能身份覆盖全部平台；本会话名称仍保持最高优先级。</small>
+        </span>
+      </label>
+
+      <section class="identity-platform-section" aria-labelledby="identity-platform-heading">
+        <div class="identity-section-heading">
+          <div>
+            <span class="eyebrow" data-i18n="identity.platform_eyebrow">PLATFORM IDENTITIES</span>
+            <h3 id="identity-platform-heading" data-i18n="identity.platform_title">模型名称与头像设定</h3>
+          </div>
+          <button class="identity-reset-button" id="identity-reset-platform-names" type="button">
+            <svg class="reader-ui-icon"><use href="#reader-icon-reset"></use></svg>
+            <span data-i18n="identity.restore_platform_names">恢复全部默认名称</span>
+          </button>
+        </div>
+        <p class="identity-section-note" data-i18n="identity.platform_note">未单独设定的平台沿用来源名称与官方头像；这里的设置只写入用户覆盖层。</p>
+        <div class="identity-platform-grid" id="identity-platform-grid"></div>
+      </section>
+      </div>
+
+      <footer class="identity-dialog-footer">
+        <p class="identity-callout identity-persistence-note"><i aria-hidden="true">i</i><span data-i18n="identity.sparse_note">恢复默认或点头像上的 × 会删除相应覆盖字段；重新解析 HTML 不会冲掉这里的设置。</span></p>
+        <div class="dialog-actions identity-dialog-actions">
+          <button class="cloudig-button is-outline" type="button" data-close-dialog="profile-edit-dialog" data-i18n="action.cancel">取消</button>
+          <button class="cloudig-button primary is-filled" type="submit" data-i18n="identity.save">保存修改</button>
+        </div>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="cloudig-docs-dialog" class="cloudig-docs-dialog" aria-label="采云功能文档" data-i18n-aria-label="aria.docs">
+    <div id="cloudig-docs-host" class="cloudig-docs-host"></div>
+  </dialog>
+
+  <script>/*__MARKDOWN_IT__*/</script>
+  <script>/*__TEMML_VENDOR__*/</script>
+  <script>/*__TEMML_RUNTIME__*/</script>
+  <script>/*__CLOUDIG_LIBRARY_CORE__*/</script>
+  <script>/*__CLOUDIG_TOOLTIP__*/</script>
+  <script>/*__CLOUDIG_DOCS_RUNTIME__*/</script>
+  <script>globalThis.__CLOUDIG_DOCS_DATA__=/*__CLOUDIG_DOCS_DATA__*/;</script>
+  <script>/*__READER_I18N__*/</script>
+  <script>globalThis.CloudigTimeLimits=/*__CLOUDIG_TIME_LIMITS__*/;</script>
+  <script>/*__CLOUDIG_TIME_CORE__*/</script>
+  <script>/*__READER_CORE__*/</script>
+  <script>globalThis.__CLOUDIG_READER_ASSETS__=/*__READER_ASSETS__*/;</script>
+  <script>globalThis.__CLOUDIG_READER_BUILD_MODE__=/*__READER_BUILD_MODE__*/;</script>
+  <script>globalThis.__AI_CHAT_ARCHIVE_EMBEDDED_LIBRARY__=/*__EMBEDDED_LIBRARY__*/;</script>
+  <script>/*__READER_COVER_APP__*/</script>
+  <script>/*__READER_APP__*/</script>
+</body>
+</html>

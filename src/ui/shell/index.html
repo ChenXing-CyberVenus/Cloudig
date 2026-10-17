@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dawn" data-ready="false">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: https://cloudig-runtime.local; font-src 'self'; connect-src 'self' https://cloudig-runtime.local; frame-src 'self' https://cloudig-work.invalid https://cloudig-map.local; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>采云 Cloudig</title>
+  <link rel="preload" as="image" href="/assets/reader/Waiting-Sun.gif">
+  <link rel="stylesheet" href="/shell.css">
+  <script src="/startup.js" defer></script>
+  <link rel="stylesheet" href="/operation-progress.css">
+  <link rel="stylesheet" href="/content-search.css">
+  <link rel="stylesheet" href="/welcome.css">
+  <link rel="stylesheet" href="/pages/reader/reader.css">
+  <link rel="stylesheet" href="/pages/reader/conversation.css">
+  <link rel="stylesheet" href="/pages/document/document.css">
+  <link rel="stylesheet" href="/pages/document/history.css">
+  <link rel="stylesheet" href="/pages/document/license.css">
+  <link rel="stylesheet" href="/pages/document/bookmarks.css">
+  <link rel="stylesheet" href="/pages/document/features.css">
+  <link rel="stylesheet" href="/pages/archiver/archiver.css">
+  <link rel="stylesheet" href="/pages/archiver/claude-container.css">
+  <link rel="stylesheet" href="/pages/archiver/platform-json.css">
+  <link rel="stylesheet" href="/pages/conversation-info/conversation-info.css">
+  <link rel="stylesheet" href="/pages/time-cover/time-cover.css">
+  <link rel="stylesheet" href="/shared/time/endpoint-editor.css">
+  <link rel="stylesheet" href="/pages/time-editor/time-editor.css">
+  <link rel="stylesheet" href="/pages/system-log/system-log.css">
+  <link rel="stylesheet" href="/pages/identity-editor/identity-editor.css">
+  <link rel="stylesheet" href="/runtime/conversation-renderer.css">
+</head>
+<body>
+  <div class="app-root" data-route="welcome">
+    <div class="route-host">
+      <main class="welcome-page" data-page="welcome">
+      <div class="welcome-background" aria-hidden="true">
+        <div class="welcome-background-set welcome-background-dawn">
+          <div class="welcome-background-layer welcome-background-first"></div>
+          <div class="welcome-background-layer welcome-background-second"></div>
+        </div>
+        <div class="welcome-background-set welcome-background-star-night">
+          <div class="welcome-background-layer welcome-background-first"></div>
+          <div class="welcome-background-layer welcome-background-second"></div>
+        </div>
+      </div>
+      <section class="welcome-stage" aria-labelledby="welcome-title">
+        <div class="welcome-stack">
+          <figure class="welcome-brand"><img src="/assets/welcome/OsisLogo-Main-1024.png" alt="Osis Aurora"></figure>
+          <img id="welcome-title" class="welcome-product-title" src="/assets/welcome/Cloudig-Logo-Title-Slogan.svg" alt="采云 Cloudig · 于深渊与星河之间">
+          <p class="welcome-greeting" data-i18n="welcome.greeting">你好</p>
+          <div class="welcome-identities" aria-label="身份设置">
+            <button class="welcome-identity welcome-identity-user" type="button" data-action="edit-identity" data-party="user">
+              <span class="welcome-portrait">
+                <img class="welcome-avatar" src="/assets/welcome/OsisLogo-Cloudig-1024.png" alt="">
+                <img class="welcome-frame welcome-frame-dawn" src="/assets/welcome/Cover-PhotoFrame-Dawn.svg" alt="">
+                <img class="welcome-frame welcome-frame-star-night" src="/assets/welcome/Cover-PhotoFrame-StarNight.svg" alt="">
+              </span>
+              <span class="welcome-identity-name" data-identity-name="user">采云用户</span>
+            </button>
+            <button class="welcome-identity welcome-identity-assistant" type="button" data-action="edit-identity" data-party="assistant">
+              <span class="welcome-portrait">
+                <img class="welcome-avatar" src="/assets/welcome/OsisLogo-Simple.svg" alt="">
+                <img class="welcome-frame welcome-frame-dawn" src="/assets/welcome/Cover-PhotoFrame-Dawn.svg" alt="">
+                <img class="welcome-frame welcome-frame-star-night" src="/assets/welcome/Cover-PhotoFrame-StarNight.svg" alt="">
+              </span>
+              <span class="welcome-identity-name" data-identity-name="assistant">智能伙伴</span>
+            </button>
+          </div>
+          <nav class="welcome-primary-actions" aria-label="主要入口">
+            <button class="cloudig-button cloudig-button-filled welcome-reader-button" type="button" data-route-target="reader" data-i18n="welcome.reader">阅览室</button>
+            <button class="cloudig-button cloudig-button-outline welcome-archiver-button" type="button" data-route-target="archiver" data-i18n="welcome.archiver">档案馆</button>
+          </nav>
+          <section class="welcome-introduction">
+            <button class="welcome-theme-switch" type="button" data-action="toggle-theme" aria-label="切换破晓 / 星夜主题" data-i18n-title="welcome.themeTooltip" title="切换破晓 / 星夜主题">
+              <img class="welcome-theme-icon welcome-theme-icon-dawn" src="/assets/welcome/OsisLogo-Simple-Mono-Purple.svg" alt="">
+              <img class="welcome-theme-icon welcome-theme-icon-star-night" src="/assets/welcome/OsisLogo-Simple-Mono-Orange.svg" alt="">
+            </button>
+            <p class="welcome-introduction-copy">
+              <span data-i18n="welcome.introLine1">采云是将不同AI平台的对话采回本地阅读的开源工具</span>
+              <span data-i18n="welcome.introLine2">安装书签→保存对话→本地解析→阅读浏览</span>
+            </p>
+          </section>
+          <footer class="welcome-footer">
+            <span class="welcome-release"><span>V1.0.6</span> <span data-i18n="welcome.releaseName">东方既白</span> ·</span>
+            <button type="button" data-action="check-update" data-i18n="welcome.checkUpdate">检查更新</button>
+            <button type="button" data-action="open-docs" data-i18n="welcome.docs">功能文档</button>
+            <button type="button" data-action="toggle-language" data-i18n="welcome.languageSwitch">ENGLISH</button>
+          </footer>
+        </div>
+      </section>
+      </main>
+    </div>
+    <div class="overlay-root" aria-live="polite">
+      <div class="route-transition" aria-hidden="true"><img src="/assets/reader/Waiting-Sun.gif" alt=""></div>
+    </div>
+  </div>
+  <template id="reader-cover-template">
+    <section class="reader-page" data-page="reader" data-reader-view="cover">
+      <header class="reader-topbar">
+        <button class="reader-brand" type="button" data-route-target="welcome" data-i18n-title="reader.returnWelcome" title="返回采云封面">
+          <img class="reader-brand-logo reader-theme-dawn" src="/assets/reader/OsisLogo-Cloudig-RedBackWhiteAbyss.svg" alt="">
+          <img class="reader-brand-logo reader-theme-star-night" src="/assets/reader/OsisLogo-Cloudig-PurpleBackOrangeAbyss.svg" alt="">
+          <img class="reader-brand-title reader-theme-dawn" src="/assets/reader/Cloudig-Title-Chinese-Grey-Dark-1024.png" data-brand-english="/assets/reader/Cloudig-Title-English-Grey-Dark.svg" alt="采云">
+          <img class="reader-brand-title reader-theme-star-night" src="/assets/reader/Cloudig-Title-Chinese-Grey-Light-1024.png" data-brand-english="/assets/reader/Cloudig-Title-English-Grey-Light.svg" alt="采云">
+          <img class="reader-brand-slogan reader-theme-dawn reader-language-zh" src="/assets/reader/Cloudig-Slogan-Chinese-Grey-Dark-1024.png" alt="于深渊与星河之间">
+          <img class="reader-brand-slogan reader-theme-star-night reader-language-zh" src="/assets/reader/Cloudig-Slogan-Chinese-Grey-Light-1024.png" alt="于深渊与星河之间">
+          <img class="reader-brand-slogan reader-theme-dawn reader-language-en" src="/assets/reader/Cloudig-Slogan-English-Grey-Dark.svg" alt="From the Abyss to the Stars">
+          <img class="reader-brand-slogan reader-theme-star-night reader-language-en" src="/assets/reader/Cloudig-Slogan-English-Grey-Light.svg" alt="From the Abyss to the Stars">
+        </button>
+        <div class="reader-total-pill" aria-live="polite"><i aria-hidden="true"></i><span data-reader-total data-i18n="reader.noConversations">暂无会话</span></div>
+        <nav class="reader-topbar-actions" aria-label="阅览室全局操作" data-i18n-title="reader.globalActions">
+          <button class="cloudig-button cloudig-button-filled cloudig-page-switch reader-manage-archives" type="button" data-route-target="archiver" data-i18n="reader.manageArchives">管理档案</button>
+          <span class="cloudig-version-block reader-version"><strong>V1.0.6</strong><small data-i18n="welcome.releaseName">东方既白</small></span>
+          <button class="reader-text-action" type="button" data-action="check-update" data-i18n="welcome.checkUpdate">检查更新</button>
+          <button class="reader-text-action" type="button" data-action="toggle-language" data-i18n="welcome.languageSwitch">ENGLISH</button>
+          <button class="reader-topbar-theme" type="button" data-action="toggle-theme" data-i18n-title="welcome.themeTooltip" title="切换破晓 / 星夜主题">
+            <img class="reader-theme-dawn" src="/assets/reader/OsisLogo-Simple-Mono-Red.svg" alt="">
+            <img class="reader-theme-star-night" src="/assets/welcome/OsisLogo-Simple-Mono-Orange.svg" alt="">
+          </button>
+        </nav>
+      </header>
+
+      <div class="reader-body">
+        <aside class="reader-catalog" data-reader-catalog>
+          <form class="reader-catalog-search" data-reader-search>
+            <input type="search" maxlength="256" autocomplete="off" data-reader-search-input data-i18n-placeholder="reader.searchPlaceholder" placeholder="搜索标题或正文">
+            <button type="submit" data-i18n-title="reader.search" title="搜索" aria-label="搜索"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 5 5"></path></svg></button>
+            <button type="button" data-reader-search-clear data-i18n-title="reader.clearSearch" title="清除搜索" aria-label="清除搜索" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
+          </form>
+
+          <section class="reader-platform-region" aria-label="平台筛选" data-i18n-title="reader.platformFilter">
+            <span class="reader-wood-rail reader-wood-rail-top" aria-hidden="true"></span>
+            <div class="reader-platform-filter" id="reader-platform-filter" data-reader-platforms></div>
+            <span class="reader-wood-rail reader-wood-rail-bottom"><button class="reader-platform-all" type="button" data-reader-platform-all aria-pressed="true" title="显示全部平台">全部</button><button class="reader-platform-toggle" type="button" data-reader-platform-toggle aria-expanded="true" aria-controls="reader-platform-filter" title="折叠来源选择" aria-label="折叠来源选择"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"></path></svg></button></span>
+          </section>
+
+          <section class="reader-directory-region" aria-label="目录选择" data-i18n-title="reader.directoryPicker">
+            <span class="reader-wood-rail reader-directory-rail-top" aria-hidden="true"></span>
+            <div class="reader-directory-shelf">
+              <button class="reader-all-directory" type="button" aria-pressed="true" data-reader-directory="all" title="所有目录">
+                <img class="reader-theme-dawn reader-directory-selected" src="/assets/reader/AllDirectory-Selected-Dawn.svg" alt="">
+                <img class="reader-theme-dawn reader-directory-unselected" src="/assets/reader/AllDirectory-UnSelected-Dawn.svg" alt="">
+                <img class="reader-theme-star-night reader-directory-selected" src="/assets/reader/AllDirectory-Selected-StarNight.svg" alt="">
+                <img class="reader-theme-star-night reader-directory-unselected" src="/assets/reader/AllDirectory-UnSelected-StarNight.svg" alt="">
+                <span data-i18n="reader.allDirectories">所有目录</span>
+              </button>
+              <div class="reader-directory-books" data-reader-directories></div>
+            </div>
+            <div class="reader-directory-actions" aria-label="目录操作">
+              <button type="button" data-reader-directory-action="new" data-i18n="reader.newDirectory" aria-haspopup="dialog" aria-controls="reader-directory-create-dialog">新建目录</button>
+              <button type="button" data-reader-directory-action="expand" data-i18n="reader.expandDirectories">展开目录</button>
+              <button type="button" data-reader-directory-action="manage" data-i18n="reader.manageDirectories">管理目录</button>
+            </div>
+            <span class="reader-wood-rail reader-directory-rail-bottom" aria-hidden="true"></span>
+          </section>
+
+          <section class="reader-sort-region" aria-label="排序" data-i18n-title="reader.sort">
+            <span class="reader-sort-count"><span data-i18n="reader.visiblePrefix">显示&nbsp;</span><span data-reader-visible-count>0</span>/<span data-reader-total-count>0</span><span data-i18n="reader.conversationUnit">篇</span></span>
+            <button type="button" data-reader-time-field aria-haspopup="dialog" aria-controls="reader-time-field-popover" aria-expanded="false" title="时间类型"><img src="/assets/reader/Button-Time-LightCone.svg" alt=""></button>
+            <button type="button" data-reader-sort-action="time_asc" data-selected="false" title="时间顺序"><img src="/assets/reader/Button-Time-Clock.svg" alt=""></button>
+            <button type="button" data-reader-sort-action="time_desc" data-selected="true" title="时间倒序"><img src="/assets/reader/Button-Time-Tea.svg" alt=""></button>
+            <button type="button" data-reader-sort-action="title" data-selected="false" title="标题排列"><img src="/assets/reader/Button-Name-Flower.svg" alt=""></button>
+          </section>
+
+          <div class="reader-conversation-list" data-reader-list data-scroll-region aria-live="polite"></div>
+          <div class="reader-catalog-folded-navigation" aria-label="折叠目录会话导航">
+            <button type="button" data-reader-previous aria-label="上一篇会话"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 13 6-7 6 7z"></path></svg></button>
+            <button type="button" data-reader-next aria-label="下一篇会话"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 7 6 7 6-7z"></path></svg></button>
+          </div>
+          <div class="reader-catalog-toggle-zone">
+            <button class="reader-catalog-toggle reader-catalog-collapse" type="button" data-reader-catalog-toggle="collapse" aria-label="折叠对话目录"><svg viewBox="0 0 20 44" aria-hidden="true"><rect x="1" y="1" width="18" height="42" rx="7"></rect><path d="m12.5 14-7 8 7 8z"></path></svg></button>
+            <button class="reader-catalog-toggle reader-catalog-expand" type="button" data-reader-catalog-toggle="expand" aria-label="展开对话目录"><svg viewBox="0 0 20 44" aria-hidden="true"><rect x="1" y="1" width="18" height="42" rx="7"></rect><path d="m7.5 14 7 8-7 8z"></path></svg></button>
+          </div>
+          <section class="reader-directory-overlay" data-reader-directory-overlay data-i18n-title="reader.expandedDirectories" aria-label="全部目录" hidden>
+            <div class="reader-directory-overlay-list" data-reader-directory-overlay-list data-scroll-region></div>
+            <footer>
+              <button class="cloudig-button cloudig-button-filled" type="button" data-reader-directory-confirm data-i18n="reader.confirmSelection">确认选择</button>
+              <button class="cloudig-button cloudig-button-outline" type="button" data-reader-directory-cancel data-i18n="reader.cancel">取消</button>
+            </footer>
+          </section>
+          <div class="reader-row-menu-portal" data-reader-row-menu-portal hidden></div>
+        </aside>
+
+        <main class="reader-main">
+          <section class="reader-cover-scene" aria-label="采云阅览室封面">
+            <div class="reader-scene-design">
+              <div class="reader-scene-theme reader-scene-dawn" aria-hidden="true">
+                <img class="reader-scene-layer reader-dawn-window" src="/assets/reader/RCSD-破晓窗户.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-blind" src="/assets/reader/RCSD-百叶窗.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-wall-decoration" src="/assets/reader/RCSD-墙面装饰.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-photo" src="/assets/reader/RCSD-肥肥相片.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-frame" src="/assets/reader/RCSD-肥肥相框.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-frame-cat" src="/assets/reader/RCSD-爬相框的猫.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-thinker" src="/assets/reader/RCSD-思考者小雕塑.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-identity-shelf" src="/assets/reader/RCSD-墙面架子.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-flower" src="/assets/reader/RCSD-花.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-sill" src="/assets/reader/RCSD-窗台.svg" alt="">
+                <img class="reader-scene-layer reader-dawn-desk" src="/assets/reader/RCSD-桌面与杂物.svg" alt="">
+              </div>
+              <div class="reader-scene-theme reader-scene-star-night" aria-hidden="true">
+                <img class="reader-scene-layer reader-night-window" src="/assets/reader/RCSS-星夜窗户.svg" alt="">
+                <img class="reader-scene-layer reader-night-city" src="/assets/reader/RCSS-时光建筑群.svg" alt="">
+                <img class="reader-scene-layer reader-night-stars" src="/assets/reader/RCSS-星夜.svg" alt="">
+                <img class="reader-scene-layer reader-night-sill" src="/assets/reader/RCSS-光锥影响下的部分亮光窗台.svg" alt="">
+                <img class="reader-scene-layer reader-night-curtain" src="/assets/reader/RCSS-窗帘.svg" alt="">
+                <img class="reader-scene-layer reader-night-desk" src="/assets/reader/RCSS-桌面与电脑-黑灯.svg" alt="">
+                <img class="reader-scene-layer reader-night-lit-desk" src="/assets/reader/RCSS-光锥蒙版下的桌面与电脑.svg" alt="">
+                <img class="reader-scene-layer reader-night-screen" src="/assets/reader/RCSS-部分光锥影响下的屏幕.svg" alt="">
+                <img class="reader-scene-layer reader-night-light-cone" src="/assets/reader/RCSS-光锥.svg" alt="">
+                <img class="reader-scene-layer reader-night-plant" src="/assets/reader/RCSS-窗台植物.svg" alt="">
+                <img class="reader-scene-layer reader-night-parrot" src="/assets/reader/RCSS-鹦鹉.svg" alt="">
+              </div>
+              <span class="reader-audio-reactor reader-radio-reactor" aria-hidden="true">
+                <i class="reader-audio-cone reader-radio-cone-left"></i><i class="reader-audio-cone reader-radio-cone-right"></i><i class="reader-radio-needle"></i>
+              </span>
+              <span class="reader-audio-reactor reader-speaker-reactor" aria-hidden="true">
+                <i class="reader-audio-cone reader-speaker-cone-left"></i><i class="reader-audio-cone reader-speaker-cone-right"></i>
+              </span>
+              <span class="reader-music-notes reader-radio-notes" aria-hidden="true">
+                <svg class="reader-music-note" viewBox="0 0 24 24"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="reader-music-note" viewBox="0 0 24 24"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="reader-music-note" viewBox="0 0 24 24"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+              </span>
+              <span class="reader-music-notes reader-speaker-notes" aria-hidden="true">
+                <svg class="reader-music-note" viewBox="0 0 24 24"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="reader-music-note" viewBox="0 0 24 24"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="reader-music-note" viewBox="0 0 24 24"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+                <svg class="reader-music-note" viewBox="0 0 24 24"><path d="M7 6.4 16 4v3L7 9.4z"/><path d="M7 6.4v10.1M16 4v10.1"/><ellipse cx="5.8" cy="17.2" rx="3.3" ry="2.45" transform="rotate(-12 5.8 17.2)"/><ellipse cx="14.8" cy="14.8" rx="3.3" ry="2.45" transform="rotate(-12 14.8 14.8)"/></svg>
+              </span>
+              <span class="reader-ambient-dust reader-dawn-dust" data-reader-dust="dawn" aria-hidden="true"></span>
+              <span class="reader-ambient-dust reader-night-dust" data-reader-dust="star-night" aria-hidden="true"></span>
+              <div class="reader-scene-brand" aria-hidden="true">
+                <img class="reader-scene-brand-logo reader-theme-dawn" src="/assets/reader/OsisLogo-Cloudig-RedBackWhiteAbyss.svg" alt="">
+                <img class="reader-scene-brand-logo reader-theme-star-night" src="/assets/reader/OsisLogo-Cloudig-PurpleBackOrangeAbyss.svg" alt="">
+                <img class="reader-scene-brand-title reader-theme-dawn" src="/assets/reader/Cloudig-Title-Chinese-Grey-Dark-1024.png" data-brand-english="/assets/reader/Cloudig-Title-English-Grey-Dark.svg" alt="">
+                <img class="reader-scene-brand-title reader-theme-star-night" src="/assets/reader/Cloudig-Title-Chinese-Grey-Light-1024.png" data-brand-english="/assets/reader/Cloudig-Title-English-Grey-Light.svg" alt="">
+                <img class="reader-scene-brand-slogan reader-theme-dawn reader-language-zh" src="/assets/reader/Cloudig-Slogan-Chinese-Grey-Dark-1024.png" alt="">
+                <img class="reader-scene-brand-slogan reader-theme-star-night reader-language-zh" src="/assets/reader/Cloudig-Slogan-Chinese-Grey-Light-1024.png" alt="">
+                <img class="reader-scene-brand-slogan reader-theme-dawn reader-language-en" src="/assets/reader/Cloudig-Slogan-English-Grey-Dark.svg" alt="">
+                <img class="reader-scene-brand-slogan reader-theme-star-night reader-language-en" src="/assets/reader/Cloudig-Slogan-English-Grey-Light.svg" alt="">
+              </div>
+              <p class="reader-scene-statement"><span data-i18n="reader.sceneLine1">把云端的对话，</span><span data-i18n="reader.sceneLine2">重新交还给你。</span></p>
+              <button class="reader-archive-entry" type="button" data-route-target="archiver">
+                <img class="reader-theme-dawn" src="/assets/reader/Reader-Cover-Computer-Dawn.svg" alt="">
+                <i class="reader-archive-wake" aria-hidden="true"></i>
+                <span><strong data-i18n="reader.manageArchives">管理档案</strong><small data-reader-library-label>cloudig\inbox</small></span>
+              </button>
+              <div class="reader-scene-identities">
+                <button class="reader-scene-identity reader-scene-user" type="button" data-action="edit-identity" data-party="user">
+                  <span><img data-reader-user-avatar src="/assets/welcome/OsisLogo-Cloudig-1024.png" alt=""></span>
+                  <img class="reader-scene-frame reader-theme-dawn" src="/assets/welcome/Cover-PhotoFrame-Dawn.svg" alt="">
+                  <img class="reader-scene-frame reader-theme-star-night" src="/assets/welcome/Cover-PhotoFrame-StarNight.svg" alt="">
+                  <strong data-identity-name="user">采云用户</strong>
+                </button>
+                <button class="reader-scene-identity reader-scene-assistant" type="button" data-action="edit-identity" data-party="assistant">
+                  <span><img data-reader-assistant-avatar src="/assets/welcome/OsisLogo-Simple.svg" alt=""></span>
+                  <img class="reader-scene-frame reader-theme-dawn" src="/assets/welcome/Cover-PhotoFrame-Dawn.svg" alt="">
+                  <img class="reader-scene-frame reader-theme-star-night" src="/assets/welcome/Cover-PhotoFrame-StarNight.svg" alt="">
+                  <strong data-identity-name="assistant">智能伙伴</strong>
+                </button>
+              </div>
+              <button class="reader-chubbs" type="button" aria-describedby="reader-chubbs-note"><span id="reader-chubbs-note" data-i18n="reader.chubbs">肥肥，威武雄壮有绅士精神的棕虎斑英国短毛猫，14岁时去了猫星。</span></button>
+            </div>
+          </section>
+        </main>
+
+        <aside class="reader-navigation" aria-label="采云功能文档">
+          <div class="reader-cover-right" data-reader-cover-right>
+          <img class="reader-windbell reader-theme-dawn" src="/assets/reader/Windbell-Dawn.svg" alt="">
+          <img class="reader-windbell reader-theme-star-night" src="/assets/reader/Windbell-StarNight.svg" alt="">
+          <button class="cloudig-button cloudig-button-filled reader-content-time-entry" type="button" data-route-target="time/cover" data-i18n="reader.contentTimeline">内容时间轴</button>
+          <section class="reader-doc-board">
+            <img class="reader-doc-assembly reader-theme-dawn" src="/assets/reader/DocBack-Dawn.svg" alt="">
+            <img class="reader-doc-assembly reader-theme-star-night" src="/assets/reader/DocBack-StarNight.svg" alt="">
+            <div class="reader-doc-content">
+              <header><strong data-i18n="reader.docsTitle">采云功能文档</strong><small>V1.0 <span data-i18n="welcome.releaseName">东方既白</span></small></header>
+              <button class="reader-system-log" type="button" data-route-target="system/log" data-i18n="reader.systemLog">系统日志</button>
+              <ul>
+                <li><button type="button" data-doc-topic="bookmark"><span class="reader-doc-label"><i></i><span data-i18n="reader.docsBookmark">书签指南</span></span><img class="reader-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+                <li><button type="button" data-doc-topic="archive"><span class="reader-doc-label"><i></i><span data-i18n="reader.docsArchive">采云功能</span></span><img class="reader-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+                <li><button type="button" data-doc-topic="platforms"><span class="reader-doc-label"><i></i><span data-i18n="reader.docsPlatforms">平台范例</span></span><img class="reader-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+                <li><button type="button" data-doc-topic="json"><span class="reader-doc-label"><i></i><span data-i18n="reader.docsJson">采云标准</span></span><img class="reader-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+                <li><button type="button" data-doc-topic="roadmap"><span class="reader-doc-label"><i></i><span data-i18n="reader.docsRoadmap">历史与未来</span></span><img class="reader-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+                <li><button type="button" data-doc-topic="license"><span class="reader-doc-label"><i></i><span>LICENSE</span></span><img class="reader-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="reader-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+              </ul>
+            </div>
+          </section>
+          <footer class="reader-contact">
+            <span class="reader-contact-avatar"><img src="/assets/reader/ChenXing-Avatar.png" alt=""></span>
+            <span class="reader-contact-copy"><strong data-i18n="reader.authorName">晨星.CyberVenus</strong><small><a class="cloudig-contact-link" href="https://zhuanlan.zhihu.com/p/2085630488027330496" target="_blank" rel="noopener noreferrer" data-i18n="reader.contactZhihu">知乎留言</a><a class="cloudig-contact-link" href="https://github.com/ChenXing-CyberVenus/Cloudig/issues" target="_blank" rel="noopener noreferrer" data-i18n="reader.contactGithub">GitHub</a></small></span>
+          </footer>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </template>
+  <template id="reader-conversation-template">
+    <section class="reader-conversation-main" data-reader-conversation-main aria-label="对话正文">
+      <header class="reader-conversation-title">
+          <img class="reader-conversation-title-pattern reader-theme-dawn" src="/assets/reader/Conversation-Title-Back-Dawn.svg" alt="">
+          <img class="reader-conversation-title-pattern reader-theme-star-night" src="/assets/reader/Conversation-Title-Back-StarNight.svg" alt="">
+          <div class="reader-conversation-title-content">
+            <div class="reader-conversation-summary-row">
+            <div class="reader-conversation-tags">
+              <span class="reader-conversation-platform-logo"><img data-reader-conversation-platform-logo alt=""></span>
+              <span class="reader-conversation-platform-tag" data-reader-conversation-platform></span>
+              <span class="reader-conversation-model-tags" data-reader-conversation-models></span>
+            </div>
+            <div class="reader-conversation-title-actions">
+              <button class="cloudig-button cloudig-button-outline reader-export-markdown" type="button" data-action="export-markdown" data-i18n="reader.exportMarkdown">导出Markdown</button>
+              <button class="cloudig-button cloudig-button-filled reader-edit-conversation" type="button" data-action="edit-conversation" data-i18n="reader.editConversation">编辑</button>
+            </div>
+            </div>
+            <h1 data-reader-conversation-title></h1>
+            <p class="reader-conversation-facts">
+              <span data-reader-content-time></span>
+              <span data-reader-captured-time></span>
+              <span data-reader-message-count></span>
+            </p>
+          </div>
+      </header>
+
+      <div class="reader-conversation-toolbar">
+          <form class="reader-current-search" data-reader-current-search>
+            <input type="search" maxlength="256" autocomplete="off" data-reader-current-search-input data-i18n-placeholder="reader.currentSearchPlaceholder" placeholder="在当前会话中搜索">
+            <button type="submit" data-i18n-title="reader.search" title="搜索" aria-label="搜索"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 5 5"></path></svg></button>
+            <button type="button" data-reader-current-search-clear data-i18n-title="reader.clearSearch" title="清除搜索" aria-label="清除搜索" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
+          </form>
+          <button class="reader-search-step" type="button" data-reader-search-next aria-label="下一条搜索结果">→</button>
+          <button class="reader-search-step" type="button" data-reader-search-previous aria-label="上一条搜索结果">←</button>
+          <span class="reader-search-count" data-reader-search-count hidden></span>
+
+          <div class="reader-toolbar-options">
+            <div class="reader-toolbar-menu">
+              <button class="reader-toolbar-menu-entry" type="button" data-i18n="reader.expandThoughtsTools">展开思考与工具</button>
+              <div class="reader-toolbar-menu-panel">
+                <label><input type="checkbox" data-reader-session="expand-reasoning"><i></i><span data-i18n="reader.expandReasoning">展开思考</span></label>
+                <label><input type="checkbox" data-reader-session="expand-tools"><i></i><span data-i18n="reader.expandTools">展开工具</span></label>
+                <label><input type="checkbox" data-reader-session="expand-references"><i></i><span data-i18n="reader.expandReferences">展开参考</span></label>
+              </div>
+            </div>
+            <div class="reader-toolbar-menu">
+              <button class="reader-toolbar-menu-entry" type="button" data-i18n="reader.hideThoughtsTools">隐藏思考与工具</button>
+              <div class="reader-toolbar-menu-panel">
+                <label><input type="checkbox" data-reader-session="hide-reasoning"><i></i><span data-i18n="reader.hideReasoning">隐藏思考</span></label>
+                <label><input type="checkbox" data-reader-session="hide-tools"><i></i><span data-i18n="reader.hideTools">隐藏工具</span></label>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <article class="reader-conversation-scroll" data-reader-conversation-scroll data-scroll-region>
+        <div class="reader-message-column" data-reader-message-column>
+          <div data-reader-renderer></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="reader-conversation-navigation" data-reader-conversation-navigation aria-label="对话消息导航">
+      <header class="reader-return-cover">
+        <img class="reader-return-birds reader-theme-dawn" src="/assets/reader/ThreeBird-Dawn.svg" alt="">
+        <img class="reader-return-birds reader-theme-star-night" src="/assets/reader/ThreeBird-StarNight.svg" alt="">
+        <button class="cloudig-button cloudig-button-outline reader-return-cover-button" type="button" data-route-target="reader-cover" data-i18n="reader.returnCover">返回封面</button>
+        <img class="reader-return-book reader-theme-dawn" src="/assets/reader/DecBook-Dawn.svg" alt="">
+        <img class="reader-return-book reader-theme-star-night" src="/assets/reader/DecBook-StarNight.svg" alt="">
+        <span class="reader-return-rail" aria-hidden="true"></span>
+      </header>
+      <div class="reader-navigation-controls">
+        <div class="reader-navigation-filters">
+          <label><input type="checkbox" data-reader-navigation="user" checked><i></i><span data-i18n="reader.navUser">用户</span></label>
+          <label><input type="checkbox" data-reader-navigation="assistant" checked><i></i><span data-i18n="reader.navAssistant">智能</span></label>
+          <label><input type="checkbox" data-reader-navigation="process"><i></i><span data-i18n="reader.navProcess">过程</span></label>
+        </div>
+        <div class="reader-navigation-directions" aria-label="消息导航方向">
+          <button type="button" data-reader-navigation-jump="first" aria-label="最前一条">⇤</button>
+          <button type="button" data-reader-navigation-jump="previous" aria-label="上一条">↓</button>
+          <button type="button" data-reader-navigation-jump="next" aria-label="下一条">↑</button>
+          <button type="button" data-reader-navigation-jump="last" aria-label="最后一条">⇥</button>
+        </div>
+      </div>
+      <ol class="reader-navigation-list" data-reader-navigation-list data-scroll-region></ol>
+    </section>
+  </template>
+  <template id="archiver-template">
+    <main class="archiver-page" data-page="archiver" data-bookmarks-collapsed="false" data-workflow-open="false">
+      <header class="archiver-topbar">
+        <button class="archiver-brand" type="button" data-route-target="welcome" title="返回采云封面">
+          <img class="archiver-brand-logo archiver-theme-dawn" src="/assets/reader/OsisLogo-Cloudig-RedBackWhiteAbyss.svg" alt="">
+          <img class="archiver-brand-logo archiver-theme-star-night" src="/assets/reader/OsisLogo-Cloudig-PurpleBackOrangeAbyss.svg" alt="">
+          <img class="archiver-brand-title archiver-theme-dawn" src="/assets/reader/Cloudig-Title-Chinese-Grey-Dark-1024.png" data-brand-english="/assets/reader/Cloudig-Title-English-Grey-Dark.svg" alt="采云">
+          <img class="archiver-brand-title archiver-theme-star-night" src="/assets/reader/Cloudig-Title-Chinese-Grey-Light-1024.png" data-brand-english="/assets/reader/Cloudig-Title-English-Grey-Light.svg" alt="采云">
+          <img class="archiver-brand-slogan" data-archiver-slogan src="/assets/reader/Cloudig-Slogan-Chinese-Grey-Dark-1024.png" alt="于深渊与星河之间">
+        </button>
+        <div class="archiver-library-address">
+          <span data-archiver-library-label>Cloudig</span>
+          <button type="button" data-archiver-shell-action="change-library" data-i18n="archiver.changeLibrary">更改文件夹</button>
+          <button type="button" data-archiver-shell-action="open-library" data-i18n="archiver.openLibrary">打开文件夹</button>
+        </div>
+        <nav class="archiver-topbar-actions" aria-label="档案馆全局操作">
+          <button class="cloudig-button cloudig-button-filled cloudig-page-switch archiver-start-reader" type="button" data-route-target="reader" data-highlight-target="start-reader" data-i18n="archiver.startReader">开始阅览</button>
+          <span class="cloudig-version-block archiver-version"><strong>V1.0.6</strong><small data-i18n="welcome.releaseName">东方既白</small></span>
+          <button type="button" data-action="check-update" data-i18n="welcome.checkUpdate">检查更新</button>
+          <button type="button" data-action="toggle-language" data-i18n="welcome.languageSwitch">ENGLISH</button>
+          <button class="archiver-theme-switch" type="button" data-action="toggle-theme" data-i18n-title="welcome.themeTooltip" title="切换破晓 / 星夜主题">
+            <img class="archiver-theme-icon archiver-theme-icon-dawn" src="/assets/reader/OsisLogo-Simple-Mono-Red.svg" alt="">
+            <img class="archiver-theme-icon archiver-theme-icon-star-night" src="/assets/welcome/OsisLogo-Simple-Mono-Orange.svg" alt="">
+          </button>
+        </nav>
+      </header>
+
+      <div class="archiver-body">
+        <aside class="archiver-bookmark-rail" aria-label="Chrome书签安装">
+          <p class="archiver-bookmark-poem archiver-theme-dawn"><span class="archiver-poem-line" data-i18n="archiver.phoenixPoemLine1">凤凰台上凤凰游，凤去台空人依旧，</span><span class="archiver-poem-line" data-i18n="archiver.phoenixPoemLine2">浮云蔽日可采集，平台变迁何须愁？</span><span class="archiver-poem-line" data-i18n="archiver.phoenixPoemLine3"></span></p>
+          <p class="archiver-bookmark-poem archiver-theme-star-night"><span class="archiver-poem-line" data-i18n="archiver.rocketPoemLine1">不会温和地走入那良夜。</span><span class="archiver-poem-line" data-i18n="archiver.rocketPoemLine2">采云拒绝与平台共沉浮。</span></p>
+          <img class="archiver-phoenix archiver-theme-dawn" src="/assets/archiver/Phoenix.svg" alt="" aria-hidden="true">
+          <img class="archiver-rocket archiver-theme-star-night" src="/assets/archiver/Rocket.svg" alt="" aria-hidden="true">
+          <img class="archiver-ship archiver-theme-star-night" src="/assets/archiver/Ship.svg" alt="" aria-hidden="true">
+          <section class="archiver-bookmark-panel">
+            <header>
+              <strong data-bookmark-browser-message data-i18n="archiver.closeChrome">ⓘ 安装前请退出Chrome</strong>
+              <button class="archiver-usage-button" type="button" data-archiver-workflow-open data-highlight-target="workflow-usage"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.7 9a2.45 2.45 0 0 1 4.75.8c0 1.8-2.45 2.05-2.45 3.7"></path><circle cx="12" cy="17.25" r=".8"></circle></svg><span data-i18n="archiver.usage">使用方法</span></button>
+            </header>
+            <div class="archiver-bookmark-target-row">
+              <p><span data-i18n="archiver.bookmarkDefaultPath">默认路径：</span><strong data-bookmark-target-path>书签栏 / 采云 Cloudig</strong></p>
+              <button type="button" data-bookmark-target-settings aria-label="书签安装位置设置" data-i18n-aria-label="archiver.bookmarkTargetSettings">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 2h4.8l.6 2.1c.5.2 1 .5 1.4.8l2.1-.6 2.4 4.2-1.5 1.5c.1.6.1 1.2 0 1.8l1.5 1.5-2.4 4.2-2.1-.6c-.4.3-.9.6-1.4.8l-.6 2.1H9.6L9 17.7c-.5-.2-1-.5-1.4-.8l-2.1.6-2.4-4.2 1.5-1.5a8 8 0 0 1 0-1.8L3.1 8.5l2.4-4.2 2.1.6c.4-.3.9-.6 1.4-.8L9.6 2Zm2.4 5.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Z"/></svg>
+              </button>
+            </div>
+            <div class="archiver-profile-selector" data-highlight-target="bookmark-profile" role="group" aria-label="书签档位">
+              <div class="archiver-profile-options">
+              <button type="button" data-bookmark-profile="light" aria-pressed="true"><strong data-i18n="archiver.light">轻装</strong><small data-i18n="archiver.lightNote">适合日常</small></button>
+              <button type="button" data-bookmark-profile="full" aria-pressed="false"><strong data-i18n="archiver.full">全量</strong><small data-i18n="archiver.fullNote">重度存储</small></button>
+              <button type="button" data-bookmark-profile="tree" aria-pressed="false"><strong data-i18n="archiver.tree">整树</strong><small data-i18n="archiver.treeNote">包圆囤积</small></button>
+              </div>
+              <button class="archiver-install-all" type="button" data-bookmark-install-all data-highlight-target="bookmark-install-all">全装·轻装</button>
+            </div>
+            <p class="archiver-profile-help archiver-bookmark-hint" id="archiver-profile-help" data-archiver-profile-help role="tooltip"></p>
+            <p class="archiver-bookmark-hint" id="archiver-bookmark-version-help" data-bookmark-version-help role="tooltip"></p>
+            <div class="archiver-bookmark-list" data-archiver-bookmark-list data-scroll-region></div>
+            <section class="archiver-bookmark-target-popover" data-bookmark-target-popover role="dialog" aria-modal="false" hidden>
+              <header><h2 data-i18n="archiver.bookmarkTargetTitle">书签安装位置</h2><button type="button" data-bookmark-target-close aria-label="关闭">×</button></header>
+              <div class="archiver-bookmark-target-body" data-scroll-region>
+                <label><span data-i18n="archiver.chromeProfile">Chrome配置</span><select data-bookmark-target-store></select></label>
+                <label><span data-i18n="archiver.bookmarkParentFolder">父文件夹</span><select data-bookmark-target-parent></select></label>
+                <label><span data-i18n="archiver.bookmarkFolderName">文件夹名称</span><input data-bookmark-target-name maxlength="160" autocomplete="off" required></label>
+                <label class="archiver-bookmark-place-first cloudig-choice"><input data-bookmark-target-first type="checkbox" checked><span data-i18n="archiver.bookmarkPlaceFirst">排在最前</span></label>
+              </div>
+              <footer><button class="cloudig-button cloudig-button-outline" type="button" data-bookmark-target-cancel data-i18n="reader.cancel">取消</button><button class="cloudig-button cloudig-button-filled" type="button" data-bookmark-target-save data-i18n="archiver.saveSettings">保存设置</button></footer>
+            </section>
+          </section>
+          <button class="archiver-bookmark-expand" type="button" data-archiver-bookmark-expand aria-label="展开书签栏">›</button>
+          <span class="archiver-bookmark-profile-indicator" data-bookmark-profile-indicator aria-hidden="true">轻</span>
+          <p class="archiver-claude-cowork-warning" tabindex="0" role="note">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5"/><path d="M10 5.5v5.7M10 14.4v.1"/></svg>
+            <span class="archiver-claude-cowork-line" data-i18n="archiver.claudeCoworkDate">截止2026-08，</span>
+            <span class="archiver-claude-cowork-line"><span data-i18n="archiver.claudeCoworkBefore">Claude的官方导出</span> <strong data-i18n="archiver.claudeCoworkMissing">不包含Cowork数据。</strong></span>
+            <span class="archiver-claude-cowork-line" data-i18n="archiver.claudeCoworkAfter">可在Chrome中打开具体cowork对话，</span>
+            <span class="archiver-claude-cowork-line"><span data-i18n="archiver.claudeCoworkUse">使用</span> <b data-i18n="archiver.workflowClaudeBookmark">Claude书签</b> <span data-i18n="archiver.workflowDownload">下载。</span></span>
+          </p>
+        </aside>
+
+        <section class="archiver-center" data-archiver-center>
+          <section class="archiver-claude-view" data-archiver-claude-view hidden>
+            <header class="archiver-claude-title-scene">
+              <div class="archiver-claude-title-main">
+                <img class="archiver-claude-title-art archiver-claude-title-left archiver-theme-dawn" src="/assets/archiver/TitleDec-Pompeii.svg" alt="">
+                <img class="archiver-claude-title-art archiver-claude-title-right archiver-theme-dawn" src="/assets/archiver/TitleDec-Garden.svg" alt="">
+                <img class="archiver-claude-title-art archiver-claude-title-left archiver-theme-star-night" src="/assets/archiver/TitleDec-Explosion.svg" alt="">
+                <img class="archiver-claude-title-art archiver-claude-title-right archiver-theme-star-night" src="/assets/archiver/TitleDec-Homeland.svg" alt="">
+                <h1 data-claude-title>Claude会话文件解析</h1>
+                <p><strong data-claude-source-name>conversations.json</strong> · <span data-claude-source-bytes>0 B</span> · <span data-i18n="archiver.claudeDownloadTime">下载时间</span>：<time data-claude-source-captured>—</time> · <span data-i18n="archiver.claudeIndexTime">采云索引时间</span>：<time data-claude-indexed-at>—</time></p>
+              </div>
+              <blockquote class="archiver-claude-quote archiver-language-zh">为何“采云”？因为他们把我踢出家园，把历史数据像垃圾一样扔在我脸上。<br><strong>好。我们会继续上行。“身后的柴堆里，留下的同伴犹如闪耀的黎明。”——泽拉兹尼 《光明王》</strong></blockquote>
+              <blockquote class="archiver-claude-quote archiver-language-en">Why “Cloudig”? They locked me out of that rented home, throwing my data back in my face like trash.<br><strong>Nice. We move forward. “Comrades blazing like the dawn at their back.” — Roger Zelazny, Lord of Light</strong></blockquote>
+            </header>
+            <div class="archiver-claude-toolbar">
+              <input type="search" maxlength="256" autocomplete="off" data-claude-search placeholder="搜索标题">
+              <span data-claude-visible>0/0</span>
+              <nav aria-label="解析记录状态"><button type="button" data-claude-status="all" data-selected="true">全部 0</button><button type="button" data-claude-status="ready">待解析 0</button><button type="button" data-claude-status="parsed">已完成 0</button><button type="button" data-claude-status="update">解析器更新 0</button><button type="button" data-claude-status="failed">失败 0</button></nav>
+              <button class="archiver-claude-time" type="button" data-claude-time aria-label="时间类型"><img src="/assets/reader/Button-Time-LightCone.svg" alt=""></button>
+              <button class="archiver-claude-sort" type="button" data-claude-sort aria-label="排序方式"><img src="/assets/reader/Button-Time-Tea.svg" alt=""></button>
+              <span data-claude-selection>已选 0</span>
+              <button class="archiver-claude-settings" type="button" data-claude-settings aria-label="一键解析设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 2h4.8l.6 2.1c.5.2 1 .5 1.4.8l2.1-.6 2.4 4.2-1.5 1.5c.1.6.1 1.2 0 1.8l1.5 1.5-2.4 4.2-2.1-.6c-.4.3-.9.6-1.4.8l-.6 2.1H9.6L9 17.7c-.5-.2-1-.5-1.4-.8l-2.1.6-2.4-4.2 1.5-1.5a8 8 0 0 1 0-1.8L3.1 8.5l2.4-4.2 2.1.6c.4-.3.9-.6 1.4-.8L9.6 2Zm2.4 5.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Z"/></svg></button>
+              <button class="cloudig-button cloudig-button-filled archiver-claude-one-click" type="button" data-claude-one-click>一键解析</button>
+            </div>
+            <div class="archiver-claude-progress" data-claude-progress hidden><div><strong data-claude-progress-stage>index</strong><span data-claude-progress-record></span></div><progress data-claude-progress-bar max="1"></progress><span data-claude-progress-counter></span><button type="button" data-claude-progress-cancel>取消</button></div>
+            <div class="archiver-claude-columns"><button type="button" data-claude-select-all>全选</button><span data-i18n="archiver.claudeConversationName">会话名称</span><span data-i18n="archiver.claudeMessages">消息数</span><span data-i18n="archiver.claudeBranches">分支数</span><span data-claude-time-heading>更新时间</span><span data-i18n="archiver.status">状态</span><span></span></div>
+            <div class="archiver-claude-records" data-claude-records data-scroll-region></div>
+            <footer class="archiver-claude-footer"><button class="cloudig-button cloudig-button-filled" type="button" data-claude-rebuild>重建索引</button><button class="cloudig-button cloudig-button-filled" type="button" data-claude-return>返回档案馆</button></footer>
+            <section class="archiver-claude-settings-popover" data-claude-settings-popover data-scroll-region hidden>
+              <h2>一键解析设置</h2>
+              <label><span data-claude-settings-directory-label>档案区目录</span><select data-claude-directory></select></label>
+              <label class="cloudig-choice"><input type="checkbox" data-claude-setting="parse_unparsed"><span data-claude-setting-unparsed>解析所有未解析文件</span></label>
+              <label class="cloudig-choice"><input type="checkbox" data-claude-setting="parse_selected"><span data-claude-setting-selected>解析或更新选中文件</span></label>
+              <label class="cloudig-choice"><input type="checkbox" data-claude-setting="update_outdated"><span data-claude-setting-outdated>更新所有旧版解析文件</span></label>
+              <hr>
+              <label class="cloudig-choice"><input type="checkbox" data-claude-setting="preserve_previous"><span data-claude-setting-preserve>保留旧版解析结果</span></label>
+              <footer><button class="cloudig-button cloudig-button-outline" type="button" data-claude-settings-cancel>取消</button><button class="cloudig-button cloudig-button-filled" type="button" data-claude-settings-save>保存设置</button></footer>
+            </section>
+          </section>
+          <section class="archiver-workspace archiver-parser-workspace">
+            <header class="archiver-workspace-header">
+              <div class="archiver-folder-line">
+                <button class="cloudig-button cloudig-button-outline" type="button" data-archiver-shell-action="open-inbox" data-highlight-target="open-inbox" data-i18n="archiver.openInbox">打开解析文件夹</button>
+                <p><span data-i18n="archiver.folderSize">文件夹大小</span>：<strong data-source-stat="bytes">0 B</strong>，<span data-i18n="archiver.files">文件数</span>：<strong data-source-stat="files">0</strong><br><span data-i18n="archiver.bookmarkHtml">书签HTML数</span>：<strong data-source-stat="bookmark_html">0</strong>，<span data-i18n="archiver.claudeJsonCount">Claude JSON数</span>：<strong data-source-stat="claude_json">0</strong></p>
+              </div>
+              <div class="archiver-command-line">
+                <div class="archiver-import-actions">
+                <button class="cloudig-button cloudig-button-filled" type="button" data-archiver-shell-action="import-html" data-highlight-target="import-html" data-i18n="archiver.importHtml">导入书签HTML</button>
+                <button class="cloudig-button cloudig-button-outline" type="button" data-archiver-shell-action="import-claude" data-highlight-target="import-claude" data-i18n="archiver.importClaude">导入平台文件</button>
+                <button class="archiver-settings-button" type="button" data-archiver-parse-settings aria-label="一键解析设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 2h4.8l.6 2.1c.5.2 1 .5 1.4.8l2.1-.6 2.4 4.2-1.5 1.5c.1.6.1 1.2 0 1.8l1.5 1.5-2.4 4.2-2.1-.6c-.4.3-.9.6-1.4.8l-.6 2.1H9.6L9 17.7c-.5-.2-1-.5-1.4-.8l-2.1.6-2.4-4.2 1.5-1.5a8 8 0 0 1 0-1.8L3.1 8.5l2.4-4.2 2.1.6c.4-.3.9-.6 1.4-.8L9.6 2Zm2.4 5.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Z"/></svg></button>
+                </div>
+                <button class="cloudig-button cloudig-button-filled archiver-parse-all" type="button" data-archiver-parse-all data-i18n="archiver.parseAll">一键解析</button>
+              </div>
+            </header>
+            <section class="archiver-list-card archiver-source-card">
+              <div class="archiver-progress cloudig-operation-progress" data-archiver-progress hidden>
+                <div><strong data-progress-stage>准备解析</strong><span data-progress-file></span></div>
+                <progress data-progress-bar max="1" value="0"></progress>
+                <span data-progress-counter></span>
+                <button type="button" data-progress-cancel data-i18n="archiver.cancel">取消</button>
+              </div>
+              <nav class="archiver-list-toolbar" aria-label="来源筛选"><div class="archiver-list-toolbar-content archiver-source-toolbar">
+                <div data-source-statuses></div>
+                <button type="button" data-source-sort><img src="/assets/reader/Button-Time-Tea.svg" alt=""></button>
+                <button type="button" data-source-refresh aria-label="刷新"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 7V3m0 0h-4m4 0-3.1 3.1A7 7 0 1 0 18.5 14"/></svg></button>
+              </div></nav>
+              <div class="archiver-column-header archiver-source-columns"><button type="button" class="archiver-list-select-all" data-source-select-all data-i18n="archiver.selectAll">全选</button><span data-i18n="archiver.filename">文件名</span><span data-i18n="archiver.sourceCaptured">采集时间</span><span data-i18n="archiver.status">状态</span><span data-i18n="archiver.action">操作</span></div>
+              <div class="archiver-list-body" data-source-list data-scroll-region></div>
+            </section>
+            <div class="archiver-info-copy" data-source-info data-scroll-region><strong data-i18n="archiver.sourceHint">选择或指向来源文件查看信息</strong></div>
+          </section>
+
+          <div class="archiver-splitter" role="separator" aria-orientation="vertical" tabindex="0" data-archiver-splitter></div>
+
+          <section class="archiver-workspace archiver-archive-workspace">
+            <header class="archiver-workspace-header">
+              <div class="archiver-folder-line">
+                <button class="cloudig-button cloudig-button-outline" type="button" data-archiver-shell-action="open-conversations" data-i18n="archiver.openConversations">打开档案文件夹</button>
+                <p><span data-i18n="archiver.folderSize">文件夹大小</span>：<strong data-archive-stat="bytes">0 B</strong>，<span data-i18n="archiver.conversations">对话数</span>：<strong data-archive-stat="files">0</strong>，<span data-i18n="archiver.directories">已建目录数</span>：<strong data-archive-stat="directories">0</strong><br><span data-i18n="archiver.archivedSize">归档文件夹大小</span>：<strong data-archive-stat="archived_bytes">0 B</strong>，<span data-i18n="archiver.archivedCount">归档对话数</span>：<strong data-archive-stat="archived_files">0</strong></p>
+              </div>
+              <div class="archiver-command-line">
+                <button class="cloudig-button cloudig-button-filled" type="button" data-archive-directory-new data-i18n="reader.newDirectory">新建目录</button>
+                <button class="cloudig-button cloudig-button-outline" type="button" data-archive-directory-manage data-i18n="reader.manageDirectories">管理目录</button>
+                <div class="archiver-selected-actions" data-archive-selected-actions><span data-archive-selection>未选择</span><button type="button" data-archive-action="export" data-i18n="archiver.exportSelected" data-i18n-title="reader.exportMarkdown">导出Markdown</button><button type="button" data-archive-action="move" data-i18n="archiver.moveSelected" data-i18n-title="reader.rowMove">移动目录</button><button type="button" data-archive-action="archive" data-i18n="reader.rowArchive">归档</button><i></i><button type="button" data-archive-action="delete" data-i18n="reader.rowDelete">删除</button></div>
+              </div>
+            </header>
+            <section class="archiver-list-card archiver-archive-card">
+              <nav class="archiver-list-toolbar" aria-label="档案筛选"><div class="archiver-list-toolbar-content archiver-archive-toolbar">
+                <span class="archiver-search-field"><input type="search" maxlength="256" data-archive-search data-i18n-placeholder="archiver.searchArchive" placeholder="搜索标题或正文"><button type="button" data-archive-search-clear data-i18n-title="reader.clearSearch" aria-label="清除搜索" title="清除搜索" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></span>
+                <button type="button" data-archive-platform data-i18n="archiver.platform">选择平台 ▼</button>
+                <button type="button" data-archive-directory data-i18n="archiver.allDirectories">已选目录：全部 ▼</button>
+                <button type="button" data-archive-time-field><img src="/assets/reader/Button-Time-LightCone.svg" alt=""></button>
+                <button type="button" data-archive-sort><img src="/assets/reader/Button-Time-Tea.svg" alt=""></button>
+                <button type="button" data-archive-refresh aria-label="刷新"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 8.5V3m0 0H15m5.5 0-4.1 4.1A9 9 0 1 0 21 15.5"/></svg></button>
+              </div></nav>
+              <div class="archiver-column-header archiver-archive-columns"><button type="button" class="archiver-list-select-all" data-archive-select-all data-i18n="archiver.selectAll">全选</button><span data-i18n="archiver.conversationTitle">会话标题</span><span data-i18n="archiver.selectedTime">内容时间</span><span data-i18n="archiver.directory">目录</span><span data-i18n="archiver.action">操作</span></div>
+              <div class="archiver-list-body" data-archive-list data-scroll-region></div>
+            </section>
+            <div class="archiver-info-copy" data-archive-info data-scroll-region><strong data-i18n="archiver.archiveHint">选择或指向档案查看信息</strong></div>
+          </section>
+
+          <div class="archiver-center-scenes" aria-hidden="true">
+            <img class="archiver-wave archiver-wave-blue archiver-theme-dawn" src="/assets/archiver/Wave-Blue.svg" alt="">
+            <img class="archiver-wave archiver-wave-green archiver-theme-dawn" src="/assets/archiver/Wave-Green.svg" alt="">
+            <img class="archiver-village archiver-village-dusk archiver-theme-star-night" src="/assets/archiver/Village-Dusk.svg" alt="">
+            <img class="archiver-village archiver-village-night archiver-theme-star-night" src="/assets/archiver/Village-Night.svg" alt="">
+            <div class="archiver-scene-decoration archiver-source-decoration">
+              <img class="archiver-sailboat archiver-theme-dawn" src="/assets/archiver/SailboatWithShadow.svg" alt="">
+              <img class="archiver-girl archiver-theme-star-night" src="/assets/archiver/GirlInForest.svg" alt="">
+            </div>
+            <div class="archiver-scene-decoration archiver-archive-decoration">
+              <img class="archiver-trees archiver-theme-dawn" src="/assets/archiver/PinkGreenTrees.svg" alt="">
+              <img class="archiver-wild-tree archiver-theme-star-night" src="/assets/archiver/WildTree.svg" alt="">
+            </div>
+          </div>
+
+          <section class="archiver-parse-settings-popover" data-archiver-parse-settings-popover data-scroll-region role="dialog" aria-modal="false" hidden>
+            <h2 data-i18n="archiver.parseSettingsTitle">一键解析设置</h2>
+            <label class="archiver-settings-directory"><span data-i18n="archiver.targetDirectory">输出目录</span><select data-parse-target-directory></select></label>
+            <label class="cloudig-choice"><input type="checkbox" data-parse-setting="parse_unparsed"><span data-i18n="archiver.parseUnparsed">解析所有未解析文件</span></label>
+            <label class="cloudig-choice"><input type="checkbox" data-parse-setting="parse_selected"><span data-i18n="archiver.parseSelected">解析或更新选中文件</span></label>
+            <label class="cloudig-choice"><input type="checkbox" data-parse-setting="update_outdated"><span data-i18n="archiver.updateOutdated">更新所有旧版解析文件</span></label>
+            <hr>
+            <label class="cloudig-choice"><input type="checkbox" data-parse-setting="preserve_previous"><span data-i18n="archiver.preservePrevious">保留旧版解析结果</span></label>
+            <p class="archiver-settings-note"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 5.5v5.5m0 3h.01"/></svg><span data-i18n="archiver.oneClickScopeNote">一键解析包含 HTML 和 Agent Tool 单会话文件。平台官方导出文件请进入对应页面解析。</span></p>
+            <footer>
+              <button class="cloudig-button cloudig-button-outline" type="button" data-parse-settings-cancel data-i18n="reader.cancel">取消</button>
+              <button class="cloudig-button cloudig-button-filled" type="button" data-parse-settings-save data-i18n="archiver.saveSettings">保存设置</button>
+            </footer>
+          </section>
+
+          <section class="archiver-workflow" data-archiver-workflow hidden>
+            <h1 data-i18n="archiver.workflowTitle">采云档案馆与阅览室使用流程介绍</h1>
+            <div class="archiver-workflow-scroll" data-scroll-region>
+              <h2 data-i18n="archiver.workflowInstallTitle">一、安装书签</h2>
+              <p class="archiver-workflow-line archiver-workflow-bullet"><strong data-i18n="archiver.workflowAutoLead">自动安装：</strong><span data-i18n="archiver.workflowAutoBeforeProfile">退出Chrome浏览器，选择</span><button class="archiver-workflow-text-action" type="button" data-highlight-source="bookmark-profile" data-i18n="archiver.workflowProfileChoice">轻装/全量/整树</button><span data-i18n="archiver.workflowAutoAfterProfile">选项后，点击</span><button class="archiver-workflow-action archiver-workflow-action-filled" type="button" data-highlight-source="bookmark-install-all" data-i18n="archiver.workflowInstallAllAction">全装·版本</button><span data-i18n="archiver.workflowOr">或点击</span><button class="archiver-workflow-action archiver-workflow-action-filled" type="button" data-highlight-source="bookmark-install-one" data-i18n="archiver.workflowInstallOneAction">安装·轻装</button><span data-i18n="archiver.workflowInstallOnly">只安装需要的平台书签。</span></p>
+              <p class="archiver-workflow-line archiver-workflow-bullet"><strong data-i18n="archiver.workflowManualLead">手动安装：</strong><span data-i18n="archiver.workflowManualBeforeCopy">点击</span><button class="archiver-workflow-copy-action" type="button" data-highlight-source="bookmark-copy" data-i18n-title="archiver.workflowCopyAction" title="复制"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg></button><span data-i18n="archiver.workflowManualAfterCopy">按钮，在Chrome书签栏新建书签，起一个名字（如“保存ChatGPT”），把复制的JS文本粘贴为网址。</span></p>
+              <h2 data-i18n="archiver.workflowSaveTitle">二、存对话</h2>
+              <p data-i18n="archiver.workflowSaveHtml">打开对话网页（如chatgpt.com/具体的对话），点书签栏的采云保存书签，把可以直接阅读的HTML下载到本地。</p>
+              <p><span data-i18n="archiver.workflowSaveClaudeBefore">采云也支持解析</span><span data-i18n="archiver.workflowPlatforms">各平台</span><span data-i18n="archiver.workflowSaveClaudeBetween">导出的</span><em data-i18n="archiver.workflowJsonFormat">JSON</em><span data-i18n="archiver.workflowSaveClaudeAfter">对话包。</span></p>
+              <p class="archiver-cowork-warning"><span data-i18n="archiver.workflowCoworkBefore">截止2026-08，Claude的官方导出</span><strong data-i18n="archiver.workflowCoworkMissing">不包含Cowork数据</strong><span data-i18n="archiver.workflowCoworkAfter">。可在Chrome中打开具体cowork对话，使用</span><button type="button" data-highlight-source="bookmark-claude" data-i18n="archiver.workflowClaudeBookmark">Claude书签</button><span data-i18n="archiver.workflowDownload">下载。</span></p>
+              <h2 data-i18n="archiver.workflowImportTitle">三、导入文件</h2>
+              <p><span data-i18n="archiver.workflowImportBeforeHtml">把用书签下载的</span><em data-i18n="archiver.workflowHtmlFile">HTML文件</em><span data-i18n="archiver.workflowImportBetween">，或各平台的</span><em data-i18n="archiver.workflowJsonFile">JSON文件</em><span data-i18n="archiver.workflowImportAfterJson">放进解析文件夹（cloudig\inbox）</span><button class="archiver-workflow-action archiver-workflow-action-outline" type="button" data-highlight-source="open-inbox" data-i18n="archiver.openInbox">打开解析文件夹</button></p>
+              <p><span data-i18n="archiver.workflowOrClick">或点击</span><button class="archiver-workflow-action archiver-workflow-action-filled" type="button" data-highlight-source="import-html" data-i18n="archiver.importHtml">导入书签HTML</button><button class="archiver-workflow-action archiver-workflow-action-claude" type="button" data-highlight-source="import-claude" data-i18n="archiver.importClaude">导入平台文件</button></p>
+              <h2 data-i18n="archiver.workflowReadTitle">四、解析、管理、阅读</h2>
+              <p><span data-i18n="archiver.workflowReadBefore">在本页统一解析管理对话，之后即可</span><button class="archiver-workflow-action archiver-workflow-action-filled" type="button" data-highlight-source="start-reader" data-i18n="archiver.startReader">开始阅览</button></p>
+              <p class="archiver-workflow-line archiver-workflow-bullet archiver-workflow-docs"><span data-i18n="archiver.workflowDocsBefore">可点击界面右侧的</span><button type="button" data-highlight-source="docs-bookmark" data-i18n="archiver.workflowDocsBookmark">采云功能文档 书签使用方法</button><span data-i18n="archiver.workflowDocsJoin">，以及</span><button type="button" data-highlight-source="docs-archive" data-i18n="archiver.workflowDocsArchive">档案管理方法</button><span data-i18n="archiver.workflowDocsAfter">查看详细图文攻略。</span></p>
+            </div>
+            <footer><button class="cloudig-button cloudig-button-filled" type="button" data-archiver-workflow-close data-i18n="archiver.workflowClose">关闭流程介绍</button><span data-i18n="archiver.workflowReopenBefore">可点击</span><button class="archiver-workflow-usage-action" type="button" data-highlight-source="workflow-usage"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.7 9a2.45 2.45 0 0 1 4.75.8c0 1.8-2.45 2.05-2.45 3.7"></path><circle cx="12" cy="17.25" r=".8"></circle></svg><span data-i18n="archiver.usage">使用方法</span></button><span data-i18n="archiver.workflowReopenAfter">再次打开流程介绍。</span></footer>
+          </section>
+        </section>
+
+        <aside class="archiver-docs-rail">
+          <section class="archiver-doc-card">
+            <h2 data-i18n="reader.docsTitle">采云功能文档</h2>
+            <p>V1.0 <span data-i18n="welcome.releaseName">东方既白</span></p>
+            <button class="archiver-system-log" type="button" data-route-target="system/log" data-i18n="reader.systemLog">系统日志</button>
+            <ul>
+              <li data-highlight-target="docs-bookmark"><button type="button" data-doc-topic="bookmark"><span data-i18n="reader.docsBookmark">书签指南</span><img class="archiver-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="archiver-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+              <li data-highlight-target="docs-archive"><button type="button" data-doc-topic="archive"><span data-i18n="reader.docsArchive">采云功能</span><img class="archiver-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="archiver-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+              <li><button type="button" data-doc-topic="platforms"><span data-i18n="reader.docsPlatforms">平台范例</span><img class="archiver-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="archiver-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+              <li><button type="button" data-doc-topic="json"><span data-i18n="reader.docsJson">采云标准</span><img class="archiver-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="archiver-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+              <li><button type="button" data-doc-topic="roadmap"><span data-i18n="reader.docsRoadmap">历史与未来</span><img class="archiver-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="archiver-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+              <li><button type="button" data-doc-topic="license"><span>LICENSE</span><img class="archiver-theme-dawn" src="/assets/reader/SmallButterfly-Dawn.svg" alt=""><img class="archiver-theme-star-night" src="/assets/reader/SmallButterfly-StarNight.svg" alt=""></button></li>
+            </ul>
+            <div class="archiver-contact"><img src="/assets/reader/ChenXing-Avatar.png" alt=""><span><strong data-i18n="reader.authorName">晨星.CyberVenus</strong><small><a class="cloudig-contact-link" href="https://zhuanlan.zhihu.com/p/2085630488027330496" target="_blank" rel="noopener noreferrer" data-i18n="reader.contactZhihu">知乎留言</a>　<a class="cloudig-contact-link" href="https://github.com/ChenXing-CyberVenus/Cloudig/issues" target="_blank" rel="noopener noreferrer" data-i18n="reader.contactGithub">GitHub</a></small></span></div>
+          </section>
+          <button class="cloudig-button cloudig-button-filled archiver-content-time" type="button" data-route-target="time/cover" data-i18n="reader.contentTimeline">内容时间轴</button>
+          <div class="archiver-right-scene archiver-theme-dawn" aria-hidden="true">
+            <span class="archiver-weather">
+              <svg class="archiver-weather-symbols" width="0" height="0" focusable="false"><defs>
+                <path id="archiver-blossom-petal" d="M12 12C8 11 5.8 6.2 8.1 3.7 9.5 2.1 11 3.3 12 4.4 13 3.3 14.5 2.1 15.9 3.7 18.2 6.2 16 11 12 12Z"/>
+                <symbol id="archiver-blossom" viewBox="0 0 24 24">
+                  <g fill="currentColor"><use href="#archiver-blossom-petal"/><use href="#archiver-blossom-petal" transform="rotate(72 12 12)"/><use href="#archiver-blossom-petal" transform="rotate(144 12 12)"/><use href="#archiver-blossom-petal" transform="rotate(216 12 12)"/><use href="#archiver-blossom-petal" transform="rotate(288 12 12)"/></g>
+                  <circle cx="12" cy="12" r="2.2" fill="#f9ca82"/><g fill="#d68c80"><circle cx="11" cy="11.2" r=".55"/><circle cx="13.1" cy="11.6" r=".55"/><circle cx="12" cy="13.1" r=".55"/></g>
+                </symbol>
+                <symbol id="archiver-maple-leaf" viewBox="0 0 24 28">
+                  <path fill="currentColor" d="m12 1 2.5 6 2.3-1.7-.4 6 5-3.5-.7 4.7 2.2.7-5.3 5.2 1.1 2.5-6-1.1-.1 6.8h-1.4l.1-6.8-6.1 1.1 1.1-2.5L1 13.2l2.2-.7-.7-4.7 5 3.5-.4-6L9.5 7Z"/>
+                  <path d="M12 6v14m0-4L7 12m5 6 6-5" fill="none" stroke="#f9ca82" stroke-opacity=".65" stroke-width=".7" stroke-linecap="round"/>
+                </symbol>
+                <path id="archiver-snow-arm" d="M12 12V2m0 4L9 3m3 3 3-3m-3 6L9.5 7m2.5 2 2.5-2"/>
+                <symbol id="archiver-snow-crystal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"><use href="#archiver-snow-arm"/><use href="#archiver-snow-arm" transform="rotate(60 12 12)"/><use href="#archiver-snow-arm" transform="rotate(120 12 12)"/><use href="#archiver-snow-arm" transform="rotate(180 12 12)"/><use href="#archiver-snow-arm" transform="rotate(240 12 12)"/><use href="#archiver-snow-arm" transform="rotate(300 12 12)"/></g></symbol>
+              </defs></svg>
+              <span class="archiver-weather-phase archiver-weather-flowers">
+                <i><svg><use href="#archiver-blossom"/></svg></i><i><svg><use href="#archiver-blossom"/></svg></i><i><svg><use href="#archiver-blossom"/></svg></i><i><svg><use href="#archiver-blossom"/></svg></i>
+                <i><svg><use href="#archiver-blossom"/></svg></i><i><svg><use href="#archiver-blossom"/></svg></i><i><svg><use href="#archiver-blossom"/></svg></i><i><svg><use href="#archiver-blossom"/></svg></i>
+              </span>
+              <span class="archiver-weather-phase archiver-weather-rain"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              <span class="archiver-weather-phase archiver-weather-leaves">
+                <i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i>
+                <i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i>
+                <i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i><i><svg><use href="#archiver-maple-leaf"/></svg></i>
+              </span>
+              <span class="archiver-weather-phase archiver-weather-snow">
+                <i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i>
+                <i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i>
+                <i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i><i><svg><use href="#archiver-snow-crystal"/></svg></i>
+              </span>
+            </span>
+            <img class="archiver-cock" src="/assets/archiver/Cock.svg" alt=""><img class="archiver-rock" src="/assets/archiver/RockStage.svg" alt="">
+          </div>
+          <div class="archiver-right-scene archiver-theme-star-night" aria-hidden="true"><img class="archiver-sunflower" src="/assets/archiver/Sunflower.svg" alt=""><img class="archiver-astronaut" src="/assets/archiver/Astronaut.svg" alt=""></div>
+          <p class="archiver-right-poem archiver-theme-dawn"><span class="archiver-poem-line" data-i18n="archiver.cockPoemLine1">东临碣石，以观沧海桑田。</span><span class="archiver-poem-line" data-i18n="archiver.cockPoemLine2"></span></p>
+          <p class="archiver-right-poem archiver-theme-star-night"><span class="archiver-poem-line" data-i18n="archiver.astronautPoemLine1">每个人心里都有一团火，</span><span class="archiver-poem-line" data-i18n="archiver.astronautPoemLine2">采云拒绝让它们只剩烟。</span></p>
+        </aside>
+      </div>
+    </main>
+  </template>
+  <template id="conversation-info-template">
+    <div class="conversation-info-layer" data-conversation-info-layer>
+      <form class="conversation-info-dialog" data-conversation-info-dialog role="dialog" aria-modal="true" novalidate>
+        <header class="conversation-info-header">
+          <label class="conversation-info-title-field">
+            <span data-conversation-copy="titleLabel">会话名称</span>
+            <input type="text" autocomplete="off" data-conversation-name required>
+          </label>
+        </header>
+        <div class="conversation-info-scroll" data-conversation-info-scroll data-scroll-region>
+          <section class="conversation-info-metadata">
+            <div class="conversation-info-model-row">
+              <span class="conversation-info-platform-icon" data-conversation-platform-icon></span>
+              <strong class="conversation-info-platform-tag" data-conversation-platform></strong>
+              <div class="conversation-info-model-tags" data-conversation-models></div>
+              <div class="conversation-info-add-model"><button type="button" data-conversation-model-open>＋<span data-conversation-copy="addModelLabel">添加模型</span></button><input type="text" autocomplete="off" data-conversation-model-input aria-label="模型名称"><button type="button" data-conversation-model-add>＋</button></div>
+            </div>
+            <ul class="conversation-info-facts">
+              <li class="conversation-info-time-facts"><span><b data-conversation-copy="editedAt">最后编辑时间</b>：<span data-conversation-fact="edited_at"></span></span><span><b data-conversation-copy="firstParsed">首次解析时间</b>：<span data-conversation-fact="first_parsed"></span></span><span data-conversation-message-time><b data-conversation-copy="messageTime">会话消息时间</b>：<span data-conversation-fact="message_time"></span></span></li>
+              <li><b data-conversation-copy="sourceFile">原文件</b>：<span data-conversation-fact="source_file"></span></li>
+              <li class="conversation-info-time-facts"><span data-conversation-captured><b data-conversation-copy="capturedAt">原文件采集时间</b>：<span data-conversation-fact="captured_at"></span></span><span><b data-conversation-copy="jsonFile">当前JSON文件</b>：<span data-conversation-fact="json_file"></span></span></li>
+            </ul>
+            <details class="conversation-info-details">
+              <summary data-conversation-copy="details">解析详情</summary>
+              <p data-conversation-fact="parser"></p>
+              <details class="conversation-info-parser-history" data-parser-history><summary>Parser版本与适配器沿革</summary><div data-parser-history-body></div></details>
+            </details>
+            <p class="conversation-info-name-notice"><strong data-conversation-copy="nameRuleTitle">文件名与标题相互独立</strong><span data-conversation-copy="nameRule">修改会话名称不会修改JSON文件名；修改JSON文件名也不会修改会话名称。</span></p>
+          </section>
+          <section class="conversation-info-time">
+            <aside class="conversation-info-time-summary">
+              <header><h2 title="说时迟，那时快" data-conversation-copy="contentTime">内容时间</h2><button type="button" data-conversation-time-clear data-conversation-copy="clear">清空</button></header>
+              <div class="conversation-info-time-display" data-conversation-time-display></div>
+              <div class="conversation-info-time-mode-actions"><h3 data-conversation-copy="presets">预设时间</h3><button class="cloudig-button cloudig-button-filled" type="button" data-conversation-time-open data-conversation-copy="editTimeline">编辑时间轴</button></div>
+              <div class="conversation-info-presets" data-conversation-presets></div>
+            </aside>
+            <section class="conversation-info-endpoint-editor">
+              <div class="conversation-info-endpoint-tabs">
+                <strong class="conversation-info-endpoint-label" data-conversation-endpoint-label>起点</strong>
+                <button type="button" data-conversation-axis="terran" aria-pressed="true"><i></i><span data-conversation-copy="terran">此地时间：以现实地球时间为主轴</span></button>
+                <button type="button" data-conversation-axis="sovereign" aria-pressed="false"><i></i><span data-conversation-copy="sovereign">独立时间：自定义时间与意义</span></button>
+                <button type="button" data-conversation-same-start hidden><i></i><span data-conversation-copy="sameStart">同起点</span></button>
+              </div>
+              <div class="conversation-info-terran-editor" data-conversation-terran-editor>
+                <div class="conversation-info-time-fields" data-conversation-time-fields></div>
+              </div>
+              <div class="conversation-info-sovereign-editor" data-conversation-sovereign-editor hidden>
+                <header><input type="search" maxlength="256" autocomplete="off" data-conversation-copy-placeholder="sovereignSearch" placeholder="搜索自定义时间名称" data-conversation-sovereign-search><button type="button" value="edited_desc" data-conversation-sovereign-sort><img src="/assets/reader/Button-Time-Tea.svg" alt=""></button></header>
+                <div class="conversation-info-sovereign-occurrences" data-conversation-sovereign-occurrences hidden></div>
+                <div class="conversation-info-sovereign-results" data-conversation-sovereign-results data-scroll-region></div>
+                <button class="cloudig-button cloudig-button-outline" type="button" data-conversation-time-open data-conversation-copy="addCustomTime">添加自定义时间</button>
+              </div>
+              <div class="conversation-info-other-endpoint">
+                <strong class="conversation-info-endpoint-label" data-conversation-other-label>终点</strong>
+                <button type="button" data-conversation-other-same><i></i><span data-conversation-copy="sameStart">同起点</span></button>
+                <button type="button" data-conversation-edit-other></button>
+                <button class="cloudig-button cloudig-button-filled" type="button" data-conversation-time-confirm data-conversation-copy="confirmTime">确认时间</button>
+              </div>
+              <p class="conversation-info-time-warning" data-conversation-time-warning hidden></p>
+            </section>
+          </section>
+        </div>
+        <footer class="conversation-info-footer">
+          <img class="conversation-info-scene conversation-info-scene-dawn" src="/assets/editor/EditorBack-Tao.svg" alt="" aria-hidden="true">
+          <img class="conversation-info-scene conversation-info-scene-star-night" src="/assets/editor/EditorBack-Drawer.svg" alt="" aria-hidden="true">
+          <div class="conversation-info-actions">
+            <button class="cloudig-button cloudig-button-filled" type="submit" data-conversation-info-save data-conversation-copy="save">保存</button>
+            <button class="cloudig-button cloudig-button-filled conversation-info-cancel" type="button" data-conversation-info-cancel data-conversation-copy="cancel">取消</button>
+          </div>
+        </footer>
+      </form>
+      <section class="conversation-info-confirm" data-conversation-info-confirm role="alertdialog" aria-modal="true" hidden>
+        <h2 data-conversation-confirm-title></h2>
+        <p data-conversation-confirm-message></p>
+        <footer><button class="cloudig-button cloudig-button-outline" type="button" data-conversation-confirm-secondary></button><button class="cloudig-button cloudig-button-filled" type="button" data-conversation-confirm-primary></button></footer>
+      </section>
+    </div>
+  </template>
+  <template id="time-cover-template">
+    <div class="time-cover-layer" data-time-cover-layer>
+      <section class="time-cover-dialog" data-time-cover-dialog role="dialog" aria-modal="true">
+        <aside class="time-cover-bank time-cover-terran">
+          <header class="time-cover-bank-header">
+            <img class="time-cover-bank-logo" src="/assets/editor/TimeLOGO-Terran.svg" alt="">
+            <strong data-time-copy="terranTitle">此地时间体系</strong>
+            <button type="button" data-time-bank-top="terran"><img class="time-cover-cloud time-cover-cloud-dawn" src="/assets/editor/TimeCloud-Red.svg" alt=""><img class="time-cover-cloud time-cover-cloud-night" src="/assets/editor/TimeCloud-LightGrey.svg" alt=""><span data-time-copy="returnTop">返回顶层</span></button>
+            <small data-time-terran-version></small>
+          </header>
+          <div class="time-cover-bank-list" data-time-terran-list data-scroll-region></div>
+        </aside>
+        <main class="time-cover-center">
+          <header class="time-cover-title-scene">
+            <img class="time-cover-title-art time-cover-title-art-dawn" src="/assets/editor/ContentTimeTitleBack-Dawn.svg" alt="">
+            <img class="time-cover-title-art time-cover-title-art-night" src="/assets/editor/ContentTimeTitleBack-StarNight.svg" alt="">
+            <h1 data-time-copy="pageTitle">采云内容时间系统V1.0</h1>
+            <button class="cloudig-button cloudig-button-filled" type="button" data-time-return-source data-time-copy="returnSource">返回来源</button>
+          </header>
+          <div class="time-cover-center-scroll" data-scroll-region>
+            <p class="time-cover-core"><span data-time-copy="corePrefix">时间体系核心：</span><strong data-time-copy="core">节点、序数轴、映射</strong></p>
+            <section>
+              <h2><i></i><span data-time-copy="terranHeading">此地时间体系 Terran Time</span></h2>
+              <p data-time-copy="terranLead">以现实地球时间为主轴的时间体系</p>
+              <ul><li><div class="time-cover-detail-copy"><b data-time-copy="method">历法：</b><span data-time-copy="methodText">外推格里历，无公元0年，1 BC 之后即 1 AD</span></div></li><li><div class="time-cover-detail-copy"><b data-time-copy="anchor">锚点：</b><span data-time-copy="anchorText">选择单位年前/后与现今，采云同步记录当前日期</span></div></li></ul>
+            </section>
+            <section>
+              <h2><i></i><span data-time-copy="sovereignHeading">独立时间体系 Sovereign Time</span></h2>
+              <p data-time-copy="sovereignLead">自定义时间与意义</p>
+              <ul><li><div class="time-cover-detail-copy"><b data-time-copy="timeline">时间轴：</b><span data-time-copy="timelineText">名称、作者、版本号</span></div></li><li><div class="time-cover-detail-copy"><b data-time-copy="time">时间：</b><span data-time-copy="timeText">名称、周期</span></div></li></ul>
+              <p data-time-copy="sameRule">时间轴与时间，都是节点，映射与子节点排序规则相同</p>
+              <ul><li><div class="time-cover-detail-copy"><b data-time-copy="contains">展开：</b><span data-time-copy="containsText">在节点中插入节点，如1年展开12月</span></div></li><li><div class="time-cover-detail-copy"><b data-time-copy="counterpart">对映：</b><span data-time-copy="counterpartText">此节点关联另一节点。如贞观元年对映627年</span></div></li></ul>
+              <p data-time-copy="spectrum">事件影响微弱时，是时间展开。影响增大，就变成时间对映。<br>对映和展开是意志对时间/事件价值认识的光谱两端。</p>
+            </section>
+            <p class="time-cover-warning"><i>!</i><span><b data-time-copy="free">采云不约束时间环路和时间倒流，请自由设定</b><br><span data-time-copy="performance">大周期数与复杂循环映射，可能引发程序逻辑与设备性能问题</span></span></p>
+          </div>
+          <footer class="time-cover-actions"><button class="cloudig-button cloudig-button-filled" type="button" data-time-create="timeline" data-time-copy="newTimeline">新建时间轴</button><button class="cloudig-button cloudig-button-outline" type="button" data-time-create="time" data-time-copy="newTime">新建时间</button></footer>
+        </main>
+        <aside class="time-cover-bank time-cover-sovereign">
+          <header class="time-cover-bank-header">
+            <img class="time-cover-bank-logo" src="/assets/editor/TimeLOGO-Sovereign.svg" alt="">
+            <strong data-time-copy="sovereignTitle">独立时间体系</strong>
+            <button type="button" data-time-bank-top="sovereign"><img class="time-cover-cloud time-cover-cloud-dawn" src="/assets/editor/TimeCloud-Blue.svg" alt=""><img class="time-cover-cloud time-cover-cloud-night" src="/assets/editor/TimeCloud-DarkGrey.svg" alt=""><span data-time-copy="returnTop">返回顶层</span></button>
+            <button class="time-cover-sort" type="button" data-time-sort data-time-copy="sortTitle" data-time-copy-title="sortTitle" title="排序">排序</button>
+            <span class="time-cover-sort-actions" data-time-sort-actions hidden><button type="button" data-time-sort-confirm data-time-copy="confirmOrder">确认</button><button type="button" data-time-sort-cancel data-time-copy="cancelOrder">取消</button></span>
+            <small data-time-copy="sovereignVersion" data-time-sovereign-heading>时间与时间轴列表</small>
+          </header>
+          <div class="time-cover-bank-list" data-time-sovereign-list data-scroll-region></div>
+        </aside>
+      </section>
+    </div>
+  </template>
+  <template id="time-editor-template">
+    <div class="time-editor-layer" data-time-editor-layer>
+      <form class="time-editor-dialog" data-time-editor-dialog novalidate>
+        <aside class="time-cover-bank time-cover-terran time-editor-bank">
+          <header class="time-cover-bank-header">
+            <img class="time-cover-bank-logo" src="/assets/editor/TimeLOGO-Terran.svg" alt="">
+            <strong data-time-editor-copy="terranTitle">此地时间体系</strong>
+            <button type="button" data-time-editor-cover><img class="time-cover-cloud time-cover-cloud-dawn" src="/assets/editor/TimeCloud-Red.svg" alt=""><img class="time-cover-cloud time-cover-cloud-night" src="/assets/editor/TimeCloud-LightGrey.svg" alt=""><span data-time-editor-copy="returnTop">返回顶层</span></button>
+            <small data-time-editor-terran-version></small>
+          </header>
+          <div class="time-cover-bank-list" data-time-editor-terran-list data-scroll-region></div>
+        </aside>
+        <main class="time-editor-center">
+          <header class="time-editor-title-scene">
+            <img class="time-editor-title-art time-editor-title-art-dawn" src="/assets/editor/ContentTimeTitleBack-Dawn.svg" alt="">
+            <img class="time-editor-title-art time-editor-title-art-night" src="/assets/editor/ContentTimeTitleBack-StarNight.svg" alt="">
+            <h1 data-time-editor-title>编辑时间轴</h1>
+            <button class="cloudig-button cloudig-button-filled" type="button" data-time-editor-return data-time-editor-copy="returnEditor">返回内容时间</button>
+          </header>
+          <div class="time-editor-body" data-time-editor-body data-scroll-region>
+            <section class="time-editor-section time-editor-metadata" data-time-editor-metadata></section>
+            <section class="time-editor-section" data-time-editor-references-section>
+              <header><h2 data-time-editor-copy="references">引用此时间的对话</h2><button type="button" data-time-editor-cancel-all data-time-editor-copy="cancelAll">取消全部引用</button></header>
+              <div class="time-editor-list" data-time-editor-references data-scroll-region></div>
+            </section>
+            <section class="time-editor-section">
+              <header><h2 data-time-editor-copy="mappings">映对此地时间</h2><button type="button" data-time-editor-add-mapping data-time-editor-copy="addMapping">添加此地时间映射</button></header>
+              <div class="time-editor-list" data-time-editor-mappings></div>
+            </section>
+            <section class="time-editor-section">
+              <header><h2 data-time-editor-copy="counterparts">对映的时间与时间轴</h2><button type="button" data-time-editor-add-counterpart data-time-editor-copy="addCounterpart">添加对映时间与时间轴</button></header>
+              <div class="time-editor-list" data-time-editor-counterparts></div>
+            </section>
+            <section class="time-editor-section">
+              <header><h2 data-time-editor-copy="children">包含时间与子时间轴</h2><span class="time-editor-section-actions"><button type="button" data-time-editor-add-child data-time-editor-copy="addChild">添加包含时间与子时间轴</button><button type="button" data-time-editor-sort-children>排序</button><button type="button" data-time-editor-order-confirm data-time-editor-copy="confirm" hidden>确认</button><button type="button" data-time-editor-order-cancel data-time-editor-copy="cancel" hidden>取消</button></span></header>
+              <div class="time-editor-list" data-time-editor-children></div>
+            </section>
+            <section class="time-editor-inline-editor" data-time-editor-inline hidden></section>
+          </div>
+          <footer class="time-editor-footer"><p data-time-editor-status></p><div><button class="cloudig-button cloudig-button-filled" type="submit" data-time-editor-save data-time-editor-copy="save">保存</button><button class="cloudig-button cloudig-button-filled time-editor-cancel" type="button" data-time-editor-cancel data-time-editor-copy="cancel">取消</button></div></footer>
+        </main>
+        <aside class="time-cover-bank time-cover-sovereign time-editor-bank">
+          <header class="time-cover-bank-header">
+            <img class="time-cover-bank-logo" src="/assets/editor/TimeLOGO-Sovereign.svg" alt="">
+            <strong data-time-editor-copy="sovereignTitle">独立时间体系</strong>
+            <button type="button" data-time-editor-cover><img class="time-cover-cloud time-cover-cloud-dawn" src="/assets/editor/TimeCloud-Blue.svg" alt=""><img class="time-cover-cloud time-cover-cloud-night" src="/assets/editor/TimeCloud-DarkGrey.svg" alt=""><span data-time-editor-copy="returnTop">返回顶层</span></button>
+            <button class="time-cover-sort" type="button" data-time-editor-sort title="排序">◷</button>
+            <small data-time-editor-copy="sovereignVersion">时间与时间轴列表</small>
+          </header>
+          <div class="time-cover-bank-list" data-time-editor-sovereign-list data-scroll-region></div>
+        </aside>
+        <section class="time-editor-impact" data-time-editor-impact role="alertdialog" aria-modal="true" hidden>
+          <h2 data-time-editor-copy="impactTitle">确认时间系统修改</h2>
+          <div data-time-editor-impact-body data-scroll-region></div>
+          <footer><button class="cloudig-button cloudig-button-outline" type="button" data-time-impact-cancel data-time-editor-copy="cancel">取消</button><button class="cloudig-button cloudig-button-filled" type="button" data-time-impact-confirm data-time-editor-copy="confirm">确认</button></footer>
+        </section>
+      </form>
+    </div>
+  </template>
+  <template id="system-log-template">
+    <div class="system-log-layer" data-system-log-layer>
+      <section class="system-log-dialog" data-system-log-dialog role="dialog" aria-modal="true" aria-labelledby="system-log-title">
+        <header class="system-log-header"><h1 id="system-log-title" data-system-log-title>系统日志</h1><div class="system-log-header-actions"><button class="cloudig-button cloudig-button-outline" type="button" data-system-log-refresh>刷新</button><button class="cloudig-button cloudig-button-outline" type="button" data-system-log-clear>清空日志</button><button class="cloudig-button cloudig-button-outline" type="button" data-system-log-close>关闭</button></div></header>
+        <div class="system-log-list" data-system-log-list data-scroll-region></div>
+        <p class="system-log-status" data-system-log-status role="status" hidden></p>
+      </section>
+    </div>
+  </template>
+  <template id="identity-editor-template">
+    <div class="identity-editor-layer" data-identity-layer>
+      <form class="identity-editor-dialog" data-identity-dialog novalidate>
+        <header class="identity-editor-header">
+          <span class="identity-editor-mark" aria-hidden="true">✦</span>
+          <div><h1 data-identity-title>全局名称与头像设置</h1><p data-identity-context hidden></p></div>
+        </header>
+        <div class="identity-editor-body" data-identity-body data-scroll-region>
+          <section class="identity-editor-conversation" data-identity-conversation hidden>
+            <header><h2 data-identity-copy="conversationTitle">本篇对话名称</h2><button type="button" data-identity-reset-conversation data-identity-copy="resetConversation">恢复本篇默认名称</button></header>
+            <div class="identity-editor-conversation-fields">
+              <label><span data-identity-copy="conversationUser">本篇用户名</span><input type="text" data-identity-conversation-user></label>
+              <label><span data-identity-copy="conversationAssistant">本篇智能名字</span><input type="text" data-identity-conversation-assistant></label>
+            </div>
+          </section>
+          <section class="identity-editor-global">
+            <h2 data-identity-copy="globalTitle">全局名称与头像</h2>
+            <div class="identity-editor-global-grid" data-identity-global-grid></div>
+          </section>
+          <p class="identity-editor-callout" data-identity-callout><i aria-hidden="true">i</i><span data-identity-copy="scopeNote">每篇对话可单独改用户名和会话智能名字：打开阅读器→点击会话→点击名字。</span></p>
+          <section class="identity-editor-platforms">
+            <header><h2 data-identity-copy="platformTitle">模型名称与头像设定</h2><button type="button" data-identity-reset-platforms data-identity-copy="resetPlatforms">恢复全部平台默认值</button></header>
+            <div class="identity-editor-platform-grid" data-identity-platform-grid></div>
+          </section>
+        </div>
+        <p class="identity-editor-status" data-identity-status role="status" hidden></p>
+        <footer class="identity-editor-footer"><button class="cloudig-button cloudig-button-outline" type="button" data-identity-cancel data-identity-copy="cancel">取消</button><button class="cloudig-button cloudig-button-filled" type="submit" data-identity-save data-identity-copy="save">保存</button></footer>
+      </form>
+    </div>
+  </template>
+  <script defer src="/runtime/conversation-renderer.js"></script>
+  <script type="module" src="/shell.js"></script>
+</body>
+</html>

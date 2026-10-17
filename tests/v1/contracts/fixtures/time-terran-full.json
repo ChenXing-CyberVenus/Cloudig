@@ -1,0 +1,22 @@
+{
+  "start": {
+    "kind": "calendar",
+    "era": "BC",
+    "year": 1,
+    "month": 12,
+    "day": 31,
+    "hour": 23,
+    "minute": 0,
+    "offset": "-01:00"
+  },
+  "end": {
+    "kind": "calendar",
+    "era": "AD",
+    "year": 1,
+    "month": 1,
+    "day": 1,
+    "hour": 0,
+    "minute": 0,
+    "offset": "Z"
+  }
+}

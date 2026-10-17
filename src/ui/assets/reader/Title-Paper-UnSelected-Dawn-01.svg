@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 372 60">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e8d6c4;
+      }
+
+      .cls-2 {
+        fill: #dbbb9c;
+      }
+
+      .cls-3 {
+        fill: #ae8b7f;
+      }
+
+      .cls-4 {
+        fill: #d3af95;
+      }
+    </style>
+  </defs>
+  <g>
+    <g>
+      <rect id="_背景" class="cls-4" width="372" height="60"/>
+      <g id="_圆圈">
+        <circle class="cls-2" cx="12.15" cy="11.87" r="4.89"/>
+        <circle class="cls-2" cx="12.15" cy="31.27" r="4.89"/>
+        <circle class="cls-2" cx="12.15" cy="50.67" r="4.89"/>
+      </g>
+      <g id="_折角">
+        <polygon class="cls-3" points="372 34.94 347.05 34.94 347.05 59.89 372 34.94"/>
+        <polygon class="cls-1" points="347.05 60 372 60 372 35.05 347.05 60"/>
+      </g>
+    </g>
+  </g>
+</svg>

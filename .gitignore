@@ -1,0 +1,44 @@
+# Operating systems and editors
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+
+# Dependencies, caches, builds and local reports
+node_modules/
+.worktrees/
+.cache/
+coverage/
+__pycache__/
+*.py[cod]
+dist/
+artifacts/
+# Versioned release payloads, unsigned backups and signing evidence stay local.
+releases/*/
+bin/
+obj/
+manager/.cache/
+manager/.artifacts/
+manager/.build/
+manager/.dotnet-home/
+manager/.nuget/
+manager/.test-temp/
+manager/dist/
+manager/web/visual-reader-*.html
+work/
+tmp/
+*.log
+
+# Private local material must never enter the public repository
+.env
+.env.*
+!.env.example
+local-exports/
+tests/private/
+
+# User-owned browser recovery copies; read-only evidence, never a build input
+bookmarklets/书签JS抢救/
+
+# User acceptance prompts and results may contain private conversation URLs
+bookmarklets/测试结果/

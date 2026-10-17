@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture Mistral</title></head>
+<body>
+  <article class="osis-turn user" data-message-id="mistral-user" data-message-version="0">
+    <div class="osis-message"><div class="osis-rich">
+      <figure class="osis-image"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="fixture-upload.png" width="1" height="1"></figure>
+      <section class="osis-attachments"><div class="osis-attachment"><strong class="osis-file-name">notes.txt</strong></div></section>
+      <p>User prompt.</p>
+    </div></div>
+  </article>
+  <article class="osis-turn assistant" data-message-id="mistral-assistant" data-message-version="0">
+    <div class="osis-message">
+      <details class="osis-public-thinking"><summary>Thought</summary><p>Duplicate DOM thought.</p></details>
+      <details class="osis-tool-section"><summary>Tool</summary><div class="osis-tool-card">Duplicate DOM tool.</div></details>
+      <div class="osis-rich">
+        <p>Formula <span class="osis-math" data-tex="x^2" data-math-display="false"><math><msup><mi>x</mi><mn>2</mn></msup></math></span>.</p>
+        <section class="osis-mermaid-card"><div class="osis-mermaid-panel"><svg xmlns="http://www.w3.org/2000/svg"><text>fixture</text></svg></div><div class="osis-mermaid-panel"><pre><code>graph TD
+  A--&gt;B</code></pre></div></section>
+        <div class="canvas-static"><h2>Canvas title</h2><p>Canvas body.</p></div>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="generated.png" width="1" height="1">
+      </div>
+    </div>
+  </article>
+  <script>globalThis.__mistral_must_not_run = true;</script>
+  <script id="ai-chat-archive-manifest" type="application/json">{
+    "schema": "ai-chat-archive/manifest-v1",
+    "platform": "mistral",
+    "exporter": { "name": "Fixture Mistral Exporter", "version": "2.5.11-light", "mode": "light" },
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source": { "url": "https://chat.mistral.ai/chat/fixture", "title": "Fixture Mistral", "conversation_id": "fixture-mistral-conversation" }
+  }</script>
+  <script id="mistral-export-data" type="application/json">{
+    "schema": "osis.mistral.chat-export/light-dom-rsc-v2",
+    "version": "2.5.11-light",
+    "message_order": [{ "id": "mistral-user", "version": 0 }, { "id": "mistral-assistant", "version": 0 }],
+    "messages": [
+      {
+        "id": "mistral-user", "version": 0, "parent_id": null, "parent_version": 0, "role": "user", "created_at": "2026-08-31T20:58:00.000Z",
+        "content_markdown": "User prompt.", "public_thoughts": [], "reasoning_segments": [], "tools": [], "references": [], "reference_placements": [], "diagram_sources": [],
+        "attachments": [
+          { "kind": "image", "type": "image", "name": "fixture-upload.png", "extension": "png", "size": 68, "status": "metadata-only" },
+          { "kind": "file", "type": "text/plain", "name": "notes.txt", "extension": "txt", "size": 5, "status": "metadata-only" }
+        ]
+      },
+      {
+        "id": "mistral-assistant", "version": 0, "parent_id": "mistral-user", "parent_version": 0, "role": "assistant", "created_at": "2026-08-31T20:59:00.000Z",
+        "content_markdown": "Formula $x^2$.\n\n```mermaid\ngraph TD\n  A-->B\n```\n\nCanvas body.",
+        "public_thoughts": [
+          { "label": "Thought 1", "body_available": true, "body_text": "First public thought.", "seconds": 1 },
+          { "label": "Thought 2", "body_available": true, "body_text": "Second public thought.", "seconds": 2 }
+        ],
+        "reasoning_segments": [{ "body_text": "First public thought.", "duration_ms": 1000 }, { "body_text": "Second public thought.", "duration_ms": 2000 }],
+        "tools": [{ "id": "fixture-tool", "name": "web_search", "tool_type": "rag", "after_reasoning_index": 1, "chunk_index": 1, "query": "fixture query", "arguments_text": "fixture query", "results": [{ "title": "Fixture result", "url": "https://example.test/mistral", "description": "Useful result.", "source": "example.test" }], "success": true, "done": true }],
+        "references": [{ "id": "fixture-reference", "title": "Fixture result", "url": "https://example.test/mistral", "source": "example.test", "signed_url_stripped": false }],
+        "reference_placements": [{ "after_chunk_index": 1, "reference_ids": ["fixture-reference"] }],
+        "diagram_sources": [{ "kind": "mermaid", "ordinal": 1, "provenance": "dom", "source": "graph TD\n  A-->B" }],
+        "attachments": []
+      }
+    ],
+    "chat": { "id": "fixture", "title": "Fixture Mistral" },
+    "resource_policy": { "images": "thumbnail", "attachments": "metadata-only" },
+    "all_payload_message_count": 2
+  }</script>
+</body>
+</html>

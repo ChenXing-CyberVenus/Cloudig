@@ -1,0 +1,1360 @@
+{
+  "schema": "cloudig/identity-presets/1.0.0",
+  "status": "design_approved",
+  "sample_date": "2026-09-07",
+  "presets": [
+    {
+      "usage": "user_fallback",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [],
+        "kind": {
+          "world": "terran",
+          "subject": "human"
+        },
+        "role": "user"
+      }
+    },
+    {
+      "usage": "tool_fallback",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool"
+      }
+    },
+    {
+      "usage": "system_fallback",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "system"
+      }
+    },
+    {
+      "platform": "chatgpt",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552c-7af9-a87e-2c52ea363c5e",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "ChatGPT",
+            "claimers": [
+              {
+                "name": "OpenAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "deepseek",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-74da-a60d-bc7b1dd218a4",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "DeepSeek",
+            "claimers": [
+              {
+                "name": "DeepSeek"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "gemini",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-722b-b043-3db3293584d9",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Gemini",
+            "claimers": [
+              {
+                "name": "Google"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-7a9e-8a49-63a007d46f0e",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Grok",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "doubao",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-732d-b8e2-b058c81149eb",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "豆包",
+            "claimers": [
+              {
+                "name": "字节跳动"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "kimi",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-7fae-a90c-0b9508fb0a1c",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Kimi",
+            "claimers": [
+              {
+                "name": "月之暗面"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "qwen",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-778d-b3f0-f359bf6bde36",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Qwen",
+            "claimers": [
+              {
+                "name": "阿里巴巴"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatglm",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-70da-ba97-8e9f031df267",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "ChatGLM",
+            "claimers": [
+              {
+                "name": "智谱"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "zai",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-7e72-a628-b4b8e6db17cb",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Z.ai",
+            "claimers": [
+              {
+                "name": "智谱"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "yuanbao",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-7d6f-905c-36727bcc5e2a",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "元宝",
+            "claimers": [
+              {
+                "name": "腾讯"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "mistral",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-7c6f-8564-d6fdf74b18ed",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Mistral",
+            "claimers": [
+              {
+                "name": "Mistral AI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "platform_fallback",
+      "front_id": "01a0aac8-552d-71af-ab22-054d36bcf8f6",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Claude",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatgpt",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "gpt-5-6-thinking",
+            "claimers": [
+              {
+                "name": "OpenAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatgpt",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "bidi",
+            "claimers": [
+              {
+                "name": "OpenAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "grok-3",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "grok-4",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "grok-4-auto",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "grok-4p3-0430-v2-s320-memory",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "grok-4p5-v9-stickynote",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "grok-4p5-v9-stickynote-chat-specialist",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "grok",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "grok-v9-4p5-chat-expert",
+            "claimers": [
+              {
+                "name": "xAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "qwen",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Qwen3.7-Plus",
+            "claimers": [
+              {
+                "name": "阿里巴巴"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "zai",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "glm-5.2",
+            "claimers": [
+              {
+                "name": "智谱"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatglm",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "moe_47",
+            "claimers": [
+              {
+                "name": "智谱"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatglm",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "moe_52",
+            "claimers": [
+              {
+                "name": "智谱"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatglm",
+      "usage": "source_model",
+      "evidence_scope": "message",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "vlm_46",
+            "claimers": [
+              {
+                "name": "智谱"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "kimi",
+      "usage": "source_model",
+      "evidence_scope": "conversation",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "k2d6-chat",
+            "claimers": [
+              {
+                "name": "月之暗面"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "source_model",
+      "evidence_scope": "conversation",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "claude-opus-4-6",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "source_model",
+      "evidence_scope": "conversation",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Opus 4.6 Max",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "ai"
+        },
+        "role": "assistant",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatgpt",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "python",
+            "claimers": [
+              {
+                "name": "OpenAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatgpt",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "web.run",
+            "claimers": [
+              {
+                "name": "OpenAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "chatgpt",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "网络搜索",
+            "claimers": [
+              {
+                "name": "OpenAI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "kimi",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "web_search",
+            "claimers": [
+              {
+                "name": "月之暗面"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "mistral",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "generate_image",
+            "claimers": [
+              {
+                "name": "Mistral AI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "mistral",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "web_search",
+            "claimers": [
+              {
+                "name": "Mistral AI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "mistral",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "write_canvas",
+            "claimers": [
+              {
+                "name": "Mistral AI"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "create_file",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "image_search",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "present_files",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "view",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "web_search",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Artifact",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "AskUserQuestion",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Bash",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "mcp__memory__memory_list",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "mcp__memory__memory_str_replace",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "mcp__memory__memory_write",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Projects",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Read",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "SendUserFile",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Skill",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "TaskCreate",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "TaskUpdate",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "ToolSearch",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "WebSearch",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    },
+    {
+      "platform": "claude",
+      "usage": "tool",
+      "identity": {
+        "schema": "cloudig/identity/1.0.0",
+        "names": [
+          {
+            "name": "Write",
+            "claimers": [
+              {
+                "name": "Anthropic"
+              }
+            ]
+          }
+        ],
+        "kind": {
+          "world": "terran",
+          "subject": "program"
+        },
+        "role": "tool",
+        "display_name": 1
+      }
+    }
+  ]
+}

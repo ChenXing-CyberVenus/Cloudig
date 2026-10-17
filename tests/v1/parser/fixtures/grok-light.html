@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Fixture Grok</title></head>
+<body>
+  <article class="message user" data-source-id="response-grok-user">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="Fixture upload" width="1" height="1">
+    <div>Hello
+line two</div>
+  </article>
+  <article class="message assistant" data-source-id="response-grok-assistant">
+    <p>Here is the result.</p>
+    <section class="osis-mermaid-card">
+      <div><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctext%3Efixture%3C%2Ftext%3E%3C%2Fsvg%3E"></div>
+      <div><pre><code>graph TD
+  A--&gt;B</code></pre></div>
+    </section>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="Fixture search image" width="1" height="1">
+  </article>
+  <script>globalThis.__grok_must_not_run = true;</script>
+  <script type="application/json" id="ai-chat-archive-manifest">{
+    "format": "ai-chat-archive/manifest-v1",
+    "platform": "grok",
+    "exporter_version": "2.8.8-light",
+    "captured_at": "2026-08-31T21:00:00.000Z",
+    "source_url": "https://grok.com/c/fixture",
+    "conversation_id": "fixture-grok-conversation",
+    "title": "Fixture Grok",
+    "payload": {
+      "format": "osis.grok.chat-export/light-dom-v2",
+      "element_id": "grok-export-data"
+    }
+  }</script>
+  <script type="application/json" id="grok-export-data">{
+    "format": "osis.grok.chat-export/light-dom-v2",
+    "platform": "grok",
+    "exporter_version": "2.8.8-light",
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source_url": "https://grok.com/c/fixture",
+    "conversation_id": "fixture-grok-conversation",
+    "title": "Fixture Grok",
+    "scope": "active_branch",
+    "messages": [
+      {
+        "ordinal": 0,
+        "role": "user",
+        "source_id": "response-grok-user",
+        "response_id": "grok-user",
+        "parent_response_id": "",
+        "model": "",
+        "text": "Hello\nline two",
+        "raw_message": "Hello\nline two",
+        "empty": false,
+        "thoughts": [],
+        "sources": [],
+        "attachments": [
+          {
+            "kind": "image",
+            "name": "Fixture upload",
+            "availability": "thumbnail_requested",
+            "source_reference": "fixture-image"
+          },
+          {
+            "kind": "attachment",
+            "name": "notes.txt",
+            "mime_type": "text/plain",
+            "availability": "metadata_only",
+            "source_reference": ""
+          }
+        ]
+      },
+      {
+        "ordinal": 1,
+        "role": "assistant",
+        "source_id": "response-grok-assistant",
+        "response_id": "grok-assistant",
+        "parent_response_id": "grok-user",
+        "model": "grok-fixture",
+        "text": "Here is the result.",
+        "raw_message": "Here is the result.\n\n```mermaid\ngraph TD\n  A-->B\n```",
+        "empty": false,
+        "thoughts": [
+          {
+            "label": "Thought for 1.5 seconds",
+            "text": "I examined the fixture source.",
+            "body_available": true,
+            "duration_seconds": 1.5,
+            "source": "authenticated_responses_api"
+          }
+        ],
+        "sources": [
+          {
+            "url": "https://example.test/grok-source",
+            "title": "Fixture source",
+            "hostname": "example.test"
+          }
+        ],
+        "attachments": []
+      }
+    ],
+    "images": [
+      {
+        "key": "fixture-image",
+        "kind": "attachment_image",
+        "name": "Fixture upload",
+        "alt": "Fixture upload",
+        "mime_type": "image/png",
+        "availability": "embedded_thumbnail",
+        "source_reference": "fixture-image",
+        "width": 1,
+        "height": 1,
+        "original_width": 64,
+        "original_height": 64
+      },
+      {
+        "key": "fixture-search-image",
+        "kind": "public_search_image",
+        "name": "Fixture search image",
+        "alt": "Fixture search image",
+        "mime_type": "image/png",
+        "availability": "embedded_thumbnail",
+        "source_reference": "https://example.test/image.png",
+        "width": 1,
+        "height": 1,
+        "original_width": 128,
+        "original_height": 128
+      }
+    ],
+    "artifacts": [],
+    "unknown_visible_components": []
+  }</script>
+</body>
+</html>

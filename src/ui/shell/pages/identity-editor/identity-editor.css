@@ -1,0 +1,197 @@
+@layer pages {
+  .identity-editor-layer {
+    align-items: center;
+    background: rgb(35 27 31 / 42%);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 24px;
+    pointer-events: auto;
+    position: absolute;
+    z-index: 260;
+  }
+  :root[data-theme="star-night"] .identity-editor-layer { background: rgb(0 0 0 / 68%); }
+  .identity-editor-dialog {
+    background: linear-gradient(145deg, rgb(255 250 242 / 98%), rgb(239 220 200 / 98%));
+    border: 1px solid #bd9272;
+    border-radius: 20px;
+    color: var(--cloudig-ink);
+    display: grid;
+    filter: drop-shadow(0 15px 15px rgb(48 30 20 / 34%));
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    max-height: calc(100vh - 48px);
+    overflow: hidden;
+    width: min(1080px, calc(100vw - 48px));
+  }
+  :root[data-theme="star-night"] .identity-editor-dialog {
+    background: linear-gradient(145deg, rgb(59 56 60 / 99%), rgb(30 30 30 / 99%));
+    border-color: #795c50;
+    color: var(--cloudig-light);
+    filter: drop-shadow(0 18px 18px rgb(0 0 0 / 70%));
+  }
+  .identity-editor-header {
+    align-items: center;
+    background: linear-gradient(90deg, rgb(165 37 37 / 12%), transparent 62%);
+    border-bottom: 1px solid rgb(165 37 37 / 25%);
+    display: flex;
+    gap: 16px;
+    min-height: 88px;
+    padding: 18px 30px 16px;
+  }
+  :root[data-theme="star-night"] .identity-editor-header { background: linear-gradient(90deg, rgb(81 37 165 / 38%), transparent 68%); border-color: rgb(255 169 46 / 24%); }
+  .identity-editor-mark { color: var(--cloudig-seal-red); filter: drop-shadow(1px 2px 2px rgb(0 0 0 / 28%)); font-size: 36px; line-height: 1; }
+  :root[data-theme="star-night"] .identity-editor-mark { color: var(--cloudig-orange); }
+  .identity-editor-header h1 { color: var(--cloudig-seal-red); font-size: 27px; line-height: 1.2; margin: 0; }
+  :root[data-theme="star-night"] .identity-editor-header h1 { color: var(--cloudig-orange); }
+  .identity-editor-header p { font-size: 14px; margin: 7px 0 0; opacity: .76; }
+  .identity-editor-body { display: grid; gap: 22px; overflow: auto; padding: 24px 30px 30px; }
+  .identity-editor-body h2 { color: var(--cloudig-seal-red); font-size: 20px; margin: 0 0 14px; }
+  :root[data-theme="star-night"] .identity-editor-body h2 { color: var(--cloudig-orange); }
+  .identity-editor-conversation,
+  .identity-editor-global,
+  .identity-editor-platforms {
+    background: rgb(255 255 255 / 32%);
+    border: 1px solid rgb(166 116 84 / 38%);
+    border-radius: 15px;
+    padding: 18px 20px 20px;
+  }
+  :root[data-theme="star-night"] .identity-editor-conversation,
+  :root[data-theme="star-night"] .identity-editor-global,
+  :root[data-theme="star-night"] .identity-editor-platforms { background: rgb(17 17 17 / 30%); border-color: rgb(255 169 46 / 20%); }
+  .identity-editor-conversation > header,
+  .identity-editor-platforms > header { align-items: center; display: flex; justify-content: space-between; }
+  .identity-editor-conversation > header button,
+  .identity-editor-platforms > header button,
+  .identity-card-reset,
+  .identity-avatar-clear {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--cloudig-seal-red);
+    cursor: pointer;
+    font-weight: 700;
+    padding: 4px 2px;
+  }
+  :root[data-theme="star-night"] .identity-editor-conversation > header button,
+  :root[data-theme="star-night"] .identity-editor-platforms > header button,
+  :root[data-theme="star-night"] .identity-card-reset,
+  :root[data-theme="star-night"] .identity-avatar-clear { color: var(--cloudig-orange); }
+  .identity-editor-conversation-fields { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .identity-editor-conversation-fields label,
+  .identity-card-name { display: grid; font-size: 14px; font-weight: 700; gap: 7px; min-width: 0; }
+  .identity-editor-dialog input[type="text"] {
+    background: rgb(255 255 255 / 68%);
+    border: 2px solid rgb(165 37 37 / 72%);
+    border-radius: 8px;
+    color: var(--cloudig-ink);
+    font: 500 16px/1.2 var(--cloudig-font-ui);
+    height: 40px;
+    min-width: 0;
+    padding: 0 11px;
+  }
+  :root[data-theme="star-night"] .identity-editor-dialog input[type="text"] { background: rgb(23 23 23 / 78%); border-color: rgb(255 169 46 / 74%); color: var(--cloudig-light); }
+  .identity-editor-global-grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+  .identity-card {
+    align-items: center;
+    background: rgb(255 255 255 / 40%);
+    border: 1px solid rgb(137 91 64 / 28%);
+    border-radius: 13px;
+    display: grid;
+    gap: 12px 16px;
+    grid-template-columns: 96px minmax(0, 1fr);
+    min-width: 0;
+    padding: 14px;
+  }
+  :root[data-theme="star-night"] .identity-card { background: rgb(0 0 0 / 22%); border-color: rgb(255 169 46 / 16%); }
+  .identity-card-avatar { align-items: center; display: flex; flex-direction: column; gap: 7px; grid-row: span 3; min-width: 0; }
+  .identity-avatar-frame {
+    align-items: center;
+    background: rgb(255 255 255 / 74%);
+    border: 2px solid var(--cloudig-seal-red);
+    border-radius: 13px;
+    display: flex;
+    filter: drop-shadow(1px 3px 3px rgb(0 0 0 / 28%));
+    height: 78px;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    width: 78px;
+  }
+  :root[data-theme="star-night"] .identity-avatar-frame { background: #252329; border-color: var(--cloudig-orange); filter: drop-shadow(1px 3px 4px rgb(0 0 0 / 68%)); }
+  .identity-avatar-frame[data-platform="kimi"] { background: #111; }
+  .identity-avatar-frame img { display: block; height: 100%; object-fit: cover; width: 100%; }
+  .identity-avatar-frame > .identity-avatar-clear {
+    align-items: center;
+    appearance: none;
+    background: rgb(30 30 30 / 72%);
+    border: 0;
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    font: 700 15px/1 var(--cloudig-font-ui);
+    height: 21px;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 21px;
+  }
+  .identity-avatar-frame > .identity-avatar-clear[hidden] { display: none; }
+  .identity-avatar-actions { display: flex; gap: 8px; }
+  .identity-avatar-actions button { appearance: none; background: transparent; border: 0; color: var(--cloudig-seal-red); cursor: pointer; font-size: 13px; font-weight: 700; padding: 2px; }
+  :root[data-theme="star-night"] .identity-avatar-actions button { color: var(--cloudig-orange); }
+  .identity-card-head { align-items: baseline; display: flex; gap: 8px; justify-content: space-between; min-width: 0; }
+  .identity-card-head strong { font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .identity-card-preview { align-items: center; display: flex; flex-wrap: nowrap; font-size: 13px; gap: 6px; min-width: 0; opacity: .78; overflow: hidden; }
+  .identity-card-preview b { background: rgb(165 37 37 / 10%); border: 1px solid rgb(165 37 37 / 36%); border-radius: 999px; color: var(--cloudig-seal-red); max-width: 100%; overflow: hidden; padding: 2px 8px; text-overflow: ellipsis; white-space: nowrap; }
+  :root[data-theme="star-night"] .identity-card-preview b { background: rgb(81 37 165 / 34%); border-color: rgb(255 169 46 / 35%); color: var(--cloudig-orange); }
+  .identity-apply-all { align-items: flex-start; display: flex; font-size: 13px; font-weight: 400; line-height: 1.4; }
+  .identity-apply-all,
+  .identity-apply-helper,
+  .identity-card-helper { grid-column: 2; }
+  .identity-card-helper { color: color-mix(in srgb, currentColor 72%, transparent); font-size: 13px; line-height: 1.45; margin: 0; }
+  .identity-apply-helper { align-items: flex-start; background: rgb(81 37 165 / 8%); border: 1px solid rgb(81 37 165 / 22%); border-radius: 10px; color: var(--cloudig-ink); display: grid; font-size: 13px; font-weight: 400; gap: 9px; grid-template-columns: 21px minmax(0, 1fr); line-height: 1.48; margin: 0; padding: 10px 12px; }
+  .identity-apply-helper i { align-items: center; border: 2px solid var(--cloudig-purple); border-radius: 50%; color: var(--cloudig-purple); display: inline-flex; font-style: normal; font-weight: 700; height: 21px; justify-content: center; width: 21px; }
+  .identity-apply-helper span { white-space: pre-line; }
+  :root[data-theme="star-night"] .identity-apply-helper { background: rgb(126 94 255 / 11%); border-color: rgb(126 94 255 / 28%); color: var(--cloudig-light); }
+  :root[data-theme="star-night"] .identity-apply-helper i { border-color: var(--cloudig-base-blue); color: var(--cloudig-base-blue); }
+  .identity-editor-callout { align-items: flex-start; background: rgb(126 94 255 / 10%); border: 1px solid rgb(81 37 165 / 28%); border-radius: 11px; color: var(--cloudig-purple); display: flex; font-size: 14px; font-weight: 400; gap: 10px; line-height: 1.55; margin: 0; padding: 12px 15px; }
+  .identity-editor-callout i { align-items: center; border: 2px solid currentColor; border-radius: 50%; display: inline-flex; flex: none; font-style: normal; height: 22px; justify-content: center; width: 22px; }
+  :root[data-theme="star-night"] .identity-editor-callout { background: rgb(126 94 255 / 16%); border-color: rgb(255 169 46 / 28%); color: var(--cloudig-orange); }
+  .identity-editor-platform-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .identity-editor-platform-grid .identity-card { gap: 9px 12px; grid-template-columns: 68px minmax(0, 1fr); padding: 11px; }
+  .identity-editor-platform-grid .identity-avatar-frame { border-width: 1px; height: 60px; width: 60px; }
+  :root[data-theme="star-night"] .identity-editor-platform-grid .identity-avatar-frame:is([data-platform="chatgpt"], [data-platform="grok"], [data-platform="zai"]) { background: #ffffff; }
+  .identity-editor-platform-grid .identity-card-head { align-items: center; gap: 6px; }
+  .identity-editor-platform-grid .identity-card-head strong { flex: 1 1 auto; font-size: 15px; max-width: 100%; }
+  .identity-editor-platform-grid .identity-card-reset { flex: none; font-size: 12px; white-space: nowrap; }
+  .identity-editor-platform-grid .identity-card-name { font-size: 12px; }
+  .identity-editor-platform-grid input[type="text"] { font-size: 14px; height: 34px; }
+  .identity-editor-status { background: rgb(165 37 37 / 10%); color: var(--cloudig-seal-red); font-size: 14px; font-weight: 700; margin: 0 30px 12px; padding: 9px 12px; }
+  :root[data-theme="star-night"] .identity-editor-status { background: rgb(255 169 46 / 10%); color: var(--cloudig-orange); }
+  .identity-editor-footer { align-items: center; border-top: 1px solid rgb(165 37 37 / 22%); display: flex; gap: 20px; justify-content: flex-end; min-height: 72px; padding: 16px 30px; }
+  :root[data-theme="star-night"] .identity-editor-footer { border-color: rgb(255 169 46 / 20%); }
+  .identity-editor-footer .cloudig-button-filled { --cloudig-button-fill: var(--cloudig-seal-red); }
+  :root[data-theme="star-night"] .identity-editor-footer .cloudig-button-filled { --cloudig-button-fill: var(--cloudig-purple); color: var(--cloudig-orange); }
+  .identity-editor-footer .cloudig-button-outline { color: var(--cloudig-seal-red); }
+  :root[data-theme="star-night"] .identity-editor-footer .cloudig-button-outline { color: var(--cloudig-orange); }
+  .identity-editor-dialog[data-saving="true"] { cursor: progress; }
+  .identity-editor-dialog[data-saving="true"] button,
+  .identity-editor-dialog[data-saving="true"] input { pointer-events: none; }
+
+  @media (max-width: 1320px) {
+    .identity-editor-dialog { width: min(1200px, calc(100vw - 48px)); }
+    .identity-editor-platform-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .identity-editor-layer { padding: 16px; }
+    .identity-editor-dialog { max-height: calc(100vh - 32px); width: calc(100vw - 32px); }
+    .identity-editor-header { min-height: 72px; padding: 13px 20px; }
+    .identity-editor-body { gap: 16px; padding: 18px 20px 22px; }
+    .identity-editor-conversation-fields { grid-template-columns: 1fr; }
+    .identity-editor-platform-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .identity-editor-footer { min-height: 62px; padding: 12px 20px; }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "cloudig/library/1.0.0",
+  "conversation_schema": "cloudig/conversation/1.0.0",
+  "content_time": {
+    "schema": "cloudig/time-system/1.0.0",
+    "revision": 2,
+    "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "next_archive": 3,
+  "revision": 5,
+  "edited_at": "2026-08-31T12:00:00.000Z",
+  "preferences": {
+    "language": "en",
+    "theme": "star_night"
+  },
+  "parse": {
+    "ordinary": {
+      "parse_unparsed": true,
+      "parse_selected": true,
+      "update_outdated": true,
+      "preserve_previous": false
+    },
+    "claude": {
+      "parse_unparsed": true,
+      "parse_selected": true,
+      "update_outdated": false,
+      "preserve_previous": true
+    }
+  },
+  "identity": {
+    "global": {
+      "user": {
+        "name": "晨星",
+        "avatar": "Assets/User/user.png"
+      },
+      "assistant": {
+        "name": "奥思",
+        "apply_to_all": true,
+        "avatar": "Data/Assets/User/assistant.png"
+      }
+    },
+    "platforms": {
+      "chatgpt": {
+        "assistant": {
+          "name": "ChatGPT",
+          "avatar": "Data/Assets/User/chatgpt.png"
+        }
+      }
+    }
+  },
+  "workflow": {
+    "parser": {
+      "sort": "time_desc",
+      "time_field": "file_modified_at"
+    },
+    "claude": {
+      "sort": "time_desc",
+      "time_field": "updated_at"
+    },
+    "archiver": {
+      "sort": "title",
+      "time_field": "content_time_start"
+    },
+    "reader": {
+      "sort": "time_asc",
+      "time_field": "content_time_start"
+    }
+  },
+  "onboarding": {
+    "theme_switched": true
+  },
+  "archives": {
+    "a1": {
+      "content_time": {
+        "range": {
+          "start": {
+            "kind": "calendar",
+            "era": "AD",
+            "year": 2026,
+            "month": 8,
+            "day": 30
+          }
+        },
+        "state": "set"
+      },
+      "models": [
+        "GPT-5.6-Sol"
+      ],
+      "revision": 2,
+      "edited_at": "2026-08-31T10:00:00.000Z",
+      "conversation_name": "First archive",
+      "names": {
+        "assistant": "奥思"
+      }
+    },
+    "a2": {
+      "content_time": {
+        "state": "cleared"
+      },
+      "models": [],
+      "revision": 3,
+      "edited_at": "2026-08-31T11:00:00.000Z"
+    }
+  }
+}

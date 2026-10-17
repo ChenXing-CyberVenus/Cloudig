@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 115 115">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_新建渐变色板_1-2);
+      }
+
+      .cls-2 {
+        fill: url(#_新建渐变色板_1-4);
+      }
+
+      .cls-3 {
+        fill: url(#_新建渐变色板_1);
+      }
+
+      .cls-4 {
+        fill: url(#_新建渐变色板_1-3);
+      }
+    </style>
+    <linearGradient id="_新建渐变色板_1" x1="112" y1="120.77" x2="110.94" y2="-20.46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b78862"/>
+      <stop offset=".51" stop-color="#c19c80"/>
+      <stop offset="1" stop-color="#b78862"/>
+    </linearGradient>
+    <linearGradient id="_新建渐变色板_1-2" x1="0" y1="4.78" x2="115" y2="4.78" xlink:href="#_新建渐变色板_1"/>
+    <linearGradient id="_新建渐变色板_1-3" x1="0" y1="110.14" x2="115" y2="110.14" xlink:href="#_新建渐变色板_1"/>
+    <linearGradient id="_新建渐变色板_1-4" x1="3.42" y1="120.57" x2="3.42" y2="-17.72" xlink:href="#_新建渐变色板_1"/>
+  </defs>
+  <g>
+    <g>
+      <polygon class="cls-3" points="107.98 9.57 107.98 105.28 115 115 115 0 107.98 9.57"/>
+      <polygon class="cls-1" points="107.98 9.57 115 0 0 0 6.85 9.57 107.98 9.57"/>
+      <polygon class="cls-4" points="6.85 105.28 0 115 115 115 107.98 105.28 6.85 105.28"/>
+      <polygon class="cls-2" points="6.85 9.57 0 0 0 115 6.85 105.28 6.85 9.57"/>
+    </g>
+  </g>
+</svg>

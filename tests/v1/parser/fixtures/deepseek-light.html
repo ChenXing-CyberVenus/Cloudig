@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>DeepSeek Fixture</title></head>
+<body>
+<main>
+  <article class="message user" data-message-id="ds-user"><p>Question</p></article>
+  <article class="message assistant" data-message-id="ds-assistant">
+    <section class="osis-mermaid-card" data-osis-mermaid-render="snapshot">
+      <div class="osis-mermaid-panel"><svg class="mermaid-svg" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"></circle></svg></div>
+      <div class="osis-mermaid-panel"><pre><code>graph TD
+  A--&gt;B</code></pre></div>
+    </section>
+  </article>
+</main>
+<script>globalThis.__deepseek_must_not_run = true;</script>
+<script type="application/json" id="ai-chat-archive-manifest">{
+  "format": "ai-chat-archive/manifest-v1",
+  "platform": "deepseek",
+  "exporter_version": "2.0.0-light",
+  "captured_at": "2026-09-01T00:00:00.000Z",
+  "source_url": "https://chat.deepseek.com/a/chat/s/fixture",
+  "title": "DeepSeek Fixture",
+  "payload": { "format": "osis.deepseek.chat-export/light-messages-v2", "element_id": "deepseek-export-data" }
+}</script>
+<script type="application/json" id="deepseek-export-data">{
+  "format": "osis.deepseek.chat-export/light-messages-v2",
+  "exporter_version": "2.0.0-light",
+  "exported_at": "2026-09-01T00:00:00.000Z",
+  "source_url": "https://chat.deepseek.com/a/chat/s/fixture",
+  "title": "DeepSeek Fixture",
+  "tree_scope": "current_path",
+  "active_message_ids": ["ds-user", "ds-assistant"],
+  "items": [
+    {
+      "message_id": "ds-user",
+      "parent_id": null,
+      "role": "user",
+      "inserted_at": "2026-09-01T00:00:01.000Z",
+      "model": "deepseek-fixture",
+      "main": ["Question"],
+      "thoughts": [],
+      "reasoning_stages": [],
+      "queries": [],
+      "sources": [],
+      "attachments": [
+        { "id": "ds-image", "is_image": true, "name": "fixture.png", "mime_type": "image/png", "availability": "embedded_thumbnail", "data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=", "width": 1, "height": 1 },
+        { "id": "ds-file", "is_image": false, "name": "notes.txt", "mime_type": "text/plain", "availability": "metadata_only", "size_bytes": 5 }
+      ]
+    },
+    {
+      "message_id": "ds-assistant",
+      "parent_id": "ds-user",
+      "role": "assistant",
+      "inserted_at": "2026-09-01T00:00:02.000Z",
+      "model": "deepseek-fixture",
+      "main": ["Answer [reference:1]\n```mermaid\ngraph TD\n  A-->B\n```"],
+      "thoughts": ["Public thought"],
+      "reasoning_stages": [
+        { "type": "THINK", "fragment_index": 0, "text": "Public thought", "elapsed_secs": 1 },
+        { "type": "TOOL_SEARCH", "fragment_index": 1, "queries": ["fixture query"], "sources": [{ "title": "Fixture source", "url": "https://example.test/source", "snippet": "Fixture" }] }
+      ],
+      "queries": ["fixture query"],
+      "sources": [{ "title": "Fixture source", "url": "https://example.test/source", "snippet": "Fixture" }],
+      "attachments": []
+    }
+  ]
+}</script>
+</body>
+</html>

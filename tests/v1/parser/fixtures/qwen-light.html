@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture Qwen</title></head>
+<body>
+  <article class="turn user" data-message-id="qwen-user">
+    <div class="message-content">
+      <p>User prompt.</p>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="fixture-upload.png" width="1" height="1">
+    </div>
+  </article>
+  <article class="turn assistant" data-message-id="qwen-assistant">
+    <div class="message-content">
+      <section class="osis-mermaid-card">
+        <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40"><text>fixture</text></svg></div>
+        <div><code class="language-mermaid">graph TD
+  A--&gt;B</code></div>
+      </section>
+      <p>Assistant answer.</p>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="fixture-generated.png" width="1" height="1">
+    </div>
+  </article>
+  <script>globalThis.__qwen_must_not_run = true;</script>
+  <script id="ai-chat-archive-manifest" type="application/json">{
+    "schema": "ai-chat-archive/manifest-v1",
+    "platform": "qwen",
+    "exporter": { "name": "Fixture Qwen Exporter", "version": "3.4.9-light", "mode": "light" },
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source": {
+      "url": "https://chat.qwen.ai/c/fixture",
+      "title": "Fixture Qwen",
+      "conversation_id": "fixture-qwen-conversation"
+    }
+  }</script>
+  <script id="qwen-export-data" type="application/json">{
+    "schema": "osis.qwen.chat-export/light-messages-v2",
+    "version": "3.4.9-light",
+    "message_order": ["qwen-user", "qwen-assistant"],
+    "messages": [
+      {
+        "id": "qwen-user",
+        "role": "user",
+        "model": "Qwen3.7-Plus",
+        "timestamp": "2026-08-31T20:58:00.000Z",
+        "content_markdown": "User prompt.",
+        "public_processes": [],
+        "search_queries": [],
+        "sources": [],
+        "attachments": [
+          { "kind": "file", "name": "notes.txt", "mime": "text/plain", "size": 5, "status": "metadata-only" },
+          { "kind": "image", "name": "fixture-upload.png", "mime": "image/png", "status": "embedded-thumbnail" }
+        ],
+        "media": [
+          { "kind": "attachment-image", "name": "fixture-upload.png", "mime": "image/png", "status": "embedded-thumbnail" }
+        ]
+      },
+      {
+        "id": "qwen-assistant",
+        "role": "assistant",
+        "model": "Qwen3.7-Plus",
+        "timestamp": "2026-08-31T20:59:00.000Z",
+        "content_markdown": "```mermaid\ngraph TD\n  A-->B\n```\n\nAssistant answer.",
+        "public_processes": [
+          { "kind": "public_thinking_summary", "title": "思考", "content": "Visible public thought.", "status": "finished" }
+        ],
+        "search_queries": ["fixture query"],
+        "sources": [
+          { "url": "https://example.test/qwen-source", "title": "Fixture source", "snippet": "Useful source.", "hostname": "example.test" }
+        ],
+        "attachments": [],
+        "media": [
+          { "kind": "diagram", "name": "fixture-diagram.svg", "mime": "image/svg+xml", "status": "embedded-thumbnail" },
+          { "kind": "generated-image", "name": "fixture-generated.png", "mime": "image/png", "status": "embedded-thumbnail" }
+        ]
+      }
+    ]
+  }</script>
+</body>
+</html>

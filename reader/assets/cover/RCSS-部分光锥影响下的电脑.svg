@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 940.34 472">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #6cab76;
+      }
+
+      .cls-2 {
+        fill: #f7e28b;
+      }
+
+      .cls-3 {
+        fill: #1e1e1e;
+      }
+
+      .cls-4 {
+        fill: #74757b;
+      }
+
+      .cls-5 {
+        fill: #49494e;
+      }
+
+      .cls-6 {
+        fill: none;
+      }
+
+      .cls-7 {
+        fill: #9bd0a6;
+      }
+
+      .cls-8 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-9 {
+        fill: #8b8e94;
+      }
+
+      .cls-10 {
+        fill: #77797f;
+      }
+
+      .cls-11 {
+        fill: #4e4e56;
+      }
+
+      .cls-12 {
+        fill: #555960;
+      }
+
+      .cls-13 {
+        fill: #e2e1e1;
+      }
+
+      .cls-14 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-6" x="367" width="390" height="344"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <polygon class="cls-6" points="889.01 15.62 0 472 742.7 472 940.34 67.28 889.01 15.62"/>
+    </clipPath>
+  </defs>
+  <g id="_采云美术元素" data-name="采云美术元素">
+    <g id="_部分光锥影响下的电脑" data-name="部分光锥影响下的电脑">
+      <g class="cls-14">
+        <g>
+          <g id="_桌面与电脑-黑灯" data-name="桌面与电脑-黑灯">
+            <g id="_电脑-黑灯" data-name="电脑-黑灯">
+              <rect class="cls-11" x="540.57" y="202.3" width="42.85" height="59.59"/>
+              <polygon class="cls-11" points="630.68 270.79 493.32 270.79 540.57 261.89 583.43 261.89 630.68 270.79"/>
+              <rect class="cls-4" x="493.32" y="270.79" width="137.35" height="4.45"/>
+              <g>
+                <path class="cls-5" d="M757,228.84c0,1.8-1.45,3.26-3.25,3.26h-383.51c-1.79,0-3.25-1.46-3.25-3.26V3.26c0-1.8,1.45-3.26,3.25-3.26h383.51c1.79,0,3.25,1.46,3.25,3.26v225.58Z"/>
+                <rect class="cls-3" x="379" y="12" width="366" height="206"/>
+                <ellipse class="cls-13" cx="731.6" cy="225.22" rx="4.34" ry="4.36"/>
+                <ellipse class="cls-13" cx="721.92" cy="225.22" rx="1" ry="1"/>
+                <ellipse class="cls-5" cx="731.6" cy="225.22" rx="3.64" ry="3.66"/>
+              </g>
+              <rect class="cls-12" x="458.85" y="337.35" width="208.09" height="6.65"/>
+              <rect class="cls-10" x="375.01" y="223.62" width="49.76" height="49.97"/>
+              <rect class="cls-9" x="662.18" y="223.62" width="49.76" height="49.97"/>
+              <path class="cls-10" d="M481.05,273.27s-35.53,3.38-44.33-5.46c-8.8-8.83-5.43-44.52-5.43-44.52h49.76v49.97Z"/>
+            </g>
+          </g>
+          <g id="_光锥蒙版下的桌面与电脑" data-name="光锥蒙版下的桌面与电脑">
+            <g class="cls-8">
+              <g id="_桌面与电脑-亮灯" data-name="桌面与电脑-亮灯">
+                <g id="_电脑-亮灯" data-name="电脑-亮灯">
+                  <rect class="cls-11" x="540.57" y="202.3" width="42.85" height="59.59"/>
+                  <polygon class="cls-11" points="630.68 270.79 493.32 270.79 540.57 261.89 583.43 261.89 630.68 270.79"/>
+                  <rect class="cls-4" x="493.32" y="270.79" width="137.35" height="4.45"/>
+                  <g>
+                    <path class="cls-4" d="M757,228.84c0,1.8-1.45,3.26-3.25,3.26h-383.51c-1.79,0-3.25-1.46-3.25-3.26V3.26C367,1.46,368.45,0,370.25,0h383.51C755.55,0,757,1.46,757,3.26v225.58Z"/>
+                    <rect class="cls-13" x="379" y="12" width="366" height="206"/>
+                    <ellipse class="cls-13" cx="731.6" cy="225.22" rx="4.34" ry="4.36"/>
+                    <ellipse class="cls-13" cx="721.92" cy="225.22" rx="1" ry="1"/>
+                    <ellipse class="cls-1" cx="731.6" cy="225.22" rx="3.64" ry="3.66"/>
+                  </g>
+                  <rect class="cls-12" x="458.85" y="337.35" width="208.09" height="6.65"/>
+                  <rect class="cls-2" x="375.01" y="223.62" width="49.76" height="49.97"/>
+                  <rect class="cls-2" x="662.18" y="223.62" width="49.76" height="49.97"/>
+                  <path class="cls-7" d="M481.05,273.27s-35.53,3.38-44.33-5.46c-8.8-8.83-5.43-44.52-5.43-44.52h49.76v49.97Z"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

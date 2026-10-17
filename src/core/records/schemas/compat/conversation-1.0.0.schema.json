@@ -1,0 +1,1061 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cloudig.local/records/conversation/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "conversation_id",
+    "parser",
+    "lifecycle",
+    "source",
+    "platform",
+    "identity",
+    "messages"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cloudig/conversation/1.0.0"
+    },
+    "conversation_id": {
+      "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
+    },
+    "parser": {
+      "$ref": "#/$defs/parser"
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/lifecycle"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "platform": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "filename": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/titleText"
+        },
+        "original": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/titleText"
+        }
+      },
+      "minProperties": 1
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/nameText"
+      },
+      "uniqueItems": true
+    },
+    "message_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        },
+        "end": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        }
+      }
+    },
+    "identity": {
+      "type": "array",
+      "items": {
+        "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/sourceFront"
+      }
+    },
+    "messages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "current": {
+          "type": "string",
+          "minLength": 1
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/resource"
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/limitation"
+      }
+    }
+  },
+  "$defs": {
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "adapter"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adapter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "version"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "first_parsed_at",
+        "last_parsed_at",
+        "cloudig_edited_at"
+      ],
+      "properties": {
+        "first_parsed_at": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        },
+        "last_parsed_at": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        },
+        "cloudig_edited_at": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "sha256",
+        "bytes",
+        "format"
+      ],
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/sha"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile": {
+          "enum": [
+            "light",
+            "full",
+            "tree"
+          ]
+        },
+        "exporter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "version"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "captured_at": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        },
+        "captured_from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conversation_created_at": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        },
+        "conversation_updated_at": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        }
+      },
+      "dependentRequired": {
+        "captured_at": [
+          "captured_from"
+        ],
+        "captured_from": [
+          "captured_at"
+        ]
+      }
+    },
+    "message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "content"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timestamp": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/utc"
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        }
+      }
+    },
+    "textBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "text",
+            "markdown"
+          ]
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "codeBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "code"
+      ],
+      "properties": {
+        "type": {
+          "const": "code"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "mathBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "math"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tex": {
+          "type": "string"
+        },
+        "mathml": {
+          "type": "string"
+        },
+        "display": {
+          "type": "boolean"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "tex"
+          ]
+        },
+        {
+          "required": [
+            "mathml"
+          ]
+        }
+      ]
+    },
+    "htmlBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "html"
+      ],
+      "properties": {
+        "type": {
+          "const": "html"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "html": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "activityBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "reasoning",
+            "reasoning_summary",
+            "status"
+          ]
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "effort": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "title"
+          ]
+        },
+        {
+          "required": [
+            "text"
+          ]
+        },
+        {
+          "required": [
+            "duration"
+          ]
+        },
+        {
+          "required": [
+            "effort"
+          ]
+        },
+        {
+          "required": [
+            "content"
+          ]
+        }
+      ],
+      "not": {
+        "required": [
+          "text",
+          "content"
+        ]
+      }
+    },
+    "imageBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "resource"
+      ],
+      "properties": {
+        "type": {
+          "const": "image"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alt": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "attachmentBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "resource"
+      ],
+      "properties": {
+        "type": {
+          "const": "attachment"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "searchBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "search"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "query": {
+          "type": "string"
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "citationsBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "references"
+      ],
+      "properties": {
+        "type": {
+          "const": "citations"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "toolBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "kind"
+      ],
+      "properties": {
+        "type": {
+          "const": "tool"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "call",
+            "result",
+            "activity"
+          ]
+        },
+        "call": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0
+        },
+        "input": {},
+        "output": {},
+        "input_resource": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_resource": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "diagramBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "format"
+      ],
+      "properties": {
+        "type": {
+          "const": "diagram"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string"
+        },
+        "rendered": {
+          "type": "string",
+          "minLength": 1
+        },
+        "html": {
+          "type": "string"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "source"
+          ]
+        },
+        {
+          "required": [
+            "rendered"
+          ]
+        },
+        {
+          "required": [
+            "html"
+          ]
+        }
+      ]
+    },
+    "unknownBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "kind"
+      ],
+      "properties": {
+        "type": {
+          "const": "unknown"
+        },
+        "speaker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string",
+          "minLength": 1
+        },
+        "html": {
+          "type": "string"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "text"
+          ]
+        },
+        {
+          "required": [
+            "resource"
+          ]
+        },
+        {
+          "required": [
+            "html"
+          ]
+        }
+      ]
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "availability"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "image",
+            "audio",
+            "video",
+            "file",
+            "diagram",
+            "other"
+          ]
+        },
+        "availability": {
+          "enum": [
+            "embedded",
+            "external",
+            "metadata_only",
+            "missing"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mime": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/sha"
+        },
+        "data_base64": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "width",
+            "height"
+          ],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "original": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "mime": {
+              "type": "string",
+              "minLength": 1
+            },
+            "url": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sha256": {
+              "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/sha"
+            }
+          },
+          "minProperties": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "embedded"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "mime",
+              "bytes",
+              "sha256"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "required": [
+                    "bytes"
+                  ],
+                  "properties": {
+                    "bytes": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "data_base64"
+                  ],
+                  "properties": {
+                    "data_base64": {
+                      "type": "array",
+                      "minItems": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "data_base64"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "external"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "url"
+            ]
+          }
+        }
+      ]
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "web",
+            "past_chat",
+            "saved_memory",
+            "file",
+            "other"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snippet": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "limitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "pattern": "^(?:/.*)?$"
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "block": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/textBlock"
+        },
+        {
+          "$ref": "#/$defs/codeBlock"
+        },
+        {
+          "$ref": "#/$defs/mathBlock"
+        },
+        {
+          "$ref": "#/$defs/htmlBlock"
+        },
+        {
+          "$ref": "#/$defs/activityBlock"
+        },
+        {
+          "$ref": "#/$defs/imageBlock"
+        },
+        {
+          "$ref": "#/$defs/attachmentBlock"
+        },
+        {
+          "$ref": "#/$defs/searchBlock"
+        },
+        {
+          "$ref": "#/$defs/citationsBlock"
+        },
+        {
+          "$ref": "#/$defs/toolBlock"
+        },
+        {
+          "$ref": "#/$defs/diagramBlock"
+        },
+        {
+          "$ref": "#/$defs/unknownBlock"
+        }
+      ]
+    }
+  }
+}

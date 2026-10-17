@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture</title></head>
+<body>
+<main>
+  <p>Static reading body is inert evidence.</p>
+  <section data-message-id="private-assistant-1">
+    <section class="osis-mermaid-card" data-osis-mermaid-render="snapshot">
+      <div class="osis-mermaid-panel" data-osis-mermaid-panel="diagram">
+        <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctext%3Efixture%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Fixture diagram">
+      </div>
+      <div class="osis-mermaid-panel" data-osis-mermaid-panel="source" hidden>
+        <pre data-language="mermaid"><code>graph TD
+  A--&gt;B</code></pre>
+      </div>
+    </section>
+  </section>
+</main>
+<script>globalThis.__must_not_run = true;</script>
+<script type="application/json" id="ai-chat-archive-manifest">{
+  "format": "ai-chat-archive/manifest-v1",
+  "platform": "chatgpt",
+  "exporter_version": "9.9.9-light",
+  "captured_at": "2026-08-31T20:00:00.000Z",
+  "source_url": "https://chatgpt.com/c/example",
+  "conversation_key": "fixture-conversation-key",
+  "title": "Fixture Conversation",
+  "scope": "active_branch",
+  "payload": {
+    "format": "osis.chatgpt.chat-export/light-items-v2",
+    "element_id": "chatgpt-export-data"
+  },
+  "capture_diagnostics": {
+    "format": "ai-chat-archive/capture-diagnostics-v1",
+    "entries": []
+  }
+}</script>
+<script id="chatgpt-export-data" type="application/json">{
+  "format": "osis.chatgpt.chat-export/light-items-v2",
+  "platform": "chatgpt",
+  "title": "Fixture Conversation",
+  "items": [
+    {
+      "kind": "user",
+      "message_id": "private-user-1",
+      "node_id": "private-node-1",
+      "created_at": 1788206400,
+      "parts": [
+        { "type": "md", "text": "Please find a source and draw a picture." }
+      ]
+    },
+    {
+      "kind": "thinking",
+      "message_id": "private-thought-1",
+      "node_id": "private-node-2",
+      "created_at": 1788206401,
+      "effort": "medium",
+      "thoughts": [
+        { "summary": "Plan", "content": "I will search first." }
+      ]
+    },
+    {
+      "kind": "code",
+      "message_id": "private-call-1",
+      "node_id": "private-node-3",
+      "created_at": 1788206402,
+      "recipient": "web.run",
+      "lang": "json",
+      "text": "{\"search_query\":[{\"q\":\"fixture\"}]}"
+    },
+    {
+      "kind": "tool",
+      "message_id": "private-tool-1",
+      "node_id": "private-node-4",
+      "created_at": 1788206403,
+      "name": "web.run",
+      "text": "One result was returned.",
+      "queries": ["fixture"],
+      "sources": [
+        { "title": "Fixture source", "url": "https://example.com/source", "domain": "example.com", "snippet": "A fixture snippet." }
+      ]
+    },
+    {
+      "kind": "assistant",
+      "message_id": "private-assistant-1",
+      "node_id": "private-node-5",
+      "created_at": 1788206404,
+      "model": "gpt-fixture",
+      "parts": [
+        { "type": "md", "text": "Here is the answer.\n```mermaid\ngraph TD\n  A-->B\n```" },
+        {
+          "type": "img",
+          "id": "private-image-1",
+          "name": "fixture.png",
+          "mime_type": "image/png",
+          "availability": "embedded",
+          "width": 1,
+          "height": 1,
+          "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+        }
+      ],
+      "sources": [
+        { "title": "Fixture source", "url": "https://example.com/source", "domain": "example.com", "snippet": "A fixture snippet." }
+      ],
+      "memory_sources": [
+        { "kind": "saved_memory", "citation_uuid": "private-memory-1", "title": "A saved preference" }
+      ]
+    },
+    {
+      "kind": "user",
+      "message_id": "private-user-2",
+      "node_id": "private-node-6",
+      "created_at": 1788206500,
+      "parts": [
+        { "type": "md", "text": "Please read this file." },
+        { "type": "attachment", "id": "private-file-1", "name": "notes.txt", "mime_type": "text/plain", "size_bytes": 12, "availability": "metadata_only" }
+      ]
+    },
+    {
+      "kind": "assistant",
+      "message_id": "private-assistant-2",
+      "node_id": "private-node-7",
+      "created_at": 1788206501,
+      "model": "gpt-fixture",
+      "parts": [
+        { "type": "md", "text": "The attachment is metadata-only." }
+      ]
+    }
+  ]
+}</script>
+</body>
+</html>

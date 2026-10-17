@@ -1,0 +1,262 @@
+{
+  "author": "晨星 ChenXing.CyberVenus",
+  "scope": [
+    "deepseek",
+    "qwen",
+    "mistral",
+    "grok",
+    "claude",
+    "chatgpt"
+  ],
+  "manuscript_sha256": "8fccff35cf54942f5b9a61f37f0cc3a0e8751ccdd6a2feb227707389c36d4654",
+  "entries": [
+    {
+      "source": "GPT导出-01.png",
+      "file": "ChatGPT-01.png",
+      "bytes": 82389,
+      "sha256": "c25e5458086a2340ef104307a4e5e873c0e319af65b4e84e94de7d882f2d96d1",
+      "width": 1157,
+      "height": 921
+    },
+    {
+      "source": "GPT导出-02.png",
+      "file": "ChatGPT-02.png",
+      "bytes": 88536,
+      "sha256": "1b86945c4311d584a120b0570fd9cae703770c3a48031dc2d0587b96fc54bb6c",
+      "width": 1157,
+      "height": 801
+    },
+    {
+      "source": "GPT导出-03.png",
+      "file": "ChatGPT-03.png",
+      "bytes": 84658,
+      "sha256": "bf503d0f7cb459b848781553546d69f9b4f1f62b4e0234a7fdceceb9aa2fdf05",
+      "width": 924,
+      "height": 954
+    },
+    {
+      "source": "GPT导出-08.png",
+      "file": "ChatGPT-08.png",
+      "bytes": 79809,
+      "sha256": "fcc478986c277ed9bc198abd01480644cd10fa07028a919f0b5450bfaea735e3",
+      "width": 999,
+      "height": 1038
+    },
+    {
+      "source": "DeepSeek导出-01.png",
+      "file": "DeepSeek-01.png",
+      "bytes": 72866,
+      "sha256": "c45a925c2e72f0d69c4a44cb2e47cdb1f93720e85fd541676686577be0f2949d",
+      "width": 1146,
+      "height": 921
+    },
+    {
+      "source": "DeepSeek导出-02.png",
+      "file": "DeepSeek-02.png",
+      "bytes": 57314,
+      "sha256": "5f90d3631acf61cc0d8e834813601b434f1281680e740c3fe665ed26f91abcae",
+      "width": 1157,
+      "height": 801
+    },
+    {
+      "source": "DeepSeek导出-03.png",
+      "file": "DeepSeek-03.png",
+      "bytes": 2847,
+      "sha256": "4630c7d0c91d8156e054ef91665d4d7bf19f4114a2502ab33aa98466dee48262",
+      "width": 327,
+      "height": 33
+    },
+    {
+      "source": "DeepSeek导出-04.png",
+      "file": "DeepSeek-04.png",
+      "bytes": 9434,
+      "sha256": "daf9db9f7668ab12e456062f297ec2c71315402d14c275af11a4a2d8ec5a5c95",
+      "width": 471,
+      "height": 174
+    },
+    {
+      "source": "Qwen导出-01.png",
+      "file": "Qwen-01.png",
+      "bytes": 46802,
+      "sha256": "a6d14d7e20eb438fe1bdcb3e41ce4ad2f0ad477a18c856f877eee1afae49b5d3",
+      "width": 1157,
+      "height": 924
+    },
+    {
+      "source": "Qwen导出-02.png",
+      "file": "Qwen-02.png",
+      "bytes": 3037,
+      "sha256": "26ebde984ff18f03931f9f5e896340b0de68fd3c70a22292eb9c54de8c213f46",
+      "width": 354,
+      "height": 42
+    },
+    {
+      "source": "Mistral导出-01.png",
+      "file": "Mistral-01.png",
+      "bytes": 146956,
+      "sha256": "3203760a1410fb10300af18fb21cdb45a0cef8bac69a0cc6a4e5433fbf98deb4",
+      "width": 1157,
+      "height": 918
+    },
+    {
+      "source": "Mistral导出-02.png",
+      "file": "Mistral-02.png",
+      "bytes": 123541,
+      "sha256": "3ba726ec34fa55494a1a4335ff4ec65d7e82b9869d3b93bcfa3f61113ac31e16",
+      "width": 1157,
+      "height": 801
+    },
+    {
+      "source": "Mistral导出-03.png",
+      "file": "Mistral-03.png",
+      "bytes": 2798,
+      "sha256": "af1c991400775ade152800628335ceabc391f480dc6760f51efff4f32f6f993a",
+      "width": 330,
+      "height": 38
+    },
+    {
+      "source": "Grok导出-01.png",
+      "file": "Grok-01.png",
+      "bytes": 147822,
+      "sha256": "7156d4fb197d3057edb8056e634cc319996e2cab5d2aff4005aee521d9eb2984",
+      "width": 1157,
+      "height": 921
+    },
+    {
+      "source": "Grok导出-02.png",
+      "file": "Grok-02.png",
+      "bytes": 54921,
+      "sha256": "c3e9600d08cc7b9a311c0a6316568717a399cb1eb8f4491e34562f383a2180d3",
+      "width": 1157,
+      "height": 918
+    },
+    {
+      "source": "Grok导出-03.png",
+      "file": "Grok-03.png",
+      "bytes": 48220,
+      "sha256": "29636d4bb9478295284f21d1ec2d7a17ea90a8f0f6927f6d40a9d2ababb43636",
+      "width": 1157,
+      "height": 801
+    },
+    {
+      "source": "Grok导出-04.png",
+      "file": "Grok-04.png",
+      "bytes": 87630,
+      "sha256": "7cb04222c6b1dd0847ceeb46f6f10834114e3f1296f40d3f37c5b1ee26806076",
+      "width": 1005,
+      "height": 1152
+    },
+    {
+      "source": "Grok导出-05.png",
+      "file": "Grok-05.png",
+      "bytes": 3482,
+      "sha256": "5ba4f64e23c1672c7b3012288fca0732d25ffebb74e7dc3bd9e9e12d65326e48",
+      "width": 462,
+      "height": 45
+    },
+    {
+      "source": "Claude导出-01.png",
+      "file": "Claude-01.png",
+      "bytes": 115863,
+      "sha256": "9fb974b827610b1e5492c8f017920a869b71d79c0be49caffbc93f0f3bbe96c0",
+      "width": 1157,
+      "height": 924
+    },
+    {
+      "source": "Claude导出-02.png",
+      "file": "Claude-02.png",
+      "bytes": 93900,
+      "sha256": "99f9914ba559291a238e32fc3d511628bfcfee443f748e6a82076dbe3428f09a",
+      "width": 1157,
+      "height": 801
+    },
+    {
+      "source": "Claude导出-03.png",
+      "file": "Claude-03.png",
+      "bytes": 141743,
+      "sha256": "7bea88ee764254b03b9a5e6cbf57a14454b7f2e14bd0c0423752595cc157a3f8",
+      "width": 1038,
+      "height": 1518
+    },
+    {
+      "source": "Claude导出-04.png",
+      "file": "Claude-04.png",
+      "bytes": 108318,
+      "sha256": "7bc22e201f60abbd705cc7ad7a4bddd6ec8a4daf535134e0894ba9ca6a2c5550",
+      "width": 1044,
+      "height": 1494
+    },
+    {
+      "source": "Claude导出-05.png",
+      "file": "Claude-05.png",
+      "bytes": 4149,
+      "sha256": "3f8977eb3856be5de34428ea95b8f2a2a6d527bf58c316452dee47d923586939",
+      "width": 960,
+      "height": 42
+    },
+    {
+      "source": "Claude导出-06.png",
+      "file": "Claude-06.png",
+      "bytes": 105333,
+      "sha256": "ec1a68de8d2a9ce0135d2abad8d960df852a4ff1b14b0b1b5a558101069026b5",
+      "width": 1295,
+      "height": 1587
+    },
+    {
+      "source": "Claude导出-07.png",
+      "file": "Claude-07.png",
+      "bytes": 2523,
+      "sha256": "ee062d10afe16a2e27f2934a31d78a9929e696006c78bc9b96799f9c9f9a1994",
+      "width": 246,
+      "height": 39
+    },
+    {
+      "source": "Claude导出-08.png",
+      "file": "Claude-08.png",
+      "bytes": 6836,
+      "sha256": "07d7dd54102f3b292919f489c8181f95c38e5e9f28e33fb10dcb9feda8d3af1f",
+      "width": 434,
+      "height": 152
+    },
+    {
+      "source": "Claude导出-09.png",
+      "file": "Claude-09.png",
+      "bytes": 107715,
+      "sha256": "15fceaff2db21585e38bd74d3abbf912dac8ba8263a3196b9a0bc69302ace2d5",
+      "width": 903,
+      "height": 1137
+    },
+    {
+      "source": "GPT导出-04.png",
+      "file": "ChatGPT-04.png",
+      "bytes": 298618,
+      "sha256": "0b18057f138894525b7337f708215855c8dfad11bbda9cd312b818a3bc60fa84",
+      "width": 1665,
+      "height": 2036
+    },
+    {
+      "source": "GPT导出-05.png",
+      "file": "ChatGPT-05.png",
+      "bytes": 2489,
+      "sha256": "73b5ee8946f1c9aaf933e65f8a39349bc25024e17ea3d7236987ec26ca079815",
+      "width": 237,
+      "height": 38
+    },
+    {
+      "source": "GPT导出-06.png",
+      "file": "ChatGPT-06.png",
+      "bytes": 5513,
+      "sha256": "a8caf5640237dfad195aca46523e3acf88baae459f3b626363cc66cd2461cbd5",
+      "width": 279,
+      "height": 189
+    },
+    {
+      "source": "GPT导出-07.png",
+      "file": "ChatGPT-07.png",
+      "bytes": 17048,
+      "sha256": "6d8732594de9cf487aa7285783460b82674bf53fc21e7115326dd8a47ec78a37",
+      "width": 1059,
+      "height": 228
+    }
+  ]
+}

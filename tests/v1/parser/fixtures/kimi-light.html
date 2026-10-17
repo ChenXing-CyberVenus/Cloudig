@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture Kimi</title></head>
+<body>
+  <article class="turn user" data-message-id="kimi-user">
+    <div class="message-shell"><div class="message-content"><div class="rich-content user-plain">
+      <div class="attachment-list">
+        <div class="attachment-list-file"><div class="osis-attachment" data-resource-key="fixture-file">notes.txt</div></div>
+        <div class="attachment-list-image single"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="Fixture upload" width="1" height="1"></div>
+      </div>
+      <p>User <strong>rich body</strong>.</p>
+    </div></div></div>
+  </article>
+  <article class="turn assistant" data-message-id="kimi-assistant">
+    <div class="message-shell"><div class="message-content"><div class="rich-content">
+      <details class="osis-thinking" open><summary>思考</summary><div class="markdown osis-process-content">
+        <p>Visible thought.</p>
+        <div class="osis-mermaid-card">
+          <div><svg xmlns="http://www.w3.org/2000/svg"><text>fixture</text></svg></div>
+          <div><code class="language-mermaid">graph TD
+  A--&gt;B</code></div>
+        </div>
+      </div></details>
+      <div class="osis-search">Search result shell</div>
+      <h2>Assistant heading</h2>
+      <p>Formula <span class="osis-math osis-temml osis-temml-inline" data-tex="x^2" data-math-display="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>x</mi><mn>2</mn></msup></math></span>.</p>
+      <svg class="markmap-svg markmap" data-osis-static-diagram="markmap" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><text>mind</text></svg>
+      <p>Assistant <em>rich body</em>.</p>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z9ZkAAAAASUVORK5CYII=" alt="Fixture reference cover" width="1" height="1">
+    </div></div></div>
+  </article>
+  <script>globalThis.__kimi_must_not_run = true;</script>
+  <script id="ai-chat-archive-manifest" type="application/json">{
+    "schema": "ai-chat-archive/manifest-v1",
+    "platform": "kimi",
+    "exporter": { "name": "Fixture Kimi Exporter", "version": "2.9.10-light", "mode": "light" },
+    "exported_at": "2026-08-31T21:00:00.000Z",
+    "source": {
+      "url": "https://www.kimi.com/chat/fixture",
+      "title": "Fixture Kimi",
+      "conversation_id": "fixture-kimi-conversation"
+    }
+  }</script>
+  <script id="kimi-export-data" type="application/json">{
+    "schema": "osis.kimi.chat-export/light-dom-v2",
+    "version": "2.9.10-light",
+    "message_order": ["kimi-user", "kimi-assistant"],
+    "source_model": { "segments": 2, "matched_messages": 2, "visited_components": 2 },
+    "messages": [
+      {
+        "id": "kimi-user",
+        "role": "user",
+        "public_processes": [],
+        "sources": [],
+        "attachments": [
+          { "kind": "file", "name": "notes.txt", "extension": "txt", "size": 5, "status": "metadata-only", "resource_locator": "fixture-file" },
+          { "kind": "image", "name": "fixture.png", "extension": "png", "size": null, "status": "embedded-webp", "resource_locator": "fixture-image" }
+        ],
+        "diagrams": [],
+        "math": { "nodes": 0, "formulas": [], "tex_sources": 0, "rendered_only": 0 }
+      },
+      {
+        "id": "kimi-assistant",
+        "role": "assistant",
+        "public_processes": [
+          { "kind": "thinking", "title": "思考", "content": "Visible thought.\n\n```mermaid\ngraph TD\n  A-->B\n```" },
+          { "kind": "search", "title": "搜索了网页", "content": "" }
+        ],
+        "sources": [
+          { "url": "https://example.test/kimi-source", "title": "Fixture source", "hostname": "example.test" }
+        ],
+        "attachments": [],
+        "diagrams": [
+          { "kind": "mermaid", "role": "", "source": "graph TD\n  A-->B", "view_box": "0 0 100 50" },
+          { "kind": "markmap", "role": "mindmap", "source": "# Root\n## Child", "view_box": "0 0 100 50" }
+        ],
+        "math": {
+          "nodes": 1,
+          "formulas": [{ "index": 0, "tex": "x^2", "display": false, "rendered_text": "x2" }],
+          "tex_sources": 1,
+          "rendered_only": 0
+        }
+      }
+    ]
+  }</script>
+</body>
+</html>
