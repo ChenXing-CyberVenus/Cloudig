@@ -4,9 +4,9 @@
   "files": [
     {
       "path": ".gitattributes",
-      "bytes": 1026,
-      "sha256": "d849b48e9cd65069404061ac7ccba884bc031879cbaba42bd6302e5d47e8370b",
-      "source": "git:80150bf4d6b104b4eaa6d5f43bc145aa66b01630:3a6516d4f817817977174b4bb4a58a03b5c85163"
+      "bytes": 1142,
+      "sha256": "192376d8eb0a627a35684fae5da725e8aa4710ccf1e2b2051244c42df74ce617",
+      "source": "frozen Git attributes plus byte-preserving signed dependency notices rule"
     },
     {
       "path": ".gitignore",

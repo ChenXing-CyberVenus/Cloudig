@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Preserve the signed payload's dependency notices without newline conversion.
+docs/THIRD-PARTY-LICENSES.txt -text
+
 *.js text eol=lf
 *.mjs text eol=lf
 *.cjs text eol=lf
