@@ -104,7 +104,7 @@ try {
 foreach ($file in $files) { $totalBytes += [long]$file.bytes }
 $manifest = [ordered]@{
     status='awaiting-owner-signature';product_version=$version;prepared_at=[DateTime]::UtcNow.ToString('o')
-    operator='GPT-6-Astra·奥思·承卷开霁 Osis.ScrollborneDawn';source_build=$provenance.source
+    operator='奥思·承卷开霁 Osis.ScrollborneDawn';source_build=$provenance.source
     source_inputs=$provenance.inputs;source_evidence=$EvidencePath;components=$components
     file_count=$files.Count;total_bytes=$totalBytes
     signing_targets=$signingTargets;third_party_pe_count=@($files | Where-Object { $_.path -match '\.(exe|dll)$' -and $_.path -notin $ownedPe }).Count

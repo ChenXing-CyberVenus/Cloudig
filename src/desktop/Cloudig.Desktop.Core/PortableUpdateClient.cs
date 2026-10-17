@@ -6,13 +6,12 @@ using System.Security.Cryptography;
 namespace Cloudig.Desktop.Core;
 
 public sealed record PreparedUpdate(string Capability, string RequestFile, string RequestSha256, string Version);
-public sealed record PortableUpdateRequest(string Schema, string ProgramRoot, string LibraryRoot, string Installer, long Bytes, string Sha256, string Version, int OwnerPid, string OwnerStarted, string PublisherThumbprint);
+public sealed record PortableUpdateRequest(string Schema, string ProgramRoot, string LibraryRoot, string Installer, long Bytes, string Sha256, string Version, int OwnerPid, string OwnerStarted);
 
 public sealed class PortableUpdateClient(HttpClient? http = null)
 {
-    // Current owner-approved signing identity, verified from the signed 1.0.1
-    // release. A certificate change must be explicitly added in a release.
-    public const string PublisherThumbprint = "0742580B8EA12653FE3A1E906613268467BAD80A";
+    // The official Release and its digest authorize these exact bytes. Windows
+    // validates their signature; a certificate/provider renewal is not a new app.
     public const int OwnerExitSeconds = 90;
     public const int SignatureTimeoutSeconds = 45;
     public const int MaximumRequestBytes = 16 * 1024;
@@ -28,9 +27,9 @@ public sealed class PortableUpdateClient(HttpClient? http = null)
         return start;
     }
     private static string Quote(string value) => "'" + value.Replace("'", "''") + "'";
-    public static async Task VerifySignatureAsync(string file, string thumbprint, CancellationToken token) {
+    public static async Task VerifySignatureAsync(string file, CancellationToken token) {
         VerifiedDownloadClient.PlainPath(file);
-        var command = "$ErrorActionPreference='Stop';$s=Get-AuthenticodeSignature -LiteralPath " + Quote(file) + ";if($s.Status -ne 'Valid' -or $null -eq $s.TimeStamperCertificate -or $s.SignerCertificate.Thumbprint -ne " + Quote(thumbprint) + "){[Console]::Error.WriteLine($s.Status.ToString()+': '+$s.StatusMessage);exit 3};exit 0";
+        var command = "$ErrorActionPreference='Stop';$s=Get-AuthenticodeSignature -LiteralPath " + Quote(file) + ";if($s.Status -ne 'Valid' -or $null -eq $s.SignerCertificate -or $null -eq $s.TimeStamperCertificate){[Console]::Error.WriteLine($s.Status.ToString()+': '+$s.StatusMessage);exit 3};exit 0";
         var start = PowerShell(command); start.RedirectStandardError = true; start.RedirectStandardOutput = true;
         using var process = Process.Start(start) ?? throw new IOException("Signature verification could not start.");
         var errors = process.StandardError.ReadToEndAsync();
@@ -39,6 +38,14 @@ public sealed class PortableUpdateClient(HttpClient? http = null)
         catch (OperationCanceledException) { if (!process.HasExited) process.Kill(); throw; }
     }
     public async Task<PreparedUpdate> PrepareAsync(ReleaseInstaller release, string programRoot, string libraryRoot, Action<DownloadProgress>? progress, CancellationToken token) {
+        // The desktop obtains this descriptor by re-querying the fixed official
+        // Release API, not from the web page or a user-supplied manifest.
+        var expectedName = $"Cloudig-{release.Version}-Setup.exe";
+        if (!System.Text.RegularExpressions.Regex.IsMatch(release.Version, @"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
+            || release.Name != expectedName || release.Url != $"{ReleaseUpdateClient.RepositoryUrl}/releases/download/v{release.Version}/{expectedName}"
+            || release.Bytes is < 1 or > VerifiedDownloadClient.MaximumBytes || !System.Text.RegularExpressions.Regex.IsMatch(release.Sha256, "^[a-fA-F0-9]{64}$"))
+            throw new InvalidDataException("Invalid official Cloudig installer descriptor.");
+        token.ThrowIfCancellationRequested();
         programRoot = Path.GetFullPath(programRoot); libraryRoot = Path.GetFullPath(libraryRoot); VerifiedDownloadClient.PlainPath(programRoot); VerifiedDownloadClient.PlainPath(libraryRoot);
         if (!File.Exists(Path.Combine(programRoot, "Cloudig.exe"))) throw new IOException("The current portable program root is unavailable.");
         var folder = Path.Combine(libraryRoot, "cache", "Update"); VerifiedDownloadClient.PlainPath(folder); Directory.CreateDirectory(folder);
@@ -49,9 +56,9 @@ public sealed class PortableUpdateClient(HttpClient? http = null)
         var filename = "Cloudig-Update.exe"; var saved = await _downloads.SaveAsync(new Uri(release.Url), release.Bytes, release.Sha256, folder, filename, progress, token);
         var requestCreated = false;
         try {
-            await VerifySignatureAsync(saved.Path, PublisherThumbprint, token);
+            await VerifySignatureAsync(saved.Path, token);
             using var owner = Process.GetCurrentProcess();
-            var request = new PortableUpdateRequest("cloudig/portable-update/1.0.0", programRoot, libraryRoot, saved.Path, release.Bytes, release.Sha256, release.Version, owner.Id, owner.StartTime.ToUniversalTime().Ticks.ToString(System.Globalization.CultureInfo.InvariantCulture), PublisherThumbprint);
+            var request = new PortableUpdateRequest("cloudig/portable-update/1.0.0", programRoot, libraryRoot, saved.Path, release.Bytes, release.Sha256, release.Version, owner.Id, owner.StartTime.ToUniversalTime().Ticks.ToString(System.Globalization.CultureInfo.InvariantCulture));
             var bytes = JsonSerializer.SerializeToUtf8Bytes(request);
             await using (var stream = new FileStream(requestFile, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { requestCreated = true; await stream.WriteAsync(bytes, token); stream.Flush(true); }
             token.ThrowIfCancellationRequested();

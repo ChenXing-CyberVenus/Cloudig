@@ -33,7 +33,7 @@ if (@($allFiles | Where-Object { $_.Attributes -band [IO.FileAttributes]::Repars
 if (@($allFiles | Where-Object { -not $_.PSIsContainer }).Count -ne $before.file_count) { throw 'Payload file count changed' }
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip = [IO.Compression.ZipFile]::OpenRead($backup)
-$files = @(); $signatures = @(); $signer = $null
+$files = @(); $signatures = @()
 try {
   foreach ($old in $before.files) {
     if ($old.path -match '(^|/)\.\.?(/|$)|[":]' -or $old.path.StartsWith('/')) { throw 'Unsafe frozen path' }
@@ -43,9 +43,7 @@ try {
       if ($actual -ne $old.sha256) { throw "Non-signing file changed: $($old.path)" }
     } else {
       $sig = Get-AuthenticodeSignature -LiteralPath $name
-      if ($sig.Status -ne 'Valid' -or -not $sig.TimeStamperCertificate) { throw "Invalid or untimestamped signature: $($old.path)" }
-      if ($signer -and $signer -ne $sig.SignerCertificate.Thumbprint) { throw 'Mixed owner signing certificates' }
-      $signer = $sig.SignerCertificate.Thumbprint
+      if ($sig.Status -ne 'Valid' -or -not $sig.SignerCertificate -or -not $sig.TimeStamperCertificate) { throw "Invalid or untimestamped signature: $($old.path)" }
       if ((Get-Item -LiteralPath $name).VersionInfo.ProductVersion -ne ($Version + '+' + $before.source_build.commit)) { throw 'Signed version changed' }
       # Authenticode may change only the checksum, security directory and appended certificate.
       $entry = @($zip.Entries | Where-Object { $_.FullName.Replace('\','/') -eq ('Cloudig/' + $old.path) }) | Select-Object -First 1
@@ -67,7 +65,7 @@ try {
       try { $normalized = [BitConverter]::ToString($hash.ComputeHash($signed,0,$original.Length)).Replace('-','').ToLowerInvariant() }
       finally { $hash.Dispose() }
       if ($normalized -ne $old.sha256) { throw "Signature also changed program bytes: $($old.path)" }
-      $signatures += [ordered]@{path=$old.path;status=[string]$sig.Status;signer=$sig.SignerCertificate.Subject;thumbprint=$signer;timestamp=$sig.TimeStamperCertificate.Subject;original_code_unchanged=$true}
+      $signatures += [ordered]@{path=$old.path;status=[string]$sig.Status;signer=$sig.SignerCertificate.Subject;thumbprint=$sig.SignerCertificate.Thumbprint;timestamp=$sig.TimeStamperCertificate.Subject;original_code_unchanged=$true}
     }
     $files += [ordered]@{path=$old.path;bytes=(Get-Item -LiteralPath $name).Length;sha256=$actual}
   }

@@ -15,11 +15,13 @@ internal static class PortableUpdateChecks
     }
     private static void Require(bool value, string message) { if (!value) throw new Exception(message); }
     private static async Task<string> Hash(string file) { await using var stream = File.OpenRead(file); return Convert.ToHexString(await SHA256.HashDataAsync(stream)); }
+    private static string InstallerVersion(string file) => new Version(FileVersionInfo.GetVersionInfo(file).ProductVersion!.Split('+')[0]).ToString(3);
     public static async Task WorkerAsync(string root, string installer) {
         var program = Path.Combine(root,"Cloudig");
         using var http = new HttpClient(new SignedFileHttp(installer));
         var client = new PortableUpdateClient(http);
-        var release = new ReleaseInstaller("1.0.1", "https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.1/Cloudig-1.0.1-Setup.exe", Path.GetFileName(installer),new FileInfo(installer).Length,await Hash(installer));
+        var version = InstallerVersion(installer);
+        var release = new ReleaseInstaller(version, $"{ReleaseUpdateClient.RepositoryUrl}/releases/download/v{version}/Cloudig-{version}-Setup.exe", $"Cloudig-{version}-Setup.exe",new FileInfo(installer).Length,await Hash(installer));
         var progress = new List<DownloadProgress>();
         var first = await client.PrepareAsync(release,program,program,progress.Add,default);
         using (var lease = new FileStream(first.RequestFile,FileMode.Open,FileAccess.Read,FileShare.Read)) {
@@ -37,19 +39,22 @@ internal static class PortableUpdateChecks
         await Task.Delay(800); Require(!helper.HasExited,"Helper did not wait for the live owner");
         Console.WriteLine(JsonSerializer.Serialize(new{helper_pid=helper.Id,request=prepared.RequestFile}));
     }
-    public static async Task RunAsync(string parent) {
+    public static async Task RunAsync(string parent, string? baselineInstaller = null, string? targetInstaller = null) {
         parent=Path.GetFullPath(parent); Require(parent.StartsWith(Path.GetFullPath("tests/private")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase),"Use an isolated project-private path");
         Require(!Directory.Exists(parent),"The test root must be new");
         Directory.CreateDirectory(parent);Directory.CreateDirectory(Path.Combine(parent,"temp"));
         var program=Path.Combine(parent,"Cloudig");
-        var oldInstaller=Path.GetFullPath("releases/1.0.0/Cloudig-1.0.0-Setup.exe");
-        var installer=Path.GetFullPath("releases/1.0.1/Cloudig-1.0.1-Setup.exe");
-        await PortableUpdateClient.VerifySignatureAsync(oldInstaller,PortableUpdateClient.PublisherThumbprint,default);
-        await PortableUpdateClient.VerifySignatureAsync(installer,PortableUpdateClient.PublisherThumbprint,default);
+        var oldInstaller=Path.GetFullPath(baselineInstaller ?? "releases/1.0.0/Cloudig-1.0.0-Setup.exe");
+        var installer=Path.GetFullPath(targetInstaller ?? "releases/1.0.1/Cloudig-1.0.1-Setup.exe");
+        var oldVersion=InstallerVersion(oldInstaller);
+        var newVersion=InstallerVersion(installer);
+        Require(ReleaseUpdateClient.CompareStableRelease(oldVersion,newVersion)=="available","Target must be a newer version");
+        await PortableUpdateClient.VerifySignatureAsync(oldInstaller,default);
+        await PortableUpdateClient.VerifySignatureAsync(installer,default);
         var setup=Start(oldInstaller,"/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SP-","/TASKS=","/DIR="+program,"/LOG="+Path.Combine(parent,"baseline-install.log"));
         setup.Environment["TEMP"]=Path.Combine(parent,"temp");setup.Environment["TMP"]=Path.Combine(parent,"temp");
         using(var process=Process.Start(setup)??throw new Exception("Baseline installer did not start")) { await process.WaitForExitAsync().WaitAsync(TimeSpan.FromMinutes(3)); Require(process.ExitCode==0,"Baseline installation failed"); }
-        Require(FileVersionInfo.GetVersionInfo(Path.Combine(program,"Cloudig.exe")).ProductVersion?.Split('+')[0]=="1.0.0","Wrong baseline version");
+        Require(FileVersionInfo.GetVersionInfo(Path.Combine(program,"Cloudig.exe")).ProductVersion?.Split('+')[0]==oldVersion,"Wrong baseline version");
         await using (var engine=await EngineJsonlClient.StartAsync(Path.Combine(program,"app","runtime","node","node.exe"),Path.Combine(program,"app","engine","engine.mjs"),program,Path.Combine(program,"cache")))
             await engine.SendAsync("library.create",JsonSerializer.SerializeToElement(new{}));
         var keep=new Dictionary<string,string>();
@@ -70,11 +75,11 @@ internal static class PortableUpdateChecks
             await Task.Delay(1000);
         }
         Require(File.Exists(Path.Combine(parent,"restarted.png")),"Updated application did not complete its real welcome journey");
-        Require(FileVersionInfo.GetVersionInfo(Path.Combine(program,"Cloudig.exe")).ProductVersion?.Split('+')[0]=="1.0.1","Updated version is wrong");
-        await PortableUpdateClient.VerifySignatureAsync(Path.Combine(program,"Cloudig.exe"),PortableUpdateClient.PublisherThumbprint,default);
+        Require(FileVersionInfo.GetVersionInfo(Path.Combine(program,"Cloudig.exe")).ProductVersion?.Split('+')[0]==newVersion,"Updated version is wrong");
+        await PortableUpdateClient.VerifySignatureAsync(Path.Combine(program,"Cloudig.exe"),default);
         foreach(var entry in keep)Require(await Hash(entry.Key)==entry.Value,"User data changed: "+entry.Key);
         Require(!Directory.Exists(Path.Combine(program,"cache","Update")),"Completed installer/request were not retired");
-        await File.WriteAllTextAsync(Path.Combine(parent,"result.json"),JsonSerializer.Serialize(new{passed=true,from="1.0.0",to="1.0.1",signed_installers=true,owner_wait=true,active_request_preserved=true,restarted=true,preserved_files=keep.Count,update_cache_removed=true}));
-        Console.WriteLine("PASS: actual signed 1.0.0→1.0.1 installation, exact owner exit, restart, user files unchanged, update cache removed; fixture remains for audited cleanup.");
+        await File.WriteAllTextAsync(Path.Combine(parent,"result.json"),JsonSerializer.Serialize(new{passed=true,from=oldVersion,to=newVersion,signed_installers=true,owner_wait=true,active_request_preserved=true,restarted=true,preserved_files=keep.Count,update_cache_removed=true}));
+        Console.WriteLine($"PASS: actual signed {oldVersion}→{newVersion} installation via current updater, exact owner exit, restart, user files unchanged, update cache removed; fixture remains for audited cleanup.");
     }
 }

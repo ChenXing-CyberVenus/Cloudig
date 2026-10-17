@@ -55,7 +55,7 @@ internal static class DownloadChecks
             using var releaseHttp = new HttpClient(new Handler((_,_)=>Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(release)})));
             var update = await new ReleaseUpdateClient(releaseHttp).CheckAsync("1.0.2"); Require(update.Status == "available" && update.Installer?.Version == "9.1.2", "Signed download metadata unavailable");
             await File.WriteAllBytesAsync(Path.Combine(root,"unsigned.exe"),bytes);
-            try { await PortableUpdateClient.VerifySignatureAsync(Path.Combine(root,"unsigned.exe"),PortableUpdateClient.PublisherThumbprint,default); throw new Exception("Unsigned update accepted"); } catch(InvalidDataException) { }
+            try { await PortableUpdateClient.VerifySignatureAsync(Path.Combine(root,"unsigned.exe"),default); throw new Exception("Unsigned update accepted"); } catch(InvalidDataException) { }
             passed = true; Console.WriteLine("PASS: download bytes/progress/reuse/conflict/hash/cancel/redirect/docs/release/unsigned rejection");
         } finally { if (passed) { VerifiedDownloadClient.PlainPath(root); Directory.Delete(root,true); } }
     }

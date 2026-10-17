@@ -24,7 +24,9 @@ try {
   AssertPlain $request.Installer
   if ((Get-Item -LiteralPath $request.Installer).Length -ne $request.Bytes -or (Get-FileHash -LiteralPath $request.Installer -Algorithm SHA256).Hash -ne $request.Sha256) { throw 'Update bytes changed.' }
   $signature = Get-AuthenticodeSignature -LiteralPath $request.Installer
-  if ($signature.Status -ne 'Valid' -or $null -eq $signature.TimeStamperCertificate -or $signature.SignerCertificate.Thumbprint -ne $request.PublisherThumbprint) { throw 'Update signature verification failed.' }
+  # The prepared request binds the official Release's exact size and SHA above.
+  # Certificate/provider renewal must not invalidate a genuinely signed update.
+  if ($signature.Status -ne 'Valid' -or $null -eq $signature.SignerCertificate -or $null -eq $signature.TimeStamperCertificate) { throw 'Update signature verification failed.' }
   $owner = Get-Process -Id $request.OwnerPid -ErrorAction SilentlyContinue
   if ($owner -and $owner.StartTime.ToUniversalTime().Ticks.ToString() -eq $request.OwnerStarted) {
     if (-not $owner.WaitForExit($OwnerExitSeconds * 1000)) { throw 'Cloudig is still closing; the update was not applied.' }

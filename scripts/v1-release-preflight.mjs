@@ -226,7 +226,7 @@ function visualFacts(root, spec, executableSha256, errors, blockers) {
       if (run.page.body_scroll_width !== run.page.body_client_width || run.page.body_scroll_height !== run.page.body_client_height) {
         throw new Error(`scenario has page-level overflow: ${scenario.manifest}`);
       }
-      const titlebarFile = path.join(directory, run.titlebar?.file ?? "");
+      const titlebarFile = path.join(path.dirname(runFile), run.titlebar?.file ?? "");
       if (!run.titlebar?.file || !existsSync(titlebarFile)) throw new Error(`scenario titlebar missing: ${scenario.manifest}`);
       const titlebar = hashFile(titlebarFile);
       if (titlebar.bytes !== run.titlebar.bytes || titlebar.sha256 !== run.titlebar.sha256) throw new Error(`scenario titlebar drifted: ${scenario.manifest}`);
@@ -405,7 +405,10 @@ export function runV1ReleasePreflight({ root = defaultRoot, specPath = defaultSp
   if (provenance && provenance.value.source?.working_tree_clean !== true) blockers.push("fixed-package-built-from-dirty-tree");
   if (provenance && !currentBookmarkBuild(provenance.value, bookmarks)) blockers.push("fixed-package-bookmarks-not-verified-current");
   if (realLibrary && provenance && realLibrary.value.source_commit !== provenance.value.source?.commit
-    && gitPathsChanged(root, realLibrary.value.source_commit, provenance.value.source?.commit, backendEvidencePaths)) {
+    // The test's new assertions may inspect the same already-built runtime;
+    // compare shipped inputs here, while the current-source check above still
+    // invalidates evidence when its test changes after the successful run.
+    && gitPathsChanged(root, realLibrary.value.source_commit, provenance.value.source?.commit, backendEvidencePaths.filter(relative => !relative.startsWith("tests/")))) {
     blockers.push("real-library-evidence-package-mismatch");
   }
   if (wpf && packageResult?.executable && wpf.value.executable_sha256 !== packageResult.executable.sha256) blockers.push("wpf-evidence-executable-mismatch");

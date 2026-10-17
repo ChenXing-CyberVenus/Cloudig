@@ -23,6 +23,9 @@ if (args.Length == 2 && args[0] == "--markdown-clipboard-check") { await Markdow
 if (args.Length == 2 && args[0] == "--download-check") { await DownloadChecks.RunAsync(args[1]); return; }
 if (args.Length == 2 && args[0] == "--example-live-check") { await DownloadChecks.LiveAsync(args[1]); return; }
 if (args.Length == 2 && args[0] == "--portable-update-check") { await PortableUpdateChecks.RunAsync(args[1]); return; }
+if (args.Length == 4 && args[0] == "--portable-update-check") { await PortableUpdateChecks.RunAsync(args[1],args[2],args[3]); return; }
+if (args.Length == 4 && args[0] == "--update-certificate-check") { await UpdateCertificateChecks.RunAsync(args[1],args[2],args[3]); return; }
+if (args.Length == 3 && args[0] == "--update-signature-check") { await UpdateCertificateChecks.CheckAssemblyAsync(args[1],args[2]); return; }
 if (args.Length == 3 && args[0] == "--portable-update-worker") { await PortableUpdateChecks.WorkerAsync(args[1],args[2]); return; }
 if (args.Length == 2 && args[0] == "--update-check-published") { ReleaseUpdateChecks.CheckPublishedAssembly(args[1]); return; }
 if (args.Length == 1 && args[0] == "--update-check-live") { Console.WriteLine(JsonSerializer.Serialize(await new ReleaseUpdateClient().CheckAsync("1.0.0-dev"))); return; }

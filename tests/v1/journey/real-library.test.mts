@@ -191,6 +191,7 @@ test("the packaged Engine completes the real five-record Library journey without
     assert.equal((await request("library.preferences.query")).default_output_directory, "Conversations/Journey-Renamed");
     await request("reader.archive.archive", { archive: (await find(aid)).capability }); await request("reader.archive.restore", { archive: (await find(aid, true)).capability });
     directory = (await list()).directories.find((d: any) => d.name === "Journey-Renamed"); await request("reader.directory.delete", { directory: directory.capability });
+    a.file = `Conversations/${path.basename(a.file)}`; // Restore returns to the active root, not the pre-archive directory.
     assert.equal((await request("library.preferences.query")).default_output_directory, "Conversations"); assert.deepEqual(await hash(path.join(root, a.file)), beforeMove); assert.deepEqual((await markFor(aid))!.bytes, beforeMarkMove);
     const exported = await request("reader.archive.exportMarkdown", { archive: (await find(aid)).capability }); assert.equal(exported.status, "exported"); assert.deepEqual(await hash(path.join(root, "Exports", exported.filename)), { bytes: exported.bytes, sha256: exported.sha256 });
     console.log("Package journey: directory operations and Markdown export passed");
@@ -215,7 +216,7 @@ test("the packaged Engine completes the real five-record Library journey without
     await engine.close(); const moved = path.join(scope, "MovedRecords"); await rename(root, moved); root = moved; engine = startRecordEngine({ packageRoot, libraryRoot: root });
     assert.equal((await request("library.startup.recover")).status, "valid"); assert.equal((await list()).total, finalCount); assert.deepEqual(await fingerprints(root, ["Conversations", "Marks", "ContentTimes", "Identities"]), beforeRecovery);
     for (const [name, original] of originals) assert.deepEqual(await hash(path.join(sampleRoot, name)), original); assert.deepEqual(await hash(claudeContainer), officialHash); assert.deepEqual(await hash(path.join(packageRoot, "app/engine/engine.mjs")), programBefore);
-    console.log(JSON.stringify({ sample_files: names.length, execution: "packaged-record-engine", planned: { new: plan.total }, committed: { created: parsed.completed, updated: 1, preserved: 1 }, progress_files: progress.size,
+    console.log(JSON.stringify({ sample_files: names.length, execution: "packaged-record-engine", planned: { new: plan.total }, committed: { created: parsed.completed, updated: 2, preserved: 1 }, progress_files: progress.size,
       claude: { records: indexed.records, created: extracted.completed, preserved: copiedClaude.completed, progress_events: indexProgress }, archives: finalCount,
       runtime: { messages: runtimeMessages, graph_views: graphViews, sample_tree_captures: treeCaptures, materialized_resources: materialized }, performance: { html_parse_ms: Math.round(htmlMs), claude_extract_ms: Math.round(claudeMs) },
       managed: { moved: 1, archived: 1, restored: 1, recycled_pair: 1, native_recycle: "simulated-by-rename" }, reader_rows: finalCount, catalog_rebuilt: true,

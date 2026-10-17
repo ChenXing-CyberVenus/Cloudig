@@ -592,8 +592,9 @@ function assertSurfaceGeometry(surface, viewport, page, viewportScale = 1) {
     exactGeometry(geometry.archiver_docs, { x: tracks.bookmarks + tracks.center, y: 48, width: tracks.docs, height: bodyHeight }, "Archiver docs rail");
     if (viewport.width === 1920) {
       const themeSuffix = page.theme === "star-night" ? "star_night" : "dawn";
-      exactGeometry(geometry[`archiver_brand_title_${themeSuffix}`], { x: 60, y: 8, width: 64.13, height: 32 }, "Archiver brand title");
-      exactGeometry(geometry[`archiver_brand_slogan_${themeSuffix}`], { x: 136.13, y: 10, width: 252.14, height: 28 }, "Archiver brand slogan");
+      const english = page.language === "en";
+      exactGeometry(geometry[`archiver_brand_title_${themeSuffix}`], { x: 60, y: 8, width: english ? 112 : 64.13, height: 32 }, "Archiver brand title");
+      exactGeometry(geometry[`archiver_brand_slogan_${themeSuffix}`], { x: english ? 184 : 136.13, y: 10, width: english ? 204 : 252.14, height: 28 }, "Archiver brand slogan");
       if (surface.id !== "claude-container") {
         const panel = geometry.archiver_bookmark_panel;
         assert.equal(panel?.x, 32.43); assert.equal(panel?.y, 178); assert.equal(panel?.width, 335.15);
@@ -609,8 +610,17 @@ function assertSurfaceGeometry(surface, viewport, page, viewportScale = 1) {
       exactGeometry(geometry.archiver_parser, { x: tracks.bookmarks, y: 48, width: tracks.parser, height: bodyHeight }, "Archiver Parser");
       exactGeometry(geometry.archiver_archive, { x: tracks.bookmarks + tracks.parser, y: 48, width: tracks.center - tracks.parser, height: bodyHeight }, "Archiver archive workspace");
       if (viewport.width === 1920 && page.language === "zh-CN" && surface.interaction !== "archive-splitter") {
-        exactGeometry(geometry.archiver_import_html, { x: 549.5, y: 132.41, width: 129.96, height: 28 }, "Archiver HTML import");
-        exactGeometry(geometry.archiver_import_claude, { x: 688.85, y: 132.41, width: 157.95, height: 28 }, "Archiver Claude JSON import");
+        // The approved platform-file entry replaced the old fixed Claude
+        // label. Both labels size to their text + 10px padding, right-packed
+        // beside the gear; do not restore the obsolete 157.95px width.
+        const html = geometry.archiver_import_html, platform = geometry.archiver_import_claude, gear = geometry.archiver_parse_settings_button;
+        for (const [name, button] of [["HTML", html], ["platform", platform]]) {
+          assert(button && button.height === 28 && button.width > 20, `${name} import must have a visible single-line body`);
+          assert(button.scroll_width <= button.client_width + 1 && button.scroll_height <= button.client_height + 1, `${name} import text overflows`);
+          assert(Math.abs(button.y + button.height / 2 - (gear.y + gear.height / 2)) < 1, `${name} import must align with settings`);
+        }
+        assert(Math.abs(platform.x - html.x - html.width - 9.4) < 1, "Import entries must retain their shared gap");
+        assert(Math.abs(gear.x - platform.x - platform.width - 9.4) < 1, "Platform import must remain beside settings");
         exactGeometry(geometry.archiver_parse_settings_button, { x: 887.2, y: 133.3, width: 26.2, height: 26.2 }, "Archiver parse settings");
         exactGeometry(geometry.archiver_parse_all, { x: 922.79, y: 132.41, width: 89.21, height: 28 }, "Archiver parse all");
       }

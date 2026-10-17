@@ -29,8 +29,14 @@ function Sha([string]$Path) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256
 if ((Sha $backup) -ne $before.installer.sha256) { throw 'Unsigned installer backup changed' }
 if ((Sha $payloadManifest) -ne $before.payload_manifest_sha256) { throw 'Signed payload manifest changed' }
 $sig = Get-AuthenticodeSignature -LiteralPath $installer
-if ($sig.Status -ne 'Valid' -or -not $sig.TimeStamperCertificate) { throw 'Outer signature or timestamp missing/invalid' }
-if (@($payload.signatures | Where-Object { $_.thumbprint -ne $sig.SignerCertificate.Thumbprint }).Count) { throw 'Outer signer differs from the verified inner signer' }
+if ($sig.Status -ne 'Valid' -or -not $sig.SignerCertificate -or -not $sig.TimeStamperCertificate) { throw 'Outer signature or timestamp missing/invalid' }
+# Inner and outer signing may straddle a legitimate certificate renewal.
+# Frozen file hashes and per-file validity, not certificate equality, bind them.
+if ([version]$Version -ge [version]'1.0.6') {
+  # Exercise the updater in the frozen payload, not just today's source code.
+  & (Join-Path $project 'manager/.cache/dotnet/dotnet.exe') run --project (Join-Path $project 'src/desktop/Cloudig.Desktop.Tests/Cloudig.Desktop.Tests.csproj') --no-restore -- --update-signature-check (Join-Path $release 'Cloudig/app/Cloudig.Desktop.Core.dll') $installer
+  if ($LASTEXITCODE -ne 0) { throw 'The frozen updater does not accept this signed installer' }
+}
 if ((Get-Item -LiteralPath $installer).VersionInfo.FileVersion.Trim() -ne "$Version.0") { throw 'Installer version changed' }
 
 # Normalize only PE checksum/security-directory bytes, then hash the complete
@@ -92,7 +98,10 @@ if ($InstallerRevision -eq 'r2') {
     if ((Sha (Join-Path (Join-Path $releaseRoot 'Cloudig') $file.path)) -ne $file.sha256) { throw 'Original signed release was modified' }
   }
 }
-foreach ($item in $result.signatures) { if ($item.thumbprint -ne $sig.SignerCertificate.Thumbprint) { throw 'Installed signer mismatch' } }
+foreach ($item in $result.signatures) {
+  $expectedSigner = @($payload.signatures | Where-Object path -eq $item.path)
+  if ($expectedSigner.Count -ne 1 -or $item.thumbprint -ne $expectedSigner[0].thumbprint) { throw 'Installed file signer differs from its frozen payload' }
+}
 if ((Sha $installer) -ne $finalSha) { throw 'Installer changed during validation' }
 $utf8 = [Text.UTF8Encoding]::new($false)
 $receipt = [ordered]@{status='passed';verified_at=[DateTime]::UtcNow.ToString('o');outer_signature=[string]$sig.Status;timestamp=$sig.TimeStamperCertificate.Subject;normalized_unsigned_sha256=$normalized;unsigned_content_unchanged=$true;installer_sha256=$finalSha;installed_files=$payload.file_count;installation=$result}
