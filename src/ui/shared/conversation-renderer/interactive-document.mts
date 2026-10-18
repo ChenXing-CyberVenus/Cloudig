@@ -25,6 +25,12 @@ export function prepareInteractiveHtml(input: InteractivePackage, document: Docu
   }
   const original = new TextDecoder("utf-8", { fatal: true }).decode(entry.bytes);
   const parser = new document.defaultView!.DOMParser(), parsed = parser.parseFromString(input.format === "react" ? interactiveReactDocument(original, entry.path) : savedWorkDocument(input, document, original), "text/html");
+  // A dark embedding frame with a default-light document is painted opaque
+  // white by Chromium, even when the work's surrounding canvas is transparent.
+  // Give only the default canvas a scheme; the author's own CSS still wins.
+  const scheme=parsed.createElement("style");scheme.dataset["cloudigCanvasScheme"]="";
+  scheme.textContent=`@layer cloudig-work-defaults { :root { color-scheme: ${input.theme==="star-night"?"dark":"light"}; } }`;
+  parsed.head.prepend(scheme);
   if (input.format === "design") prepareDesignPreview(parsed);
   for (const node of parsed.querySelectorAll('base,meta[http-equiv],link[rel="preconnect"],link[rel="dns-prefetch"]')) node.remove();
   for (const node of parsed.querySelectorAll("[src],[href],[poster]")) {

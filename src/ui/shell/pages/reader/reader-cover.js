@@ -369,10 +369,10 @@ function renderRows(root, model, language, timeField, onOpen, onMenu) {
       button.append(rowPaper(row, index));
       if (row.selected) {
         rowRoot.classList.add("reader-row-selected");
-        button.append(image(
-          document.documentElement.dataset.theme === "star-night" ? "/assets/reader/Pushpin-Purple.svg" : "/assets/reader/Pushpin-Red.svg",
-          "reader-row-pin"
-        ));
+        button.append(
+          image("/assets/reader/Pushpin-Red.svg", "reader-row-pin reader-theme-dawn"),
+          image("/assets/reader/Pushpin-Purple.svg", "reader-row-pin reader-theme-star-night")
+        );
       }
       const copy = document.createElement("span");
       copy.className = "reader-row-copy";

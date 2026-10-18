@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "icons": [{ "package": "@tabler/icons", "version": "3.42.0", "file": "icons/tabler-3.42.0.json" }],
   "license_supplements": [
     { "package": "victory-vendor", "version": "37.3.6", "file": "licenses/Victory-37.3.6-LICENSE.txt", "sha256": "34dee5fd5e5cc756efb5ad4d64652bce719bdf5e900ca5d7538253e737930bc4", "source": "https://raw.githubusercontent.com/FormidableLabs/victory/v37.3.6/LICENSE.txt" }
   ],

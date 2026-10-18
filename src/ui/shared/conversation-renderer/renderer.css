@@ -27,6 +27,8 @@
   --cloudig-diagram-canvas: #f2e7d8;
   --cloudig-diagram-local-canvas: #f2e7d8;
   --cloudig-border: rgba(82, 64, 68, 0.24);
+  --cloudig-choice-off: #d68c80;
+  --cloudig-choice-on: #a52525;
   color: var(--cloudig-text);
   font-family: var(--cloudig-font-ui, "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif);
   font-size: 16px;
@@ -54,6 +56,8 @@
   --cloudig-diagram-canvas: #e8e5df;
   --cloudig-diagram-local-canvas: #24282e;
   --cloudig-border: rgba(231, 226, 227, 0.2);
+  --cloudig-choice-off: #7e5eff;
+  --cloudig-choice-on: #5125a5;
 }
 
 .cloudig-conversation-renderer *,
@@ -226,6 +230,14 @@
 .cloudig-rich .plain-text { white-space: pre-wrap; }
 .cloudig-rich p,
 .cloudig-rich .qwen-markdown-paragraph { margin: 0 0 .85em; }
+
+/* Archive task lists share Reader's choice colours, without the live-form
+   disabled fade. Hang the square in the bullet gutter; wrapped lines and
+   nested/loose-list paragraphs stay aligned with the task's text. */
+.cloudig-rich .cloudig-task-item {position:relative;list-style:none;}
+.cloudig-rich .cloudig-task-check {appearance:none;position:absolute;inset-inline-start:-1.65em;top:calc((1.72em - 18px)/2);width:18px;height:18px;margin:0;border:0;border-radius:3px;background:var(--cloudig-choice-off);opacity:1;cursor:default;font:inherit;}
+.cloudig-rich .cloudig-task-check:checked {background:var(--cloudig-choice-on) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m4.5 10 3.5 3.5 7.5-7.5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 18px 18px no-repeat;}
+.cloudig-conversation-renderer .cloudig-rich input.cloudig-task-check:disabled {opacity:1;cursor:default;}
 .cloudig-rich :is(h1, h2, h3, h4, h5, h6) { line-height: 1.4; margin: 1.15em 0 .5em; font-weight: 700; }
 .cloudig-rich h1 { font-size: 1.65em; }
 .cloudig-rich h2 { font-size: 1.4em; border-bottom: 1px solid var(--cloudig-border); padding-bottom: .3em; }

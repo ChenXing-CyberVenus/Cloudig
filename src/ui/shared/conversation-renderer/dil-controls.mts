@@ -12,6 +12,10 @@ const svgTags = new Set(["svg", "g", "defs", "linearGradient", "radialGradient",
 const svgAttrs = new Set(["viewBox", "preserveAspectRatio", "x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "r", "rx", "ry", "width", "height", "d", "points", "fill", "stroke", "strokeWidth", "strokeLinecap", "strokeLinejoin", "strokeDasharray", "strokeDashoffset", "opacity", "fillOpacity", "strokeOpacity", "offset", "stopColor", "stopOpacity", "gradientUnits", "gradientTransform", "transform", "id", "clipPath", "textAnchor", "fontSize", "fontWeight"]);
 export const dilColor = (value: unknown): string => {
   const s = String(value ?? "");
+  if (["danger", "success", "warning", "info"].includes(s)) {
+    const fallback: Record<string,string> = { danger:"#bd4545", success:"#168653", warning:"#bc791b", info:"#428bd2" };
+    return `var(--cloudig-dil-${s},${fallback[s]})`;
+  }
   const tokens: Record<string,string> = { primary:"var(--cloudig-text)", secondary:"var(--cloudig-muted)", tertiary:"var(--cloudig-muted)", surface:"var(--cloudig-dil-canvas)", "surface-primary":"var(--cloudig-dil-canvas)", "surface-secondary":"var(--cloudig-dil-surface)", "surface-tertiary":"var(--cloudig-dil-surface-strong)", "surface-elevated":"var(--cloudig-dil-elevated)", accent:"var(--cloudig-accent)", discovery:"#924ff7", danger:"#bd4545", success:"#168653", warning:"#bc791b", info:"#428bd2", blue:"#0285ff", purple:"#924ff7", orange:"#fb6a22", green:"#04b84c" };
   return tokens[s] ?? (/^(?:#[a-f\d]{3,8}|(?:rgb|hsl)a?\([\d\s.,%/+-]+\)|transparent|currentColor|white|black)$/iu.test(s) ? s : "");
 };
@@ -92,7 +96,7 @@ export function paintDil(ctx: DilPaint, value: any, path="r", group?: { value: u
   }
   if(["slider","input","textarea","date-picker","select"].includes(t)){
     const input=n as HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
-    if(t==="select")for(const item of p["options"]??[]){const o=d.createElement("option");o.value=String(item.value);o.textContent=String(item.label??item.value);input.append(o);}
+    if(t==="select"){n.classList.add("cloudig-themed-select");n.dataset["scrollPicker"]="";for(const item of p["options"]??[]){const o=d.createElement("option");o.value=String(item.value);o.textContent=String(item.label??item.value);o.disabled=!!item.disabled;input.append(o);}}
     else if(n instanceof d.defaultView!.HTMLInputElement)n.type=t==="slider"?"range":t==="date-picker"?"date":["text","number","email","url","password"].includes(p["type"])?p["type"]:"text";
     for(const a of ["min","max","step","placeholder","rows","maxLength"])if(typeof p[a]==="string"||typeof p[a]==="number")input.setAttribute(a,String(p[a]));
     // Range value sanitization is immediate: install its real bounds before
@@ -100,7 +104,14 @@ export function paintDil(ctx: DilPaint, value: any, path="r", group?: { value: u
     // silently clamp on every repaint while the saved program keeps advancing.
     input.value=String(p["value"]??"");input.setAttribute("aria-label",String(p["aria-label"]??p["label"]??p["placeholder"]??(t==="slider"?"Value":t)));
     if(p["required"])input.setAttribute("required","");if(p["disabled"])input.disabled=true;
-    action(input,t==="select"?"change":"input",p["onChange"],{number:t==="slider"||p["type"]==="number"});return n;
+    if(t==="textarea")n.dataset["scrollRegion"]="";
+    action(input,t==="select"?"change":"input",p["onChange"],{number:t==="slider"||p["type"]==="number"});
+    if(t==="date-picker"){
+      const field=d.createElement("div"),open=d.createElement("button");field.className="cloudig-date-field";field.dataset["dilKey"]=`${key}:field`;
+      open.type="button";open.dataset["dilDateOpen"]="";open.disabled=!!p["disabled"];open.setAttribute("aria-label",ctx.language==="en"?"Choose date":"选择日期");open.setAttribute("aria-haspopup","dialog");
+      open.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6m10-6v6M3 11h18M7 15h3m4 0h3m-10 3h3"/></svg>';
+      field.append(n,open);return field;
+    }return n;
   }
   if(["button","pressable","popover-trigger"].includes(t)){
     (n as HTMLButtonElement).type=p["submit"]?"submit":"button";(n as HTMLButtonElement).disabled=!!p["disabled"];
@@ -123,7 +134,14 @@ export function morphDil(old: Node, fresh: Node): void {
   const a=old as Element,b=fresh as Element;
   if(a.hasAttribute("data-dil-preserve")&&a.getAttribute("data-dil-preserve")===b.getAttribute("data-dil-preserve"))return;
   for(const attr of [...a.attributes])if(!b.hasAttribute(attr.name))a.removeAttribute(attr.name);
-  for(const attr of [...b.attributes])if(a.getAttribute(attr.name)!==attr.value)a.setAttribute(attr.name,attr.value);
+  for(const attr of [...b.attributes])if(a.getAttribute(attr.name)!==attr.value){
+    // Only paintDil's allowlisted, renderer-generated styles reach this patch.
+    // The shell disallows inline style attributes: setAttribute silently loses
+    // live changes there, while the initial CSSOM render succeeds. Keep both
+    // paths on CSSOM; never relax CSP or forward arbitrary captured CSS.
+    if(attr.name==="style"&&"style"in a)(a as HTMLElement).style.cssText=(b as HTMLElement).style.cssText;
+    else a.setAttribute(attr.name,attr.value);
+  }
   if(["INPUT","TEXTAREA","SELECT"].includes(a.tagName)){const x=a as HTMLInputElement,y=b as HTMLInputElement;if(x.value!==y.value)x.value=y.value;if("checked"in x)x.checked=y.checked;}
   morphDilChildren(a,b);
 }

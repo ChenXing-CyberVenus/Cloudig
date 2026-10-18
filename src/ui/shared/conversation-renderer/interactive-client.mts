@@ -51,14 +51,37 @@ export function interactiveClient(config: { token: string; state: InteractiveSta
   window.addEventListener("error", event => send("error", String(event.message).slice(0, config.errorLimit)));
   window.addEventListener("unhandledrejection", () => send("error", "Unhandled error in saved work"));
   window.addEventListener("load", () => send("loaded", null), { once: true });
+  let heightSignature="", viewportSelectors:string[]=[], layoutReady=false;
+  const relativeHeight=(value:string)=>/100(?:\.0+)?%|\d+(?:\.\d+)?(?:d|s|l)?vh/iu.test(value);
+  const collectViewportSelectors=()=>{
+    viewportSelectors=[];
+    const scan=(rules:CSSRuleList)=>{for(const rule of rules){
+      if("selectorText" in rule&&"style" in rule){const style=(rule as CSSStyleRule).style;if(relativeHeight(`${style.height} ${style.minHeight}`))viewportSelectors.push((rule as CSSStyleRule).selectorText);}
+      else if("cssRules" in rule){if("media" in rule&&!matchMedia((rule as CSSMediaRule).conditionText).matches)continue;scan((rule as CSSGroupingRule).cssRules);}
+    }};
+    for(const sheet of document.styleSheets)try{if(!sheet.disabled)scan(sheet.cssRules);}catch{/* An inaccessible author sheet grants no inspection capability. */}
+  };
   const reportHeight = () => {
-    const body = document.body; if (!body) return;
+    const body = document.body; if (!body||!layoutReady) return;
     const style = getComputedStyle(body);
-    send("resize", Math.ceil(body.getBoundingClientRect().height + (parseFloat(style.marginTop) || 0) + (parseFloat(style.marginBottom) || 0)));
+    // Examine the outer layout chain, not every canvas/button with a height.
+    // Percent/vh roots need a stable viewport, not a feedback-driven auto size.
+    const roots:HTMLElement[]=[document.documentElement,body];let parent=body;
+    for(let depth=0;depth<4;depth++){
+      const children=[...parent.children].filter((n):n is HTMLElement=>n instanceof HTMLElement&&!['SCRIPT','STYLE','LINK','TEMPLATE'].includes(n.tagName)&&getComputedStyle(n).display!=="none");
+      if(children.length!==1)break;parent=children[0]!;roots.push(parent);
+    }
+    const viewport=roots.some(node=>relativeHeight(`${node.style.height} ${node.style.minHeight}`)||viewportSelectors.some(selector=>{try{return node.matches(selector);}catch{return false;}}))||[...body.children].some(node=>{
+      if(!(node instanceof HTMLElement))return false;const css=getComputedStyle(node),rect=node.getBoundingClientRect();return css.position==="fixed"&&rect.height>=innerHeight-1&&rect.width>=innerWidth-1;
+    });
+    const height=Math.ceil(Math.max(body.getBoundingClientRect().height,body.scrollHeight)+(parseFloat(style.marginTop)||0)+(parseFloat(style.marginBottom)||0));
+    const detail={height,layout:viewport?"viewport":"flow"},signature=JSON.stringify(detail);
+    if(signature!==heightSignature){heightSignature=signature;send("resize",detail);}
   };
   const resize = typeof ResizeObserver === "function" ? new ResizeObserver(reportHeight) : undefined; resize?.observe(document.body);
-  window.addEventListener("load", reportHeight, { once: true });
-  window.addEventListener("pagehide", () => resize?.disconnect(), { once: true });
+  const resized=()=>{collectViewportSelectors();layoutReady=true;reportHeight();};
+  window.addEventListener("load", resized, { once: true });window.addEventListener("resize",resized);
+  window.addEventListener("pagehide", () => {resize?.disconnect();window.removeEventListener("resize",resized);}, { once: true });
   if (config.scrollRegions) {
     let dragged: HTMLElement | undefined;
     const active = new Set<HTMLElement>();

@@ -55,6 +55,14 @@ test("unknown executable dependencies fail explicitly, never fetch a CDN behind 
   assert.throws(() => prepareInteractiveHtml(input, dom.window.document, () => "blob:null/test"), /Dependency is not bundled/u); dom.window.close();
 });
 
+test("transparent work canvases match the host scheme without overriding authored colours",()=>{
+ const dom=new JSDOM('<!doctype html>');
+ try{for(const theme of ['dawn','star-night']as const){const source='<style>body{background:#123456} :root{color-scheme:light dark}</style><p>Work</p>';
+ const html=prepareInteractiveHtml({protocol:INTERACTIVE_PROTOCOL,token:'scheme',entry:'index.html',theme,state:{},files:[{path:'index.html',mime:'text/html',bytes:bytes(source)}]},dom.window.document,()=> 'blob:local');
+ assert(html.includes(`@layer cloudig-work-defaults { :root { color-scheme: ${theme==='star-night'?'dark':'light'}; } }`));assert(html.includes('body{background:#123456} :root{color-scheme:light dark}'));
+ }}finally{dom.window.close();}
+});
+
 test("session state is isolated, bounded, immutable to callers and not a disk record", () => {
   saveInteractiveState("work-one", { strokes: "one", __proto__: "not a property literal" }); saveInteractiveState("work-two", { strokes: "two" });
   const value = readInteractiveState("work-one") as Record<string,string>; value["strokes"] = "modified";
@@ -130,6 +138,16 @@ test("an offscreen light Box does not start and cannot start after route cancell
   assert.equal(reads, 0); assert.equal(disconnected, 1); dom.window.close();
 });
 
+test("work-window inline frames use content height while normal inline Boxes retain their limit",async()=>{
+ const dom=dialogDom(),abort=new AbortController(),parent=dom.window.document.createElement('div');dom.window.document.body.append(parent);
+ const work=openInteractiveWindow({document:dom.window.document,title:'Window work',entry:'index.html',inlineParent:parent,flowHeight:true,stateKey:'flow',theme:'dawn',language:'en',signal:abort.signal,readFiles:async()=>[{path:'index.html',mime:'text/html',bytes:bytes('<canvas width="800" height="390"></canvas>')}]});
+ try{await new Promise(resolve=>setTimeout(resolve,0));const frame=work.element.querySelector('iframe')!,token=new URL(frame.src).hash.slice(1);
+ for(const height of [720,1300,480]){dom.window.dispatchEvent(new dom.window.MessageEvent('message',{source:frame.contentWindow,data:{protocol:INTERACTIVE_PROTOCOL,token,kind:'resize',detail:height}}));assert.equal(work.element.style.getPropertyValue('--cloudig-inline-height'),`${height}px`);}
+ const css=await readFile('src/ui/shared/conversation-renderer/interactive-window.css','utf8');assert.match(css,/height: var\(--cloudig-window-height,calc\(100dvh - 48px\)\)/u);assert.doesNotMatch(css,/height:\s*min\(960px/u);
+ const dil=await readFile('src/ui/shared/conversation-renderer/dil-view.css','utf8');assert.match(dil,/\.cloudig-dil-window>\.cloudig-interactive-body/u);assert.doesNotMatch(dil,/\.cloudig-dil-window \.cloudig-interactive-body/u);
+ }finally{abort.abort();dom.window.close();}
+});
+
 test("Visualize receives its native ramps and saved icon masks without changing authored artifact colors", () => {
   const dom = new JSDOM("<!doctype html>"), source = '<svg><g class="c-purple"><rect width="40" height="20"/><text class="th">Title</text></g></svg><i class="ti ti-heart"></i>';
   const input: InteractivePackage = { protocol: INTERACTIVE_PROTOCOL, token: "icons", entry: "index.html", source: "claude.ai_visualize", theme: "star-night", state: {}, icons: [{ name: "heart", path: "icons/heart.svg" }], files: [
@@ -155,7 +173,7 @@ test("all authored works receive a lowest-priority host scroll fallback without 
   const host = new JSDOM("<!doctype html>"), original = '<style>@layer author{.custom::-webkit-scrollbar{width:19px}.custom::-webkit-scrollbar-thumb{background:red}}</style><div class="custom">Original</div>';
   const input: InteractivePackage = { protocol: INTERACTIVE_PROTOCOL, token: "scroll", entry: "index.html", theme: "star-night", state: {}, scrollCss: ':root{--cloudig-scroll-idle:#3b383c}[data-scroll-region]::-webkit-scrollbar{width:8px}', files: [{ path: "index.html", mime: "text/html", bytes: bytes(original) }] };
   const html = prepareInteractiveHtml(input, host.window.document, () => "blob:work/test"), result = new JSDOM(html);
-  const styles = [...result.window.document.querySelectorAll("style")]; assert.match(styles[0]!.textContent!, /@layer cloudig-work-scroll-default/u); assert(styles[0]!.textContent!.includes(":where(*)::-webkit-scrollbar")); assert(styles[1]!.textContent!.includes("width:19px")); assert(!styles[0]!.textContent!.includes("!important"));
+  const styles = [...result.window.document.querySelectorAll("style")]; assert.match(styles[0]!.textContent!, /@layer cloudig-work-scroll-default/u); assert(styles[0]!.textContent!.includes(":where(*)::-webkit-scrollbar")); assert(styles.findIndex(s=>s.textContent?.includes("width:19px"))>0); assert(!styles[0]!.textContent!.includes("!important"));
   assert(html.includes('"scrollRegions":true')); assert.equal(new TextDecoder().decode(input.files[0]!.bytes), original); result.window.close(); host.window.close();
 });
 

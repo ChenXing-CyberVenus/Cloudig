@@ -87,7 +87,7 @@ const readerAssets = [
   ["RCSD-花.svg", "359554935a40b9424801b859863638b99c021c63462d18f6bb17074324c827f6", "clean-svg"],
   ["RCSD-肥肥相片.svg", "0b644fdfb2baecf87a6c716aafbe807a7726ca98da60475d5a21f1cff3b10eb2", "clean-svg"],
   ["RCSD-肥肥相框.svg", "0efc26ccaf07513ebf4bb88f4038e235de81d1306e6e252c9a92b0c4c227b331", "clean-svg"],
-  ["Reader-Cover-Computer-Dawn.svg", "2a7003e84115b26137fba62d541f21ef27470494547898a2bb9b1112ad3df1a1", "clean-svg"],
+  ["Reader-Cover-Computer-Dawn.svg", "2a7003e84115b26137fba62d541f21ef27470494547898a2bb9b1112ad3df1a1", "expand-computer-filter-viewport"],
   ["RCSS-星夜窗户.svg", "065bba35396f685bbd44c402231eed0c9f41e4c7893ca149e001cbd73266091d", "clean-svg"],
   ["RCSS-星夜.svg", "fe6325536f50cc1f930ca77c174d793d7af620491fe9992ae75ef5a5fce8e76e", "clean-svg"],
   ["RCSS-时光建筑群.svg", "fce1193cb56cd9b6b928cd3c8d35716fec77e779aa7da0b5255f357b6738c7d0", "clean-svg"],
@@ -224,6 +224,11 @@ for (const [name, expected, transform] of readerAssets) {
   assert.equal(sha256(source), expected, `Design source changed: ${name}`);
   const output = transform === "stretch-title-background"
     ? Buffer.from(cleanSvg(source.toString("utf8")).replace("<svg ", '<svg preserveAspectRatio="none" '), "utf8")
+    // Union of the original artboard (0 0 265.68 246.29) and its authored
+    // filter (-13.41 -13.99 297 250). Keep every drawing/filter coordinate;
+    // Reader offsets the enlarged image by the same negative origin.
+    : transform === "expand-computer-filter-viewport"
+      ? Buffer.from(cleanSvg(source.toString("utf8")).replace('viewBox="0 0 265.68 246.29"', 'viewBox="-13.41 -13.99 297 260.28"').trimEnd() + "\n", "utf8")
     : transform === "clean-svg" ? Buffer.from(cleanSvg(source.toString("utf8")), "utf8") : source;
   await writeFile(path.join(readerOutputRoot, name), output);
   manifest.push({

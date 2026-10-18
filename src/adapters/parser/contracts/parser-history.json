@@ -1,6 +1,6 @@
 {
   "schema": "cloudig/parser-history/1.0.0",
-  "current_parser": "1.1.38",
+  "current_parser": "1.1.39",
   "releases": [
     {
       "version": "1.0.0",
@@ -729,6 +729,16 @@
         "claude-light-dom-v1": "3.0.11",
         "claude-full-capture-v1": "3.0.11",
         "claude-all-branches-v1": "3.0.11"
+      }
+    },
+    {
+      "version": "1.1.39",
+      "date": "2026-10-18",
+      "source_commit": "bb4a084cc1ac04bd17be18bb838c332114bcc6fc",
+      "adapters": {
+        "chatgpt-light-items-v2": "3.0.7",
+        "chatgpt-full-v1": "3.0.7",
+        "chatgpt-all-branches-v1": "3.0.7"
       }
     }
   ]

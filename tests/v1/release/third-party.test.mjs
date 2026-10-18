@@ -38,7 +38,7 @@ test("the V1 Engine and Renderer have a complete deterministic runtime license i
     assert.ok(first.inventory.npm_packages.some((entry) => entry.name === "katex" && entry.version === "0.18.5"));
     assert.ok(first.inventory.npm_packages.some((entry) => entry.name === "mermaid" && entry.version === "11.17.2" && entry.consumers.includes("mermaid_layout")));
     assert.ok(first.inventory.npm_packages.every((entry) => entry.license_files.length > 0));
-    for (const name of ["react", "react-dom", "three", "chart.js"]) {
+    for (const name of ["react", "react-dom", "three", "chart.js", "@tabler/icons"]) {
       assert.ok(first.inventory.npm_packages.some(entry => entry.name === name && entry.consumers.includes("interactive_work")));
     }
     for (const name of ["@babel/standalone", "recharts", "lucide-react"]) {

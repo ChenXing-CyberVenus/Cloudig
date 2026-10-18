@@ -60,7 +60,15 @@ public partial class MainWindow
         async Task Mouse(string type, double x, double y, bool down = false) => await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent", JsonSerializer.Serialize(new { type, x, y, button = type == "mouseMoved" && !down ? "none" : "left", buttons = down ? 1 : 0, clickCount = type == "mouseMoved" ? 0 : 1 }));
         async Task Pointer(string selector, CoreWebView2Frame? frame = null, int hold = 0)
         {
-            var p = await Point(selector, frame); await Mouse("mouseMoved", p.X, p.Y); await Mouse("mousePressed", p.X, p.Y, true);
+            // Fonts, chart layout and a naturally sized parent may settle after
+            // load. Hit-test the final frame-relative coordinates, not a stale point.
+            var p = await Point(selector, frame);var stable=0;
+            for(var n=0;n<12&&stable<2;n++){
+                await Task.Delay(80);var next=await Point(selector,frame);
+                stable=Math.Abs(next.X-p.X)<.5&&Math.Abs(next.Y-p.Y)<.5?stable+1:0;p=next;
+            }
+            if(stable<2)throw new InvalidDataException("Saved work target did not settle: "+selector);
+            await Mouse("mouseMoved", p.X, p.Y); await Mouse("mousePressed", p.X, p.Y, true);
             if (hold > 0) await Task.Delay(hold); await Mouse("mouseReleased", p.X, p.Y); await Task.Delay(120);
         }
         async Task<CoreWebView2Frame> CurrentFrame()
@@ -107,6 +115,7 @@ public partial class MainWindow
         {
             await Wait("document.querySelector('.route-transition').hidden&&Boolean(document.querySelector('.cloudig-window-entry > button'))");
             var count = int.Parse(await Read("(()=>{const b=[...document.querySelectorAll('.cloudig-window-entry > button.cloudig-box-button')];b.forEach((n,i)=>n.dataset.nativeWork=String(i));return b.length;})()"));
+            if(audit.Query.Contains("inline-works-only=1",StringComparison.Ordinal))count=0;
             if (await Read($"Boolean(document.querySelector('{modal} iframe'))") != "false") throw new InvalidDataException("A heavy work ran before opening");
             for (var i = 0; i < count; i++)
             {
@@ -122,6 +131,10 @@ public partial class MainWindow
                 await Wait($"Boolean(document.querySelector('{modal}[data-state=ready] iframe'))");
                 await Wait($"document.querySelector('{modal} .cloudig-interactive-status').hidden&&getComputedStyle(document.querySelector('{modal} .cloudig-interactive-status'),'::before').animationName==='none'");
                 var frame = await CurrentFrame(); await Wait("document.fonts.status==='loaded'&&Boolean(document.body.innerText.trim()||document.querySelector('canvas,svg'))", frame);
+                await Task.Delay(300);
+                var geometry=await Read($"(()=>{{const d=document.querySelector('{modal}'),r=d.getBoundingClientRect();return{{layout:d.dataset.workLayout,top:r.top,bottom:r.bottom,height:r.height,viewport:innerHeight,target:parseFloat(d.style.getPropertyValue('--cloudig-window-height'))}}}})()");
+                await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,$".work-{i}-geometry.json"),geometry);
+                using(var bounds=JsonDocument.Parse(geometry)){var g=bounds.RootElement;if(g.GetProperty("top").GetDouble()<0||g.GetProperty("bottom").GetDouble()>g.GetProperty("viewport").GetDouble()+1||Math.Abs(g.GetProperty("height").GetDouble()-g.GetProperty("target").GetDouble())>2)throw new InvalidDataException("Work window geometry mismatch: "+geometry);}
                 using (var measurement = JsonDocument.Parse(await Read($"(()=>{{const d=document.querySelector('{modal}');return{{mode:'first',index:{i},read_ms:Number(d.dataset.readMs),prepare_ms:Number(d.dataset.prepareMs),ready_ms:Number(d.dataset.loadMs)}};}})()"))) timings.Add(measurement.RootElement.Clone());
                 var kind = JsonSerializer.Deserialize<string>(await Read("document.querySelector('#breathe')?'glass':document.querySelector('#kilnBtn')?'kiln':window.THREE?'three':document.querySelector('.recharts-wrapper')?'jsx':document.querySelector('.count')?'react':window.Chart?'chart':document.querySelector('.slide-reader')?'slides':'document'", frame))!;
                 if (kind == "glass")
@@ -139,7 +152,7 @@ public partial class MainWindow
                     await AudioState(true);
                 }
                 else if (kind == "react") { await Pointer(".buttons button:last-child", frame); await Pointer(".buttons button:last-child", frame); await Wait("document.querySelector('.count').textContent==='2'", frame); }
-                else if (kind == "jsx") { await Pointer("button", frame); await Pointer("button", frame); await Wait("document.body.textContent.includes('今天一共采了 8 朵')&&document.querySelectorAll('.recharts-bar-rectangle').length>0", frame); }
+                else if (kind == "jsx") { await Pointer("button", frame);await Wait("document.body.textContent.includes('今天一共采了 7 朵')",frame); await Pointer("button", frame); await Wait("document.body.textContent.includes('今天一共采了 8 朵')&&document.querySelectorAll('.recharts-bar-rectangle').length>0", frame); }
                 else if (kind == "three")
                 {
                     await Wait("!document.body.innerText.includes('打不开 WebGL')&&document.querySelector('canvas').width>0", frame);
@@ -190,6 +203,9 @@ public partial class MainWindow
                 if (await Read($"document.querySelector('{modal} iframe').src") != src) throw new InvalidDataException("Enlarging a Box restarted it");
                 if (await Read("Boolean(document.querySelector('#clouds'))",frame) == "true") {
                     await Wait("document.querySelectorAll('#sky .ti-cloud').length===5&&[...document.querySelectorAll('#sky .ti-cloud')].every(n=>getComputedStyle(n).maskImage.startsWith('url('))",frame);
+                    await Read("(()=>{window.__cloudigIconPixels=null;void(async()=>{const css=getComputedStyle(document.querySelector('#sky .ti-cloud')).maskImage;const image=new Image();image.src=css.slice(4,-1).replace(/^['\"]|['\"]$/g,'');await image.decode();const canvas=document.createElement('canvas');canvas.width=64;canvas.height=64;const c=canvas.getContext('2d');c.drawImage(image,0,0,64,64);const a=c.getImageData(0,0,64,64).data;let clear=0,paint=0;for(let i=3;i<a.length;i+=4){if(a[i]===0)clear++;else paint++;}window.__cloudigIconPixels={clear,paint,pass:clear>100&&paint>20};})().catch(e=>window.__cloudigIconPixels={error:String(e)});return true})()",frame);
+                    await Wait("window.__cloudigIconPixels?.pass===true",frame);
+                    await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".cloud-icon-pixels.json"),await Read("window.__cloudigIconPixels",frame));
                     await Capture("cloud-slider-five");await Pointer("#clouds",frame);
                     foreach(var key in new[]{("Home",36), ("End",35)}) {
                         foreach(var type in new[]{"keyDown","keyUp"}) await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchKeyEvent",JsonSerializer.Serialize(new{type,key=key.Item1,code=key.Item1,windowsVirtualKeyCode=key.Item2}));

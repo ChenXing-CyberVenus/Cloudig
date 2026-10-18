@@ -12,7 +12,7 @@ import { ChatGptIntelligentUi } from "./chatgpt-intelligent.mts";
 
 export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
   id: "chatgpt-light-items-v2",
-  version: "3.0.6",
+  version: "3.0.7",
   family: "chatgpt",
   routes: [{
     format: "exporter-html",
@@ -25,7 +25,7 @@ export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
     adapter: "chatgpt-light-items-v2",
     version: "1.3.0",
     action: "reparse_source"
-  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
+  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
 };
 
 function object(value: JsonValue | undefined): JsonObject | undefined {

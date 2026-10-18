@@ -276,7 +276,7 @@ test("ChatGPT Light manifest and payload become one deterministic semantic Conve
     filePath: filePath(fixture)
   });
   assert.equal(first.adapter.id, "chatgpt-light-items-v2");
-  assert.equal(first.adapter.version, "3.0.6");
+  assert.equal(first.adapter.version, "3.0.7");
   assert.deepEqual(first.draft, second.draft);
   assert.deepEqual(first.sourceFingerprint, second.sourceFingerprint);
   assert.ok(progress.some((entry) => entry.phase === "fingerprint" && entry.completed === entry.total));
@@ -322,7 +322,7 @@ test("ChatGPT Full reuses semantic grouping but embeds captured attachment bytes
     await writeFile(source, full, "utf8");
     const parsed = await parseExporterHtmlToDraft({ filePath: source });
     assert.equal(parsed.adapter.id, "chatgpt-full-v1");
-    assert.equal(parsed.adapter.version, "3.0.6");
+    assert.equal(parsed.adapter.version, "3.0.7");
     const conversation = fullConversation(parsed.draft, {
       id: parsed.adapter.id,
       version: parsed.adapter.version

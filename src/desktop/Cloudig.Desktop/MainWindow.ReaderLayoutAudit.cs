@@ -6,6 +6,42 @@ namespace Cloudig.Desktop;
 
 public partial class MainWindow
 {
+    private async Task VerifyReaderNotebookAsync(VisualAuditOptions audit)
+    {
+        async Task<string> Read(string js)=>await WebView.CoreWebView2.ExecuteScriptAsync(js);
+        async Task Wait(string js){for(var i=0;i<200;i++){if(await Read(js)=="true")return;await Task.Delay(50);}throw new InvalidDataException("Notebook route did not settle: "+js);}
+        string Ready(string selector)=>$$"""
+            (()=>{const n=document.querySelector({{JsonSerializer.Serialize(selector)}});if(!n)return false;const r=n.getBoundingClientRect();return r.width>0&&r.height>0&&n.contains(document.elementFromPoint(r.left+r.width/2,r.top+r.height/2))})()
+            """;
+        async Task Pointer(string selector)
+        {
+            // Route markup can mount beneath the still-visible transition.
+            // Wait for the actual target to be hittable, never bypass it.
+            await Wait(Ready(selector));
+            using var p=JsonDocument.Parse(await Read($$"""
+                (()=>{const n=document.querySelector({{JsonSerializer.Serialize(selector)}}),r=n.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;return n.contains(document.elementFromPoint(x,y))?{x,y}:null})()
+                """));
+            if(p.RootElement.ValueKind==JsonValueKind.Null)throw new InvalidDataException("Notebook route control blocked: "+selector);
+            foreach(var type in new[]{"mouseMoved","mousePressed","mouseReleased"})await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent",JsonSerializer.Serialize(new{type,x=p.RootElement.GetProperty("x").GetDouble(),y=p.RootElement.GetProperty("y").GetDouble(),button="left",clickCount=1}));
+        }
+        var facts=await Read("""
+            (()=>{const b=document.querySelector('.reader-archive-entry'),img=b.querySelector('img'),r=b.getBoundingClientRect(),s=getComputedStyle(img),a=img.getBoundingClientRect(),k=r.width/265.68,night=document.documentElement.dataset.theme==='star-night';return{night,display:s.display,boxShadow:getComputedStyle(b).boxShadow,filter:s.filter,scale:k,originError:Math.max(Math.abs(a.left+13.41*k-r.left),Math.abs(a.top+13.99*k-r.top)),widthError:Math.abs(a.width-297*k),heightError:Math.abs(a.height-260.28*k),button:r.toJSON(),image:a.toJSON()}})()
+            """);
+        await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".notebook.json"),facts);
+        using(var doc=JsonDocument.Parse(facts))
+        {
+            var f=doc.RootElement;
+            if(f.GetProperty("boxShadow").GetString()!="none"||f.GetProperty("filter").GetString()!="none")throw new InvalidDataException("Unexpected extra notebook shadow: "+facts);
+            if(!f.GetProperty("night").GetBoolean()&&(f.GetProperty("originError").GetDouble()>.1||f.GetProperty("widthError").GetDouble()>.1||f.GetProperty("heightError").GetDouble()>.1))throw new InvalidDataException("Notebook artwork moved: "+facts);
+            if(f.GetProperty("night").GetBoolean()&&f.GetProperty("display").GetString()!="none")throw new InvalidDataException("Dawn notebook leaked into night cover");
+        }
+        await Pointer(".reader-archive-entry");await Wait("Boolean(document.querySelector('[data-page=archiver]'))");
+        await Pointer("[data-page=archiver] [data-route-target=reader]");await Wait("Boolean(document.querySelector('.reader-archive-entry'))");
+        await Wait(Ready(".reader-archive-entry"));
+        await Wait("[...document.querySelectorAll('.reader-scene-design img')].every(i=>i.complete)");
+        TraceVisualAudit("notebook-shadow-passed","original drawing coordinates;no double shadow;real hit and Reader/Archiver return");
+    }
+
     private async Task VerifyReaderLayoutFixesAsync(VisualAuditOptions audit)
     {
         async Task<string> Read(string js)=>await WebView.CoreWebView2.ExecuteScriptAsync(js);

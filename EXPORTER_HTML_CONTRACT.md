@@ -550,11 +550,13 @@ canonical JSON 不默认重复保存逐字段 locator、evidence、coverage、�
 
 ### ChatGPT Intelligent UI 扩展（2026-10-15候选）
 
-本节覆盖Intelligent UI三轨候选；当前3.7.59-light / 1.0.56-full / 1.0.56-all-branches，不代表老婆已验收。普通消息及现有厂商payload格式不改。
+本节定义Intelligent UI三轨扩展；首次候选为3.7.59-light / 1.0.56-full / 1.0.56-all-branches，现行版本/验收状态以书签README及机器注册表为准。普通消息及现有厂商payload格式不改。
 
 - 存在DIL消息时，manifest的`extensions.chatgpt_intelligent_ui`指向唯一 inert JSON：`#chatgpt-intelligent-ui-data`，`format: "chatgpt-intelligent-ui/1.0"`。没有DIL的会话不增加该块。
 - `records`按原生message ID索引；`raw.content`、`raw.metadata.model_dil_v2/content_references/view_state`保留API原值。源码、编译定义、常量、fallback、resolved组件数据与父子绑定是同一消息的多种材料，不应重复生成回答。
 - `capture`只记录保存时事实：API-only或API+DOM模式、控件值、编辑器当前文本、已原位嵌入文件ID等；默认源码状态与保存时状态不得混为一谈。`placements`记录有证据的引用寻址，不能把稀疏`start_idx=0`强放消息开头或末尾。
+- 2026-10-18可选派生事实：`capture.mode: "api_static_layout"`表示从受支持的静态定义得到阅读投影，不代表执行了来源程序或取得DOM；`capture.palette`保存实际观察到的语义颜色。新Cite从同消息`componentResults`解析真实来源，DOM绑定需完整顺序与标签共同吻合；代码中的原标记和`raw`不改。协议仍为1.0，旧档案无需迁移。
+- 冷页覆盖：可选`capture.native_expected`表示该记录属于当前分支、且不是公开思考前置文本，预期可取得正式原页界面。未完成挂载不能冒充`api_and_dom`；有界补载后仍缺失只在既有诊断内记`stage: native-coverage`，原始定义和可用回退继续保留。非当前Tree分支不因没有DOM报此缺口，也不自动切换原页分支。
 - 对应`items[].parts[]`使用既有`type: "html"`，新增`intelligent_ui: {format, record_id}`。`html`是阅读投影，受支持的基础控件由随档本地运行时激活；`markdown`保留fallback，两个字段不是两条内容。Tree的非当前分支没有DOM时仍保留完整定义/引用/可取得资源，不伪造页面快照。
 - 扩展的`resources`为字节池，`record.resource_ids`及`resolved_images/attachments/media`保留关系。`src`为实际data URI，`alias_of`只引用本池；`availability`区分原文件、像素快照或仅元数据。不能用“有URL”判成下载成功。
 - 普通卡片/表格/公式/原站SVG与图表直接阅读；复杂AppBlock、HTML程序在原位提供实际源码下载。每个消息的完整界面数据包带父作用域定义和所用资源，供采云继续解析；书签不执行来源程序。复制字面文本、链接、折叠、横向轮播不依赖来源业务服务。

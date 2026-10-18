@@ -1143,7 +1143,7 @@ function applyTheme() {
   root.dataset.themeDiscovery = state.themeSwitched ? "false" : "true";
   const surface = pageSurface();
   app.dataset.surface = surface;
-  request("shell.surface", { page: surface, theme: state.theme }).catch(() => undefined);
+  request("shell.surface", { page: surface, theme: state.theme, language: state.language }).catch(() => undefined);
   if (!currentRoute.startsWith("reader/conversation/")) currentPage?.updateState?.(state);
   activeConversation?.controller.updateState?.(state);
   activeTimeCover?.updateState?.(state);

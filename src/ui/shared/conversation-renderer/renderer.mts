@@ -9,6 +9,7 @@ import { isDilView, renderDilView, type DilContexts } from "./dil-view.mts";
 import { isSummaryView, sameSummarySpeaker } from "../../../app/reader/summary-sequence.mts";
 import { openInteractiveWindow } from "./interactive-window.mts";
 import { loadInteractiveDependencies } from "./interactive-dependencies.mts";
+import { readStandardWorkIcon } from "./work-icons.mts";
 import { mapInteractiveAssets, readInteractiveAsset } from "./interactive-assets.mts";
 import { resourceActionIcon, resourceIcon, resourceKind, resourceSize } from "./resource-card.mts";
 import type { InteractiveFile, InteractiveFormat } from "./interactive-protocol.mts";
@@ -941,6 +942,7 @@ export class ConversationRenderer {
                 const resource = resources.get(String(file["resource"]));
                 if (!resource || resource["availability"] !== "embedded" || !this.#options.resolveResource) {
                   if (file["path"] === entry) throw new Error(language === "en" ? "This saved file does not contain the work's entry." : "这份档案未包含作品入口文件。");
+                  if(resource&&resource["availability"]==="external")return readStandardWorkIcon(resource["url"],String(file["path"]),this.#options.workRuntime?.dependencies??new URL("/runtime/dependencies/",document.baseURI).href,signal);
                   return undefined;
                 }
                 const read = async () => {

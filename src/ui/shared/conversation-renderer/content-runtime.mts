@@ -78,6 +78,27 @@ function markdownRuntime(): MarkdownItInstance {
     const escape = markdown.utils.escapeHtml;
     return `<a class="cloudig-external-resource" href="${escape(url)}" data-cloudig-external="true" rel="noopener noreferrer"${title ? ` title="${escape(title)}"` : ""}>${escape(alt || url)}</a>`;
   };
+  // Task markers belong to the first paragraph of a list item, not arbitrary
+  // bracket text. Work on parsed tokens so code, escaped markers, links and
+  // nested lists keep their own meaning. This displays the archived state;
+  // it is not an edit to the source document or a live form submission.
+  markdown.core.ruler.after("inline", "cloudig_task_list", state => {
+    for (let i = 2; i < state.tokens.length; i++) {
+      const inline = state.tokens[i]!, paragraph = state.tokens[i - 1]!, item = state.tokens[i - 2]!;
+      if (inline.type !== "inline" || paragraph.type !== "paragraph_open" || item.type !== "list_item_open") continue;
+      const marker = /^\[([ xX])\](?:[ \t]+|\n|$)/u.exec(inline.content), first = inline.children?.[0];
+      if (!marker || first?.type !== "text" || !first.content.startsWith(marker[0].trimEnd())) continue;
+      const checked = marker[1] !== " ";
+      first.content = first.content.slice(Math.min(marker[0].length, first.content.length));
+      // A newline can be a separate softbreak token; the checkbox already
+      // provides the separation before the first line of task content.
+      if (!first.content && inline.children?.[1]?.type === "softbreak") inline.children.splice(1, 1);
+      item.attrJoin("class", "cloudig-task-item");
+      const checkbox = new state.Token("html_inline", "", 0);
+      checkbox.content = `<input class="cloudig-task-check" type="checkbox" disabled${checked ? " checked" : ""} aria-label="${markdown.utils.escapeHtml(inline.content.slice(marker[0].length))}">`;
+      inline.children!.unshift(checkbox);
+    }
+  });
   return markdown;
 }
 

@@ -4,11 +4,11 @@ import {
   versionedBookmarkletName
 } from "./bookmarklet-layout.mjs";
 
-export const bookmarkSetVersion = "2026.10.17.1";
+export const bookmarkSetVersion = "2026.10.18.2";
 
 export const bookmarkletTargets = [
   { id: "deepseek", label: "DeepSeek", version: "2.8.10-light", baselineVersion: "2.8.0", source: bookmarkletPath("stable", "deepseek", "2026-07-14_DeepSeek会话导出HTML书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "deepseek", "2026-07-14_DeepSeek会话导出HTML书签单行版-GPT-5.6-Sol.min.js"), katex: false },
-  { id: "chatgpt", label: "ChatGPT", version: "3.7.62-light", baselineVersion: "3.7.2", source: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
+  { id: "chatgpt", label: "ChatGPT", version: "3.7.64-light", baselineVersion: "3.7.2", source: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
   { id: "gemini", label: "Gemini", version: "2.7.12-light", baselineVersion: "2.7.0", source: bookmarkletPath("stable", "gemini", "2026-07-16_Gemini会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "gemini", "2026-07-16_Gemini会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
   { id: "grok", label: "Grok", version: "2.8.10-light", baselineVersion: "2.6.0", source: bookmarkletPath("stable", "grok", "2026-07-16_Grok会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "grok", "2026-07-16_Grok会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
   { id: "doubao", label: "豆包", version: "3.5.7-light", baselineVersion: "3.4.0", source: bookmarkletPath("stable", "doubao", "2026-07-16_豆包会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "doubao", "2026-07-16_豆包会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },

@@ -6,10 +6,13 @@
 .cloudig-conversation-renderer[data-theme="star-night"] .cloudig-dil-view { --cloudig-dil-action:#5125a5; --cloudig-dil-action-copy:#ffa92e; }
 /* Embedded Reader widgets follow the composition's surface too; their image,
    plot, modal and attachment internals keep their own established palettes. */
-.cloudig-dil-view { --cloudig-box-surface:var(--cloudig-panel); }
+.cloudig-dil-view { --cloudig-box-surface:var(--cloudig-panel); color-scheme:light; }
+.cloudig-conversation-renderer[data-theme="star-night"] .cloudig-dil-view {color-scheme:dark;}
 .cloudig-dil-node { box-sizing:border-box;min-width:0;max-width:100%;overflow-wrap:anywhere; }
 .cloudig-dil-node:is(h3,p,ul,ol,blockquote,figure) { margin:0; }
 .cloudig-dil-node[data-dil-tag="title"] {font-size:22px;line-height:1.35;font-weight:700;}
+.cloudig-message-content>.cloudig-dil-view:not(:first-child)>[data-dil-tag="title"] {margin-block:1.15em .5em;}
+.cloudig-dil-citations>a+a,.cloudig-dil-memory-cite>a+a {margin-inline-start:.45em;}
 .cloudig-dil-node:is([data-dil-tag="box"],[data-dil-tag="card"]) { gap:12px; }
 .cloudig-dil-node[data-dil-tag="card"] {border:1px solid var(--cloudig-border);border-radius:12px;padding:14px;background:var(--cloudig-panel);}
 .cloudig-dil-node[data-dil-tag="table"] {width:100%;border-collapse:separate;border-spacing:0;font-size:16px;background:var(--cloudig-dil-canvas);border:1px solid var(--cloudig-border);border-radius:10px;overflow:hidden;}
@@ -18,6 +21,40 @@
 .cloudig-dil-node[data-dil-tag="divider"] {width:100%;height:1px;border:0;background:var(--cloudig-border);margin:10px 0;}
 .cloudig-dil-node:is(button,input,textarea,select), .cloudig-dil-node[data-dil-tag="segmented-control"]>button,.cloudig-dil-carousel-controls>button {font:inherit;color:inherit;}
 .cloudig-dil-node:is(input:not([type="checkbox"],[type="radio"],[type="range"]),textarea,select) {border:2px solid var(--cloudig-border);border-radius:8px;background:var(--cloudig-dil-canvas);min-height:40px;padding:8px 12px;}
+/* Native select keeps keyboard/type-ahead/form semantics, but its open picker
+   must be styled too. These tokens come from Reader, not from a sample form. */
+.cloudig-themed-select,.cloudig-themed-select::picker(select) {appearance:base-select;}
+.cloudig-themed-select {font:inherit;color:inherit;}
+.cloudig-themed-select::picker(select) {font:inherit;color:var(--cloudig-text);background:var(--cloudig-panel-strong);border:1px solid var(--cloudig-border);border-radius:10px;padding:6px;margin-block:5px;max-height:min(320px,45dvh);overflow:auto;overscroll-behavior:contain;box-shadow:0 5px 16px #0003;}
+/* The UA's most-block-size prefers whichever side has more room, even if
+   the whole list fits below. Keep below first; flip only to avoid overflow. */
+.cloudig-themed-select::picker(select) {position-area:block-end span-inline-end;position-try-order:normal;position-try-fallbacks:block-start span-inline-end,block-end span-inline-start,block-start span-inline-start;}
+.cloudig-themed-select::picker-icon {color:var(--cloudig-accent);}
+.cloudig-themed-select option {padding:7px 10px;border-radius:5px;color:inherit;background:transparent;}
+.cloudig-themed-select option:is(:hover,:focus-visible,:checked) {background:var(--cloudig-panel);}
+.cloudig-themed-select option:focus-visible {outline:2px solid var(--cloudig-accent);outline-offset:-2px;box-shadow:none;}
+.cloudig-themed-select option::checkmark {color:var(--cloudig-accent);}
+.cloudig-date-field {position:relative;min-width:0;max-width:100%;}
+.cloudig-date-field>.cloudig-dil-node {width:100%;padding-inline-end:44px!important;}
+.cloudig-date-field input::-webkit-calendar-picker-indicator {display:none;}
+.cloudig-date-field>[data-dil-date-open] {position:absolute;inset-inline-end:4px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:34px;height:34px;padding:6px;border:0;border-radius:6px;background:transparent;color:var(--cloudig-accent);cursor:pointer;}
+.cloudig-date-field>[data-dil-date-open] svg {width:21px;height:21px;}
+.cloudig-date-field>[data-dil-date-open]:hover {background:var(--cloudig-panel);}
+.cloudig-date-field>[data-dil-date-open]:disabled {opacity:.45;cursor:default;}
+.cloudig-date-picker {position:fixed;inset:auto;margin:0;width:336px;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);overflow:auto;overscroll-behavior:contain;padding:14px;border:1px solid var(--cloudig-border);border-radius:12px;background:var(--cloudig-panel-strong);color:var(--cloudig-text);font:16px/1.5 var(--cloudig-font-ui,sans-serif);box-shadow:0 5px 18px #0003;}
+.cloudig-date-heading {display:grid;grid-template-columns:30px minmax(0,1fr)78px 30px;gap:7px;align-items:center;margin-bottom:12px;}
+.cloudig-date-picker :is(button,input,select) {font:inherit;color:inherit;border:1px solid var(--cloudig-border);background:transparent;border-radius:6px;min-width:0;padding:4px;}
+.cloudig-date-picker button {cursor:pointer;min-height:32px;}
+.cloudig-date-picker button:hover:not(:disabled) {background:var(--cloudig-panel);}
+.cloudig-date-picker :is(button,input,select):focus-visible,.cloudig-date-field>[data-dil-date-open]:focus-visible {outline:2px solid var(--cloudig-accent);outline-offset:2px;}
+.cloudig-date-grid {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;}
+.cloudig-date-grid button {border:0;}
+.cloudig-date-grid button[aria-pressed="true"] {background:var(--cloudig-accent);color:var(--cloudig-panel-strong);font-weight:700;}
+.cloudig-date-grid button[aria-current="date"] {box-shadow:inset 0 0 0 1px var(--cloudig-accent);}
+.cloudig-date-weekday {text-align:center;font-size:13px;color:var(--cloudig-muted);padding-bottom:5px;}
+.cloudig-date-picker button:disabled {opacity:.35;cursor:default;}
+.cloudig-date-footer {display:flex;justify-content:space-between;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--cloudig-border);}
+.cloudig-date-footer button {border:0;padding-inline:8px;color:var(--cloudig-accent);}
 .cloudig-dil-node:is(button),.cloudig-dil-node[data-dil-tag="segmented-control"]>button,.cloudig-dil-carousel-controls>button {display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;cursor:pointer;border:2px solid var(--cloudig-accent);border-radius:8px;background:transparent;min-height:40px;padding:7px 16px;color:var(--cloudig-accent);text-shadow:none;box-shadow:0 2px 3px #0002;transition:background .15s,box-shadow .15s;}
 .cloudig-dil-node[data-dil-variant="solid"][data-dil-default-color="true"],.cloudig-dil-node[data-dil-tag="segmented-control"]>button[aria-pressed="true"] {background:var(--cloudig-dil-action);border-color:var(--cloudig-dil-action);color:var(--cloudig-dil-action-copy);}
 .cloudig-dil-node[data-dil-variant="ghost"] {border-color:transparent;box-shadow:none;}
@@ -50,8 +87,12 @@
 .cloudig-dil-work .cloudig-interactive-header {justify-content:flex-end;background:transparent;border:0;padding:8px 0;}
 .cloudig-dil-work .cloudig-interactive-header>h2,.cloudig-dil-work .cloudig-interactive-close,.cloudig-dil-work .cloudig-interactive-toolbar>button:last-child {display:none;}
 .cloudig-dil-work .cloudig-interactive-body {min-height:120px;}
-.cloudig-dil-window .cloudig-interactive-body {display:block;padding:24px;overflow:auto;}
-.cloudig-dil-window .cloudig-dil-view {max-width:1100px;margin-inline:auto;}
+.cloudig-dil-window>.cloudig-interactive-body {display:block;padding:24px;overflow:auto;container-type:inline-size;}
+/* Keep responsive artwork proportional on short/wide windows. This bounds
+   the composition width by the actual body height, not a fixed frame height;
+   long documents still scroll without shrinking their text or clipping. */
+.cloudig-dil-window>.cloudig-interactive-body>.cloudig-dil-view {max-width:min(1100px,calc(var(--cloudig-window-body-limit,800px) * 1.35));margin-inline:auto;}
+@media(max-height:800px){.cloudig-dil-window>.cloudig-interactive-body{padding:16px;}.cloudig-dil-window>.cloudig-interactive-body>.cloudig-dil-view{max-width:min(1100px,calc(var(--cloudig-window-body-limit,600px) * 1.1));}}
 .cloudig-dil-loading {display:flex;align-items:center;gap:10px;color:var(--cloudig-muted);padding:12px 0;font-size:14px;}
 .cloudig-dil-loading::before {content:"";width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:cloudig-dil-spin .8s linear infinite;}
 @keyframes cloudig-dil-spin {to {transform:rotate(360deg)}}
@@ -69,6 +110,21 @@
 .cloudig-dil-chart-data table {border-collapse:collapse;width:100%;font-size:16px;}
 .cloudig-dil-chart-data :is(th,td) {text-align:start;padding:6px 10px;border-bottom:1px solid var(--cloudig-border);}
 .cloudig-dil-editor {width:100%;min-height:180px;resize:vertical;font-family:monospace!important;}
-@media(max-width:600px){.cloudig-dil-node:is([data-dil-tag="grid"],[data-dil-tag="flow"]){grid-template-columns:minmax(0,1fr)!important}.cloudig-dil-node:is([data-dil-tag="grid-item"],[data-dil-tag="flow-item"]){grid-column:auto!important}.cloudig-dil-node[data-dil-tag="row"]{flex-wrap:wrap}.cloudig-dil-window .cloudig-interactive-body{padding:16px;}}
+.cloudig-media-box {border:1px solid var(--cloudig-border);border-radius:12px;padding:14px;background:var(--cloudig-panel);font-size:14px;line-height:1.6;}
+.cloudig-media-box :is(figure,p) {margin:0;}
+.cloudig-media-player {display:grid;gap:10px;margin-bottom:10px;}
+.cloudig-media-player video {display:block;width:100%;max-height:50dvh;aspect-ratio:16/9;object-fit:contain;background:#000;border-radius:8px;}
+.cloudig-media-player audio {display:block;width:100%;}
+.cloudig-media-actions {display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;}
+.cloudig-media-player .cloudig-media-play {appearance:none;display:inline-flex;align-items:center;gap:9px;border:2px solid transparent;border-radius:8px;padding:9px 20px;min-height:40px;font:700 16px/1.4 var(--cloudig-font-ui,sans-serif);color:#fff;background:#a52525;box-shadow:1px 2px 3px #0004;text-shadow:none;cursor:pointer;}
+.cloudig-media-player .cloudig-media-play[hidden] {display:none;}
+.cloudig-media-play::before {content:"";width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid currentColor;}
+.cloudig-conversation-renderer[data-theme="star-night"] .cloudig-media-player .cloudig-media-play {color:#ffa92e;background:#5125a5;}
+.cloudig-media-player .cloudig-media-play:hover {filter:brightness(1.12);}
+.cloudig-media-player .cloudig-media-play:active {transform:translateY(1px);}
+.cloudig-media-player .cloudig-media-play:focus-visible {outline:2px solid var(--cloudig-accent);outline-offset:3px;}
+.cloudig-media-link {color:var(--cloudig-accent);text-decoration:underline;}
+.cloudig-media-status:empty {display:none;}
+@media(max-width:600px){.cloudig-dil-node:is([data-dil-tag="grid"],[data-dil-tag="flow"]){grid-template-columns:minmax(0,1fr)!important}.cloudig-dil-node:is([data-dil-tag="grid-item"],[data-dil-tag="flow-item"]){grid-column:auto!important}.cloudig-dil-node[data-dil-tag="row"]{flex-wrap:wrap}.cloudig-dil-window>.cloudig-interactive-body{padding:16px;}}
 @media(prefers-reduced-motion:reduce){.cloudig-dil-loading::before{animation:none}}
 }

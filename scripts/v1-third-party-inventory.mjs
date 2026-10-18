@@ -126,11 +126,11 @@ async function npmInventory(repository, metafiles) {
   // These distributions execute only in the work sandbox and are deliberately
   // absent from the main UI bundle's metafile. They are still shipped software.
   const workManifest = JSON.parse(await readFile(path.join(repository, "src/ui/runtime-dependencies/manifest.json"), "utf8"));
-  for (const library of workManifest.libraries) {
+  for (const library of [...workManifest.libraries, ...(workManifest.icons ?? [])]) {
     const directory = path.join(repository, "node_modules", library.package);
     const metadata = JSON.parse(await readFile(path.join(directory, "package.json"), "utf8"));
-    const bytes = await readFile(path.join(directory, library.package_file));
-    if (metadata.version !== library.version || sha256(bytes) !== library.sha256) throw new Error(`Work dependency drift: ${library.package}`);
+    if (metadata.version !== library.version) throw new Error(`Work dependency drift: ${library.package}`);
+    if(library.package_file){const bytes=await readFile(path.join(directory,library.package_file));if(sha256(bytes)!==library.sha256)throw new Error(`Work dependency byte drift: ${library.package}`);}
     const key = `${metadata.name}@${metadata.version}`;
     const entry = packages.get(key) ?? { name: metadata.name, version: metadata.version, declared_license: metadata.license ?? null,
       repository: normalizeRepository(metadata.repository), consumers: new Set(), directory };

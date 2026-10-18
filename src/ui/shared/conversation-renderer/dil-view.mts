@@ -7,9 +7,13 @@ import { boxImages, boxLink, type BoxContext } from "./box-controls.mts";
 import { chartBox } from "./data-boxes.mts";
 import { savedDilChart } from "./dil-chart-evidence.mts";
 import { mapBox } from "./map-box.mts";
+import { savedMediaBox } from "./media-box.mts";
+import { bindDilDatePicker } from "./dil-date-picker.mts";
 import { openInteractiveWindow } from "./interactive-window.mts";
 import { readInteractiveState, saveInteractiveState, type InteractiveFile, type InteractiveBindings } from "./interactive-protocol.mts";
 import { loadInteractiveDependencies } from "./interactive-dependencies.mts";
+import { renderSavedDil } from "./chatgpt-dil.mts";
+import { bindWorkWindowLayout } from "./work-window-layout.mts";
 
 const obj=(v:unknown):JsonObject=>isJsonObject(v)?v:{};
 const str=(v:unknown):string=>typeof v==="string"?v:"";
@@ -25,6 +29,7 @@ export type DilViewOptions=BoxContext&Readonly<{
   attachment:(path:string,title?:string)=>HTMLElement;
   text:(value:JsonObject)=>HTMLElement;
   frameUrl?:string;dependenciesUrl?:string;
+  inWindow?:boolean;
 }>;
 export const isDilView=(block:JsonObject):boolean=>!!containerDisplay(block)&&obj(block["data"])["format"]===DIL_VIEW_FORMAT;
 let viewInstance=0;
@@ -66,6 +71,9 @@ function chart(ctx:DilViewOptions,v:DilNode):HTMLElement{
 
 function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLElement):void{
   const {document,signal}=options,{bundle,session}=ctx;
+  // Preserve source semantic emphasis, not the source site's light surfaces.
+  const palette=obj(obj(bundle["captured"])["palette"]);
+  for(const key of ["danger","success","warning","info"]){const color=str(palette[key]);if(/^(?:#[a-f\d]{3,8}|(?:rgb|hsl)a?\([\d\s.,%/+-]+\))$/iu.test(color))parent.style.setProperty(`--cloudig-dil-${key}`,color);}
   const idPrefix=`cloudig-dil-${++viewInstance}`;
   const views=new Map<string,()=>void>(),updates=new Map<string,()=>void>();let actions=new Map<string,DilAction>();
   const mounts=new Map<string,(node:HTMLElement)=>void>();
@@ -83,7 +91,13 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
   const work=(v:DilNode,key:string,ref:JsonObject,referenceIndex:number):HTMLElement=>placeholder(v,key,host=>{
     host.classList.add("cloudig-dil-work");const data=obj(ref["data"]),source=str(data["content"]),title=str(data["title"])||str(data["language"])||"Work";
     const mediaOnly=ref["category"]==="app_block"&&!/<script\b|<canvas\b/iu.test(source)&&/<(?:video|audio)\b/iu.test(source);
-    if(mediaOnly){const saved=list(bundle["media"]).filter(m=>m["reference_index"]===referenceIndex),available=saved.find(m=>obj(bundle["resource_paths"])[str(m["resource_id"])]);if(!available){host.classList.add("cloudig-dil-readonly");host.textContent=title;return;}}
+    if(mediaOnly){
+      const mediaController=new AbortController();localSignal(mediaController);views.set(key,()=>mediaController.abort());
+      const saved=list(bundle["media"]).filter(m=>m["reference_index"]===referenceIndex);
+      host.append(savedMediaBox({document,source,language:options.language,signal:mediaController.signal,readFile:options.readFile,
+        resolve:url=>{const item=saved.find(m=>m["source_url"]===url);const path=obj(bundle["source_links"])[url]??obj(bundle["resource_paths"])[str(item?.["resource_id"])];return typeof path==="string"?path:undefined;},
+        ...(options.onOpenExternal?{openExternal:options.onOpenExternal}:{})}));return;
+    }
     const editorKey=`${options.stateKey}:editor:${referenceIndex}`;
     let currentSource=readInteractiveState(editorKey)["source"]??source,closeRun:(()=>void)|undefined;const controller=new AbortController();localSignal(controller);
     const liveNode=()=>findNode(session.render(index),v.key)??v;
@@ -91,7 +105,7 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
     const run=()=>{
       closeRun?.();
       const entry="work.html";
-      const instance=openInteractiveWindow({document,title,entry,format:"html",source:"chatgpt.com_app_block",inlineParent:host,stateKey:`${options.stateKey}:${referenceIndex}`,theme:options.theme,language:options.language,signal:controller.signal,
+      const instance=openInteractiveWindow({document,title,entry,format:"html",source:"chatgpt.com_app_block",inlineParent:host,flowHeight:options.inWindow===true,stateKey:`${options.stateKey}:${referenceIndex}`,theme:options.theme,language:options.language,signal:controller.signal,
         ...(options.frameUrl?{frameUrl:options.frameUrl,opaqueOrigin:true}:{}),bindings,
         readFiles:async readSignal=>{
           const files:InteractiveFile[]=[{path:entry,mime:"text/html",bytes:new TextEncoder().encode(currentSource).buffer as ArrayBuffer}];
@@ -109,11 +123,26 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
       return n;
     }
     if(v.tag==="chart"||v.tag==="pie-chart")return placeholder(v,key,h=>{const update=()=>{const current=findNode(session.render(index),v.key)??v;h.replaceChildren(chart(options,current));};update();updates.set(key,update);});
-    if(["AsyncImage","AsyncImageGroup","Cite","Link","Entity"].includes(v.tag)){
+    if(["AsyncImage","AsyncImageGroup","Cite","MemoryCite","SuggestAutomation","Link","Entity"].includes(v.tag)){
       const result=obj(obj(obj(bundle["app_data"])["opGenui"])["componentResults"]),state=obj(obj(result[String(p["__resolutionId"])])["state"]);
+      if(v.tag==="SuggestAutomation")return renderSavedDil(document,{type:"box",source:"chatgpt.com_dil",data:{name:"suggest_automation",dil:{initialState:{label:str(state["label"])||String(p["label"]??""),submitted:state["submitted"]===true}}}},options.language)??document.createElement("span");
+      if(v.tag==="MemoryCite"){
+        const n=document.createElement("span");n.className="cloudig-dil-memory-cite";
+        for(const item of list(state["items"])){
+          const label=str(item["title"])||str(item["source_label"])||str(item["text"]),url=str(item["url"]);
+          if(url)n.append(boxLink(options,label||url,url));else if(label){const text=document.createElement("span");text.textContent=label;n.append(text);}
+        }
+        // Empty resolved state means no supplied public detail, not an error
+        // or permission to invent a link to a different memory/message.
+        return n;
+      }
       if(v.tag.startsWith("AsyncImage"))return placeholder(v,key,host=>{host.classList.add("cloudig-box","cloudig-dil-gallery");const gallery=boxImages(options,resolvedPaths(state,bundle),String(p["alt"]??p["query"]??""));if(gallery)host.append(gallery);});
       if(v.tag==="Entity"){const n=document.createElement("span");n.className="cloudig-source-link";n.textContent=str(state["value"])||String(p["value"]??"");return n;}
-      if(v.tag==="Cite"){const n=document.createElement("span");for(const item of list(state["items"]))n.append(boxLink(options,str(item["source_label"])||str(item["title"])||str(item["url"]),str(item["url"])));return n;}
+      if(v.tag==="Cite"){const n=document.createElement("span");n.className="cloudig-dil-citations";for(const item of list(state["items"])){
+        const url=str(item["url"]);let label=str(item["source_label"])||str(item["title"]);
+        if(!label||/^source$/iu.test(label)){try{label=new URL(url).hostname.replace(/^www\./u,"");}catch{label=str(item["title"])||url;}}
+        const link=boxLink(options,label,url);if(str(item["title"]))link.title=str(item["title"]);n.append(link);
+      }return n;}
       const url=str(state["url"])||String(p["url"]??""),title=str(state["title"])||String(p["title"]??url),path=obj(bundle["source_links"])[url];
       return typeof path==="string"?placeholder(v,key,h=>h.append(options.attachment(path,title))):boxLink(options,title,url);
     }
@@ -166,7 +195,7 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
     const input=target as HTMLInputElement;
     action(a.fn,Object.hasOwn(a,"value")?[a.value]:a.boolean?[input.checked]:a.number?[Number(input.value)]:event==="click"||event==="submit"?[]:[input.value]);
   };parent.addEventListener(event,handle);signal.addEventListener("abort",()=>parent.removeEventListener(event,handle),{once:true});}
-  paint();const stop=session.subscribe(paint);signal.addEventListener("abort",()=>{stop();for(const close of views.values())close();views.clear();},{once:true});
+  paint();bindDilDatePicker(parent,options.language,signal);const stop=session.subscribe(paint);signal.addEventListener("abort",()=>{stop();for(const close of views.values())close();views.clear();},{once:true});
 }
 
 export function renderDilView(options:DilViewOptions,block:JsonObject,cache:DilContexts):HTMLElement{
@@ -183,8 +212,9 @@ export function renderDilView(options:DilViewOptions,block:JsonObject,cache:DilC
     open.addEventListener("click",()=>{
       if(signal.aborted||close)return;const abort=new AbortController(),dialog=document.createElement("dialog"),header=document.createElement("header"),caption=document.createElement("h2"),done=document.createElement("button"),body=document.createElement("div"),view=document.createElement("div");
       dialog.className="cloudig-conversation-renderer cloudig-interactive-window cloudig-dil-window";dialog.dataset["theme"]=options.theme;header.className="cloudig-interactive-header";caption.textContent=title;done.type="button";done.className="cloudig-interactive-close";done.textContent="×";done.setAttribute("aria-label",options.language==="en"?"Close":"关闭");body.className="cloudig-interactive-body";body.dataset["scrollRegion"]="";view.className="cloudig-dil-view";
-      close=()=>{if(!close)return;close=undefined;abort.abort();dialog.close();dialog.remove();signal.removeEventListener("abort",dismiss);if(!signal.aborted)open.focus();};const dismiss=()=>close?.();
-      done.addEventListener("click",dismiss);dialog.addEventListener("cancel",e=>{e.preventDefault();dismiss();});signal.addEventListener("abort",dismiss,{once:true});header.append(caption,done);body.append(view);dialog.append(header,body);document.body.append(dialog);dialog.showModal();void mount(view,{...options,signal:abort.signal});
+      const sizing=bindWorkWindowLayout(dialog,header,body,view);
+      close=()=>{if(!close)return;close=undefined;sizing.close();abort.abort();dialog.close();dialog.remove();signal.removeEventListener("abort",dismiss);if(!signal.aborted)open.focus();};const dismiss=()=>close?.();
+      done.addEventListener("click",dismiss);dialog.addEventListener("cancel",e=>{e.preventDefault();dismiss();});signal.addEventListener("abort",dismiss,{once:true});header.append(caption,done);body.append(view);dialog.append(header,body);document.body.append(dialog);dialog.showModal();sizing.refresh();void mount(view,{...options,signal:abort.signal,inWindow:true}).then(sizing.refresh);
     });host.append(h,open);
   }else void mount(host,options);
   return host;

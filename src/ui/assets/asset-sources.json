@@ -509,8 +509,8 @@
       "output": "reader/Reader-Cover-Computer-Dawn.svg",
       "source": "阅读器美术素材/Cloudig-Image/Reader-Cover-Computer-Dawn.svg",
       "source_sha256": "2a7003e84115b26137fba62d541f21ef27470494547898a2bb9b1112ad3df1a1",
-      "transform": "clean-svg",
-      "output_sha256": "d5222369aeff5bcef5da6b03d20a51dfbdff0c8060753b25f57d649c52d938e3"
+      "transform": "expand-computer-filter-viewport",
+      "output_sha256": "8158cbef3ec454584d73ceb34cf684425f279b06a687e875da1e9451dd228e3b"
     },
     {
       "output": "reader/RCSS-星夜窗户.svg",

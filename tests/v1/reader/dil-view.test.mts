@@ -22,6 +22,40 @@ function setup(program=code){
   const mount=(root:number,type="box")=>{const block:JsonObject={type,source:"chatgpt.com_dil",format:"structured",title:"Example",data:{format:DIL_VIEW_FORMAT,root,text:"Saved"}};const el=renderDilView(options,block,cache);document.body.append(el);return el;};
   return{dom,document,controller,cache,options,mount,reads:()=>reads,close(){controller.abort();dom.window.close();}};
 }
+test("declarative pickers keep native values, disabled options and shared scroll regions",async()=>{
+ const css=readFileSync(new URL('../../../src/ui/shared/conversation-renderer/dil-view.css',import.meta.url),'utf8');
+ assert.match(css,/\.cloudig-themed-select::picker\(select\)\s*\{position-area:block-end span-inline-end;position-try-order:normal;position-try-fallbacks:/u,"pick below first, not whichever side happens to be taller");
+ const shell=readFileSync(new URL('../../../src/ui/shell/shell.css',import.meta.url),'utf8');
+ assert.match(shell,/\[data-scroll-region\]:is\(:hover, :focus, :focus-within\)\s*\{\s*--cloudig-scroll-thumb: var\(--cloudig-scroll-idle\)/u);
+ assert.match(shell,/\[data-scroll-region\]::-webkit-scrollbar-thumb\s*\{\s*background: var\(--cloudig-scroll-thumb\)/u);
+ const s=setup(`DIL.render(__dil.jsx(()=>{const [v,setV]=DIL.useState("b");return __dil.jsx("box",null,__dil.jsx("select",{value:v,onChange:setV,options:[{value:"a",label:"Alpha",disabled:true},{value:"b",label:"Beta"},{value:"c",label:"Gamma"}]}),__dil.jsx("text",null,v),__dil.jsx("textarea",{value:"Many lines"}),__dil.jsx("input",{background:"#123456",value:"Authored colour"}));}));`);
+ try{const box=s.mount(0);await pause();const select=box.querySelector('select')!;assert.ok(select.hasAttribute('data-scroll-picker'));assert.equal(select.options[0]!.disabled,true);assert.equal(select.value,'b');
+ select.value='c';select.dispatchEvent(new s.dom.window.Event('change',{bubbles:true}));assert.equal(box.querySelector('select'),select);assert.equal(box.querySelector('[data-dil-tag=text]')!.textContent,'c');
+ assert.ok(box.querySelector('textarea')!.hasAttribute('data-scroll-region'));assert.equal(box.querySelector('input')!.style.backgroundColor,'rgb(18, 52, 86)');
+ }finally{s.close();}
+});
+
+test("themed date calendar preserves leap days, min/max/step and shared state",async()=>{
+ const s=setup(`DIL.render(__dil.jsx(()=>{const [v,setV]=DIL.useState("2024-02-29");return __dil.jsx(__dil.Fragment,null,__dil.jsx("box",null,__dil.jsx("date-picker",{value:v,onChange:setV,min:"2024-02-27",max:"2024-03-02",step:2})),__dil.jsx("box",null,__dil.jsx("text",null,v)));}));`);
+ try{const a=s.mount(0),b=s.mount(1);await pause();const input=a.querySelector('input')!;const open=()=>a.querySelector<HTMLButtonElement>('[data-dil-date-open]')!.click();open();
+ let popup=s.document.querySelector('.cloudig-date-picker')!;assert.equal(popup.querySelector('[data-date-value="2024-02-29"]')!.getAttribute('aria-pressed'),'true');assert.equal(popup.querySelector<HTMLButtonElement>('[data-date-value="2024-02-28"]')!.disabled,true);
+ popup.querySelector<HTMLButtonElement>('[data-date-value="2024-02-27"]')!.click();assert.equal(input.value,'2024-02-27');assert.equal(b.textContent,'2024-02-27');assert.equal(s.document.querySelector('.cloudig-date-picker'),null);assert.equal(a.querySelector('input'),input);
+ open();popup=s.document.querySelector('.cloudig-date-picker')!;popup.querySelector<HTMLButtonElement>('[aria-label="Next month"]')!.click();assert.equal(popup.querySelector<HTMLButtonElement>('[data-date-value="2024-03-02"]')!.disabled,false);assert.equal(popup.querySelector<HTMLButtonElement>('[data-date-value="2024-03-03"]')!.disabled,true);popup.querySelector<HTMLButtonElement>('[data-date-value="2024-03-02"]')!.click();assert.equal(b.textContent,'2024-03-02');
+ open();s.document.querySelector<HTMLButtonElement>('[aria-label="Clear date"]')!.click();assert.equal(input.value,'');assert.equal(b.textContent,'');
+ }finally{s.close();}
+});
+
+test("calendar keyboard navigation, cancellation and removal do not lose state or leave a popup",async()=>{
+ const s=setup(`DIL.render(__dil.jsx(()=>{const [v,setV]=DIL.useState("2023-02-28"),[visible,setVisible]=DIL.useState(true);return __dil.jsx("box",null,__dil.jsx("button",{onClick:()=>setVisible(false)},"Hide"),visible?__dil.jsx("date-picker",{value:v,onChange:setV}):null,__dil.jsx("date-picker",{value:v,disabled:true}));}));`);
+ try{const box=s.mount(0);await pause();const input=box.querySelector<HTMLInputElement>('input')!;input.dispatchEvent(new s.dom.window.KeyboardEvent('keydown',{bubbles:true,key:'ArrowDown',altKey:true}));
+ const day=s.document.querySelector<HTMLButtonElement>('[data-date-value="2023-02-28"]')!;day.dispatchEvent(new s.dom.window.KeyboardEvent('keydown',{bubbles:true,key:'ArrowRight'}));assert.equal((s.document.activeElement as HTMLElement).dataset['dateValue'],'2023-03-01');
+ s.document.activeElement!.dispatchEvent(new s.dom.window.KeyboardEvent('keydown',{bubbles:true,key:'Escape'}));assert.equal(s.document.querySelector('.cloudig-date-picker'),null);assert.equal(input.value,'2023-02-28');
+ box.querySelector<HTMLButtonElement>('[data-dil-date-open]')!.click();box.querySelector<HTMLButtonElement>('[data-dil-tag=button]')!.click();await pause();assert.equal(s.document.querySelector('.cloudig-date-picker'),null);assert.equal(box.querySelector<HTMLButtonElement>('[data-dil-date-open]')!.disabled,true);
+ }finally{s.close();}
+ const second=setup('DIL.render(__dil.jsx("box",null,__dil.jsx("date-picker",{value:"2024-01-01"})));');
+ try{const box=second.mount(0);await pause();box.querySelector<HTMLButtonElement>('[data-dil-date-open]')!.click();second.controller.abort();assert.equal(second.document.querySelector('.cloudig-date-picker'),null);}finally{second.close();}
+});
+
 test("actual Box inputs update sibling cards through one loaded source context",async()=>{
   const s=setup();try{const a=s.mount(0),b=s.mount(1);await pause();assert.equal(s.reads(),1);
     const slider=a.querySelector<HTMLInputElement>('input[type="range"]')!,input=b.querySelector<HTMLInputElement>('input[type="text"]')!;
@@ -29,6 +63,26 @@ test("actual Box inputs update sibling cards through one loaded source context",
     assert.equal(a.querySelector<HTMLInputElement>('input[type="range"]'),slider);assert.equal(slider.value,"63");assert.match(b.textContent!,/3969/u);assert.equal(s.document.activeElement,input);
     slider.value="64";slider.dispatchEvent(new s.dom.window.Event("input",{bubbles:true}));assert.equal(input.value,"64");
     s.controller.abort();slider.value="65";slider.dispatchEvent(new s.dom.window.Event("input",{bubbles:true}));assert.equal(input.value,"64");
+  }finally{s.close();}
+});
+
+test("live declarative styles use CSSOM under the shell CSP, including progress and clearing properties",async()=>{
+  const s=setup(`DIL.render(__dil.jsx(()=>{const [selected,setSelected]=DIL.useState([]);return __dil.jsx(__dil.Fragment,null,
+    __dil.jsx("box",null,["a","b","c"].map(id=>__dil.jsx("checkbox",{key:id,checked:selected.includes(id),onChange:v=>setSelected(prev=>v?[...prev,id]:prev.filter(x=>x!==id))},id)),__dil.jsx("button",{onClick:()=>setSelected([])},"Reset")),
+    __dil.jsx("box",null,__dil.jsx("text",null,selected.length),__dil.jsx("box",{width:(selected.length/3*100)+"%",height:6,background:selected.length?"#00aa00":"#555555",color:selected.length?"#ffffff":undefined}))
+  );}));`);
+  try{
+    const controls=s.mount(0),output=s.mount(1);await pause();
+    // JSDOM does not enforce CSP. Guard the exact forbidden transport here;
+    // the fixed-EXE audit also measures actual pixels under the real policy.
+    const setAttribute=s.dom.window.Element.prototype.setAttribute;
+    s.dom.window.Element.prototype.setAttribute=function(name,value){assert.notEqual(name.toLowerCase(),'style','do not patch renderer styles through CSP-blocked inline attributes');return setAttribute.call(this,name,value);};
+    const bar=output.querySelector<HTMLElement>('[style*="height: 6px"]')!;
+    const check=(count:number)=>{assert.equal(output.querySelector('[data-dil-tag=text]')!.textContent,String(count));assert.equal(parseFloat(bar.style.width),count/3*100);assert.equal(bar.style.backgroundColor,count?'rgb(0, 170, 0)':'rgb(85, 85, 85)');assert.equal(bar.style.color,count?'rgb(255, 255, 255)':'');};
+    check(0);
+    const inputs=[...controls.querySelectorAll<HTMLInputElement>('input')];
+    for(let i=0;i<inputs.length;i++){inputs[i]!.click();check(i+1);assert.equal(controls.querySelectorAll('input')[i],inputs[i]);}
+    inputs[0]!.click();check(2);controls.querySelector<HTMLButtonElement>('button')!.click();check(0);
   }finally{s.close();}
 });
 

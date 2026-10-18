@@ -44,7 +44,10 @@ test("saved slide deck retains ordering, local image paths, native canvas and se
     "project/slides/first.html": "<section><h1>First</h1></section>", "project/slides/second.html": '<section style="background:#1a0533"><h1>Second</h1><img src="../photo.svg"><aside>Speaker notes</aside></section>', "project/photo.svg": "<svg/>" })));
   const slides = [...dom.window.document.querySelectorAll<HTMLElement>(".saved-slide")]; assert.deepEqual(slides.map(s => s.querySelector("h1")!.textContent), ["Second","First"]);
   assert.equal(slides[0]!.dataset["notes"], "Speaker notes"); assert.equal(slides[0]!.querySelector("aside"), null); assert.equal(slides[0]!.querySelector("img")!.src, "blob:work/file");
-  assert(dom.window.document.querySelector("style")!.textContent!.includes("width:1920px;height:1080px")); dom.window.close();
+  // The runtime may prepend shared theme/scroll rules. Inspect the actual
+  // slide canvas, not whichever stylesheet happens to be first in <head>.
+  const canvas = dom.window.getComputedStyle(slides[0]!);
+  assert.equal(canvas.width, "1920px"); assert.equal(canvas.height, "1080px"); dom.window.close();
   assert.throws(() => render(input("slides", { "deck.json": '{"order":["missing"]}' })), /Saved work file is missing/u);
 });
 test("saved Design replays source-defined props/renderVals only in the isolated running copy", async () => {

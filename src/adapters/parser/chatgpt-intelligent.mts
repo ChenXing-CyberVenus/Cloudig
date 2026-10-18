@@ -25,6 +25,9 @@ function literalHtml(node: DilAst, constants: JsonObject): string | undefined {
   const children = (node["arguments"].slice(2) as DilAst[]).map(n => literalHtml(n, constants)); if (children.some(c => c === undefined)) return;
   const props = obj(dilLiteral(node["arguments"][1], constants));
   if (Object.keys(props).some(k => k.startsWith("on"))) return;
+  // Plain HTML is only a lossless shortcut. Styled/inline text stays in the
+  // source-backed view instead of discarding its typography and hierarchy.
+  if (Object.keys(props).some(k => k !== "preserveWhitespace")) return;
   const tag = tags[name], html = children.join("");
   return tag === "hr" ? "<hr>" : `<${tag}${props["preserveWhitespace"] ? ' style="white-space:pre-wrap"' : ""}>${html}</${tag}>`;
 }
@@ -133,8 +136,8 @@ export class ChatGptIntelligentUi {
       const name = iconName(n);
       if (name && !icons[name]) for (const ancestor of [...ancestors].reverse()) {
         const tag = ancestor["arguments"][0]?.value;
-        if (!["button", "row", "box", "card"].includes(tag)) continue;
-        const hints = dilVisibleText(ancestor, constants).split("\n").map(norm).filter(s => s.length >= (tag === "button" ? 2 : 3)).slice(0, 2);
+        if (!["button", "row", "box", "card", "text", "title", "caption", "table-cell", "list-item"].includes(tag)) continue;
+        const hints = dilVisibleText(ancestor, constants).split("\n").map(norm).filter(s => s.length >= 2).slice(0, 2);
         if (!hints.length) continue;
         const candidates = dom.filter(e => attr(e, "data-osis-native-component") === tag && hints.every(h => domText.get(e)!.includes(h)))
           .sort((a, b) => elements(a).length - elements(b).length);

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: https://cloudig-runtime.local; font-src 'self'; connect-src 'self' https://cloudig-runtime.local; frame-src 'self' https://cloudig-work.invalid https://cloudig-map.local; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: https://cloudig-runtime.local; media-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://cloudig-runtime.local; frame-src 'self' https://cloudig-work.invalid https://cloudig-map.local; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
   <title>采云 Cloudig</title>
   <link rel="preload" as="image" href="/assets/reader/Waiting-Sun.gif">
   <link rel="stylesheet" href="/shell.css">
@@ -81,7 +81,7 @@
             </p>
           </section>
           <footer class="welcome-footer">
-            <span class="welcome-release"><span>V1.0.6</span> <span data-i18n="welcome.releaseName">东方既白</span> ·</span>
+            <span class="welcome-release"><span>V1.0.7</span> <span data-i18n="welcome.releaseName">东方既白</span> ·</span>
             <button type="button" data-action="check-update" data-i18n="welcome.checkUpdate">检查更新</button>
             <button type="button" data-action="open-docs" data-i18n="welcome.docs">功能文档</button>
             <button type="button" data-action="toggle-language" data-i18n="welcome.languageSwitch">ENGLISH</button>
@@ -110,7 +110,7 @@
         <div class="reader-total-pill" aria-live="polite"><i aria-hidden="true"></i><span data-reader-total data-i18n="reader.noConversations">暂无会话</span></div>
         <nav class="reader-topbar-actions" aria-label="阅览室全局操作" data-i18n-title="reader.globalActions">
           <button class="cloudig-button cloudig-button-filled cloudig-page-switch reader-manage-archives" type="button" data-route-target="archiver" data-i18n="reader.manageArchives">管理档案</button>
-          <span class="cloudig-version-block reader-version"><strong>V1.0.6</strong><small data-i18n="welcome.releaseName">东方既白</small></span>
+          <span class="cloudig-version-block reader-version"><strong>V1.0.7</strong><small data-i18n="welcome.releaseName">东方既白</small></span>
           <button class="reader-text-action" type="button" data-action="check-update" data-i18n="welcome.checkUpdate">检查更新</button>
           <button class="reader-text-action" type="button" data-action="toggle-language" data-i18n="welcome.languageSwitch">ENGLISH</button>
           <button class="reader-topbar-theme" type="button" data-action="toggle-theme" data-i18n-title="welcome.themeTooltip" title="切换破晓 / 星夜主题">
@@ -398,7 +398,7 @@
         </div>
         <nav class="archiver-topbar-actions" aria-label="档案馆全局操作">
           <button class="cloudig-button cloudig-button-filled cloudig-page-switch archiver-start-reader" type="button" data-route-target="reader" data-highlight-target="start-reader" data-i18n="archiver.startReader">开始阅览</button>
-          <span class="cloudig-version-block archiver-version"><strong>V1.0.6</strong><small data-i18n="welcome.releaseName">东方既白</small></span>
+          <span class="cloudig-version-block archiver-version"><strong>V1.0.7</strong><small data-i18n="welcome.releaseName">东方既白</small></span>
           <button type="button" data-action="check-update" data-i18n="welcome.checkUpdate">检查更新</button>
           <button type="button" data-action="toggle-language" data-i18n="welcome.languageSwitch">ENGLISH</button>
           <button class="archiver-theme-switch" type="button" data-action="toggle-theme" data-i18n-title="welcome.themeTooltip" title="切换破晓 / 星夜主题">

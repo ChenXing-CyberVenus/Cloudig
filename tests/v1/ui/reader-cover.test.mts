@@ -2,11 +2,39 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
+import { createHash } from "node:crypto";
 
 import { build, transform } from "esbuild";
 import { JSDOM } from "jsdom";
 
 const shellRoot = path.join(process.cwd(), "src", "ui", "shell");
+
+test("Dawn laptop retains the authored drawing/shadow and expands only its cropped SVG viewport", async () => {
+  const svg = await readFile('src/ui/assets/reader/Reader-Cover-Computer-Dawn.svg', 'utf8');
+  const original = svg.replace('viewBox="-13.41 -13.99 297 260.28"', 'viewBox="0 0 265.68 246.29"');
+  assert.equal(createHash('sha256').update(original.trimEnd()).digest('hex'), 'd5222369aeff5bcef5da6b03d20a51dfbdff0c8060753b25f57d649c52d938e3', 'Only viewport and final newline change; no path, colour, screen or shadow changes');
+  const dom = new JSDOM(svg, { contentType: 'image/svg+xml' });
+  const document = dom.window.document, box = document.documentElement.getAttribute('viewBox')!.split(' ').map(Number);
+  const filter = document.querySelector('filter')!;
+  const bounds = ['x','y','width','height'].map(k => Number(filter.getAttribute(k)));
+  assert.ok(box[0]! <= bounds[0]! && box[1]! <= bounds[1]! && box[0]! + box[2]! >= bounds[0]! + bounds[2]! && box[1]! + box[3]! >= bounds[1]! + bounds[3]!);
+  const css = await readFile(path.join(shellRoot,'pages/reader/reader.css'), 'utf8');
+  const rule = css.match(/\.reader-archive-entry > img\s*\{([^}]+)\}/u)![1]!;
+  const value = (name: string) => Number(rule.match(new RegExp(`(?:^|;)\\s*${name}:\\s*(-?[\\d.]+)px`))![1]);
+  assert.equal(value('left'), box[0]); assert.equal(value('top'), box[1]);
+  assert.equal(value('width'), box[2]); assert.equal(value('height'), box[3]);
+  assert.doesNotMatch(rule, /(?:box-shadow|filter):/u, 'Do not double the original silhouette shadow');
+  assert.match(rule, /pointer-events:\s*none/u, 'Transparent shadow padding must not enlarge the hit target');
+  dom.window.close();
+});
+
+test("selected Reader pins use both theme assets so an in-place theme switch cannot retain red",async()=>{
+ const source=await readFile(path.join(shellRoot,'pages/reader/reader-cover.js'),'utf8'),css=await readFile(path.join(shellRoot,'pages/reader/reader.css'),'utf8');
+ assert.match(source,/image\("\/assets\/reader\/Pushpin-Red.svg", "reader-row-pin reader-theme-dawn"\)/u);
+ assert.match(source,/image\("\/assets\/reader\/Pushpin-Purple.svg", "reader-row-pin reader-theme-star-night"\)/u);
+ assert.doesNotMatch(source,/dataset.theme[^\n]+Pushpin/u);
+ assert.match(css,/:root\[data-theme="star-night"\] \[data-page="reader"\] \.reader-theme-dawn \{ display: none; \}/u);
+});
 
 test("large Reader cover artwork fills the body independently of fixed-size sidebar controls", async () => {
   const source = await readFile(path.join(shellRoot, "pages/reader/reader-cover.js"), "utf8");

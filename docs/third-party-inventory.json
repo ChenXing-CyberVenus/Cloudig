@@ -131,6 +131,22 @@
       ]
     },
     {
+      "name": "@tabler/icons",
+      "version": "3.42.0",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/tabler/tabler-icons.git",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1073,
+          "sha256": "b740a1d46122672da62833e97f7e7c8a13fa85cbc7445b584b297cc00dde93db"
+        }
+      ]
+    },
+    {
       "name": "@tailwindcss/browser",
       "version": "4.1.13",
       "declared_license": "MIT",
@@ -1913,8 +1929,8 @@
   ],
   "summary": {
     "runtime_components": 3,
-    "npm_packages": 104,
+    "npm_packages": 105,
     "bundled_fonts": 6,
-    "license_texts": 118
+    "license_texts": 119
   }
 }

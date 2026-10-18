@@ -101,7 +101,7 @@ export class DilSession {
     if (name === "NaN") return NaN;
     if (["Math", "Array", "Object", "JSON", "String", "Number", "Boolean", "Set", "GenUI"].includes(name)) return { builtin: name };
     // Native resolved components are descriptors, never globally callable objects.
-    if (["AsyncImage", "AsyncImageGroup", "Cite", "Entity", "Link"].includes(name)) return { component: name };
+    if (["AsyncImage", "AsyncImageGroup", "Cite", "MemoryCite", "SuggestAutomation", "Entity", "Link"].includes(name)) return { component: name };
     throw new TypeError(`Unsupported UI identifier: ${name}`);
   }
   #call(fn: any, args: any[]): any {
@@ -195,6 +195,11 @@ export class DilSession {
       case "map": return owner.map((v,i) => this.#call(a[0],[v,i])); case "filter": return owner.filter((v,i) => this.#call(a[0],[v,i])); case "every": return owner.every((v,i) => this.#call(a[0],[v,i])); case "some": return owner.some((v,i) => this.#call(a[0],[v,i]));
       case "includes": return owner.includes(a[0]); case "join": return owner.join(a[0]); case "slice": return owner.slice(...a); case "find": return owner.find((v,i) => this.#call(a[0],[v,i])); case "indexOf": return owner.indexOf(a[0]);
     } }
+    if (typeof owner === "string" && ["padStart", "padEnd"].includes(method)) {
+      const length = Number(a[0]);
+      if (!Number.isSafeInteger(length) || length < 0 || length > DIL_LIMITS.collection || a[1] !== undefined && typeof a[1] !== "string") throw new RangeError("UI string padding budget exceeded");
+      return method === "padStart" ? owner.padStart(length, a[1]) : owner.padEnd(length, a[1]);
+    }
     if (typeof owner === "string" && ["trim", "toLowerCase", "toUpperCase", "includes", "startsWith", "endsWith", "slice", "split", "replaceAll"].includes(method) && a.every(v=>v==null||["string","number","boolean"].includes(typeof v))) return (String.prototype as any)[method].apply(owner,a);
     if (typeof owner === "number" && method === "toFixed" && Number.isInteger(a[0]) && a[0] >= 0 && a[0] <= 100) return owner.toFixed(a[0]);
     if (owner instanceof Set && method === "has") return owner.has(a[0]);

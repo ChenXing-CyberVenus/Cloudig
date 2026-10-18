@@ -1,5 +1,6 @@
 import { INTERACTIVE_LIMITS, INTERACTIVE_PROTOCOL, readInteractiveState, saveInteractiveState, type InteractiveFile, type InteractivePackage, type InteractiveFormat, type InteractiveBindings } from "./interactive-protocol.mts";
 import { interactiveScrollCss } from "./interactive-scroll.mts";
+import { bindWorkWindowLayout, readWorkSize } from "./work-window-layout.mts";
 
 export type InteractiveWindowOptions = Readonly<{
   document: Document;
@@ -9,6 +10,8 @@ export type InteractiveWindowOptions = Readonly<{
   source?: string;
   icons?: readonly Readonly<{ name: string; path: string }>[];
   inlineParent?: HTMLElement;
+  /** Inside a scrolling work window the host owns overflow, not a second 640px viewport. */
+  flowHeight?: boolean;
   stateKey: string;
   theme: "dawn" | "star-night";
   language: "zh" | "en";
@@ -37,6 +40,7 @@ export function openInteractiveWindow(options: InteractiveWindowOptions): { clos
   const closeButton = node("button", "cloudig-interactive-close", "×"); closeButton.type = "button"; closeButton.title = say("关闭作品", "Close work"); closeButton.setAttribute("aria-label", closeButton.title);
   const body = node("div", "cloudig-interactive-body"), status = node("p", "cloudig-interactive-status", say("正在打开作品…", "Opening work…")); status.setAttribute("role", "status");
   header.append(title, toolbar, closeButton); body.append(status); dialog.append(header, body);
+  const sizing=bindWorkWindowLayout(dialog,header,body);
   let closed = false, frame: HTMLIFrameElement | undefined, token = "", timeout: ReturnType<typeof setTimeout> | undefined;
   let runAbort = new AbortController(), packageFiles: readonly InteractiveFile[] = [], fontCss: string | undefined;
   let started = 0;
@@ -50,8 +54,13 @@ export function openInteractiveWindow(options: InteractiveWindowOptions): { clos
         ...(options.source ? { source: options.source } : {}), ...(options.icons ? { icons: options.icons } : {}), ...(fontCss ? { fontCss } : {}), ...(options.bindings ? { bindings: options.bindings.snapshot() } : {}) };
       frame.contentWindow!.postMessage({ protocol: INTERACTIVE_PROTOCOL, token, kind: "mount", detail: payload }, "*");
     } else if (kind === "loaded") { clearTimeout(timeout); if (dialog.dataset["state"] !== "failed") { status.hidden = true; dialog.dataset["state"] = "ready"; dialog.dataset["loadMs"] = String(Math.round(host.performance.now() - started)); } }
-    else if (kind === "resize" && options.inlineParent && !expanded && typeof detail === "number" && Number.isFinite(detail)) {
-      dialog.style.setProperty("--cloudig-inline-height", `${Math.max(INTERACTIVE_LIMITS.inlineMinimumHeight, Math.min(INTERACTIVE_LIMITS.inlineMaximumHeight, detail))}px`);
+    else if (kind === "resize") {
+      const measured=readWorkSize(detail);if(!measured)return;
+      sizing.update(measured);
+      if(options.inlineParent&&!expanded&&measured.layout==="flow"){
+        const height = options.flowHeight ? measured.height : Math.min(INTERACTIVE_LIMITS.inlineMaximumHeight, measured.height);
+        dialog.style.setProperty("--cloudig-inline-height", `${Math.max(INTERACTIVE_LIMITS.inlineMinimumHeight, height)}px`);
+      }
     } else if (kind === "state") {
       try { saveInteractiveState(options.stateKey, detail); }
       catch { problem(say("本次运行的作品进度空间已满；原对话未改动。", "Session progress storage is full; the original conversation is unchanged.")); }
@@ -64,7 +73,7 @@ export function openInteractiveWindow(options: InteractiveWindowOptions): { clos
   const unbind = options.bindings?.subscribe(() => { if (!closed && frame) frame.contentWindow?.postMessage({ protocol: INTERACTIVE_PROTOCOL, token, kind: "bindings", detail: options.bindings!.snapshot() }, "*"); });
   const stop = () => { clearTimeout(timeout); runAbort.abort(); frame?.remove(); frame = undefined; };
   const close = () => {
-    if (closed) return; closed = true; observer?.disconnect(); stop(); host.removeEventListener("message", relay); options.signal.removeEventListener("abort", close);
+    if (closed) return; closed = true; observer?.disconnect(); sizing.close(); stop(); host.removeEventListener("message", relay); options.signal.removeEventListener("abort", close);
     unbind?.(); packageFiles = []; dialog.close?.(); dialog.remove(); options.onClose?.();
   };
   const start = async () => {
@@ -73,6 +82,7 @@ export function openInteractiveWindow(options: InteractiveWindowOptions): { clos
     stop(); runAbort = new AbortController(); const signal = runAbort.signal;
     started = host.performance.now();
     status.hidden = false; status.textContent = say("正在打开作品…", "Opening work…"); body.replaceChildren(status); dialog.dataset["state"] = "loading";
+    sizing.refresh();
     try {
       const originals = await options.readFiles(signal); if (closed || signal.aborted) return;
       dialog.dataset["readMs"] = String(Math.round(host.performance.now() - started));
@@ -95,9 +105,9 @@ export function openInteractiveWindow(options: InteractiveWindowOptions): { clos
     if (closed) return; const entry = packageFiles.find(file => file.path === options.entry); if (!entry) return;
     stop(); collapsed = false; body.hidden = false;
     if (options.inlineParent && !expanded) { closeButton.title = say("收起作品", "Collapse work"); closeButton.setAttribute("aria-label", closeButton.title); }
-    const source = node("pre", "cloudig-interactive-source", new TextDecoder().decode(entry.bytes)); source.dataset["scrollRegion"] = ""; body.replaceChildren(source); dialog.dataset["state"] = "source";
+    const source = node("pre", "cloudig-interactive-source", new TextDecoder().decode(entry.bytes)); source.dataset["scrollRegion"] = ""; body.replaceChildren(source); dialog.dataset["state"] = "source";sizing.update({height:0,layout:"viewport"});
   });
-  const returnInline = () => { dialog.close(); expanded = false; dialog.classList.add("cloudig-interactive-box"); dialog.open = true; closeButton.title = say("收起作品", "Collapse work"); closeButton.setAttribute("aria-label", closeButton.title); };
+  const returnInline = () => { dialog.close(); expanded = false; dialog.classList.add("cloudig-interactive-box"); dialog.open = true; sizing.refresh(); closeButton.title = say("收起作品", "Collapse work"); closeButton.setAttribute("aria-label", closeButton.title); };
   const dismiss = () => {
     if (!options.inlineParent) { close(); return; }
     if (expanded) { returnInline(); return; }
@@ -108,7 +118,7 @@ export function openInteractiveWindow(options: InteractiveWindowOptions): { clos
   if (options.inlineParent) {
     closeButton.title = say("收起作品", "Collapse work"); closeButton.setAttribute("aria-label", closeButton.title);
     const enlarge=button(say("放大", "Enlarge"), () => {
-      if (closed || expanded) return; dialog.close(); expanded = true; dialog.classList.remove("cloudig-interactive-box"); dialog.showModal();
+      if (closed || expanded) return; dialog.close(); expanded = true; dialog.classList.remove("cloudig-interactive-box"); dialog.showModal();sizing.refresh();
       closeButton.title = say("返回对话", "Back to conversation"); closeButton.setAttribute("aria-label", closeButton.title);
       if (collapsed) void start();
     });
@@ -118,6 +128,7 @@ export function openInteractiveWindow(options: InteractiveWindowOptions): { clos
   options.signal.addEventListener("abort", close, { once: true });
   if (!options.signal.aborted) {
     (options.inlineParent ?? document.body).append(dialog);
+    sizing.refresh();
     if (!options.inlineParent) { dialog.showModal(); void start(); }
     else {
       dialog.open = true;

@@ -3,6 +3,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
+import { packBookmarkletCss } from "./bookmarklet-static-css.mjs";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -77,6 +78,7 @@ if (useKatexRuntime) {
 }
 
 const nonce = `${process.pid}-${Date.now()}`;
+source = packBookmarkletCss(source).source;
 const projectTmpRoot = resolve(projectRoot, "tmp");
 mkdirSync(projectTmpRoot, { recursive: true });
 const assembledPath = join(projectTmpRoot, `osis-bookmarklet-${nonce}.js`);

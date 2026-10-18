@@ -1,11 +1,85 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { JSDOM } from "jsdom";
+import { createPropertyExpression, latest, validateStyleMin, type StyleSpecification, type StylePropertySpecification } from "@maplibre/maplibre-gl-style-spec";
 import type { JsonObject } from "../../../src/core/contracts/types.mts";
 import { renderStructuredBox } from "../../../src/ui/shared/conversation-renderer/structured-box.mts";
 import { recipeQuantity } from "../../../src/ui/shared/conversation-renderer/recipe-units.mts";
 import { MAP_PROTOCOL, mapResourceUrl, validMapPoint } from "../../../src/ui/shared/conversation-renderer/map-protocol.mts";
 import { openSavedMap } from "../../../src/ui/shared/conversation-renderer/map-window.mts";
+import { MAP_NIGHT_HIERARCHY, MAP_NIGHT_PALETTE, mapStyleForTheme, mapStyleUrl, type MapStyle } from "../../../src/ui/shared/conversation-renderer/map-theme.mts";
+
+test("shared map palette uses semantic layers without changing geographic content or Dawn",()=>{
+ const original:MapStyle={version:8,sources:{world:{type:"vector",url:"https://tiles.openfreemap.org/planet"}},glyphs:"provider-glyphs",metadata:{provider:"keep"},layers:[
+  {id:"background",type:"background",paint:{"background-color":"#000"}},
+  {id:"arbitrary-water-layer",type:"fill","source-layer":"water",filter:["==","class","lake"],paint:{"fill-color":"#000","fill-antialias":false}},
+  {id:"some-green-area",type:"fill","source-layer":"park",paint:{"fill-color":"#000","fill-opacity":.3}},
+  {id:"future-road-name",type:"line","source-layer":"transportation",paint:{"line-color":"#000","line-width":["interpolate",["linear"],["zoom"],8,1,18,9],"line-dasharray":[1,2]}},
+  {id:"example-casing",type:"line","source-layer":"transportation",paint:{"line-width":3}},
+  {id:"city-name",type:"symbol","source-layer":"place",layout:{"text-field":["get","name"],"text-size":16},paint:{"text-color":"#000","text-halo-width":1.4}},
+  {id:"future-layer",type:"fill","source-layer":"custom",paint:{"fill-color":"#123456"}}
+ ]};
+ const before=JSON.stringify(original);assert.equal(mapStyleForTheme(original,"dawn"),original);
+ const night=mapStyleForTheme(original,"star-night"),c=MAP_NIGHT_PALETTE;
+ assert.equal(JSON.stringify(original),before);assert.equal(night.layers.length,original.layers.length);assert.deepEqual(night['sources'],original['sources']);assert.equal(night.metadata!['provider'],'keep');
+ assert.equal(night.layers[0]!.paint!['background-color'],c.land);assert.equal(night.layers[1]!.paint!['fill-color'],c.water);assert.equal(night.layers[2]!.paint!['fill-color'],c.green);
+ assert.notEqual(c.water,c.land);assert.notEqual(c.green,c.land);assert.notEqual(c.majorRoad,c.road);
+ for(let i=0;i<original.layers.length;i++){assert.equal(night.layers[i]!.id,original.layers[i]!.id);assert.deepEqual(night.layers[i]!['filter'],original.layers[i]!['filter']);assert.deepEqual(night.layers[i]!.layout?.['text-field'],original.layers[i]!.layout?.['text-field']);}
+ assert.deepEqual(night.layers[3]!.paint!['line-width'],["interpolate",["linear"],["zoom"],8,.65,18,9*.65]);assert.deepEqual(night.layers[3]!.paint!['line-dasharray'],[1,2]);assert.equal(night.layers[4]!.paint!['line-color'],c.casing);assert.deepEqual(night.layers[5]!.paint!['text-color'],["match",["get","class"],["continent","country","state","city","town"],c.text,c.mutedText]);assert.equal(night.layers[6]!.paint!['fill-color'],'#123456');
+ assert.deepEqual(night.layers[5]!.layout,original.layers[5]!.layout);
+ assert.equal(mapResourceUrl(mapStyleUrl("dawn")),"https://tiles.openfreemap.org/styles/liberty");assert.equal(mapStyleUrl("star-night"),mapStyleUrl("dawn"),"theme cannot replace the full map with a reduced POI-free style");
+});
+
+test("night hierarchy keeps chromatic ground quiet, minor roads below major roads and labels legible",()=>{
+ const channels=(hex:string)=>hex.slice(1).match(/../gu)!.map(n=>parseInt(n,16)/255);
+ const luminance=(hex:string)=>channels(hex).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4).reduce((sum,n,i)=>sum+n*[.2126,.7152,.0722][i]!,0);
+ const c=MAP_NIGHT_PALETTE;
+ for(const color of [c.land,c.water,c.green]){assert(luminance(color)>.02);const rgb=channels(color);assert(Math.max(...rgb)-Math.min(...rgb)>.05);}
+ for(const [text,background]of [[c.text,c.land],[c.mutedText,c.residential],[c.waterText,c.water],[c.poi,c.green],[c.transit,c.land]])assert((luminance(text!)+.05)/(luminance(background!)+.05)>7);
+ assert(luminance(c.road)<luminance(c.minorRoad));assert(luminance(c.minorRoad)<luminance(c.majorRoad));assert(luminance(c.majorRoad)<luminance(c.mutedText));
+ assert((luminance(c.road)+.05)/(luminance(c.land)+.05)<2,"minor road mesh must not dominate the map");
+ assert((luminance(c.majorRoad)+.05)/(luminance(c.land)+.05)<4,"roads are not selection highlights");
+});
+
+test("night cartography scales road widths but preserves label zoom ranges and density",()=>{
+ const style:MapStyle={version:8,sources:{world:{type:'vector',url:'https://tiles.openfreemap.org/planet'}},glyphs:'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',layers:[
+  {id:'roads',source:'world',type:'line','source-layer':'transportation',paint:{'line-width':['interpolate',['exponential',1.4],['zoom'],8,1,18,12]}},
+  {id:'casing',source:'world',type:'line','source-layer':'transportation',paint:{'line-width':['step',['zoom'],2,12,5,18,14],'line-gap-width':2}},
+  {id:'street-labels',source:'world',type:'symbol','source-layer':'transportation_name',layout:{'text-field':['get','name'],'symbol-placement':'line','symbol-spacing':350,'text-size':12}},
+  {id:'hidden-labels',source:'world',type:'symbol','source-layer':'transportation_name',minzoom:15,layout:{'text-field':['get','ref'],'visibility':'none'}},
+  {id:'building',source:'world',type:'fill','source-layer':'building'},
+ ]};
+ const night=mapStyleForTheme(style,'star-night');assert.deepEqual(validateStyleMin(night as unknown as StyleSpecification),[]);
+ for(const index of [0,1]){
+  const original=createPropertyExpression(style.layers[index]!.paint!['line-width'],'line-width',latest.paint_line['line-width'] as StylePropertySpecification);
+  const changed=createPropertyExpression(night.layers[index]!.paint!['line-width'],'line-width',latest.paint_line['line-width'] as StylePropertySpecification);
+  assert.equal(original.result,'success');assert.equal(changed.result,'success');
+  if(original.result==='success'&&changed.result==='success')for(const zoom of [0,8,10,12,15,18,20])assert(Math.abs(changed.value.evaluate({zoom})-original.value.evaluate({zoom})*.65)<1e-9);
+ }
+ assert.equal(night.layers[1]!.paint!['line-gap-width'],1.3);
+ assert.equal(night.layers[2]!.minzoom,undefined);assert.equal(night.layers[2]!.layout!['symbol-spacing'],350);assert.equal(night.layers[2]!.layout!['text-padding'],undefined);
+ assert.equal(night.layers[3]!.minzoom,15);assert.equal(night.layers[3]!.layout!['visibility'],'none');
+ const opacity=createPropertyExpression(night.layers[4]!.paint!['fill-opacity'],'fill-opacity',latest.paint_fill['fill-opacity'] as StylePropertySpecification);
+ assert.equal(opacity.result,'success');if(opacity.result==='success')assert(opacity.value.evaluate({zoom:12})<opacity.value.evaluate({zoom:16}));
+});
+
+test("night landmarks retain icons and names; shields keep their original contrast; small labels grow",()=>{
+ const style:MapStyle={version:8,layers:[
+  {id:'landmark',type:'symbol','source-layer':'poi',minzoom:15,filter:['<=',['get','rank'],7],layout:{'icon-image':['get','class'],'text-field':['get','name'],'text-size':12},paint:{'text-color':'#666'}},
+  {id:'station',type:'symbol','source-layer':'poi',layout:{'icon-image':'station','text-field':['get','name'],'text-size':12}},
+  {id:'shield',type:'symbol','source-layer':'transportation_name',minzoom:8,layout:{'icon-image':'road_2','text-field':['get','ref'],'text-size':10},paint:{'text-color':'#000','text-halo-color':'#fff'}},
+  {id:'small-place',type:'symbol','source-layer':'place',layout:{'text-field':['get','name'],'text-size':['interpolate',['linear'],['zoom'],8,9,12,14]}},
+  {id:'three-dimensional',type:'fill-extrusion','source-layer':'building',paint:{'fill-extrusion-height':['get','height'],'fill-extrusion-color':'#eee'}},
+  {id:'wetland',type:'fill','source-layer':'landcover',paint:{'fill-pattern':'wetland','fill-opacity':.8}},
+ ]};
+ const night=mapStyleForTheme(style,'star-night');
+ for(let i=0;i<style.layers.length;i++){const a=style.layers[i]!,b=night.layers[i]!;assert.equal(b.id,a.id);assert.equal(b.minzoom,a.minzoom);assert.deepEqual(b['filter'],a['filter']);assert.deepEqual(b.layout?.['text-field'],a.layout?.['text-field']);assert.deepEqual(b.layout?.['icon-image'],a.layout?.['icon-image']);}
+ assert.deepEqual(night.layers[2],style.layers[2]);
+ const size=createPropertyExpression(night.layers[3]!.layout!['text-size'],'text-size',latest.layout_symbol['text-size'] as unknown as StylePropertySpecification);
+ assert.equal(size.result,'success');if(size.result==='success'){assert.equal(size.value.evaluate({zoom:8}),MAP_NIGHT_HIERARCHY.minimumLabelSize);assert.equal(size.value.evaluate({zoom:12}),14);}
+ assert.equal(night.layers[4]!.paint!['fill-extrusion-color'],MAP_NIGHT_PALETTE.building);assert.deepEqual(night.layers[4]!.paint!['fill-extrusion-height'],['get','height']);
+ assert.equal(night.layers[5]!.paint!['fill-pattern'],'wetland');assert.equal(night.layers[5]!.paint!['fill-color'],undefined);assert.equal(night.layers[5]!.paint!['fill-opacity'],.8*.7*MAP_NIGHT_HIERARCHY.patternOpacityScale);
+});
 
 function setup(source: string, input: JsonObject, extra: JsonObject = {}, language: "zh" | "en" = "en") {
   const dom = new JSDOM("<!doctype html><main></main>"), abort = new AbortController(), document = dom.window.document;

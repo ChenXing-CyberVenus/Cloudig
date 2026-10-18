@@ -602,7 +602,9 @@
   :root[lang="en"] [data-page="reader"] .reader-scene-statement > span { clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
   [data-page="reader"] .reader-archive-entry { appearance: none; background: transparent; border: 0; color: var(--cloudig-seal-red); cursor: pointer; height: 246.29px; left: 332.35px; padding: 0; position: absolute; top: 686px; width: 265.68px; z-index: 30; }
-  [data-page="reader"] .reader-archive-entry > img { height: 246.29px; inset: 0; position: absolute; width: 265.68px; z-index: 0; }
+  /* The SVG viewport includes its original shadow, not just the drawing.
+     Offset that transparent padding so the laptop/screen/hitbox do not move. */
+  [data-page="reader"] .reader-archive-entry > img { height: 260.28px; left: -13.41px; pointer-events: none; top: -13.99px; position: absolute; width: 297px; z-index: 0; }
   [data-page="reader"] .reader-archive-entry > span { inset: 0; position: absolute; z-index: 2; }
   [data-page="reader"] .reader-archive-entry strong { font-size: 36px; left: 0; line-height: 1; position: absolute; right: 0; top: 44px; white-space: nowrap; }
   [data-page="reader"] .reader-archive-entry small { color: #777; font-size: 18px; left: 21.65px; line-height: 1.15; overflow: hidden; position: absolute; right: 20px; text-overflow: ellipsis; top: 93px; white-space: nowrap; }

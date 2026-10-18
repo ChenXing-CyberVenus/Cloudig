@@ -1,5 +1,5 @@
 @layer components {
-.cloudig-interactive-window { width: min(1440px, calc(100vw - 64px)); height: min(960px, calc(100dvh - 48px)); max-width: none; max-height: none; padding: 0; border: 2px solid var(--cloudig-border); border-radius: 14px; background: var(--cloudig-diagram-local-canvas); color: var(--cloudig-text); box-shadow: 0 12px 50px #0006; }
+.cloudig-interactive-window { width: min(1440px, calc(100vw - 64px)); height: var(--cloudig-window-height,calc(100dvh - 48px)); max-width: calc(100vw - 32px); max-height: calc(100dvh - 32px); box-sizing: border-box; padding: 0; border: 2px solid var(--cloudig-border); border-radius: 14px; background: var(--cloudig-diagram-local-canvas); color: var(--cloudig-text); box-shadow: 0 12px 50px #0006; }
 .cloudig-interactive-window[open] { display: grid; grid-template-rows: auto minmax(0,1fr); }
 .cloudig-interactive-window::backdrop { background: #17141aa8; }
 .cloudig-interactive-header { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--cloudig-border); }
@@ -27,5 +27,6 @@
 .cloudig-interactive-box .cloudig-interactive-header { padding: 10px 12px; }
 .cloudig-interactive-box .cloudig-interactive-header h2 { font-size: 16px; }
 .cloudig-interactive-box .cloudig-interactive-button { border: 0; box-shadow: none; padding: 5px 8px; font-weight: 400; }
-@media (max-width: 700px) { .cloudig-interactive-window { width: calc(100vw - 20px); height: calc(100dvh - 20px); } .cloudig-interactive-header { padding: 10px 12px; gap: 8px; } }
+@media (max-width: 700px) { .cloudig-interactive-window { width: calc(100vw - 20px); } .cloudig-interactive-header { padding: 10px 12px; gap: 8px; } }
+@media (max-height: 800px) { .cloudig-interactive-window:not(.cloudig-interactive-box) { height:var(--cloudig-window-height,calc(100dvh - 24px));max-height:calc(100dvh - 24px); } .cloudig-interactive-window:not(.cloudig-interactive-box)>.cloudig-interactive-header { padding-block:10px; } }
 }

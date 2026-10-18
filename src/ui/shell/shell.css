@@ -110,9 +110,12 @@
   [data-theme="star-night"] .cloudig-update-dialog progress { accent-color:#ffa92e; }
   [data-scroll-region]::-webkit-scrollbar-track,
   [data-scroll-region]::-webkit-scrollbar-corner { background: transparent; }
-  [data-scroll-region]::-webkit-scrollbar-thumb { background: transparent; background-clip: border-box; border: 0; border-radius: 999px; }
-  [data-scroll-region]:is(:hover, :focus, :focus-within)::-webkit-scrollbar-thumb { background: var(--cloudig-scroll-idle); }
-  [data-scroll-region].cloudig-scroll-operating::-webkit-scrollbar-thumb { background: var(--cloudig-scroll-active); }
+  /* Put state on the scroll owner. Native form controls paint their scrollbar
+     in a UA shadow tree; pseudo-only hover rules can retain the idle cache. */
+  [data-scroll-region] { --cloudig-scroll-thumb: transparent; }
+  [data-scroll-region]:is(:hover, :focus, :focus-within) { --cloudig-scroll-thumb: var(--cloudig-scroll-idle); }
+  [data-scroll-region].cloudig-scroll-operating { --cloudig-scroll-thumb: var(--cloudig-scroll-active); }
+  [data-scroll-region]::-webkit-scrollbar-thumb { background: var(--cloudig-scroll-thumb); background-clip: border-box; border: 0; border-radius: 999px; }
   @supports not selector(::-webkit-scrollbar) {
     [data-scroll-region] { scrollbar-color: transparent transparent; scrollbar-width: thin; }
     [data-scroll-region]:is(:hover, :focus, :focus-within) { scrollbar-color: var(--cloudig-scroll-idle) transparent; }

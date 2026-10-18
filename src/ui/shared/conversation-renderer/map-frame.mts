@@ -1,7 +1,8 @@
 import { Map as MapLibreMap, Marker, Popup, NavigationControl, LngLatBounds, setWorkerUrl, setWorkerCount } from "./map-library.mjs";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./map-frame.css";
-import { MAP_PROTOCOL, MAP_LIMITS, MAP_TILES_ORIGIN, validMapPoint, mapResourceUrl, type SavedMapPoint } from "./map-protocol.mts";
+import { MAP_PROTOCOL, MAP_LIMITS, validMapPoint, mapResourceUrl, type SavedMapPoint } from "./map-protocol.mts";
+import { mapStyleForTheme, mapStyleUrl } from "./map-theme.mts";
 
 // This is trusted built-in UI, not an execution path for saved HTML/JS works.
 const token = location.hash.slice(1), configuredParent = document.querySelector<HTMLMetaElement>('meta[name="cloudig-map-parent"]')!.content;
@@ -13,7 +14,7 @@ function mount(points: SavedMapPoint[], theme: "dawn" | "star-night", language: 
   document.documentElement.dataset["theme"] = theme; document.documentElement.lang = language;
   const nav = document.querySelector<HTMLElement>("#places")!; nav.setAttribute("aria-label", language === "en" ? "Places" : "地点");
   setWorkerCount(1); setWorkerUrl(new URL("./map-worker.js", location.href).href);
-  map = new MapLibreMap({ container: "map", style: `${MAP_TILES_ORIGIN}/styles/${theme === "star-night" ? "dark" : "liberty"}`,
+  map = new MapLibreMap({ container: "map",
     center: [points[0]!.longitude, points[0]!.latitude], zoom: MAP_LIMITS.initialZoom, maxZoom: MAP_LIMITS.maximumZoom,
     transformRequest: url => ({ url: mapResourceUrl(url), credentials: "same-origin" }),
     attributionControl: { compact: false }, canvasContextAttributes: { preserveDrawingBuffer: false }
@@ -31,12 +32,25 @@ function mount(points: SavedMapPoint[], theme: "dawn" | "star-night", language: 
     bounds.extend([point.longitude, point.latitude]);
   }
   if (points.length > 1) map.fitBounds(bounds, { padding: 64, maxZoom: MAP_LIMITS.initialZoom, duration: 0 });
-  map.on("load", () => { document.documentElement.dataset["mapReady"] = "true"; send("loaded"); });
+  map.on("load", () => {
+    document.documentElement.dataset["mapReady"] = "true";
+    document.documentElement.dataset["mapPalette"] = String(map?.getStyle().metadata?.["cloudig:palette"] ?? "provider-liberty");
+    document.documentElement.dataset["mapPoiLayers"] = String(map?.getStyle().layers.filter(layer=>layer["source-layer"]==="poi").length ?? 0);
+    send("loaded");
+  });
+  // Distinguish first load from fully drawn tiles/labels after camera movement.
+  // The fixed-EXE visual audit waits on this instead of timing a partial frame.
+  const moving = () => { document.documentElement.dataset["mapSettled"] = "false"; };
+  map.on("movestart", moving); map.on("dataloading", moving);
+  map.on("idle", () => { document.documentElement.dataset["mapSettled"] = "true"; });
   map.on("error", () => {
     const error = document.querySelector<HTMLElement>("#map-error")!; error.hidden = false;
     error.textContent = language === "en" ? "Some map data could not be loaded. Check your connection or reload." : "部分地图数据无法加载，请检查网络或重新加载。";
     if (!map?.isStyleLoaded()) send("error");
   });
+  // Apply the theme before the first style commit: no black/white flash while
+  // tiles arrive, and no extra fetch or post-load layer-by-layer mutation.
+  map.setStyle(mapStyleUrl(theme), {transformStyle:(_previous,next)=>mapStyleForTheme(next,theme)});
 }
 if (parentOrigin && (publicSite || parentOrigin !== location.origin) && /^https?:\/\//u.test(parentOrigin)) {
   window.addEventListener("message", event => {

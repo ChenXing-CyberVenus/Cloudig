@@ -16,7 +16,9 @@ const indexReopen = argumentsList.includes("--index-reopen");
 const sourcePicker = argumentsList.includes("--source-picker");
 const readerResources = argumentsList.includes("--reader-resources");
 const readingFixes = argumentsList.includes("--reading-fixes");
-const intelligentUi = argumentsList.includes("--intelligent-ui");
+const intelligentUiControls = argumentsList.includes("--intelligent-ui-controls");
+const dilFidelity = argumentsList.includes("--dil-fidelity");
+const intelligentUi = argumentsList.includes("--intelligent-ui") || intelligentUiControls || dilFidelity;
 const intelligentUiGallery = argumentsList.includes("--intelligent-ui-gallery");
 const readerLayoutFixes = argumentsList.includes("--reader-layout-fixes");
 const claudeSourceIndex = argumentsList.indexOf("--claude-source");
@@ -73,7 +75,7 @@ if ((claudeSourceIndex >= 0 || officialSourceIndex >= 0) && (!claudeSource || !r
 if (parserStatus && !claudeSource) throw new Error("--parser-status requires a real --claude-source in an owned Library");
 if (indexReopen && (officialSourceIndex < 0 || !claudeSource)) throw new Error("--index-reopen requires a real --official-source ZIP");
 if (parserStatus && (!requestedTheme || !requestedViewport || !requestedLanguage)) throw new Error("--parser-status mutates its fixture: use one explicit theme, viewport and language per owned Library");
-if (realSampleIndex >= 0 && (!realSample || !requestedSurface?.split(",").every(surface => ["reader-conversation", "reader-nested-process", "reader-schedule", "reader-catalog-open", "reader-row-menu", "reader-title-hover", "archiver-title-hover", "archiver-information", "conversation-info", "archiver-external-refresh", "archiver-batch-delete"].includes(surface)))) {
+if (realSampleIndex >= 0 && (!realSample || !requestedSurface?.split(",").every(surface => ["reader-conversation", "reader-map", "reader-works", "reader-nested-process", "reader-schedule", "reader-catalog-open", "reader-row-menu", "reader-title-hover", "archiver-title-hover", "archiver-information", "conversation-info", "archiver-external-refresh", "archiver-batch-delete"].includes(surface)))) {
   throw new Error("--real-sample requires one HTML file and a supported Reader/Archiver surface");
 }
 if (requestedSurface?.split(",").includes("reader-schedule") && !realSample) throw new Error("reader-schedule needs a real captured task-list HTML");
@@ -651,6 +653,13 @@ function visualQuery(surface, theme, language) {
   if (claudeContext) query.set("claude-context", "1");
   if (readingFixes) query.set("reading-fixes", "1");
   if (intelligentUi) query.set("intelligent-ui", "1");
+  if (dilFidelity) query.set("dil-fidelity", "1");
+  if (argumentsList.includes("--writing-tasks")) query.set("writing-tasks", "1");
+  if (argumentsList.includes("--dil-progress")) query.set("dil-progress", "1");
+  if (argumentsList.includes("--notebook-shadow")) query.set("notebook-shadow", "1");
+  if (argumentsList.includes("--exit-confirmation")) query.set("exit-confirmation", "1");
+  if (argumentsList.includes("--inline-works-only")) query.set("inline-works-only", "1");
+  if (intelligentUiControls) query.set("intelligent-ui-controls-only", "1");
   if (intelligentUiGallery) query.set("intelligent-ui-gallery", "1");
   if (readerLayoutFixes) query.set("reader-layout-fixes", "1");
   if (sourceEmpty) query.set("source-empty", "1");

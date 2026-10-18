@@ -40,6 +40,9 @@ public partial class MainWindow : Window
     private string? _libraryRoot;
     private bool _closeAllowed;
     private bool _closing;
+    private bool _exitPromptOpen;
+    private string _surfaceTheme="dawn";
+    private string _surfaceLanguage="zh-CN";
     private bool _visualAuditStarted;
     private StartupSunAnimation? _startupSun;
 
@@ -255,6 +258,7 @@ public partial class MainWindow : Window
             ApplySurface(auditTheme, auditSurface);
             await Dispatcher.Yield(DispatcherPriority.Render);
             TraceVisualAudit("page-ready");
+            if(audit.Query.Contains("exit-confirmation=1",StringComparison.Ordinal))await VerifyExitConfirmationAsync(audit);
             if (audit.Query.Contains("interaction=navigation-performance", StringComparison.Ordinal)) await VerifyNavigationPerformanceAsync(audit);
             if (audit.MoveTarget is not null) { await VerifyLibraryMoveAuditAsync(audit); return; }
             if (audit.Query.Contains("interaction=search-copy", StringComparison.Ordinal))
@@ -333,6 +337,7 @@ public partial class MainWindow : Window
                 if (audit.Query.Contains("source-empty=1", StringComparison.Ordinal)) await VerifyEmptySourceAsync(false);
             }
             if (audit.Query.Contains("reader-layout-fixes=1", StringComparison.Ordinal)) await VerifyReaderLayoutFixesAsync(audit);
+            if (audit.Query.Contains("notebook-shadow=1", StringComparison.Ordinal)) await VerifyReaderNotebookAsync(audit);
             if (audit.Query.Contains("claude-empty-source=1", StringComparison.Ordinal)) await VerifyEmptySourceAsync(true);
             if (audit.Query.Contains("parser-status=1", StringComparison.Ordinal)) await VerifyParserStatusAsync(audit);
             if (audit.Query.Contains("index-reopen=1", StringComparison.Ordinal)) await VerifyContainerReopenAsync(audit);
@@ -3566,6 +3571,7 @@ public partial class MainWindow : Window
         var page = payload.GetProperty("page").GetString();
         if (theme is not ("dawn" or "star-night") || page is not ("welcome" or "reader" or "archiver")) throw new InvalidDataException();
         ApplySurface(theme, page);
+        if(payload.TryGetProperty("language",out var language)&&language.ValueKind==JsonValueKind.String)_surfaceLanguage=language.GetString()??"zh-CN";
     }
 
     private void ApplySurface(string theme, string page)
@@ -3591,6 +3597,7 @@ public partial class MainWindow : Window
             ? Color.FromArgb(34, 0, 0, 0)
             : Color.FromArgb(52, 255, 255, 255));
         TitleBar.Background = caption;
+        _surfaceTheme=theme;
         TitleBar.BorderBrush = border;
         WindowFrame.BorderBrush = border;
         TitleText.Foreground = foreground;
@@ -3693,9 +3700,12 @@ public partial class MainWindow : Window
     {
         if (_closeAllowed) return;
         e.Cancel = true;
-        if (_closing) return;
-        var answer = MessageBox.Show(this, "确定关闭采云吗？", "采云 Cloudig", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No);
-        if (answer != MessageBoxResult.Yes) return;
+        if (_closing || _exitPromptOpen) return;
+        bool accepted;
+        _exitPromptOpen=true;
+        try { accepted=new ExitConfirmation(this,_surfaceTheme=="star-night",_surfaceLanguage=="en",_layout.VisualAudit is not null).ShowDialog()==true; }
+        finally { _exitPromptOpen=false; }
+        if (!accepted) return;
         _closing = true;
         Hide();
         _loadingVisible.TrySetResult(false);

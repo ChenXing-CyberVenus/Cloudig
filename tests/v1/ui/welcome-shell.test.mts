@@ -221,7 +221,7 @@ test("Production UI assets match their recorded derivation manifest", async () =
   for (const asset of manifest.assets) {
     required.delete(asset.output);
     assert.match(asset.source, /^(?:阅读器美术素材\/(?:Cloudig-Image|AI-Icon)|AIChatArchive\/(?:reader\/assets\/cover|ui\/assets\/archiver|src\/ui\/(?:vendor\/lobe-icons|assets\/platforms)))\//u);
-    assert.ok(["copy", "clean-svg", "accepted-derivative", "accepted-window-foreground", "rooster-detail-motion", "stretch-menu-paper", "stretch-title-background"].includes(asset.transform), `unknown derivation: ${asset.output} / ${asset.transform}`);
+    assert.ok(["copy", "clean-svg", "accepted-derivative", "accepted-window-foreground", "rooster-detail-motion", "stretch-menu-paper", "stretch-title-background", "expand-computer-filter-viewport"].includes(asset.transform), `unknown derivation: ${asset.output} / ${asset.transform}`);
     const source = await readFile(path.join(root, "..", ...asset.source.split("/")));
     assert.equal(
       createHash("sha256").update(source).digest("hex"),
@@ -230,6 +230,10 @@ test("Production UI assets match their recorded derivation manifest", async () =
     );
     const bytes = await readFile(path.join(assetRoot, ...asset.output.split("/")));
     assert.equal(createHash("sha256").update(bytes).digest("hex"), asset.output_sha256);
+    if (asset.transform === "expand-computer-filter-viewport") {
+      const cleaned = source.toString('utf8').replace(/\s+data-name="[^"]*"/gu, '').replace(/\s+id="_(?:图层|采云|相框)[^"]*"/gu, '').replace(/<metadata\b[\s\S]*?<\/metadata>/giu, '').replace(/\r\n/gu, '\n');
+      assert.equal(bytes.toString('utf8'), cleaned.replace('viewBox="0 0 265.68 246.29"', 'viewBox="-13.41 -13.99 297 260.28"').trimEnd() + '\n');
+    }
     if (asset.transform === "stretch-menu-paper") {
       assert.equal(bytes.toString("utf8"), source.toString("utf8").replace("<svg ", '<svg preserveAspectRatio="none" '));
     }

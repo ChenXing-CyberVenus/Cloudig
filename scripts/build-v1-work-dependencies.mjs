@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { build } from "esbuild";
 
@@ -37,6 +37,20 @@ export async function buildWorkDependencies(repository, output) {
     result.push({ file: library.file, bytes: bytes.length, sha256: library.sha256 });
   }
   const react = await analyzeReactWorkBundle(repository);
+  for (const icons of manifest.icons ?? []) {
+    const packageRoot=path.join(repository,"node_modules",icons.package);
+    const metadata=JSON.parse(await readFile(path.join(packageRoot,"package.json"),"utf8"));
+    if(metadata.version!==icons.version)throw new Error(`Icon dependency version drift: ${icons.package}`);
+    const catalog={};
+    for(const style of ["outline","filled"]){
+      const directory=path.join(packageRoot,"icons",style);
+      for(const name of (await readdir(directory)).filter(n=>/^[a-z0-9-]+\.svg$/.test(n)).sort())
+        catalog[`${style}/${name}`]=await readFile(path.join(directory,name),"utf8");
+    }
+    const bytes=Buffer.from(JSON.stringify(catalog)+"\n"),target=path.join(output,icons.file);
+    await mkdir(path.dirname(target),{recursive:true});await writeFile(target,bytes);
+    result.push({file:icons.file,bytes:bytes.length,sha256:createHash("sha256").update(bytes).digest("hex")});
+  }
   for (const file of react.outputFiles) {
     await writeFile(path.join(output, path.basename(file.path)), file.contents);
     result.push({ file: path.basename(file.path), bytes: file.contents.length, sha256: createHash("sha256").update(file.contents).digest("hex") });

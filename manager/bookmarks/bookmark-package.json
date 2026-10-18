@@ -1,7 +1,7 @@
 {
   "format": "cloudig/bookmark-package",
   "version": "0.2.0",
-  "bookmark_set_version": "2026.10.17.1",
+  "bookmark_set_version": "2026.10.18.2",
   "default_profile": "light",
   "profiles": [
     "light",
@@ -21,29 +21,29 @@
         {
           "id": "chatgpt:light",
           "profile": "light",
-          "version": "3.7.62-light",
+          "version": "3.7.64-light",
           "artifact": "chatgpt/light.min.js",
-          "sha256": "0b881f103b93dce28eab52823d19d8ea511cd760440f3656b7e9751acd462a46",
-          "bytes": 477242,
-          "characters": 467927
+          "sha256": "cfbc6f7153d3b2436d4464532bec4f07e8c7fc8b40613d89ab587fc857115c1d",
+          "bytes": 479670,
+          "characters": 470268
         },
         {
           "id": "chatgpt:full",
           "profile": "full",
-          "version": "1.0.59-full",
+          "version": "1.0.61-full",
           "artifact": "chatgpt/full.min.js",
-          "sha256": "fc588492ca6745ef2fee0f2353a767c76dd0faf2d1c44bdede0716df973a1ec8",
-          "bytes": 487701,
-          "characters": 478182
+          "sha256": "bdc70e6137349e12bdf102a6233aafe8ca181c9a8d2d3503428577bf3e542c70",
+          "bytes": 488284,
+          "characters": 478678
         },
         {
           "id": "chatgpt:all_branches",
           "profile": "all_branches",
-          "version": "1.0.59-all-branches",
+          "version": "1.0.61-all-branches",
           "artifact": "chatgpt/all_branches.min.js",
-          "sha256": "80d19464f8262060e94bc620622cabcd1791ce7ec7593ced1b2f1996569897ad",
-          "bytes": 501243,
-          "characters": 491270
+          "sha256": "7ff2903464936957441045f6021fc47dce9a9d79d68a8831e6bab90525bdbd19",
+          "bytes": 501404,
+          "characters": 491344
         }
       ]
     },
