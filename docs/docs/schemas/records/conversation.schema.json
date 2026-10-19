@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cloudig.local/records/conversation/1.0.1",
+  "$id": "https://cloudig.local/records/conversation/1.0.2",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,7 +15,7 @@
   ],
   "properties": {
     "schema": {
-      "const": "cloudig/conversation/1.0.1"
+      "const": "cloudig/conversation/1.0.2"
     },
     "conversation_id": {
       "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/uuid"
@@ -1017,15 +1017,14 @@
         }
       }
     },
-    "interactiveBlock": {
+    "containerBlock": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "display", "source", "format"],
+      "required": ["type", "source", "format"],
       "properties": {
-        "type": { "const": "interactive" },
+        "type": { "enum": ["box", "window"] },
         "speaker": { "type": "string", "minLength": 1 },
         "recipient": { "type": "string", "minLength": 1 },
-        "display": { "enum": ["box", "window"] },
         "source": { "type": "string", "pattern": "^[^\\s_]+_[^\\s]+$", "description": "Specific originating site or product plus its native content type, for example claude.ai_visualize. Not a brand or model name." },
         "title": { "$ref": "https://cloudig.local/records/common/1.0.0#/$defs/titleText" },
         "format": { "enum": ["structured", "html", "react", "svg", "document", "slides", "design", "design-system"] },
@@ -1093,7 +1092,7 @@
           "$ref": "#/$defs/unknownBlock"
         },
         {
-          "$ref": "#/$defs/interactiveBlock"
+          "$ref": "#/$defs/containerBlock"
         }
       ]
     }

@@ -10,8 +10,8 @@
     {
       "file": "records/library.schema.json",
       "source": "src/core/records/schemas/library.schema.json",
-      "id": "https://cloudig.local/records/library/1.0.1",
-      "sha256": "6fb5d487dd0c37188e6a1f81beeb0cc6272a38dcbaf743429f5daf46c39d379a"
+      "id": "https://cloudig.local/records/library/1.0.2",
+      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
     },
     {
       "file": "records/identity.schema.json",
@@ -28,8 +28,8 @@
     {
       "file": "records/conversation.schema.json",
       "source": "src/core/records/schemas/conversation.schema.json",
-      "id": "https://cloudig.local/records/conversation/1.0.1",
-      "sha256": "232dcbe9c593f13be1683ea41887dc1e5907ae923b7dd4a9d05b87ac1a2a8334"
+      "id": "https://cloudig.local/records/conversation/1.0.2",
+      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
     },
     {
       "file": "records/mark.schema.json",
@@ -62,6 +62,18 @@
       "sha256": "e0e1767ec42b358d6759f298de928d24f2d76ca084cbc38e025ef1160dea0590"
     },
     {
+      "file": "records/compat/conversation-1.0.1.schema.json",
+      "source": "src/core/records/schemas/compat/conversation-1.0.1.schema.json",
+      "id": "https://cloudig.local/records/conversation/1.0.1",
+      "sha256": "232dcbe9c593f13be1683ea41887dc1e5907ae923b7dd4a9d05b87ac1a2a8334"
+    },
+    {
+      "file": "records/compat/library-1.0.1.schema.json",
+      "source": "src/core/records/schemas/compat/library-1.0.1.schema.json",
+      "id": "https://cloudig.local/records/library/1.0.1",
+      "sha256": "6fb5d487dd0c37188e6a1f81beeb0cc6272a38dcbaf743429f5daf46c39d379a"
+    },
+    {
       "file": "program/common.schema.json",
       "source": "src/core/contracts/schemas/common.schema.json",
       "id": "https://cloudig.local/schema/common/1.0.0",
@@ -71,7 +83,7 @@
       "file": "program/container-record.schema.json",
       "source": "src/core/contracts/schemas/container-record.schema.json",
       "id": "https://cloudig.local/schema/container-record/1.0.0",
-      "sha256": "085f1c73cf67ea8732853c6a2df3047d98d4ceca08abbc491bccc9eb24a41b3a"
+      "sha256": "d13e58c1099afcaa38c015e60c5f958c81ba3417c9084134efe629f33c2b3fe9"
     },
     {
       "file": "program/system-log.schema.json",
@@ -83,7 +95,7 @@
       "file": "program/record-transaction.schema.json",
       "source": "src/adapters/storage/record-transaction.schema.json",
       "id": "https://cloudig.local/internal/record-transaction/1.0.0",
-      "sha256": "eb2f178029c0deac27c03da0d1829d396a9db6d1ffbbee3159a1977383275c99"
+      "sha256": "4ee5ab389bad7b2f0b25aa7ff49d356831ddd41551a001bc7b2c39830622868d"
     },
     {
       "file": "program/record-recycle.schema.json",

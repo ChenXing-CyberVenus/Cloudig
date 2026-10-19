@@ -19,7 +19,10 @@
       "const": "cloudig/container-record/1.0.0"
     },
     "selector": {
-      "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256"
+      "anyOf": [
+        { "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/sha256" },
+        { "type": "string", "pattern": "^zip:[^#]+#[a-f0-9]{64}$" }
+      ]
     },
     "ordinal": {
       "type": "integer",
@@ -46,6 +49,10 @@
       "$ref": "https://cloudig.local/schema/common/1.0.0#/$defs/utcTimestamp"
     },
     "messages": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "empty_messages": {
       "type": "integer",
       "minimum": 0
     },

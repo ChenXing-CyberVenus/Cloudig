@@ -117,6 +117,8 @@
           "from": { "type": "string", "minLength": 1 },
           "to": { "type": "string", "minLength": 1 },
           "kind": { "enum": ["file", "directory", "empty_directory"] },
+          "identity_mode": { "const": "content" },
+          "tree_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
           "identity": {
             "type": "object",
             "additionalProperties": false,
