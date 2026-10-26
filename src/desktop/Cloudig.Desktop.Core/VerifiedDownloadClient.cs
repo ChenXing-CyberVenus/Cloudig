@@ -9,7 +9,7 @@ public sealed record VerifiedDownloadResult(string Path, bool Existing);
 
 /// <summary>Downloads only caller-validated public objects. Never overwrites a
 /// different local file; the temporary sibling belongs to this one request.</summary>
-public sealed class VerifiedDownloadClient(HttpClient? http = null)
+public sealed class VerifiedDownloadClient(HttpClient? http = null, Func<Uri, bool>? allowedUri = null)
 {
     public const long MaximumBytes = 2L * 1024 * 1024 * 1024;
     public const int BufferBytes = 128 * 1024;
@@ -17,6 +17,7 @@ public sealed class VerifiedDownloadClient(HttpClient? http = null)
     public const int TimeoutMinutes = 30;
     private static readonly HttpClient Default = new(new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false }) { Timeout = Timeout.InfiniteTimeSpan };
     private readonly HttpClient _http = http ?? Default;
+    private readonly Func<Uri, bool> _allowedUri = allowedUri ?? PublicDownloadUri;
     public static void PlainPath(string path)
     {
         var cursor = System.IO.Path.GetFullPath(path);
@@ -30,7 +31,7 @@ public sealed class VerifiedDownloadClient(HttpClient? http = null)
 
     public async Task<VerifiedDownloadResult> SaveAsync(Uri uri, long bytes, string hash, string folder, string filename, Action<DownloadProgress>? progress, CancellationToken cancellationToken, string? stagingFolder = null)
     {
-        if (!PublicDownloadUri(uri) || bytes is < 1 or > MaximumBytes || !Regex.IsMatch(hash, "^[a-fA-F0-9]{64}$") || filename != System.IO.Path.GetFileName(filename) || filename.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0 || filename.EndsWith('.') || filename.EndsWith(' ')) throw new InvalidDataException("Invalid download manifest.");
+        if (!_allowedUri(uri) || bytes is < 1 or > MaximumBytes || !Regex.IsMatch(hash, "^[a-fA-F0-9]{64}$") || filename != System.IO.Path.GetFileName(filename) || filename.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0 || filename.EndsWith('.') || filename.EndsWith(' ')) throw new InvalidDataException("Invalid download manifest.");
         folder = System.IO.Path.GetFullPath(folder); PlainPath(folder); Directory.CreateDirectory(folder); PlainPath(folder);
         var target = System.IO.Path.Combine(folder, filename); PlainPath(target);
         if (File.Exists(target)) {
@@ -49,7 +50,7 @@ public sealed class VerifiedDownloadClient(HttpClient? http = null)
                 if ((int)response.StatusCode is not (301 or 302 or 303 or 307 or 308)) break;
                 var location = response.Headers.Location; response.Dispose(); response = null;
                 if (location is null || redirect == MaximumRedirects) throw new IOException("Download redirect could not be resolved.");
-                uri = location.IsAbsoluteUri ? location : new Uri(uri, location); if (!PublicDownloadUri(uri)) throw new IOException("Download redirected outside its public delivery hosts.");
+                uri = location.IsAbsoluteUri ? location : new Uri(uri, location); if (!_allowedUri(uri)) throw new IOException("Download redirected outside its public delivery hosts.");
             }
             using (response) {
                 if (response is null || !response.IsSuccessStatusCode) throw new IOException("The download server is unavailable.");

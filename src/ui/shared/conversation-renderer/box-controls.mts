@@ -10,6 +10,9 @@ export type BoxContext = Readonly<{
   language: "zh" | "en";
   signal: AbortSignal;
   image: (path: string, alt: string, tone?: "current") => HTMLElement;
+  file?: (resource: string, name: string) => HTMLElement;
+  /** Shared safe Markdown/math renderer; never raw HTML from a card. */
+  richText?: (source: string) => HTMLElement;
   /** Optional dedicated-origin harness URL; never read from saved card data. */
   mapFrameUrl?: string;
   /** Only the public site's built-in map UI, never an authored work. */

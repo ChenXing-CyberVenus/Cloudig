@@ -44,6 +44,7 @@ export async function runRecordParseBatch(root: string, jobs: readonly RecordPar
         try {
           if ((outcome.prepared.conversation["source"] as JsonObject)["sha256"] !== units[active]!.source.sha256) throw new TypeError("Source changed after the confirmed selection; refresh before parsing it");
           const saved = await savePreparedRecord(root, { conversation: outcome.prepared.conversation, sourcePath: job.sourcePath, sourceReads,
+            ...(units[active]!.source.agentParts ? {sourceParts:units[active]!.source.agentParts} : {}),
             ...(options.keepPrevious === undefined ? {} : { keepPrevious: options.keepPrevious }), ...(options.directory ? { directory: options.directory } : {}), ...(options.directoryIdentity ? { directoryIdentity: options.directoryIdentity } : {}), ...(options.relocateExisting ? { relocateExisting: true } : {}), ...(options.signal ? { signal: options.signal } : {}) });
           items[active] = { ...prior, status: saved.replaced ? "updated" : "created", path: saved.path, conversationId: String(saved.conversation["conversation_id"]), errors: outcome.prepared.errors, maintenanceWarnings: saved.maintenanceWarnings };
         } catch (e) {

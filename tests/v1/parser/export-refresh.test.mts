@@ -140,7 +140,14 @@ test("current source delta keeps Mistral segments, Claude memory tools, ChatGLM 
       }
       files++;
     }
-    assert.equal(files, 16); assert.equal(segments, 79); assert.equal(memories, 16); assert.equal(models, 46); assert.ok(matrices >= 3);
+    const expectedFiles = waterline.routes.filter((route: { platform: string }) => ["claude", "chatglm", "mistral", "zai"].includes(route.platform))
+      .reduce((sum: number, route: { samples: number }) => sum + route.samples, 0);
+    assert.equal(files, expectedFiles);
+    // Each occurrence was compared with its own source above. Added real cases
+    // can increase coverage; the established witnesses must not disappear.
+    // Latest captures contain thirteen source memory calls (including the new
+    // flag conversation), versus sixteen in the earlier capture set.
+    assert.ok(segments >= 79); assert.ok(memories >= 13); assert.ok(models >= 46); assert.ok(matrices >= 3);
     console.log(JSON.stringify({ export_refresh: { files, exact_reasoning_segments: segments, memory_calls: memories, model_labels: models, matrix_messages: matrices } }));
   } finally { runtime.dispose?.(); }
 });

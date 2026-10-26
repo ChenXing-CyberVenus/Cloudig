@@ -8,7 +8,7 @@ import { assertJsonValue } from "../../core/contracts/deterministic-json.mts";
 import type { JsonObject } from "../../core/contracts/types.mts";
 import { isJsonObject } from "../../core/contracts/types.mts";
 import { adapterBundleSnapshot, fallbackPayloadId, findSourceAdapter } from "../../app/parser/registry.mts";
-import type { SourceAdapter } from "../../app/parser/adapter.mts";
+import type { ExporterExtensions, SourceAdapter } from "../../app/parser/adapter.mts";
 import type { ByteFingerprint } from "../storage/stream.mts";
 import { extractStaticReadingEvidence } from "./reading-evidence.mts";
 import { parseStreamingJson } from "./json-object-stream.mts";
@@ -213,7 +213,7 @@ function nonEmptyString(value: unknown): string | undefined {
 export type ExporterEnvelope = Readonly<{
   manifest: JsonObject;
   payload: JsonObject;
-  extensions?: Readonly<{ chatgptIntelligentUi?: JsonObject }>;
+  extensions?: ExporterExtensions;
   adapter: SourceAdapter;
   fingerprint: ByteFingerprint;
   reading: Readonly<{
@@ -319,7 +319,7 @@ export async function readExporterEnvelope(input: Readonly<{
       ?? fallbackPayloadId(platform);
     if (!payloadId) throw new TypeError("Exporter HTML has no registered payload script id");
     const payload = await parseObject(extracted.scripts.get(payloadId), "Vendor payload", input.signal);
-    const extensions: { chatgptIntelligentUi?: JsonObject } = {};
+    const extensions: { -readonly [K in keyof ExporterExtensions]: ExporterExtensions[K] } = {};
     const declaredExtensions = isJsonObject(manifest["extensions"]) ? manifest["extensions"] : {};
     const intelligent = declaredExtensions["chatgpt_intelligent_ui"];
     if (platform === "chatgpt" && isJsonObject(intelligent)) {
@@ -327,6 +327,23 @@ export async function readExporterEnvelope(input: Readonly<{
       const data = await parseObject(extracted.scripts.get("chatgpt-intelligent-ui-data"), "ChatGPT Intelligent UI", input.signal);
       if (data["format"] !== "chatgpt-intelligent-ui/1.0") throw new TypeError("ChatGPT Intelligent UI format mismatch");
       extensions.chatgptIntelligentUi = data;
+    }
+    // Optional, versioned carrier additions leave the original message payload
+    // and old exports intact. Once declared/present, a corrupt carrier is not
+    // silently treated as a successfully parsed text-only conversation.
+    for (const spec of [
+      { platform: "kimi", key: "kimiRichContent", id: "kimi-rich-content", schema: "osis.kimi.rich-content/v1", declared: manifest["rich_content"] },
+      { platform: "gemini", key: "geminiRichContent", id: "gemini-rich-content-data", schema: "osis.gemini.rich-content/v1", declared: descriptor?.["rich_content"] },
+      { platform: "doubao", key: "doubaoRichContent", id: "doubao-rich-content", schema: "osis.doubao.rich-content/v1", declared: manifest["rich_content"] },
+      { platform: "mistral", key: "mistralWork", id: "mistral-work-data", schema: "osis.mistral.work/v1", declared: manifest["work"] }
+    ] as const) {
+      if (platform !== spec.platform || spec.declared === undefined && !extracted.scripts.has(spec.id)) continue;
+      if (spec.declared !== undefined && (!isJsonObject(spec.declared)
+        || (spec.declared["element_id"] ?? spec.declared["script_id"]) !== spec.id
+        || (spec.declared["format"] ?? spec.declared["schema"]) !== spec.schema)) throw new TypeError(`Unsupported ${spec.platform} rich content descriptor`);
+      const data = await parseObject(extracted.scripts.get(spec.id), `${spec.platform} rich content`, input.signal);
+      if ((data["format"] ?? data["schema"]) !== spec.schema) throw new TypeError(`${spec.platform} rich content format mismatch`);
+      extensions[spec.key] = data;
     }
     const payloadSchema = nonEmptyString(payload["format"])
       ?? nonEmptyString(payload["schema"])

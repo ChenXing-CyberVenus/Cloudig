@@ -7,6 +7,7 @@ import {
 } from "parse5";
 import type { JsonObject } from "../../core/contracts/types.mts";
 import { HTML_IMAGE_RESOURCE } from "../../core/records/html-resources.mts";
+import { normalizeCapturedTables } from "./captured-tables.mts";
 
 const DROP_HTML = new Set(["base", "link", "meta", "script", "style", "template"]);
 const DROP_SVG = new Set(["animate", "animatemotion", "animatetransform", "discard", "set"]);
@@ -150,6 +151,9 @@ export function restoreCapturedProcess(blocks: readonly JsonObject[], reading: s
   return blocks.map(block => {
     if (block["type"] !== "reasoning" && block["type"] !== "reasoning_summary") return block;
     const panel = panels[index++]!;
+    // Structured process content already owns its diagrams/files/works. A
+    // flattened HTML copy cannot replace it or coexist with content + text.
+    if (Array.isArray(block["content"])) return block;
     if (elements(panel).some(node => ["img", "svg"].includes(node.tagName))) return block;
     panel.childNodes = panel.childNodes.filter(node => !isElement(node) || node.tagName !== "summary");
     // The owner and ordinal establish identity; this content witness prevents a
@@ -367,6 +371,7 @@ function collectLinks(parent: Parent, links: string[]): void {
 export function inertHtmlEvidence(value: string, options: InertHtmlOptions = {}): Readonly<{ html?: string; links: readonly string[] }> {
   if (value.length === 0) return { links: [] };
   const fragment = parseFragment(value);
+  normalizeCapturedTables(fragment);
   sanitizeChildren(fragment, options);
   if (options.preserveUserLines) preserveUserTextLines(fragment);
   const links: string[] = [];

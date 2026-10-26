@@ -14,6 +14,8 @@ import { embeddedBase64DataUrl, embeddedImageDataUrl } from "./embedded-data.mts
 import { capturedMathIsDisplay, inertHtmlEvidence, inertHtmlFragment, inertStandaloneSvg, preserveNestedImage, preserveNestedMath, restoreCapturedProcess } from "./inert-html.mts";
 import { normalizeMermaidSource } from "./markdown-diagrams.mts";
 import { capturedReferences } from "./captured-references.mts";
+import { KimiRichContent } from "./kimi-rich.mts";
+import { WorkResources } from "./work-resources.mts";
 
 type Profile = "light" | "full" | "tree";
 type Parent = DefaultTreeAdapterTypes.ParentNode;
@@ -222,7 +224,7 @@ class KimiSourcePool {
     const url = httpUrl(raw["url"]);
     if (!url) return undefined;
     const title = sourceText(raw["title"]);
-    const hostname = sourceText(raw["hostname"]);
+    const hostname = sourceText(raw["site_name"]) ?? sourceText(raw["hostname"]);
     const snippet = sourceText(raw["snippet"]);
     const key = `${url}\u0000${title ?? ""}`;
     const candidates = this.#byKey.get(key) ?? [];
@@ -400,6 +402,8 @@ function publicProcessBlocks(
       else if (title) result.push({ type: "reasoning", title });
     } else if (kind === "search") {
       result.push({ type: "tool", kind: "activity", name: "web-search", ...(title ? { title } : {}) });
+    } else if (kind === "tool") {
+      result.push({ type: "tool", kind: "activity", ...(title ? { title } : {}), ...(content ? { output: { text: content } } : {}) });
     } else if (content || title) {
       result.push({ type: "unknown", kind: `kimi-${kind ?? "process"}`, text: content ?? title! });
     }
@@ -478,10 +482,16 @@ function projectFragment(input: Readonly<{
   diagrams: KimiDiagramPool;
   resources: KimiResourcePool;
   limitations: JsonObject[];
+  work?: KimiRichContent;
+  owner?: string;
+  nativeToolIds?: ReadonlySet<string>;
+  finalize?: boolean;
+  usedAttachments?: Set<number>;
+  process?: (node: Element) => JsonObject[] | undefined;
 }>): JsonObject[] {
   const fragment = parseFragment(input.html);
   const blocks: JsonObject[] = [];
-  const usedAttachments = new Set<number>();
+  const usedAttachments = input.usedAttachments ?? new Set<number>();
   const addBlock = (block: JsonObject): string => {
     const index = blocks.length;
     blocks.push(block);
@@ -518,7 +528,25 @@ function projectFragment(input: Readonly<{
         next.push(child);
         continue;
       }
-      if (hasClass(child, "osis-thinking") || hasClass(child, "osis-search") || hasClass(child, "memory-block")) continue;
+      if (hasClass(child, "osis-sources") || attribute(child, "data-osis-source-list") !== undefined) continue;
+      const process = input.process?.(child);
+      if (process) { next.push(defaultTreeAdapter.createTextNode(process.map(addBlock).join(""))); continue; }
+      // These are the reading projections of this message's captured process
+      // records. Their API/public_processes representation is emitted above;
+      // retaining the DOM summary would repeat it as ordinary answer text.
+      if (hasClass(child, "osis-thinking") || hasClass(child, "osis-search") || hasClass(child, "osis-tool") || hasClass(child, "memory-block")) continue;
+      if (hasClass(child, "plugin-toolcall")) {
+        const controls = descendants(child).map(n => attribute(n, "aria-controls")).find(id => id?.startsWith("plugin-toolcall-detail-"));
+        const id = controls?.slice("plugin-toolcall-detail-".length);
+        if (!id || !input.nativeToolIds?.has(id)) {
+          const entry = descendants(child).find(n => hasClass(n, "plugin-toolcall-entry"));
+          const title = textContent(entry ?? child).replace(/\s+/gu, " ").trim();
+          if (title) next.push(defaultTreeAdapter.createTextNode(addBlock({ type: "tool", kind: "activity", title })));
+        }
+        continue;
+      }
+      const work = input.work?.node(child, input.owner ?? "");
+      if (work) { next.push(defaultTreeAdapter.createTextNode(work.map(addBlock).join(""))); continue; }
       if (hasClass(child, "attachment-list")) {
         const markers = attachmentMarkers(child);
         if (markers) next.push(defaultTreeAdapter.createTextNode(markers));
@@ -578,7 +606,11 @@ function projectFragment(input: Readonly<{
             Number.isSafeInteger(width) && width > 0 ? width : undefined,
             Number.isSafeInteger(height) && height > 0 ? height : undefined
           );
-          next.push(preserveNestedImage(parent, child, image) ?? defaultTreeAdapter.createTextNode(addBlock(image)));
+          const icon = hasClass(child, "plugin-node-icon") || hasClass(child, "toolcall-title-name-icon") || ("tagName" in parent && (hasClass(parent, "plugin-node") || hasClass(parent, "plugin-node-icon")));
+          if (icon) {
+            const inline = defaultTreeAdapter.createElement("img", child.namespaceURI, [{ name: "data-cloudig-resource", value: String(image["resource"]) }, { name: "alt", value: attribute(child, "alt") ?? "" }, { name: "width", value: "20" }, { name: "height", value: "20" }, { name: "style", value: "display:inline-block;width:20px;height:20px;margin:0 4px 0 0;vertical-align:middle;object-fit:contain;border-radius:4px" }]);
+            next.push(inline);
+          } else next.push(preserveNestedImage(parent, child, image) ?? defaultTreeAdapter.createTextNode(addBlock(image)));
           continue;
         }
       }
@@ -590,7 +622,15 @@ function projectFragment(input: Readonly<{
   };
   rewrite(fragment);
   const rich = descendants(fragment).find((element) => hasClass(element, "rich-content"));
-  const serialized = serialize(rich ?? fragment);
+  // Old captures place owned processes/files beside (and sometimes between)
+  // rich bodies. Selecting only the first body silently drops their markers
+  // after they have already been consumed. Keep those slots in source order,
+  // without admitting unrelated outer chrome as answer prose.
+  const readingSlots = (parent: Parent): string => parent.childNodes.map(child => {
+    if (isElement(child)) return hasClass(child, "rich-content") ? serialize(child) : readingSlots(child);
+    return "value" in child ? [...child.value.matchAll(/\uE000CLOUDIG_KIMI_BLOCK_[0-9]+\uE001/gu)].map(m=>m[0]).join("") : "";
+  }).join("");
+  const serialized = rich ? readingSlots(fragment) : serialize(fragment);
   const projected: JsonObject[] = [];
   for (const part of serialized.split(/(\uE000CLOUDIG_KIMI_BLOCK_[0-9]+\uE001)/u)) {
     const match = /^\uE000CLOUDIG_KIMI_BLOCK_([0-9]+)\uE001$/u.exec(part);
@@ -600,8 +640,9 @@ function projectFragment(input: Readonly<{
       continue;
     }
     const evidence = inertHtmlEvidence(part);
-    if (evidence.html) projected.push({ type: "html", html: evidence.html });
+    if (evidence.html && (textContent(parseFragment(evidence.html)).trim() || /<(?:img|svg|math|hr|br)\b/iu.test(evidence.html))) projected.push({ type: "html", html: evidence.html });
   }
+  if (input.finalize === false) return projected;
   const unplaced = input.attachments.flatMap((attachment, index) => (
     usedAttachments.has(index) ? [] : [input.resources.addAttachment(attachment, undefined, input.limitations)]
   ));
@@ -616,6 +657,97 @@ function projectFragment(input: Readonly<{
     });
   }
   return [...unplaced, ...projected];
+}
+
+function orderedKimiContent(input: Parameters<typeof projectFragment>[0], message: JsonObject, htmls: readonly string[], sources: KimiSourcePool): JsonObject[] {
+  const reading = htmls.join(""), dom = parseFragment(reading), usedAttachments = new Set<number>();
+  const base = { ...input, usedAttachments, finalize: false };
+  const native = values(object(message["api"])?.["blocks"]).filter(isJsonObject);
+  const texts: Element[] = [], thoughts: Element[] = [];
+  const visit = (node: Parent, inProcess = false): void => {
+    for (const child of node.childNodes) if (isElement(child)) {
+      if (hasClass(child, "osis-thinking")) { thoughts.push(child); continue; }
+      const process = inProcess || hasClass(child, "toolcall-flow__item");
+      if (hasClass(child, "markdown-container") && !process) { texts.push(child); continue; }
+      visit(child, process);
+    }
+  };
+  visit(dom);
+  const nativeTexts = native.filter(b => b["type"] === "text");
+  // Message identity + ordered native slots + a content witness establish the
+  // projection. This never pairs unrelated messages by equal text.
+  const witness = (s: string): string => s.replace(/[^\p{L}\p{N}]/gu, "").toLocaleLowerCase("en-US");
+  const paired = nativeTexts.length === texts.length && nativeTexts.every((b, i) => {
+    const a = witness(String(object(b["value"])?.["content"] ?? "")), c = witness(textContent(texts[i]!));
+    return !a || !c || a.includes(c.slice(0, 48)) || c.includes(a.slice(0, 48));
+  });
+  const firstText = native.findIndex(b => b["type"] === "text");
+  if (!texts.length && firstText >= 0 && native.every((b, i) => !["think", "tool"].includes(String(b["type"])) || i < firstText)) {
+    // Legacy exports have one aggregate rich body, not native text wrappers.
+    // A formally leading process sequence can still retain its full payload.
+    const process = restoreCapturedProcess(apiProcessBlocks(message, input.diagrams, input.resources), reading);
+    return [...process, ...projectFragment({ ...base, html:reading, finalize:true })];
+  }
+  if (native.length && (texts.length > 0 && paired || !reading.trim())) {
+    const result: JsonObject[] = []; let t = 0, thought = 0;
+    for (const block of native) {
+      if (block["type"] === "text") {
+        const node = texts[t++], raw = sourceText(object(block["value"])?.["content"]);
+        result.push(...(node ? projectFragment({ ...base, html: serializeOuter(node) }) : raw ? projectProcessMarkdown(raw, input.diagrams, input.resources, "markdown") : []));
+      } else if (block["type"] === "think" || block["type"] === "tool") {
+        let process = apiProcessBlocks({ api: { blocks: [block] } }, input.diagrams, input.resources);
+        const panel = block["type"] === "think" ? thoughts[thought++] : undefined;
+        if (panel) process = restoreCapturedProcess(process, serializeOuter(panel));
+        result.push(...process);
+      }
+      result.push(...(input.work?.atBlock(input.owner ?? "", String(block["id"] ?? "")) ?? []));
+    }
+    for (const node of descendants(dom).filter(n => hasClass(n, "osis-kimi-file-catalog"))) result.push(...(input.work?.node(node, input.owner ?? "") ?? []));
+    result.push(...projectFragment({ ...base, html: "", finalize: true }));
+    return result;
+  }
+  // Light and older DOM captures: process panels retain their exact location.
+  const publicThoughts = values(message["public_processes"]).filter(isJsonObject).filter(p => p["kind"] === "thinking");
+  const nativeTools = new Map(native.filter(b => b["type"] === "tool" && b["id"] !== undefined).map(b => [String(b["id"]), b])); let thought = 0, observed = 0;
+  const process = (node: Element): JsonObject[] | undefined => {
+    if (hasClass(node, "osis-thinking")) {
+      observed++;
+      const raw = publicThoughts[thought++];
+      if (raw) return restoreCapturedProcess(publicProcessBlocks({ public_processes: [raw] }, input.diagrams, input.resources), serializeOuter(node));
+      const title = sourceText(textContent(node.childNodes.find(n => isElement(n) && n.tagName === "summary") as Parent ?? node).replace(/^思考\s*[·:：]?\s*/u, "")) ?? "思考";
+      const children = node.childNodes.filter(n => !isElement(n) || n.tagName !== "summary");
+      const body = children.map(n => isElement(n) ? serializeOuter(n) : "value" in n ? n.value : "").join("");
+      const content = projectFragment({ ...base, html: body });
+      return [{ type: "reasoning", title, ...(content.length ? { content } : {}) }];
+    }
+    const known = hasClass(node, "osis-tool") || hasClass(node, "osis-search") || hasClass(node, "plugin-toolcall");
+    const flow = hasClass(node, "toolcall-flow__item");
+    if (!known && !flow) return;
+    if (flow && descendants(node).some(n => hasClass(n, "osis-thinking") || hasClass(n, "osis-tool") || hasClass(n, "osis-search") || hasClass(n, "plugin-toolcall") || attribute(n, "data-kimi-work"))) return;
+    observed++;
+    const nestedWorks = descendants(node).filter(n => attribute(n, "data-kimi-work")).flatMap(n => input.work?.node(n, input.owner ?? "") ?? []);
+    const heading = descendants(node).find(n => n.tagName === "summary" || hasClass(n, "toolcall-title-container"));
+    const title = (textContent(heading ?? node).replace(/\s+/gu, " ").trim().replace(/^工具\s*[·:：]?\s*/u, "")) || "工具";
+    const controls = descendants(node).map(n => attribute(n, "aria-controls")).find(id => id?.startsWith("plugin-toolcall-detail-"));
+    const blockId = attribute(node, "data-block-id") ?? controls?.slice("plugin-toolcall-detail-".length);
+    const raw = blockId ? nativeTools.get(blockId) : undefined;
+    if (raw) return [...apiProcessBlocks({ api: { blocks: [raw] } }, input.diagrams, input.resources), ...nestedWorks];
+    const refs = sources.addAll(capturedReferences(serializeOuter(node), "kimi-search"));
+    const full = textContent(node).trim();
+    return [{ type: "tool", kind: "activity", title, ...(refs.length ? { output: { sources: refs } } : full && full !== title ? { output: { text: full } } : {}) }, ...nestedWorks];
+  };
+  const result = projectFragment({ ...base, html: reading, process, finalize: true });
+  // Old captures can omit process panels entirely, while retaining their
+  // payload as a leading group. Keep that documented legacy fallback only.
+  return observed ? result : [...apiProcessBlocks(message, input.diagrams, input.resources), ...result];
+}
+
+function capturedKimiSources(reading: string): JsonObject[] {
+  return descendants(parseFragment(reading)).filter(n => hasClass(n, "osis-sources")).flatMap(section => descendants(section).filter(n => n.tagName === "a").flatMap(link => {
+    const url = httpUrl(attribute(link, "href")); if (!url) return [];
+    const meta = link.parentNode ? descendants(link.parentNode).find(n => hasClass(n, "osis-source-meta")) : undefined;
+    return [{ url, title: textContent(link).trim(), ...(meta ? { site_name: textContent(meta).trim() } : {}) }];
+  }));
 }
 
 function linearMessages(payload: JsonObject, limitations: JsonObject[]): JsonObject[] {
@@ -716,6 +848,7 @@ function treeMessages(payload: JsonObject, limitations: JsonObject[]): JsonObjec
 async function parseKimi(context: AdapterParseContext, profile: Profile, payloadName: string): Promise<JsonObject> {
   const limitations: JsonObject[] = [];
   const resources = new KimiResourcePool();
+  const work = context.extensions?.kimiRichContent ? new KimiRichContent(context.extensions.kimiRichContent, new WorkResources(resources.values)) : undefined;
   const sources = new KimiSourcePool();
   const fragments = new Map<string, string[]>();
   for (const fragment of context.reading?.fragments ?? []) {
@@ -724,13 +857,15 @@ async function parseKimi(context: AdapterParseContext, profile: Profile, payload
     fragments.set(fragment.messageId, list);
   }
   const rawMessages = profile === "tree" ? treeMessages(context.payload, limitations) : linearMessages(context.payload, limitations);
+  work?.validateOwners(new Set(rawMessages.map(m => sourceText(m["id"])!)));
   const localIds = new Map(rawMessages.flatMap((message, index) => {
     const id = sourceText(message["id"]);
     return id ? [[id, `m${index + 1}`] as const] : [];
   }));
   const messageTimes: string[] = [];
-  const conversationModel = sourceText(object(context.payload["chat"])?.["model"]);
-  if (conversationModel) context.record?.conversationModel(conversationModel);
+  // chat.model / lastRequest.options.model describe the conversation's last
+  // selection, not the authors of its historical messages. Keep that evidence
+  // in the original HTML; absent message-scoped evidence uses the Kimi Front.
   const messages = await mapSequential(rawMessages, async (message, index) => {
     const owner = sourceText(message["id"])!;
     const diagrams = new KimiDiagramPool(message["diagrams"]);
@@ -741,10 +876,13 @@ async function parseKimi(context: AdapterParseContext, profile: Profile, payload
     });
     const htmlFragments = fragments.get(owner) ?? [];
     for (const html of htmlFragments) diagrams.observeHtml(html);
-    const process = message["role"] === "assistant" ? restoreCapturedProcess(apiProcessBlocks(message, diagrams, resources), htmlFragments.join("")) : [];
-    const body = htmlFragments.flatMap((html) => projectFragment({ html, attachments, diagrams, resources, limitations }));
+    const nativeToolIds = new Set(values(object(message["api"])?.["blocks"]).flatMap(raw => {
+      const block = object(raw), id = sourceText(block?.["id"]); return block?.["type"] === "tool" && id ? [id] : [];
+    }));
+    const projection = { html: htmlFragments.join(""), attachments, diagrams, resources, limitations, nativeToolIds, owner, ...(work ? { work } : {}) };
+    const body = message["role"] === "assistant" ? orderedKimiContent(projection, message, htmlFragments, sources) : projectFragment(projection);
     const topologyOnly = profile === "tree" && !object(message["api"]) && htmlFragments.length === 0;
-    if (htmlFragments.length === 0 && !topologyOnly) {
+    if (htmlFragments.length === 0 && !topologyOnly && body.length === 0) {
       const api = object(message["api"]);
       const text = values(api?.["blocks"]).flatMap((raw) => {
         const block = object(raw);
@@ -754,8 +892,9 @@ async function parseKimi(context: AdapterParseContext, profile: Profile, payload
       if (text.length > 0) body.push(...text.flatMap((value) => projectProcessMarkdown(value, diagrams, resources, "markdown")));
       else limitations.push({ code: "kimi_reading_fragment_missing", at: `/messages/${index}`, detail: "The source payload had a message but no owned rich reading fragment" });
     }
-    const sourceIds = sources.addAll([...values(message["sources"]), ...htmlFragments.flatMap(html => capturedReferences(html, "kimi-search"))]);
-    const content = [...process, ...body];
+    const ownSources = values(message["sources"]);
+    const sourceIds = sources.addAll(ownSources.length ? ownSources : capturedKimiSources(htmlFragments.join("")));
+    const content = [...body, ...(work?.remaining(owner) ?? [])];
     if (sourceIds.length > 0) content.push({ type: "citations", sources: sourceIds });
     const api = object(message["api"]);
     const time = timestamp(api?.["create_time"]);
@@ -816,11 +955,11 @@ async function parseKimi(context: AdapterParseContext, profile: Profile, payload
 function manifest(id: string, payload: string, profile: Profile): AdapterManifest {
   return {
     id,
-    version: "3.0.6",
+    version: "3.0.11",
     family: "kimi",
     routes: [{ format: "exporter-html", platform: "kimi", payload, profile }],
-    target: "cloudig/conversation/1.0.0",
-    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "2.0.3", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
+    target: "cloudig/conversation/1.0.2",
+    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "2.0.3", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
   };
 }
 

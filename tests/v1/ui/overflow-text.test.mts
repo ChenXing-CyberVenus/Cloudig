@@ -51,6 +51,15 @@ test("only overflowing titles move, reach their exact end, and reset when leavin
   } finally { scope.cleanup(); }
 });
 
+test("the complete row starts its title and movement inside the row does not restart it",()=>{
+ const scope=fixture();try{
+  const row=scope.dom.window.document.createElement("div"),meta=scope.dom.window.document.createElement("i");row.dataset["overflowScope"]="";row.title=scope.long.textContent!;scope.root.prepend(row);row.append(scope.long,meta);
+  scope.pointer(meta,"pointerover");scope.frame(0);scope.frame(1000);assert.equal(scope.long.scrollLeft,31.2);
+  scope.pointer(meta,"pointerout",scope.long);scope.pointer(scope.long,"pointerover",meta);scope.frame(1500);assert.equal(scope.long.scrollLeft,55.2);
+  scope.pointer(scope.long,"pointerout",scope.short);assert.equal(scope.long.scrollLeft,0);assert.equal(scope.frames.size,0);
+ }finally{scope.cleanup();}
+});
+
 test("responsive resize, replacement and cleanup cannot leave a shifted title or a live frame", () => {
   const scope = fixture();
   try {

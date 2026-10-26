@@ -4,6 +4,7 @@ import { orderJson } from "../../core/contracts/deterministic-json.mts";
 import type { JsonObject, JsonValue } from "../../core/contracts/types.mts";
 import { isJsonObject } from "../../core/contracts/types.mts";
 import { projectClaudeOfficialCard } from "./claude-official-cards.mts";
+import { claudePlatformFlag } from "./claude-platform-flag.mts";
 
 function text(value: JsonValue | undefined): string | undefined {
   if (typeof value !== "string") return undefined;
@@ -291,8 +292,7 @@ function otherContent(raw: JsonObject): JsonObject | undefined {
   if (type === "flag") {
     // The discriminator proves platform authorship; a new flag value does not
     // need a new parser. Keep every accompanying field, not just the flag code.
-    const { type: _type, start_timestamp: _start, stop_timestamp: _stop, ...details } = raw;
-    return { type: "status", title: "Claude platform flag", text: readableJson(details), format: "text" };
+    return claudePlatformFlag(raw);
   }
   if (type === "token_budget") {
     return raw["remaining"] === undefined || raw["remaining"] === null

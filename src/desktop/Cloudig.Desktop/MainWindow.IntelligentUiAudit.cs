@@ -8,6 +8,7 @@ public partial class MainWindow
 {
     private async Task VerifyIntelligentUiAsync(VisualAuditOptions audit)
     {
+        if(audit.Query.Contains("dil-primitives=1",StringComparison.Ordinal)){await VerifyDilPrimitivesAsync(audit);return;}
         if(audit.Query.Contains("dil-fidelity=1",StringComparison.Ordinal)){await VerifyDilFidelityAsync(audit);return;}
         var facts = new List<JsonElement>();
         async Task<string> Read(string js, CoreWebView2Frame? frame = null) => frame is null ? await WebView.CoreWebView2.ExecuteScriptAsync(js) : await frame.ExecuteScriptAsync(js);
@@ -34,6 +35,29 @@ public partial class MainWindow
         const string views="[...document.querySelectorAll('.reader-conversation-scroll .cloudig-dil-view')]";
         string View(string prefix)=>$"{views}.find(n=>n.innerText.trim().startsWith({JsonSerializer.Serialize(prefix)}))";
         await Wait($"{views}.length>=40&&!document.querySelector('.cloudig-dil-loading')");
+        if(audit.Query.Contains("search-gallery-review=1",StringComparison.Ordinal))
+        {
+            var carousels="[...document.querySelectorAll('[data-dil-carousel=scroll]')]";
+            var carouselCount=int.Parse(await Read(carousels+".length"));if(carouselCount<1)throw new InvalidDataException("No native scroll gallery in real source");
+            for(var i=0;i<carouselCount;i++)
+            {
+                var rail=$"{carousels}[{i}]";var stage=$"({rail}).querySelector('.cloudig-dil-carousel-stage')";
+                await Point(stage);await Wait($"[...({stage}).querySelectorAll('img')].every(n=>n.complete&&n.naturalWidth>0)");
+                await Capture("native-gallery-"+i);
+                var geometry=await Read($"(()=>{{const n={stage};return{{items:n.children.length,width:n.clientWidth,scrollWidth:n.scrollWidth,itemWidths:[...n.children].map(c=>c.getBoundingClientRect().width)}}}})()");
+                using(var row=JsonDocument.Parse(geometry))facts.Add(row.RootElement.Clone());
+                if(await Read($"({stage}).scrollWidth>({stage}).clientWidth+1")=="true"){
+                    await Pointer($"({rail}).querySelector('[data-dil-scroll-direction=\"1\"]')");await Wait($"({stage}).scrollLeft>0");await Capture("native-gallery-next-"+i);
+                    await Pointer($"({rail}).querySelector('[data-dil-scroll-direction=\"-1\"]')");await Wait($"({stage}).scrollLeft<1");
+                }
+            }
+            var tracks="[...document.querySelectorAll('.cloudig-search-reference-track')]";
+            var total=int.Parse(await Read(tracks+".length"));if(total<2)throw new InvalidDataException("Single image/news pair missing");
+            for(var i=0;i<total;i++){await Point($"{tracks}[{i}]");await Wait($"[...{tracks}[{i}].querySelectorAll('img')].every(n=>n.complete&&n.naturalWidth>0)");await Capture("search-reference-"+i);}
+            const string meta="[...document.querySelectorAll('.cloudig-message-meta')].find(n=>n.querySelector('time')&&n.querySelector('.cloudig-model-tag'))";
+            await Point(meta);await Wait($"(()=>{{const n={meta};return n.querySelector('.cloudig-model-tag').getBoundingClientRect().top>=n.querySelector('time').getBoundingClientRect().bottom}})()");await Capture("model-time-lines");
+            await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".gallery-review.json"),JsonSerializer.Serialize(new{carousels=facts,searchTracks=total,modelSeparateLine=true}));return;
+        }
         if(audit.Query.Contains("dil-progress=1",StringComparison.Ordinal))
         {
             var checklist=View("兼容性测试清单");
@@ -237,7 +261,7 @@ public partial class MainWindow
         await Wait($"(()=>{{const b=({View("B03")}).querySelector('button[type=submit]'),i=b.querySelector('.cloudig-dil-icon');return i&&getComputedStyle(i).color===getComputedStyle(b).color}})()");
         await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".dil-layout.json"),"{\"range_min\":0,\"range_max\":360,\"colors\":"+colors+",\"surfaces\":"+surfaces+"}");
         await Wait("[...document.querySelectorAll('.cloudig-dil-icon>.cloudig-box-image')].every(n=>n.getBoundingClientRect().height>0&&getComputedStyle(n).maskImage!=='none')");
-        await Wait("[...document.querySelectorAll('.cloudig-dil-gallery .cloudig-gallery-stage')].every(n=>getComputedStyle(n).display==='grid'&&n.getBoundingClientRect().height<=221)");
+        await Wait("[...document.querySelectorAll('.cloudig-dil-gallery .cloudig-gallery-stage')].every(n=>{if(getComputedStyle(n).display!=='grid')return false;const box=n.closest('.cloudig-dil-gallery');if(!box.hasAttribute('data-image-ratio'))return n.getBoundingClientRect().height<=221;const parts=getComputedStyle(box).getPropertyValue('--cloudig-image-ratio').split('/').map(Number),ratio=parts[0]/(parts[1]||1),children=[...n.children],h=n.getBoundingClientRect().height;return children.length>0&&children.every(c=>{const r=c.getBoundingClientRect();return r.width>0&&Math.abs(r.height-r.width/ratio)<2&&Math.abs(h-r.height)<2})})");
         var gallery=$"({View("E02")}).querySelector('.cloudig-gallery-arrow:last-child')";
         if(await Read($"Boolean({gallery})")=="true") { await Pointer(gallery); await Capture("dil-gallery-page"); }
         // Real pointer + keyboard input must update a sibling view, not a copy.
@@ -264,7 +288,11 @@ public partial class MainWindow
             foreach(var candidate in _savedWorkAuditFrames.Where(f=>!_destroyedSavedWorkAuditFrames.Contains(f)).Reverse())if(await Read("location.hash",candidate)==hash){frame=candidate;break;}
             if(frame is null)throw new InvalidDataException("Native Window frame missing");
             await Wait("document.fonts.status==='loaded'",frame);
-            await Wait($"getComputedStyle(document.documentElement).colorScheme==={JsonSerializer.Serialize(originalTheme.Contains("star-night")?"dark":"light")}",frame);
+            await Wait($"document.querySelector('.cloudig-dil-window').dataset.theme==={originalTheme}");
+            // Independent authored canvases can deliberately remain light.
+            // The host theme must be correct, but the frame follows its own
+            // documented canvas fallback, not an unconditional dark override.
+            await Wait("(()=>{const declared=document.querySelector('style[data-cloudig-canvas-scheme]')?.textContent.match(/color-scheme:\\s*(light|dark)/)?.[1];return declared&&getComputedStyle(document.documentElement).colorScheme===declared})()",frame);
             await Wait("document.scrollingElement.scrollHeight<=innerHeight+2",frame);
             await Task.Delay(300);
             var geometry=await Read("(()=>{const d=document.querySelector('.cloudig-dil-window'),b=d.querySelector(':scope>.cloudig-interactive-body'),f=d.querySelector('iframe'),r=d.getBoundingClientRect();return{windowHeight:innerHeight,dialog:r.height,top:r.top,bottom:r.bottom,layout:d.dataset.workLayout,target:parseFloat(d.style.getPropertyValue('--cloudig-window-height')),available:b.clientHeight,content:b.scrollHeight,frame:f.getBoundingClientRect().height,width:f.getBoundingClientRect().width}})()");
@@ -301,7 +329,21 @@ public partial class MainWindow
             var restore=await Point("document.querySelector('.reader-catalog-toggle-zone')");await Mouse("mouseMoved",restore.X,restore.Y);await Task.Delay(180);
             await Pointer("document.querySelector('[data-reader-catalog-toggle=collapse]')");
         }
-        await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".intelligent-ui.json"),JsonSerializer.Serialize(new{windows=facts,linked=true,closed=true,zoom=WebView.ZoomFactor}));
+        var webCards=new List<JsonElement>();
+        var webCount=int.Parse(await Read("document.querySelectorAll('.cloudig-search-reference-track').length"));
+        for(var i=0;i<webCount;i++) {
+            var selector=$"document.querySelectorAll('.cloudig-search-reference-track')[{i}]";
+            var point=await Point(selector);
+            await Wait($"[...({selector}).querySelectorAll('img')].every(n=>n.complete&&n.naturalWidth>0)");
+            var metrics=await Read($"(()=>{{const n=({selector}),r=n.getBoundingClientRect(),items=[...n.children],c=items[0]?.getBoundingClientRect();return{{count:items.length,images:n.querySelectorAll('img').length,width:n.clientWidth,scrollWidth:n.scrollWidth,centerError:items.length===1?Math.abs(c.left+c.width/2-r.left-r.width/2):0}}}})()");
+            using(var measured=JsonDocument.Parse(metrics)){webCards.Add(measured.RootElement.Clone());}
+            await Capture("search-reference-"+i);
+            if(await Read($"({selector}).scrollWidth>({selector}).clientWidth+1")=="true") {
+                await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent",JsonSerializer.Serialize(new{type="mouseWheel",x=point.X,y=point.Y,deltaX=280,deltaY=0}));
+                await Wait($"({selector}).scrollLeft>0");await Capture("search-reference-scrolled-"+i);
+            }
+        }
+        await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".intelligent-ui.json"),JsonSerializer.Serialize(new{windows=facts,webCards,linked=true,closed=true,zoom=WebView.ZoomFactor}));
         TraceVisualAudit("intelligent-ui-passed","owned views;real input;linked score;bidirectional AppBlock;3 isolated windows;close releases frames");
     }
 }

@@ -70,7 +70,7 @@ Claude 已作为第 12 站进入验收范围，轻量（Light）、全量（Full
 
 - 当认证接口或当前已挂载 DOM 能以消息 ID、角色、顺序和关键计数证明与目标消息序列精确覆盖时，导出器可以走零滚动快路；仅仅“总数看起来相等”不构成完整性证明。
 - 精确覆盖不存在、任一身份或顺序不匹配、富内容仍缺失时，必须回到该平台原有的懒加载、虚拟列表补载和修复路径。性能优化不得用跳过正文、公开思考、图片、附件、来源或末条消息换取速度。
-- 以当前虚拟 DOM 为主要富正文来源的平台仍须按原契约滚动并等待稳定；接口只能提供顺序或贫化文本时，不能用它覆盖富 DOM。正式 ChatGPT、DeepSeek 等接口完整路径可以直接使用接口；Grok 的结构化 response API 可优先提供消息步骤、公开思考与来源，但富正文仍与页面 DOM 互补；临时 ChatGPT 以及 Gemini、豆包、Kimi、Mistral、元宝等 DOM 主导路径仍需实际补载。
+- 以当前虚拟 DOM 为主要富正文来源的平台仍须按原契约滚动并等待稳定；接口只能提供顺序或贫化文本时，不能用它覆盖富 DOM。正式 ChatGPT、DeepSeek 等接口完整路径可以直接使用接口；Grok 的结构化 response API 可优先提供消息步骤、公开思考与来源，但富正文仍与页面 DOM 互补；Mistral Work按§7.8验证API当前路径并定点补原生富视图，覆盖不全仍回退扫描；临时 ChatGPT 以及 Gemini、豆包、Kimi、元宝等 DOM 主导路径仍需实际补载。
 - 已证明完整的接口数据不是“脏数据”，也不应先做一轮无意义的全页滚动；反之，接口存在不等于它已经包含页面向用户展示的全部结构。
 
 ### 2.2 抢救优先、来源锁定与诊断分层
@@ -260,7 +260,7 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 | Grok | 已验收维护轨 `2.8.10-light` | `grok` | `grok-export-data` | `osis.grok.chat-export/light-dom-v2` | response API + 当前富 DOM；冷页面有界等待，短会话不要求滚动溢出 |
 | 豆包 | 已验收维护轨 `3.5.6-light` | `doubao` | `doubao-export-data` | `osis.doubao.chat-export/light-dom-v2` | 认证历史顺序 + 当前富 DOM |
 | ChatGLM 国内站 | 已验收维护轨 `2.5.8-light` | `chatglm` | `chatglm-export-data` | `osis.chatglm.chat-export/light-messages-v2` | `current_conversation` |
-| Kimi | 已验收 `2.9.10-light`（`2.9.9` 与 `2.9.8` 冻结） | `kimi` | `kimi-export-data` | `osis.kimi.chat-export/light-dom-v2` | 当前会话 DOM + Vue/ChatService；完整 `web_search` 任务与正文引用分层保存 |
+| Kimi | 已验收 `2.10.1-light`；旧 `2.9.12-light` 已冻结 | `kimi` | `kimi-export-data`，可选 `kimi-rich-content` | `osis.kimi.chat-export/light-dom-v2` | 当前会话 DOM + Vue/ChatService；搜索/引用分层，新增作品材料见§7.7 |
 | Mistral | 已验收维护轨 `2.5.11-light` | `mistral` | `mistral-export-data` | `osis.mistral.chat-export/light-dom-rsc-v2` | active branch；DOM + Next Flight |
 | Qwen | 已验收维护轨 `2.6.9-light` | `qwen` | `qwen-export-data` | `osis.qwen.chat-export/light-messages-v2` | active branch；API + DOM |
 | Z.ai | 已验收维护轨 `2.7.9-light` | `zai` | `zai-export-data` | `osis.zai.chat-export/light-messages-v2` | `active_branch`；API + DOM |
@@ -293,6 +293,7 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 - `thinking` 保存公开思路摘要或可见内容；`recap` 单独保存时长、文本和 effort。Canvas/writing block、搜索、引用、工具调用和生成内容也不是普通纯文本段落。公开搜索来源必须附在所属助手回答末尾，不能集中挪到页面底部。
 - ChatGPT code/tool item 可选保存 `reasoning_title` 与有序 `reasoning_titles[]`。它们是页面公开显示的工具活动标题和步骤，不是原始工具参数，也不是隐藏思维；Parser 应按原 item 顺序保留为公开 tool/status 内容，不能因为 `text` 已含 query 就丢弃。
 - 分页消息中 `metadata.is_thinking_preamble_message: true` 的 assistant text 是页面公开的思考前言。主 mapping 可能省略该节点，但后续工具消息仍以 `metadata.parent_id` 指向它；导出器应把前言作为 `kind: thinking / visibility: public_preamble / preamble: true` 的有序 item 放在该工具前，不把它伪造为树节点。缺少直接 parent 证据时只能按同一 generation 标识归属。
+- GPT Light3.7.74／Full、Tree1.0.71候选：主树中的明确公开纯文本前言保留既有`kind: assistant`、parts、模型、来源、附件，新增可选`presentation: public_preamble`供阅读面去除独立回答头。晚于最终回复的记录只在同一路径同一generation已有明确公开过程锚点时投影归位；普通短回复/未完成回复不删除。Tree轮次`node_ids`按展示顺序，`raw_node_ids`、原始nodes的parent/children和current_path保持原存储序列；旧消费者可忽略新增字段，不能把展示投影反写原树。
 - ChatGPT `content_references` 不是只含 URL 的网页引用。过去会话和保存记忆必须规范化到所属助手 item 的 `memory_sources[]`：`kind` 为 `past_chat` 或 `saved_memory`，`title` 保存会话标题或记忆正文，`capture` 记录取得路径；`url`、`snippet`、`citation_uuid` 与 `reason` 可选。普通网页来源继续使用 `sources[]`，`Files` 等上下文来源继续走附件/资源合同。完整 `conversation_context_citation_metadata` 可直接解析；`conversation_context_citation_metadata_status` 为 `marker_only` 时，须按每条消息读取其 `conversation_context_sources` 事件流，并按可见性结果过滤过去会话。轻量（Light）/ 全量（Full）覆盖当前所选分支全部消息，整树（Tree；内部 AllBranches）覆盖整个 `mapping`，不可只扫描当前虚拟 DOM。保存记忆不得因共享个性化设置 URL 而合并，优先用 `citation_uuid`，否则用正文指纹。DOM 面板只作有界救援且必须按消息所在 `section` 证明归属；动作控件不得入正文，未解析内部标记不得单独渲染为“来源”。
 - `conversation_context_sources` 是 SSE；完成条件是 `status: done` 或 `[DONE]`，不是底层连接关闭。增量读取必须处理跨 chunk 的半行，完成后保留全部已解析来源并取消 reader；没有流式 body 时才回退整段文本兼容路径。
 - 临时会话运行时节点保留 `metadata.attachments`、`image_asset_pointer`、父子关系和当前叶。轻量（Light）使用既有缩略图管线，非图片附件保留元数据；全量（Full）/ 整树（Tree）通过取得的文件 ID 请求原始字节，不设置会话总容量硬上限。运行时捕获写入 `capture_mode: temporary_runtime_tree`、`temporary: true`、`conversation_id: null` 并保留原始 `source_url`。DOM 救援扫描仍须冻结已解码图片；只允许公开 OpenAI 搜索缩略图走限定代理兜底，认证图片和用户资源不得代理，并且每个图片任务必须有硬超时。
@@ -310,19 +311,51 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 - 快速模式与识图模式共用 schema，但附件/图片能力不同；解析器应按实际记录处理，不按页面模式预设必有或必无图片。
 - 普通货币符号与自然语言中的 `$` 不能被误判为公式。带长中文的 `boxed + tag/tag*`、嵌套数字/字母/罗马列表和非标准缩进必须保真。
 - 搜索/工具片段按原始 fragment 顺序保留在公开思考内；答案中的 `[reference:n]` 必须解析为可读链接，并在所属助手回答末尾保留该轮来源列表。
-- 原生 Mermaid 位于可见助手消息的 `.md-code-block` 与 `svg.mermaid-svg` 中；导出器以角色和规范化正文把无消息 ID 的 `.ds-message` 对齐接口活动分支，再按消息内序号配精确 fragment 源码。没有取得厂商 SVG 时只保存源码，不以近似图替代。
+- 原生 Mermaid 位于助手消息的 `.md-code-block` 与 `svg.mermaid-svg` 中。新候选优先读取所属消息React `messageId`及代码卡`code/infostring`，旧DOM结构仍以角色和正文对齐；按准确源码匹配，不在输出时按序号借图。没有取得厂商SVG时只保存源码，不以近似图替代。
 - 网页自身偶尔渲染错误不改变契约：只要能取得精确 TeX，离线 HTML 应正确渲染。
+
+2026-10-19候选 `2.8.11-light / 1.0.8-full / 1.0.9-all-branches`（待老婆验收）：
+
+- `capture.diagrams`记录当前路径目标图数量`expected`、已捕获`captured`和`scroll_attempts`；API正文完整时只补图目标，不全页重取文字。思考/正文都按消息ID和准确源码配图；原生代码视图及思考开合临时改变后恢复，不跨分支按序号借图。
+- `items[].code_artifacts`为附加字段：`id`、`message_id`、`fragment_index`、`code_index`、`fragment_type`、`language`、`source`、`mime_type`、`filename`、`provenance:"message_code_fence"`、`preview_mode`、`dependencies`。`source`保留围栏正文含结束换行（CRLF依既有文本规范转LF），不因预览清洗改写；HTML里的下载字节必须与此源码UTF-8一致。
+- 阅读层以`data-code-artifact-id`定位原位作品卡。静态预览在无脚本sandbox小框；`interactive`自包含程序只经用户点击在`allow-scripts`、无same-origin、无网络/设备权限的隔离框运行；`source`复杂程序只给源码及文件，不自动加载CDN/解释器。
+- 代码派生文件不是平台上传/生成附件，不混改原`attachments/resources`计数或Light原附件策略。外部依赖URL仅是声明，不等于已下载该依赖。Parser需要消费此附加字段才能建立相应作品对象，不把“HTML源码完整保存”冒充现行Reader已支持所有运行。
 
 ### 7.3 Gemini
 
-- 没有已采用的完整会话 API 路径；书签向上滚动直到当前 DOM 序列稳定，payload 明示 `current_dom_sequence_only`。
+- 普通正文仍向上加载到DOM序列稳定，payload明示`current_dom_sequence_only`。2026-10-19富内容候选另用原生会话分页补作品/源码/公开摘要，不据此把DOM正文和分支事实改成“完整API树”。
 - 已验收 Light `2.7.9-light` / Full `1.0.5-full` 逐条打开回答菜单中的“显示思考步骤”和“查看信息来源”，把公开思考正文放在所属回答之前，并把可点击来源及其标题、站点和摘要写回同一消息；生成图跨域 fetch/canvas 不可读时临时接管 `navigator.clipboard.write`，从该图“复制图片”的 `ClipboardItem` 取得图片 Blob 后立即恢复且不执行真正写入。Light 压成 WebP；Full 原样内嵌 PNG并标明页面复制来源；均不点击“下载完整尺寸的图片”，不额外产生图片文件。
 - 生成图片存在“首次进入视口才解码”的状态。必须先完成历史加载，再把生成图宿主带入视口，等待 `complete && naturalWidth`，然后编码；第一次导出不能只扫描节点。
 - payload 保存 messages、images、sources、artifacts、未知可见组件和懒加载统计；富 HTML 通过 `data-source-id` 对齐。
 - SVG/图示应保存静态快照；`gem-icon-button` 等交互控件不是正文。
 - Gemini 曾出现网页视觉编号与其复制 Markdown 不一致。已确认属于原站渲染问题；解析器应保存取得的源语义和证据，不自行“纠正”为猜测编号。
 
+#### 7.3.1 富内容补充载荷（2.7.15-light / 1.0.11-full已验收）
+
+- 既有`gemini-archive-data`及其schema不替换。`manifest.payload.rich_content`指向惰性JSON脚本`gemini-rich-content-data`，格式`osis.gemini.rich-content/v1`；旧消费者可继续读原载荷，新消费者按该引用合并，不能重复生成同一条消息。
+- `native_turns`保留原生回答窗口的完整记录；`native_window_metadata`保留附加数据区；`pagination`记录页数与完整游标终止事实，可选`retries`记录本次有界恢复次数。`coverage`记录当前DOM回答ID、原生缺失ID与分页/身份综合完整性；消息数相等不能替代它。请求中的会话鉴权字段不写入载荷。
+- `gemini-archive-data.messages[].model`独立于思维摘要，按精确回答ID取原生`turn[3][21]`；原生缺失才读同条回答详情。`model_provenance`区分`native_conversation.turn[3][21]`与`response_details.model_line`。无证据不拿当前模型选择器补全部历史；阅读层在回答末尾显示该轮模型。
+- `artifacts[]`以`key`、原站`id`、`message_id`归属；`kind`区分document/research/code/quiz/slides/visualize。`source`是原始文本（包括原围栏），`native_record`是原生结构，`updated_at`是原生修订时间。原生revision metadata的类型数值不是人类版本号，不能直接渲染为“版本1/2”。
+- 只读`ListArtifactVersions`返回值保存在`native_artifact_versions`；卡片的`history`含其他实际修订，原文逐版可下载。不会调用上一/下一版本导航、Create或Update来采集，也不将最新版重复引用当成多份历史源码。
+- Slides的`slides[]`保留原HTML和附预览包装的HTML，**不是分页数组**；Full通过原生导出取得的PPTX在`files[]`引用资源键。HTML只做文件卡、可读文本和源码入口，不重建完整演示应用。
+- Visualize预览、研究报告内图、媒体和字幕的真实字节放在`resources[]`；`data_url`或文本`text`只保存一次，`data-gemini-media`、`data-gemini-resource`等阅读节点引用其`key`。资源含名称、MIME、大小、可得SHA256与原来源；不能凭节点或文件名就判定已内嵌。
+- Quiz保存完整题库、正确标记、解析、提示；HTML只提供本地练习，不修改原站作答状态。`media_groups`保留原生标题、风格/标签和歌词原文；Full存影音字节，Light仍沿轻装媒体边界，但不丢文本源码、题库和字幕。
+- 普通回答的`messages[].sources`保留原生引用URL、标题、站点、摘要、`capture:native_citation`与`citation_ids`；原始引用组仍在`native_turns`，不把未经验证的数字字段猜成引用序号。文内chip以精确URL关联，来源面板是接口缺失时的回退，不以普通外链计数证明来源完整。
+- `media[].url`是原地址，`access_url`仅补原站当前账号参数供实际访问；Light明确为需登录的在线入口，不冒充内嵌文件。`artifacts[].preview_capture`现为`native_copy_image`或`isolated_source_render`；后者经用户授权，在临时独立源框中执行完整原作品，生成初始状态预览后销毁，**不是原页当前交互状态截图**。`preview_render`记录`state:source_initial_state`、公共库地址、`draw_calls`与`svg_nodes`。原始source不改，归档HTML不自动运行复杂作品。旧候选`native_same_theme_repaint`不再使用。
+- 研究报告保留正文、原始引用、`sources`中已引用/查阅来源、`research_process`原顺序和内嵌图源码。图与源码在作品自身原位，不追加到无关消息尾部。复杂交互完整运行交采云；完整源码已在HTML，不是等待以后再抓原站链接。
+- 错误继续进入原有`capture_diagnostics`；不存在阅读层错误条。候选实测/最终用户验收见[Gemini专项](docs/2026-10-19_Gemini富内容与Canvas专项研究-承光织云.md)，本文不宣布产品Parser已支持新增载荷。
+
 ### 7.4 Grok
+
+- BOT候选Light2.8.17／Full1.0.15／Tree1.0.17保留原`grok-export-data`与manifest格式，独立入口仅匹配`/bot/{id}`，`scope=bot_timeline`；普通`/c/`响应树路径不变。BOT为已证实的线性时间线，Tree范围等同Full，不产生虚构分支。
+- 可选`bot.format=osis.grok.bot-timeline/v1`：`agent_id/metadata`标识机器人；`records[]`保留`id/sequence/wire/raw`，其中wire是原分页条目，raw是其UTF-8/base64解码原文；按创建`seq`排序、按`updatedSeq`取同ID新修订，不能用更新时间重排消息。`history.pages/complete`记录逐页游标与真实结束；`projections[]`为阅读语义，不代替原件。未知卡片原结构保留在原位置，不尾追加。
+- `messages[].source_id`对应BOT entryId，新增`bot_kind/bot_sequence/bot_entry_version/timestamp/reply_to`；阅读节点保持`data-source-id`，另有`data-bot-kind`，系统事件为`data-role=system`。问答卡保存问题、所有选项、自定义答案及responded/skipped/dismissed独立状态；存档不提交原站动作或申请连接授权。时间未知不填零；系统事件不强行计入问答平衡。
+- BOT图片/文件的原`file:///home/...`是远端Bot电脑路径，不是用户本机文件，也不是HTTP图片代理地址。以原站只读`readAttachmentChunk`取得bytesBase64/mime/totalSize，逐块验证总长；资源记录`original_path/owner_ids`，既有图片/文件资源表保存状态与原字节。Light沿用缩略图＋普通文件元数据（`bot.file_metadata`，不混入images计数），Full/Tree保存可得原字节；同一资源多处出现按归属关联。认证会话不入档案，连接在导出结束关闭。
+- 本次真实BOT样本覆盖正文/链接、问答、连接卡、改名事件、回应、时间及图片；复杂审批、Canvas/语音、BOT内Mermaid没有实页样例，不把原结构保留冒称全部复杂呈现已验证。普通会话的公式/图表/附件/来源/分支另做邻接回归。
+
+- 2026-10-20性能候选2.8.13/1.0.11/1.0.13保留既有payload格式：Light/Full的`lazy_load.strategy`为`api_closed_path+targeted_native_messages`时，含`capture_ms`与`native_required_ids`；Tree在manifest.capture以`page_strategy`/`page_capture_ms`/`page_native_message_count`记录对应事实。缺路径/原生目标则回退完整扫描；诊断只入元数据，不能凭快路名称推断完整。
+
+- 2026-10-20正文候选2.8.12/1.0.10/1.0.12不改payload/schema。普通助手正文由本消息原始Markdown投影，阅读副本增加`.grok-api-body`容器，`data-source-id`身份不变。原生媒体/未知卡片及未寻址资源保留既有DOM路径；图源配对、资源原件、来源与公开思考仍按本消息归属。原始`raw_message`不因排版修正被重写，诊断仍只在元数据。
 
 - 2026-09-08已验收资源修正（Light2.8.10 / Full与Tree1.0.8）：不改payload/schema或资源字段。直接下载按持续数据重置30秒空闲计时，单资源180秒总等待、有限候选及独立重试信号；成功仍须完整读到流结束。原站样式的字体映射补充既有KaTeX候选，字体失败仍只入原有诊断元数据。Light不下载文件原件，Full/Tree维持原始文件与图片内嵌。
 
@@ -334,6 +367,13 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 
 ### 7.5 豆包
 
+- `3.6.1-light / 1.1.1-full`补逐条`doubao-export-data.messages[].timestamps`：原`create_time/update_time`秒值与`finish_time_ms`转ISO保存；阅读层`time[datetime]`对助手优先使用完成时间，否则使用创建时间，用户使用创建时间，记录`display_source/display_timezone`。未知时间不伪造，`updated_at`不代替发言时间。原生`elapsed_block`的“共用时”与消息时间戳分开；显示分/秒、保留`data-elapsed-seconds`，不冒充纯思考耗时。
+
+- `3.6.0-light / 1.1.0-full`新增富内容扩展（候选，验收状态看机器清单）：旧`doubao-export-data`与阅读DOM仍保留，额外惰性JSON脚本`doubao-rich-content`声明`schema: osis.doubao.rich-content/v1`。其中`messages[].native`保存原始消息/块；`works[]`保存renderer逐字HTML、依赖地址、显示模式与预览来源；`resources[]`保存文件身份、版本出现位置、类型/大小/状态及DOM定位；`cloud_artifacts[]`保存文档源文本、Slides原生block数据、Sheets各子表XML与版本信息；`subthreads[]`另存已完成子任务消息与分页完整性，不混入主消息序列。
+- Chat与Work可混在同一`/chat/`会话中；按真实块类型选择富内容投影，不按URL、标题或案例ID分类。块数组顺序是阅读顺序，`parent_id`是连续子内容归属，`collapse_block_id`是另一个显示分组字段，不得据此把正文/文件全收进思考；补取内容仍定位到消息ID＋块ID。阅读节点增加`data-doubao-block-id`、`data-doubao-work`、`data-doubao-resource`和`data-doubao-thread-id`。
+- 资源字节只在阅读DOM的`img/audio/video.src`或文件下载`a.href`中保存；新payload/manifest不重复存同一份base64，`resource_locator`说明对应`data-doubao-resource`键和`src/href`。媒体下载按钮复用播放器已经内嵌的同一字节；解析时不能只寻找`a[download]`而漏掉播放器。文件名不作资源唯一键，同名文件的不同消息/块/URI均保留。
+- Light继续保存WebP图片和普通附件元数据；renderer源码、云文档源数据两档均保存。Full另存普通文件、云PPTX/XLSX、视频/歌曲/播客原始字节；媒体后缀与MIME按已取得文件头校正，不转码、不把WAV叫MP3。复杂作品保存完整源码、已取得依赖与静态预览，交后续采云解释；自包含小交互仅用户点击后在无同源权能、无网络的隔离iframe内运行，不执行原站任务、授权、登录或插件安装。
+- 预览由作品原始程序临时隔离绘制后冻结，记录`preview_provenance`；原作品失败不伪造图、不改写源码，诊断仅入统一元数据。原始SSR的账号/认证/配置外壳不入档案，仅提取文档数据；认证header不保存。旧格式DOM及既有非标准TeX处理保持原路线。
 - 这是最脆弱的适配器：虚拟列表会回收节点，首次观察位置不代表时间顺序。书签用认证历史中的 reply 顺序校正，并在必要时补回 API-only 文本，但不得用贫化的接口正文覆盖已有富 DOM。
 - 解析器应以 payload 的 `message_order`、思考元数据和附件摘要校验顺序；完整富正文主要在带 `data-message-id` 的阅读 DOM 中。
 - 必须核对最后一条消息身份，不能只比较总数。终点消息放错位置时，计数仍可能完全相等。
@@ -351,6 +391,18 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 
 ### 7.7 Kimi
 
+2026-10-24消息时间候选：Light2.10.2把已读取的同ID、同角色ChatService `createTime`写入`kimi-export-data.messages[].api.create_time:{seconds,nanos}`，与Full/Tree既有字段同形。它是消息记录创建时间，不是完成时间；缺失或无效则省略。Full/Tree的`chat.model`及`chat.lastRequest.options.model`是会话/末次请求配置，不足以证明所有历史回复的模型，不能据此伪造逐消息模型；缺证继续回退平台名。
+
+2026-10-24作品支持已验收（Light2.10.1／Full、Tree1.1.1；继承10月23日作品候选合同）：
+
+- 旧`kimi-export-data`、消息树与阅读DOM不改合同；追加惰性`script#kimi-rich-content`，schema=`osis.kimi.rich-content/v1`，manifest的`rich_content`给出入口及独立作品/文件/资源计数。Parser可忽略此可选扩展继续读旧内容；它不是Reader已完成接入的声明。
+- `works`以`message_id/block_id/tool_call_id`或正式`references[].matchedText → FileRef`绑定原位。`source/native`是原值；Widget源码、网站版本、文件、PPTD、任务/插件/问答卡分型，工具结果镜像不另造正文。网站创建工具与原生版本卡是两种位置，只在版本卡显示作品入口，原工具仍留工具区。
+- `resources`记录原件/缩略图身份、MIME、字节、SHA及状态；内容可在`data_url`，也可由`package_id/package_entry`解引用。`packages`保存ZIP原包及成员表；同一成员不为每张文件卡再复制。`artifact_versions`以作品ID与版本绑定原生详情及版本资源；历史文件不按同名路径冒充当前工作区。二进制哈希相等时可共用内容，版本关系仍分别保留。
+- 三档均保留完整可得消息/工具原值、Widget逐字源码、网站版本身份和源码证据、PPTD主文本/各页文本/必要字体。Light保留文本/工程源、受限图片预览及普通二进制附件元数据；Full/Tree保存可读原字节及完整输出ZIP。`source_sha256`与保存副本的`sha256`分开，不能把缩略图宣称原图。
+- Widget简单自包含HTML/SVG/Canvas可显示隔离静态副本，点击“运行交互”后在无同源/无网络的隔离框执行原代码；原源码不改。WebGL、宿主消息桥、自定义组件或外部运行依赖复杂作品保留完整源码交采云，不在档案中伪造原站服务。颜色/字体按原生Widget宿主别名与当前页面语义变量记录，不逐案例猜CSS。
+- PPTD保留原生`presentation`文本及资源关系；复杂网站保留原包、原始工具源码记录和版本清单。原站仅提供工作区而无旧版本独立包时明确`source_status=version_tool_evidence`，不能把当前ZIP标成历史版本。定时任务/插件推荐是只读记录，不在离线页新建任务、安装插件或连接账户。
+- 错误仅写`diagnostics`，不向阅读层注入报错文案；原文/原件仍保存。完整性必须另查真实文件解码、源码哈希、原位数量及冷页/同页重复结果，成功吐司和文件体积都不等于通过。
+
 - payload 主要保存 `message_order`、公开过程、`search_tasks`、图示、公式、来源和附件；完整富正文保留在阅读 DOM 中，原始 Vue/Markdown 数据用于恢复精确 TeX。
 - Kimi's Computer 的 `web_search` 工具块在 ChatService 消息中直接带完整 `contents[]`。每个任务须保存查询、状态和全部搜索结果的标题、URL、站点、摘要及引用索引，并在 HTML 中作为默认折叠的工具任务显示；不能只留下“50 个结果”标题，也不需要依赖瞬时侧栏。
 - 正文引用与搜索候选是两层数据：新版页面的空 `.rag-tag` 可用有界悬停补 URL，但消息 `references[]` 也要作为完整性兜底。行内引用统一编号，回答末尾另列只含实际引用条目的 `来源`；不得把搜索任务的全部候选重复冒充正文引用。
@@ -360,8 +412,28 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 
 ### 7.8 Mistral
 
+2026-10-22 Slides呈现材料候选（Light2.5.16／Full、Tree1.0.12）：
+
+- `mistral-work-data`仍为`osis.mistral.work/v1`，不改原始`source/native`、`preview_html`提纲、PPTX或原下载`resource_ids`。Slides追加可选`presentation`，schema=`osis.mistral.slides-presentation/v1`、`kind=marp`、`provenance=verified_renderer_recipe`；这是按原站实测规则保存的离线呈现配方，不是本次DOM截图，也不是Reader已接入的声明。
+- `asset_key/message_id/message_version/version/source_sha256`绑定同一作品版本及原文；`renderer`给出`@marp-team/marp-core@4.3.0`、精确构造/渲染选项、原站外层代码围栏规范化与DOMPurify配置。Reader须随包提供转换组件，不在解析/阅读时联网；只写版本字符串不代表用户机器已安装此组件。
+- `css_resource_ids`依次为原站页面基础层、引擎基础CSS参考、主题叠加层；同时有`page_css_resource_id/renderer_css_resource_id/theme_css_resource_id`可直接寻址。先应用页面基础层，再用原文生成Marp CSS（不能漏作者自己的style），最后叠加保存的主题CSS；**不要把beam注册进themeSet来替代原站后叠加行为**。`theme.resolved_imports`中`./default.css`已由引擎基础规则满足，离线副本移除此导入，不发网络请求。
+- 上述资源与`license_resource_ids/dependency_resource_ids`仍进入原资源表，具有`role=presentation-style/presentation-license/presentation-dependency`、作品`asset_key`、真实`data_url/bytes/sha256`。它们不加入旧作品下载列表；旧Parser可继续忽略可选扩展，不多显示CSS/许可文件。manifest.work原`files`仅数原下载文件，新增`presentation_resources`独立计数。
+- `dependencies`保存Markdown/HTML图片、背景、字体、源码CSS导入关系及实际状态；CSS相对地址按自身URL解析，重复URL/循环不重复抓。Light图片沿用有界WebP、Full/Tree保留原字节；必要源码/样式/网页字体不因Light而丢弃。系统字体仅保留原生回退栈，不假称已取得字节或承诺跨系统逐像素相同。单项失败保留原件与关系，标`recipe-incomplete`并只记静默诊断；不是完整却偷偷依赖在线URL。
+- 当前已验证规则为`mistral-slides-2026-10-22`；原站接受的主题叠加为beam/default，未知声明保留，由引擎按其原生语义处理，叠加层回退default。不得因固定规则版本称未来改版仍相同。具体原站/离线四页对照、三轨冷页与重复证据及总包接入说明见[Mistral专项§14](docs/2026-10-20_Mistral-Work与Canvas专项调研及支持方案-承光织云.md#slides-presentation-candidate)。
+
+2026-10-20 Work候选扩展（Light2.5.14／Full、Tree1.0.10）：
+
+- `/chat/<id>`与`/work/<id>`同识别；`message.all`完整分页＋`chat.byId`＋`canva.all`提供结构，原生DOM补呈现。当前路径只有在DOM所有可见键均落入同一已知父版本链时才采用API快路，证据不全仍回退原扫描。公开思考正文已在本条chunk时不再为同一文本逐一展开。
+- 保留原`mistral-export-data`与manifest兼容字段；追加惰性JSON `script#mistral-work-data`，schema=`osis.mistral.work/v1`，manifest.work声明入口。`messages`保存本档所含消息的原始块；`canvases`保存key(id::version)、类型、标题、归属消息/版本、source、native原值、resource_ids及preview_html；`resources`保存id、asset_key、name、mime、data_url、status、provenance。复杂作品由采云解释，不自动执行其源码。
+- 工具`publicResult`可为结果数组外壳、ID映射、JSON字符串或普通字符串，原值全部留存；来源列表与调用结果并存。AFP/knowledge等非HTTP标识是source_uri，不补造站内URL；公开HTTP来源正常可点。
+- `contentChunks`决定正文/公开思考/工具/Canvas的原位；`custom_element`是定义，正文`component://URI`才是放置点，不重复显示定义。Chart/Stock保留原生SVG静态图及原数据，Checklist支持本地勾选；React/HTML/Slides等完整源码和可取文件保留。HTML作品只显示隔离无脚本静态副本，原文件逐字不改。
+- 三档均保留接口直接给出的Canvas源文件与内联XLSX，并使用原生导出返回的PPTX；原有Light图片压缩/普通附件元数据与Full/Tree原件策略不变。XLSX预览按workbook顺序与关系ID寻址，不以ZIP成员次序套标题。长Markdown Canvas的内嵌视图会显式截断，应按作品归属打开完整视图补图；原代码容器配对源码/图，完成后仅关闭本次打开的面板。
+- 诊断只写现有manifest.capture_diagnostics与原始扩展元数据，阅读正文不增加warning。逐条模型仅用本条字段；会话modelConfig仅作为“当前选择模型”，不回填历史消息。
+
+以下保留旧DOM/Flight兼容路径的约束；新Work API已提供完整公开正文时，不强制为同一段重复展开：
+
 - 结合可见 DOM 与 Next Flight/RSC 数据，payload 用 `{id, version}` 表示消息顺序，并记录同消息版本、父版本、分支标签、公开 Thought、工具与引用。
-- 只保存活动分支正文，但 manifest 可记录全部 payload 消息和非活动版本数量用于审计。
+- Light/Full只保存活动分支正文，Tree保存全部版本；manifest记录全部payload消息和非活动版本数量用于审计。
 - 用户可展开阅读的 Thought 必须实际展开、读取并保存；“页面载荷未公开的推理”与“用户可见 Thought”不能混为一谈。
 - 即使原网页没有正确显示上传的 TeX，能从源数据取得的矩阵和外框公式仍须由离线运行时正确渲染。
 - 多次虚拟列表扫描的图示证据必须做并集，后一次稀疏快照不得覆盖先前完整快照。同一容器保留全部 Mermaid/SVG 源码；重复图只在规范化 SVG 结构指纹存在唯一匹配时复用源码，冲突时不靠全局序号猜配。普通 SVG 没有作者源码时可提供清理后的 SVG 序列化源码。
@@ -388,6 +460,8 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 - 用户正文保留换行的 CSS 必须限定在用户角色，不能影响助手 Markdown 排版。
 
 ### 7.11 腾讯元宝
+
+2026-10-24消息时间候选（Light2.10.12／Full1.0.11）：`yuanbao-export-data.messages[].timestamps`可选含`create_time`（原生整数秒）、`created_at`（对应UTC ISO）、`source:"native_convs.createTime"`。从同会话、同agent、同消息ID且角色匹配的`convs[]`取得，用户与助手各有自己的值；虚拟窗口质量合并保留已验证时间，不以导出时间或回答时间补用户时间。旧档缺此字段仍正常解析；新字段的Reader显示需Parser明确接入。本次不改阅读层正文/样式、滚动策略或资源政策。
 
 - 依赖懒加载与虚拟列表扫描；payload 保存消息顺序、公开推理、附件、参考索引、来源索引和资源策略，完整富正文保留在带 `data-message-id` 的阅读 DOM 中。
 - 当前附件消息可能同时包含位于多模态前缀中的隐藏文字镜像和内容区中的可见正文。导出器必须在剥离 `class` / `style` 前按源节点与克隆节点的对应关系，只移除源页面中确实 `hidden`、`inert`、`aria-hidden`、`display:none` 或 `visibility:hidden` 的分支；不得对相同的可见段落做全局去重。图片与文件卡片仍应作为消息资源独立提取。
@@ -542,6 +616,10 @@ canonical JSON 不默认重复保存逐字段 locator、evidence、coverage、�
 
 ## 十一、工程入口
 
+### Claude 接口平台提示（2026-10-19，1.1.73候选）
+
+`messages[].blocks`中已有`{type: "flag", raw: 原始block}`保持不变；阅读层以原block次序输出`details.platform-notice[data-platform-notice="flag"]`，说明接口来源，不能作为助手正文、工具或导出器诊断。没有新payload schema，没有丢弃raw。只有已证实完整的静态flag免除DOM查找，未知形态保持原补取规则；同消息其他富内容不受豁免。
+
 ### Claude Chat 压缩状态（2026-10-16，1.1.70起；1.1.72已验收）
 
 三轨可选的 `messages[].page_status` 只补充原站明确公开的状态证据：`type: "compaction"`、`state: "done"`、`subject: "conversation"`、`label`、`message_id`、`after_message_id` 与 `provenance: "page-state.compactionHorizonUuid"`。消息原ID、父链和空content/blocks保留；不是新增助手正文、伪造工具调用或暴露内部压缩摘要。阅读层在原节点的分支位置显示一次“已压缩对话”，紧随对应父回复。仅此已证实状态豁免缺正文的DOM扫描；未知空节点及真实富内容仍按原逻辑补取。Cowork既有状态与文件/工具顺序不变；不要求读取旧档案时迁移。
@@ -552,13 +630,15 @@ canonical JSON 不默认重复保存逐字段 locator、evidence、coverage、�
 
 本节定义Intelligent UI三轨扩展；首次候选为3.7.59-light / 1.0.56-full / 1.0.56-all-branches，现行版本/验收状态以书签README及机器注册表为准。普通消息及现有厂商payload格式不改。
 
-- 存在DIL消息时，manifest的`extensions.chatgpt_intelligent_ui`指向唯一 inert JSON：`#chatgpt-intelligent-ui-data`，`format: "chatgpt-intelligent-ui/1.0"`。没有DIL的会话不增加该块。
+- 存在DIL消息，或3.7.70/1.0.67起存在原生搜索图片/新闻卡引用时，manifest的`extensions.chatgpt_intelligent_ui`指向唯一 inert JSON：`#chatgpt-intelligent-ui-data`，`format: "chatgpt-intelligent-ui/1.0"`。没有这些内容的会话不增加该块。
 - `records`按原生message ID索引；`raw.content`、`raw.metadata.model_dil_v2/content_references/view_state`保留API原值。源码、编译定义、常量、fallback、resolved组件数据与父子绑定是同一消息的多种材料，不应重复生成回答。
 - `capture`只记录保存时事实：API-only或API+DOM模式、控件值、编辑器当前文本、已原位嵌入文件ID等；默认源码状态与保存时状态不得混为一谈。`placements`记录有证据的引用寻址，不能把稀疏`start_idx=0`强放消息开头或末尾。
 - 2026-10-18可选派生事实：`capture.mode: "api_static_layout"`表示从受支持的静态定义得到阅读投影，不代表执行了来源程序或取得DOM；`capture.palette`保存实际观察到的语义颜色。新Cite从同消息`componentResults`解析真实来源，DOM绑定需完整顺序与标签共同吻合；代码中的原标记和`raw`不改。协议仍为1.0，旧档案无需迁移。
-- 冷页覆盖：可选`capture.native_expected`表示该记录属于当前分支、且不是公开思考前置文本，预期可取得正式原页界面。未完成挂载不能冒充`api_and_dom`；有界补载后仍缺失只在既有诊断内记`stage: native-coverage`，原始定义和可用回退继续保留。非当前Tree分支不因没有DOM报此缺口，也不自动切换原页分支。
+- 2026-10-21基础排版：经过组件/属性完整资格检查的文字、强调、标题、分隔线、普通列表与行内代码，可使用`api_static_layout`及可选`capture.renderer: "dil-typography/1"`，按已实测通用规则生成投影；未知组件、属性或状态仍走原页路径，`raw`不变。仅当同消息记忆来源已成功保存且原MemoryCite没有额外状态/子内容时，可标`capture.memory_sources_delegated: true`，复用消息下方既有完整来源清单，不重复制造空入口。
+- 冷页覆盖：可选`capture.native_expected`表示该记录属于当前分支、不是公开思考前置文本，且尚需原页呈现；已通过上述规则生成的静态投影不要求再取DOM。未完成挂载不能冒充`api_and_dom`；有界补载后仍缺失只在既有诊断内记`stage: native-coverage`，原始定义和可用回退继续保留。非当前Tree分支不因没有DOM报此缺口，也不自动切换原页分支。
 - 对应`items[].parts[]`使用既有`type: "html"`，新增`intelligent_ui: {format, record_id}`。`html`是阅读投影，受支持的基础控件由随档本地运行时激活；`markdown`保留fallback，两个字段不是两条内容。Tree的非当前分支没有DOM时仍保留完整定义/引用/可取得资源，不伪造页面快照。
 - 扩展的`resources`为字节池，`record.resource_ids`及`resolved_images/attachments/media`保留关系。`src`为实际data URI，`alias_of`只引用本池；`availability`区分原文件、像素快照或仅元数据。不能用“有URL”判成下载成功。
+- 2026-10-23搜索引用候选：`capture.mode: "api_content_references"`表示普通文本消息中的`image_v2`/`nav_list`，不是DIL程序；此时`model_dil_v2`可以缺省。完整`raw.content/content_references`保留原文、图片尺寸/多级地址、署名、新闻标题/发布时间/来源和未知字段。`reference_assets[引用数组下标][条目下标]`关联同一字节池，`parts[].intelligent_ui.projection: "search_references"`及原`markdown`关联原位HTML投影；不能把投影和原文重复渲染。单图/多图和新闻卡以原marker原位显示，不把普通行内来源变成新闻卡；无图片字节时保留标题与链接、静默诊断。Light压缩图片、Full/Tree优先原始地址及可得回退，公开搜索图沿用现有代理策略；未改变普通上传附件策略。
 - 普通卡片/表格/公式/原站SVG与图表直接阅读；复杂AppBlock、HTML程序在原位提供实际源码下载。每个消息的完整界面数据包带父作用域定义和所用资源，供采云继续解析；书签不执行来源程序。复制字面文本、链接、折叠、横向轮播不依赖来源业务服务。
 - 2026-10-16基础交互补充：可识别、无复杂组件的本地滑块/复选清单/表单/分段面板/条件反馈子树，可附`record.basic_interaction`，`format: "osis-basic-dil/1"`；`roots/declarations/states`是解析得到的受支持表达式计划，`state`是保存时已核对的控件值，`styles/icons/colors`为原页呈现材料。它是可选阅读派生层，不代替`raw`，也不要求Parser执行。复杂表达式或不明确的归属保持既有静态投影与完整原件，不把整个DIL或AppBlock脚本eval执行。原生按钮按共同布局和实际容器/伪元素样式映射；无新增业务请求或整页遍历。
 - Intelligent UI自身的ZIP/JSON等文件三轨均保存原字节；Light只沿用图片压缩策略，不能将组件本体变成纯链接。普通非DIL消息的既有档位含义不变。

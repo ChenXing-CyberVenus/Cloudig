@@ -1,5 +1,9 @@
 import { INTERACTIVE_PROTOCOL, type InteractivePackage } from "./interactive-protocol.mts";
 import { prepareInteractiveHtml } from "./interactive-document.mts";
+import { replayWorkScripts, finishWorkDocument } from "./interactive-script-replay.mts";
+import { isBinaryPreview, previewTarget } from "./file-preview-policy.mts";
+import { mountAudioControls } from "./media-controls.mts";
+import { installVideoPreview } from "./media-video-preview.mts";
 
 const token = location.hash.slice(1), parent = window.parent;
 let mounted = false;
@@ -18,26 +22,21 @@ window.addEventListener("message", async event => {
     const createUrl = (bytes: ArrayBuffer | string, mime: string) => { const url = URL.createObjectURL(new Blob([bytes], { type: mime })); urls.push(url); return url; };
     const html = prepareInteractiveHtml(input, document, createUrl);
     const parsed = new DOMParser().parseFromString(html, "text/html");
-    const scripts = [...parsed.querySelectorAll("script")].map((script, index) => {
-      const marker = parsed.createElement("template"), id = `${token}-${index}`;
-      marker.dataset["cloudigWorkScript"] = id; script.replaceWith(marker); return { script, id };
-    });
     // One sandbox is sufficient. Keep the running document and its Blob assets
     // in the dedicated work origin, never the application's origin.
     // The response's CSP/sandbox remain active when its document tree changes.
-    document.documentElement.replaceWith(document.importNode(parsed.documentElement, true));
-    for (const { script, id } of scripts) {
-      const target = document.querySelector(`[data-cloudig-work-script="${id}"]`); if (!target) continue;
-      const live = document.createElement("script");
-      for (const attr of script.attributes) if (!["async", "defer"].includes(attr.name)) live.setAttribute(attr.name, attr.value);
-      live.textContent = script.textContent; live.async = false;
-      if (live.src || live.type === "module") await new Promise<void>((resolve, reject) => {
-        live.onload = () => resolve(); live.onerror = () => reject(new Error("A saved work script could not load")); target.replaceWith(live);
-      }); else target.replaceWith(live);
+    await replayWorkScripts(document,parsed,token);
+    if(input.preview)for(const media of document.querySelectorAll<HTMLAudioElement>(".saved-media audio"))media.after(mountAudioControls(media,input.language==="en"));
+    if(input.preview)for(const video of document.querySelectorAll<HTMLVideoElement>(".saved-media video"))installVideoPreview(video,input);
+    const preview = previewTarget(input);
+    if (preview && isBinaryPreview(preview)) {
+      const runtime = (window as unknown as { CloudigFilePreview?: { render: (file: typeof preview, input: InteractivePackage) => Promise<void> } }).CloudigFilePreview;
+      if (!runtime) throw new Error("File preview runtime is missing");
+      await runtime.render(preview,input);
     }
-    document.dispatchEvent(new Event("DOMContentLoaded"));
-    await document.fonts.ready;
-    window.dispatchEvent(new Event("load"));
+    await finishWorkDocument(document);
+    const diagrams = (window as unknown as { CloudigDocumentPreview?: { render(): Promise<void> } }).CloudigDocumentPreview;
+    if (diagrams) await diagrams.render();
   } catch (error) { send("error", error instanceof Error ? error.message : "Could not open the saved work"); }
 });
 window.addEventListener("pagehide", () => { for (const url of urls) URL.revokeObjectURL(url); }, { once: true });

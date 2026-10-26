@@ -185,6 +185,25 @@ test("Parser and canonical diagnostics go to System Log without treating platfor
   ]);
 });
 
+test("large media attributes remain byte-exact without regex stack growth", async () => {
+  const MEDIA_BYTES = 24 * 1024 * 1024;
+  const CHUNK_BYTES = 256 * 1024;
+  const data = `data:audio/wav;base64,${Buffer.alloc(MEDIA_BYTES, 0x61).toString("base64")}`;
+  const html = `<article data-message-id="m1"><audio controls title="云中的歌曲" src='${data}' data-doubao-resource="song"></audio><a download="晨星&gt;歌曲.wav" href="${data}">Save</a></article><article data-source-id='m2'><p>After media</p></article>`;
+  const bytes = Buffer.from(html);
+  const chunks = function* () { for (let i = 0; i < bytes.length; i += CHUNK_BYTES) yield bytes.subarray(i, i + CHUNK_BYTES); };
+  const result = await extractStaticReadingEvidence(Readable.from(chunks()));
+  assert.equal(result.files.length, 1);
+  assert.equal(result.files[0]?.messageId, "m1");
+  assert.equal(result.files[0]?.name, "晨星>歌曲.wav");
+  assert.equal(result.files[0]?.dataUrl, data);
+  assert.equal(result.fragments.length, 2);
+  assert.ok(result.fragments[0]?.html.includes(`src='${data}'`));
+  assert.equal(result.fragments[1]?.messageId, "m2");
+  assert.equal(result.fragments[1]?.html, "<p>After media</p>");
+  assert.equal(result.fingerprint.bytes, bytes.length);
+});
+
 test("static Mermaid reading evidence is chunk-boundary independent and fingerprints the same bytes", async () => {
   const bytes = await readFile(fixture);
   const chunks: Buffer[] = [];
@@ -276,7 +295,7 @@ test("ChatGPT Light manifest and payload become one deterministic semantic Conve
     filePath: filePath(fixture)
   });
   assert.equal(first.adapter.id, "chatgpt-light-items-v2");
-  assert.equal(first.adapter.version, "3.0.7");
+  assert.equal(first.adapter.version, "3.0.10");
   assert.deepEqual(first.draft, second.draft);
   assert.deepEqual(first.sourceFingerprint, second.sourceFingerprint);
   assert.ok(progress.some((entry) => entry.phase === "fingerprint" && entry.completed === entry.total));
@@ -322,7 +341,7 @@ test("ChatGPT Full reuses semantic grouping but embeds captured attachment bytes
     await writeFile(source, full, "utf8");
     const parsed = await parseExporterHtmlToDraft({ filePath: source });
     assert.equal(parsed.adapter.id, "chatgpt-full-v1");
-    assert.equal(parsed.adapter.version, "3.0.7");
+    assert.equal(parsed.adapter.version, "3.0.10");
     const conversation = fullConversation(parsed.draft, {
       id: parsed.adapter.id,
       version: parsed.adapter.version
@@ -630,7 +649,7 @@ test("Grok Light preserves public thought, user newlines, owned images, Mermaid,
   const first = await parseExporterHtmlToDraft({ filePath: filePath(grokFixture) });
   const second = await parseExporterHtmlToDraft({ filePath: filePath(grokFixture) });
   assert.equal(first.adapter.id, "grok-light-dom-v2");
-  assert.equal(first.adapter.version, "3.0.7");
+  assert.equal(first.adapter.version, "3.0.8");
   assert.deepEqual(first.draft, second.draft);
   const conversation = fullConversation(first.draft, { id: first.adapter.id, version: first.adapter.version });
   assert.deepEqual(conversation["models"], ["grok-fixture"]);

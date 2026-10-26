@@ -9,7 +9,7 @@ import { isInboxImportLocation } from "../../core/records/layout.mts";
 import { recordValidationError } from "../../core/records/errors.mts";
 import { assertRecordLocation, confinedRelativePath, RECORD_STORAGE_LIMITS } from "../../core/records/layout.mts";
 import { uuidV7 } from "../../core/records/ids.mts";
-import { prepareRecordEncoding } from "../../core/records/encoding.mts";
+import { prepareRecordEncoding, reuseRecordEncoding, type PreparedRecordEncoding } from "../../core/records/encoding.mts";
 import { acquireSingleWriter } from "./writer-lock.mts";
 import { fingerprintFile, writeOwnedStagingFile } from "./stream.mts";
 import type { JsonObject } from "../../core/contracts/types.mts";
@@ -18,7 +18,7 @@ import transactionSchema from "./record-transaction.schema.json" with { type: "j
 import { inspectRecordConversation } from "../reader/record-resource.mts";
 
 export type RecordChange = Readonly<{ path: string; expected: string | null }> & (
-  | Readonly<{ action: "write"; kind: RecordKind; value: JsonObject }>
+  | Readonly<{ action: "write"; kind: RecordKind; value: JsonObject; encoding?: PreparedRecordEncoding }>
   | Readonly<{ action: "binary"; data: Uint8Array }>
   | Readonly<{ action: "import"; source: () => Readable; sha256: string; bytes: number; modifiedAt?: string; onProgress?: (bytes: number) => void }>
   | Readonly<{ action: "delete" }>
@@ -354,7 +354,7 @@ export async function commitRecords(rootInput: string, changes: readonly RecordC
       if (change.path.startsWith("Inbox/") && change.action !== "import") throw new TypeError("Inbox originals only enter through explicit no-replace import");
       let data: Uint8Array | undefined;
       let encoding: ReturnType<typeof prepareRecordEncoding> | undefined;
-      if (change.action === "write") { assertRecordLocation(change.kind, change.path, change.value); encoding = prepareRecordEncoding(change.kind, change.value); }
+      if (change.action === "write") { assertRecordLocation(change.kind, change.path, change.value); encoding = change.encoding ? reuseRecordEncoding(change.kind, change.value, change.encoding) : prepareRecordEncoding(change.kind, change.value); }
       else if (change.action === "binary") {
         if (!/^(?:Identities\/Images\/|appdata\/(?!transactions\/|recovery\/))/u.test(change.path)) throw new TypeError("Binary data is restricted to user images and internal state");
         data = Buffer.from(change.data);
@@ -439,7 +439,7 @@ export async function readStoredRecord(root: string, kind: RecordKind, relative:
 export async function readStoredConversationMetadata(root: string, relative: string, signal?: AbortSignal) {
   const result = await inspectRecordConversation(await resolveRecordPath(root, relative), signal);
   assertRecordLocation("conversation", relative, result.conversation);
-  return { value: result.conversation, sha256: result.fingerprint.sha256, resourceBodies: result.resourceBodies };
+  return { value: result.conversation, sha256: result.fingerprint.sha256, bytes: result.fingerprint.bytes, resourceBodies: result.resourceBodies };
 }
 
 /** Same writer exclusion can span an external native operation; its owner must release it. */

@@ -40,10 +40,18 @@ export type RecordExtractionObserver = Readonly<{
   block(value: JsonObject, facts: SourceMessageFacts): void;
 }>;
 
+export type ExporterExtensions = Readonly<{
+  chatgptIntelligentUi?: JsonObject;
+  geminiRichContent?: JsonObject;
+  doubaoRichContent?: JsonObject;
+  mistralWork?: JsonObject;
+  kimiRichContent?: JsonObject;
+}>;
+
 export type AdapterParseContext = Readonly<{
   manifest: JsonObject;
   payload: JsonObject;
-  extensions?: Readonly<{ chatgptIntelligentUi?: JsonObject }>;
+  extensions?: ExporterExtensions;
   source: Readonly<{
     file: string;
     bytes: number;

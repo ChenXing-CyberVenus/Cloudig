@@ -110,7 +110,8 @@ export function assembleConversationRecord(input: Readonly<{
   const previousTitle = obj(previous?.["title"]), title: JsonObject = {};
   if (Object.hasOwn(previousTitle, "filename")) title["filename"] = previousTitle["filename"]!;
   else if (!previous && (!["json-container", "zip-container"].includes(String(source["format"])) || facts.singleConversationFile)) {
-    const stem = path.parse(facts.filenameSource ?? String(source["file"])).name; if (stem) title["filename"] = stem;
+    const filename=facts.filenameSource ?? String(source["file"]);
+    const stem = path.parse(filename.replace(/\.jsonl\.zst$/iu,".jsonl")).name; if (stem) title["filename"] = stem;
   }
   if (text(draft["title"])) title["original"] = draft["title"]!;
   const current = facts.current ?? text(draft["current_message"]);

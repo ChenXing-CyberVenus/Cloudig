@@ -1,6 +1,6 @@
 {
   "schema": "cloudig/parser-history/1.0.0",
-  "current_parser": "1.1.39",
+  "current_parser": "1.1.51",
   "releases": [
     {
       "version": "1.0.0",
@@ -579,13 +579,19 @@
       "version": "1.1.22",
       "date": "2026-09-28",
       "source_commit": "b807c33ebfe46f699b47d977eb4ef8ea4175fdcd",
-      "adapters": { "chatgpt-official-json": "1.0.1" }
+      "adapters": {
+        "chatgpt-official-json": "1.0.1"
+      }
     },
     {
       "version": "1.1.23",
       "date": "2026-09-29",
       "source_commit": "4bbb0bee6bb696f6d6a054981a94accf04bfbcd0",
-      "adapters": { "chatgpt-official-json": "1.0.2", "grok-official-json": "1.0.2", "mistral-official-json": "1.0.2" }
+      "adapters": {
+        "chatgpt-official-json": "1.0.2",
+        "grok-official-json": "1.0.2",
+        "mistral-official-json": "1.0.2"
+      }
     },
     {
       "version": "1.1.24",
@@ -739,6 +745,160 @@
         "chatgpt-light-items-v2": "3.0.7",
         "chatgpt-full-v1": "3.0.7",
         "chatgpt-all-branches-v1": "3.0.7"
+      }
+    },
+    {
+      "version": "1.1.40",
+      "date": "2026-10-22",
+      "source_commit": "343a065e614f249033cfaae6f2b7505b6cf3945c",
+      "adapters": {
+        "chatgpt-light-items-v2": "3.0.8",
+        "chatgpt-full-v1": "3.0.8",
+        "chatgpt-all-branches-v1": "3.0.8",
+        "gemini-light-dom-v2": "3.0.6",
+        "gemini-full-v1": "3.0.6",
+        "deepseek-light-messages-v2": "3.0.5",
+        "deepseek-full-v1": "3.0.5",
+        "deepseek-all-branches-v1": "3.0.5",
+        "doubao-light-dom-v2": "3.0.5",
+        "doubao-full-dom-v1": "3.0.5",
+        "mistral-light-dom-rsc-v2": "3.0.7",
+        "mistral-full-v1": "3.0.7",
+        "mistral-all-branches-v1": "3.0.7",
+        "claude-light-dom-v1": "3.0.12",
+        "claude-full-capture-v1": "3.0.12",
+        "claude-all-branches-v1": "3.0.12"
+      }
+    },
+    {
+      "version": "1.1.41",
+      "date": "2026-10-22",
+      "source_commit": "0d19d6cea22ed88a9427bdc6ec6bdbe68480bcc6",
+      "adapters": {
+        "gemini-light-dom-v2": "3.0.7",
+        "gemini-full-v1": "3.0.7",
+        "doubao-light-dom-v2": "3.0.6",
+        "doubao-full-dom-v1": "3.0.6",
+        "mistral-light-dom-rsc-v2": "3.0.8",
+        "mistral-full-v1": "3.0.8",
+        "mistral-all-branches-v1": "3.0.8",
+        "mistral-official-json": "1.0.2"
+      }
+    },
+    {
+      "version": "1.1.42",
+      "date": "2026-10-22",
+      "source_commit": "44a62042e9b1358a3fba26bd5d05d74787c2c270",
+      "adapters": {
+        "doubao-light-dom-v2": "3.0.7",
+        "doubao-full-dom-v1": "3.0.7"
+      }
+    },
+    {
+      "version": "1.1.43",
+      "date": "2026-10-22",
+      "source_commit": "b3ab7b418292a0395bf3934509ea1df3913ad081",
+      "adapters": {
+        "doubao-light-dom-v2": "3.0.8",
+        "doubao-full-dom-v1": "3.0.8"
+      }
+    },
+    {
+      "version": "1.1.44",
+      "date": "2026-10-22",
+      "source_commit": "f07c131dcc2875dc0676ddfb05afceb2ba74bb8f",
+      "adapters": {
+        "gemini-light-dom-v2": "3.0.8",
+        "gemini-full-v1": "3.0.8"
+      }
+    },
+    {
+      "version": "1.1.45",
+      "date": "2026-10-23",
+      "source_commit": "ed0b50e29c1aa2b6a1a37454c3384a1a81361f0f",
+      "adapters": {
+        "codex-rollout-jsonl": "1.0.9",
+        "chatgpt-light-items-v2": "3.0.9",
+        "chatgpt-full-v1": "3.0.9",
+        "chatgpt-all-branches-v1": "3.0.9",
+        "grok-light-dom-v2": "3.0.8",
+        "grok-full-v1": "3.0.8",
+        "grok-all-branches-v1": "3.0.8",
+        "mistral-light-dom-rsc-v2": "3.0.9",
+        "mistral-full-v1": "3.0.9",
+        "mistral-all-branches-v1": "3.0.9"
+      }
+    },
+    {
+      "version": "1.1.46",
+      "date": "2026-10-24",
+      "source_commit": "36459cad2340fd64c982ef7a0f08780f2ff78890",
+      "adapters": {
+        "kimi-light-dom-v2": "3.0.7",
+        "kimi-full-dom-v1": "3.0.7",
+        "kimi-all-branches-v1": "3.0.7"
+      }
+    },
+    {
+      "version": "1.1.47",
+      "date": "2026-10-24",
+      "source_commit": "7eb054f19402ee665212d4ed0a7ca467376facf9",
+      "adapters": {
+        "kimi-light-dom-v2": "3.0.8",
+        "kimi-full-dom-v1": "3.0.8",
+        "kimi-all-branches-v1": "3.0.8"
+      }
+    },
+    {
+      "version": "1.1.48",
+      "date": "2026-10-24",
+      "source_commit": "600e6b4e51fa2464b2333aee30f373a8a6abf0b5",
+      "adapters": {
+        "chatgpt-light-items-v2": "3.0.10",
+        "chatgpt-full-v1": "3.0.10",
+        "chatgpt-all-branches-v1": "3.0.10",
+        "gemini-light-dom-v2": "3.0.9",
+        "gemini-full-v1": "3.0.9",
+        "deepseek-light-messages-v2": "3.0.6",
+        "deepseek-full-v1": "3.0.6",
+        "deepseek-all-branches-v1": "3.0.6",
+        "doubao-light-dom-v2": "3.0.9",
+        "doubao-full-dom-v1": "3.0.9",
+        "claude-light-dom-v1": "3.0.13",
+        "claude-full-capture-v1": "3.0.13",
+        "claude-all-branches-v1": "3.0.13"
+      }
+    },
+    {
+      "version": "1.1.49",
+      "date": "2026-10-25",
+      "source_commit": "2a7e8f86ea2f6d9fd2f12202930584e2ea5e4b83",
+      "adapters": {
+        "kimi-light-dom-v2": "3.0.9",
+        "kimi-full-dom-v1": "3.0.9",
+        "kimi-all-branches-v1": "3.0.9",
+        "yuanbao-light-dom-v2": "3.0.7",
+        "yuanbao-full-dom-v1": "3.0.7"
+      }
+    },
+    {
+      "version": "1.1.50",
+      "date": "2026-10-25",
+      "source_commit": "601a2ad268a8a2303c160d27b126819716d98144",
+      "adapters": {
+        "kimi-light-dom-v2": "3.0.10",
+        "kimi-full-dom-v1": "3.0.10",
+        "kimi-all-branches-v1": "3.0.10"
+      }
+    },
+    {
+      "version": "1.1.51",
+      "date": "2026-10-25",
+      "source_commit": "45054b7547f6c6128634c042473743fcb68a5ae1",
+      "adapters": {
+        "kimi-light-dom-v2": "3.0.11",
+        "kimi-full-dom-v1": "3.0.11",
+        "kimi-all-branches-v1": "3.0.11"
       }
     }
   ]

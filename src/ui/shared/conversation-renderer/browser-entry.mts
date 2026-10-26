@@ -5,6 +5,7 @@ import "./renderer.css";
 import "./structured-box.css";
 import "./interactive-window.css";
 import "./dil-view.css";
+import "./media-controls.css";
 
 export * from "./index.mts";
 export { formatEndpoint } from "../../../core/time/format-endpoint.mts";

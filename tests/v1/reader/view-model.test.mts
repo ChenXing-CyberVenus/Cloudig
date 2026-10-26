@@ -4,7 +4,7 @@ import test from "node:test";
 
 import { buildConversationPage, conversationMessagePath, DEFAULT_READER_SESSION } from "../../../src/app/reader/index.mts";
 import { buildConversationPageCore } from "../../../src/app/reader/view-model-core.mts";
-import { projectRecordForReading } from "../../../src/core/records/presentation.mts";
+import { projectRecordForReading, resolveRecordPresentation } from "../../../src/core/records/presentation.mts";
 import { finalizeConversation } from "../../../src/core/contracts/index.mts";
 import type { JsonObject } from "../../../src/core/contracts/types.mts";
 import type { ResolvedArchiveView } from "../../../src/core/library/overlay.mts";
@@ -127,6 +127,20 @@ const resolved: ResolvedArchiveView = {
   effectiveEditedAt: "2026-08-31T20:00:00.000Z"
 };
 
+test("external Agent task names are identities, not inferred model labels", () => {
+  const source: JsonObject = { platform: "codex", title: { filename: "Mailbox" }, models: ["actual-model"], lifecycle: { cloudig_edited_at: "2026-10-23T00:00:00Z" }, identity: [
+    { source_id: "assistant:actual-model", role: "assistant", names: [{ name: "actual-model", claimers: [] }], display_name: 1 },
+    { source_id: "agent-thread:helper", role: "assistant", names: [{ name: "/root/helper", claimers: [] }], display_name: 1 }
+  ], messages: { items: [{ id: "mail", speaker: "agent-thread:helper", content: [{ type: "text", text: "Report" }] }] } };
+  const presentation = resolveRecordPresentation({ conversation: source, language: "en", bindings: {}, identities: new Map(), availableAssets: new Set(), builtins: {
+    user: { name: "User", avatar: "user.svg" }, assistant: { name: "AI", avatar: "ai.svg" }, platforms: {}
+  } });
+  assert.deepEqual(presentation.models, ["actual-model"]);
+  const mail = (projectRecordForReading(source, presentation)["messages"] as JsonObject[])[0]!;
+  assert.equal((mail["party"] as JsonObject)["name"], "/root/helper");
+  assert.equal(mail["model"], undefined, "the sender path is not an actual model");
+});
+
 test("Conversation name overrides do not rename external Agent instances or system messages", () => {
   const source: JsonObject = {
     conversation_id: "00000000-0000-7000-8000-000000000001",
@@ -174,6 +188,24 @@ test("Conversation name overrides do not rename external Agent instances or syst
     effectiveEditedAt: resolved.effectiveEditedAt ?? ""
   }, { names: { assistant: "本篇助手" } }, { resolveAgentAvatar: () => "i_agent_instance" });
   assert.equal(((capabilityView["messages"] as JsonObject[])[1]?.["party"] as JsonObject | undefined)?.["avatar"], "i_agent_instance");
+});
+
+test("Mark model declarations reach main-assistant names without reassigning guest identity or source models", () => {
+  const front = (id: string, role: string, name: string): JsonObject => ({ source_id: id, role, names: [{ name, claimers: [] }], display_name: 1 });
+  const source: JsonObject = { conversation_id: "id", platform: "codex", identity: [front("main", "assistant", "Original model"), front("agent-thread:guest", "assistant", "Guest model"), front("system", "system", "System")], messages: { items: ["main", "agent-thread:guest", "system"].map((speaker, i) => ({ id: String(i), speaker, content: [] })) } };
+  const before = JSON.stringify(source);
+  for (const models of [["Edited model"], ["Model A", "Model B"], ["Codex"]]) {
+    const presentation = { conversationName: "Title", platform: "codex", models, userName: "U", assistantName: "A", userAvatar: "u", assistantAvatar: "a", contentTime: { state: "unavailable" as const }, effectiveEditedAt: "" };
+    const mark: JsonObject = { models: models[0] === "Codex" ? [] : models.map(name => ({ names: [{ name, claimers: [] }] })) };
+    const messages = projectRecordForReading(source, presentation, mark)["messages"] as JsonObject[];
+    assert.equal((messages[0]!["party"] as JsonObject)["name"], models.join(" / "));
+    assert.equal(messages[0]!["model"], undefined, "a list does not assign one model to a historical message");
+    assert.equal((messages[1]!["party"] as JsonObject)["name"], "Guest model"); assert.equal(messages[1]!["model"], undefined, "a guest display name alone is not runtime model evidence");
+    assert.equal((messages[2]!["party"] as JsonObject)["name"], "System");
+    const named = projectRecordForReading(source, presentation, { ...mark, names: { assistant: "Nickname" } })["messages"] as JsonObject[];
+    assert.equal((named[0]!["party"] as JsonObject)["name"], "Nickname");
+  }
+  assert.equal(JSON.stringify(source), before);
 });
 
 const auxiliaryPages = {

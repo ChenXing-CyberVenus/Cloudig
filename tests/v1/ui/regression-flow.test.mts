@@ -279,6 +279,16 @@ test("Archiver one-click is enabled for off-page pending files and passes only a
   root.querySelector<HTMLButtonElement>("[data-parse-settings-save]")!.click(); await settle(); assert.equal(saved[1], "Conversations"); controller.cleanup();
 }));
 
+test("an empty one-click plan opens the current settings instead of disabling the action or requesting confirmation", async () => environment(async document => {
+  const module=await ui("pages/archiver/archiver.js"),model=module.visualArchiverFixture();model.sources.statuses={pending:0,complete:1};
+  const controller=module.mountArchiver({template:document.querySelector("#archiver-template"),model,state:{language:"en",theme:"dawn",defaultOutputDirectory:"Conversations"}});document.body.append(controller.element);
+  assert.equal(controller.element.querySelector("[data-archiver-parse-all]").disabled,false);
+  const source=await readFile(path.join(shell,"shell.js"),"utf8"),start=source.indexOf("async function performArchiverParse("),end=source.indexOf("\nfunction showClaudeExtractionConfirmation",start),calls:string[]=[];
+  const run=new Function("beginRequest","currentPage","showActionError",`let activeParseOperation=null;${source.slice(start,end)};return performArchiverParse;`)((command:string)=>{calls.push(command);return{promise:Promise.resolve({state:"ready",plan:"pp_empty",total:0,items:[]})}},controller,(error:unknown)=>{throw error});
+  assert.equal(await run([],{one_click:true}),false);assert.deepEqual(calls,["archiver.parse.plan"]);
+  const panel=controller.element.querySelector("[data-archiver-parse-settings-popover]");assert.equal(panel.hidden,false);assert.match(panel.textContent,/No files can be parsed/);assert.equal(panel.querySelector("[data-parse-target-directory]").value,"root");controller.cleanup();
+}));
+
 test("Both one-click settings create directories in place without saving cancelled drafts, in Chinese and English", async () => environment(async (document, window) => {
   const archiver = await ui("pages/archiver/archiver.js"), claude = await ui("pages/archiver/claude-container.js");
   for (const language of ["zh-CN", "en"]) for (const kind of ["html", "claude"]) {

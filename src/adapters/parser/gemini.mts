@@ -11,6 +11,8 @@ import type { JsonObject, JsonValue } from "../../core/contracts/types.mts";
 import { isJsonObject } from "../../core/contracts/types.mts";
 import { embeddedBase64DataUrl, embeddedImageDataUrl } from "./embedded-data.mts";
 import { inertHtmlEvidence, inertHtmlFragment, preserveNestedImage } from "./inert-html.mts";
+import { GeminiRichContent } from "./gemini-rich.mts";
+import { WorkResources } from "./work-resources.mts";
 
 type Profile = "light" | "full";
 type ReadingImage = Readonly<{ messageId: string; dataUrl: string; alt?: string; width?: number; height?: number }>;
@@ -50,6 +52,24 @@ function timestamp(value: JsonValue | undefined): string | undefined {
   const numeric = typeof value === "number" ? value : Number.NaN;
   const date = new Date(typeof value === "number" && numeric > 0 && numeric < 10_000_000_000 ? numeric * 1000 : value);
   return Number.isFinite(date.valueOf()) ? date.toISOString() : undefined;
+}
+
+// Native hNvQHb turns bind an r_* response ID to a protobuf [seconds,nanos]
+// instant. This is response evidence, not the export time and not a timestamp
+// for the preceding user query. Match IDs, never DOM ordinal or prose.
+function nativeResponseTimes(payload: JsonObject | undefined): Map<string, string> {
+  const result = new Map<string, string>(), conflicted = new Set<string>();
+  for (const raw of values(payload?.["native_turns"])) {
+    if (!Array.isArray(raw) || !Array.isArray(raw[0]) || !Array.isArray(raw[4])) continue;
+    const id = raw[0][1], [seconds, nanos] = raw[4];
+    if (typeof id !== "string" || !/^r_[a-zA-Z0-9]+$/u.test(id) || typeof seconds !== "number" || !Number.isSafeInteger(seconds)
+      || typeof nanos !== "number" || !Number.isInteger(nanos) || nanos < 0 || nanos >= 1_000_000_000) continue;
+    const time = timestamp(seconds * 1000 + Math.floor(nanos / 1_000_000));
+    if (!time || conflicted.has(id)) continue;
+    if (result.has(id) && result.get(id) !== time) { result.delete(id); conflicted.add(id); }
+    else result.set(id, time);
+  }
+  return result;
 }
 
 
@@ -228,6 +248,10 @@ class GeminiResourcePool {
     }
     return result;
   }
+
+  claimRichImage(owner: string, dataUrl: string): void {
+    for (const entry of this.#reading.get(owner) ?? []) if (entry.value.dataUrl === dataUrl) entry.used = true;
+  }
 }
 
 class GeminiSourcePool {
@@ -279,7 +303,8 @@ function projectBody(
   rawHtml: string | undefined,
   fallbackText: string | undefined,
   attachments: readonly JsonObject[],
-  limitations: JsonObject[]
+  limitations: JsonObject[],
+  rich?: Readonly<{ projector: GeminiRichContent; owner: string }>
 ): Readonly<{ blocks: JsonObject[]; links: readonly string[] }> {
   if (!rawHtml) {
     return {
@@ -290,12 +315,26 @@ function projectBody(
   const markers = attachments.map((_, index) => `\uE000CLOUDIG_ATTACHMENT_${index}\uE001`);
   if (markers.some((marker) => rawHtml.includes(marker))) throw new TypeError("Gemini HTML collides with the internal attachment marker");
   const fragment = parseFragment(rawHtml);
+  const richBlocks: JsonObject[] = [];
+  if (rich) {
+    const replace = (parent: Parent): void => {
+      for (const child of [...parent.childNodes]) if (isElement(child)) {
+        const blocks = rich.projector.node(child, rich.owner);
+        if (blocks) {
+          const markers = blocks.map(block => { const index = richBlocks.length; richBlocks.push(block); return `\uE000CLOUDIG_GEMINI_RICH_${index}\uE001`; }).join("");
+          defaultTreeAdapter.insertBefore(parent, defaultTreeAdapter.createTextNode(markers), child); defaultTreeAdapter.detachNode(child);
+        } else replace(child);
+      }
+    }; replace(fragment);
+  }
   const used = { count: 0 };
   replaceAttachmentCards(fragment, markers, attachments, used);
-  const split = serialize(fragment).split(/(\uE000CLOUDIG_ATTACHMENT_[0-9]+\uE001)/u);
+  const split = serialize(fragment).split(/(\uE000CLOUDIG_(?:ATTACHMENT|GEMINI_RICH)_[0-9]+\uE001)/u);
   const blocks: JsonObject[] = [];
   const links: string[] = [];
   for (const part of split) {
+    const richMarker = /^\uE000CLOUDIG_GEMINI_RICH_([0-9]+)\uE001$/u.exec(part);
+    if (richMarker) { blocks.push(richBlocks[Number(richMarker[1])]!); continue; }
     const marker = /^\uE000CLOUDIG_ATTACHMENT_([0-9]+)\uE001$/u.exec(part);
     if (marker) {
       const attachment = attachments[Number.parseInt(marker[1]!, 10)];
@@ -346,7 +385,9 @@ function withoutRepresentedThinking(html: string | undefined, represented: reado
 }
 
 async function parseGemini(context: AdapterParseContext, profile: Profile, payloadName: string): Promise<JsonObject> {
+  const responseTimes = nativeResponseTimes(context.extensions?.geminiRichContent);
   const resources = new GeminiResourcePool(context.payload, context.reading?.images ?? []);
+  const rich = context.record && context.extensions?.geminiRichContent ? new GeminiRichContent(context.extensions.geminiRichContent, new WorkResources(resources.values), (owner, url) => resources.claimRichImage(owner, url)) : undefined;
   const sources = new GeminiSourcePool(context.payload);
   const limitations: JsonObject[] = [];
   const messages: JsonObject[] = [];
@@ -374,17 +415,22 @@ async function parseGemini(context: AdapterParseContext, profile: Profile, paylo
       if (!attachment) throw new TypeError("Gemini attachment occurrence is not an object");
       return resources.addAttachment(attachment, owner, limitations);
     });
-    const body = projectBody(withoutRepresentedThinking(sourceText(message["html"]), representedThoughts), sourceText(message["text"]), attachmentBlocks, limitations);
+    const body = projectBody(withoutRepresentedThinking(sourceText(message["html"]), representedThoughts), sourceText(message["text"]), attachmentBlocks, limitations, rich ? { projector: rich, owner } : undefined);
     content.push(...body.blocks);
+    if (rich) content.push(...rich.remaining(owner));
     content.push(...resources.addRemainingImages(owner, limitations));
     const citations = sources.forLinks(body.links);
     if (citations.length > 0) content.push({ type: "citations", sources: citations });
     const role = message["role"] === "user" ? "user" : message["role"] === "assistant" ? "assistant" : "other";
+    const time = role === "assistant" ? responseTimes.get(owner) : undefined;
     const recordParent = index > 0 ? sourceText(object(rawMessages[index - 1])?.["source_id"]) ?? `gemini-message-${index - 1}` : undefined;
-    context.record?.message(index, { id: owner, ...(recordParent ? { parent: recordParent } : {}), role });
+    const model = role === "assistant" ? sourceText(message["model"]) : undefined;
+    context.record?.message(index, { id: owner, ...(recordParent ? { parent: recordParent } : {}), role, ...(model ? { model } : {}) });
     messages.push({
       role,
       ...(role === "other" ? { name: sourceText(message["role"]) ?? "Gemini" } : {}),
+      ...(model ? { model } : {}),
+      ...(time ? { timestamp: time } : {}),
       content
     });
     await context.onProgress?.(index + 1, rawMessages.length);
@@ -414,6 +460,7 @@ async function parseGemini(context: AdapterParseContext, profile: Profile, paylo
     provider: "google",
     platform: "gemini",
     ...(title ? { title } : {}),
+    ...(messages.some(m => m["model"]) ? { models: [...new Set(messages.flatMap(m => typeof m["model"] === "string" ? [m["model"]] : []))] } : {}),
     messages,
     ...(resources.values.length > 0 ? { resources: resources.values } : {}),
     ...(sources.values.length > 0 ? { sources: sources.values } : {}),
@@ -424,20 +471,20 @@ async function parseGemini(context: AdapterParseContext, profile: Profile, paylo
 
 export const GEMINI_LIGHT_MANIFEST: AdapterManifest = {
   id: "gemini-light-dom-v2",
-  version: "3.0.5",
+  version: "3.0.9",
   family: "gemini",
   routes: [{ format: "exporter-html", platform: "gemini", payload: "osis.gemini.chat-export/light-dom-v2", profile: "light" }],
-  target: "cloudig/conversation/1.0.0",
-  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4"].map(version => ({ adapter: "gemini-light-dom-v2", version, action: "reparse_source" as const }))
+  target: "cloudig/conversation/1.0.2",
+  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8"].map(version => ({ adapter: "gemini-light-dom-v2", version, action: "reparse_source" as const }))
 };
 
 export const GEMINI_FULL_MANIFEST: AdapterManifest = {
   id: "gemini-full-v1",
-  version: "3.0.5",
+  version: "3.0.9",
   family: "gemini",
   routes: [{ format: "exporter-html", platform: "gemini", payload: "osis.gemini.chat-export/full-v1", profile: "full" }],
-  target: "cloudig/conversation/1.0.0",
-  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4"].map(version => ({ adapter: "gemini-full-v1", version, action: "reparse_source" as const }))
+  target: "cloudig/conversation/1.0.2",
+  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8"].map(version => ({ adapter: "gemini-full-v1", version, action: "reparse_source" as const }))
 };
 
 export const geminiLightAdapter: SourceAdapter = Object.freeze({

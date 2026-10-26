@@ -1,6 +1,216 @@
 {
   "schema": "cloudig/third-party-inventory/1.0.0",
   "scope": "runtime components, packages present in bundle metafiles, and explicitly bundled UI fonts",
+  "optional_runtime_components": [
+    {
+      "id": "pyodide-0.26.2",
+      "name": "Python · Pyodide 0.26.2",
+      "license": "MPL-2.0 / bundled Python licenses",
+      "delivery": "bundled",
+      "source": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/",
+      "bytes": 13796746,
+      "licenses": [
+        {
+          "file": "LICENSE",
+          "url": "https://raw.githubusercontent.com/pyodide/pyodide/0.26.2/LICENSE",
+          "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+        }
+      ]
+    },
+    {
+      "id": "tfjs-4.22.0",
+      "name": "TensorFlow.js 4.22.0",
+      "license": "Apache-2.0",
+      "delivery": "on-demand",
+      "bytes": 1481201,
+      "licenses": [
+        {
+          "file": "LICENSE",
+          "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "id": "mobilenet-2.1.1-tfjs-4.22.0",
+      "name": "Image recognition · MobileNet",
+      "license": "Apache-2.0",
+      "delivery": "on-demand",
+      "bytes": 16985791,
+      "licenses": [
+        {
+          "file": "Apache-2.0.txt",
+          "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "id": "tailwind-3.4.17",
+      "name": "Tailwind CSS 3.4.17",
+      "license": "MIT",
+      "delivery": "bundled",
+      "bytes": 408350,
+      "licenses": [
+        {
+          "file": "LICENSE",
+          "url": "https://cdn.jsdelivr.net/npm/tailwindcss@3.4.17/LICENSE",
+          "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985"
+        }
+      ]
+    },
+    {
+      "id": "font-awesome-6.5.1",
+      "name": "Font Awesome 6.5.1",
+      "license": "OFL-1.1 / MIT / CC-BY-4.0",
+      "delivery": "bundled",
+      "bytes": 1120708,
+      "licenses": [
+        {
+          "file": "LICENSE.txt",
+          "url": "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/LICENSE.txt",
+          "sha256": "0aa8f86525273b2efa4f40f4272a188e187704252170e979dc06879adf68d43c"
+        }
+      ]
+    },
+    {
+      "id": "noto-sans-sc-20261021",
+      "name": "Noto Sans SC",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 17776688,
+      "licenses": [
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/OFL.txt",
+          "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+        }
+      ]
+    },
+    {
+      "id": "googlesansflex-20261021",
+      "name": "Google Sans Flex",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 3916857,
+      "licenses": [
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesansflex/OFL.txt",
+          "sha256": "fc13d69f63e36d284b6e383d4d1463d8ad404f0aa065e57cf961252d51063137"
+        }
+      ]
+    },
+    {
+      "id": "googlesanscode-20261021",
+      "name": "Google Sans Code",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 265066,
+      "licenses": [
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesanscode/OFL.txt",
+          "sha256": "ff8f4fbc4f1a71c7d4c6481c48dc2b21c43f8dc15872536667fee45c15d20928"
+        }
+      ]
+    },
+    {
+      "id": "playfair-display-20261021",
+      "name": "Playfair Display",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 305173,
+      "licenses": [
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/OFL.txt",
+          "sha256": "566be814f8e96e93dfa16101331557eb6b5467e9e03f627c0910fe93ca12300e"
+        }
+      ]
+    },
+    {
+      "id": "chill-jinshu-song-1.7-medium",
+      "name": "ChillJinshuSong Medium 1.7",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 24829877,
+      "licenses": [
+        {
+          "file": "LICENSE",
+          "url": "https://raw.githubusercontent.com/Warren2060/ChillJinshuSong/main/LICENSE",
+          "sha256": "027f6f68aa3c651a771d3368e7d1620acaeadfd5d00d23da44332565bc151869"
+        }
+      ]
+    },
+    {
+      "id": "open-sans-20261022",
+      "name": "Open Sans",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 537025,
+      "licenses": [
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/opensans/OFL.txt",
+          "sha256": "fbbbcfef55318de350562559b671360de6d597112ecc5c73881b05092db89602"
+        }
+      ]
+    },
+    {
+      "id": "jetbrains-mono-20261022",
+      "name": "JetBrains Mono",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 191607,
+      "licenses": [
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/OFL.txt",
+          "sha256": "b2fe5e8987594e9ffd1d2ca52a2f5d73eb8335243893c5d6254b5ad69269591d"
+        }
+      ]
+    },
+    {
+      "id": "google-sans-v58-400",
+      "name": "Google Sans",
+      "license": "OFL-1.1",
+      "delivery": "bundled",
+      "bytes": 56768,
+      "licenses": [
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesans/OFL.txt",
+          "sha256": "2b75ef20f13d83a7514aee452c4782c20cdc9ff2dee17600f44d37a06d4fb958"
+        }
+      ]
+    },
+    {
+      "id": "libmedia-1.3.1",
+      "name": "Local video decoding · libmedia 1.3.1",
+      "license": "LGPL-3.0-or-later; FFmpeg decoder components LGPL-2.1-or-later",
+      "delivery": "bundled",
+      "source": "https://github.com/zhaohappy/libmedia/tree/152f629d3021fd8013efa464fcb7b55f9fbe7753/",
+      "bytes": 5821406,
+      "licenses": [
+        {
+          "file": "COPYING.LGPLv3",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/COPYING.LGPLv3",
+          "sha256": "ea8af5e789cb2d4e9b10bce3874982ade163b749b6bfbdb32e2df21c4d106de1"
+        },
+        {
+          "file": "COPYING.GPLv3",
+          "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/master/COPYING3",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        {
+          "file": "COPYING.LGPLv2.1",
+          "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n7.1/COPYING.LGPLv2.1",
+          "sha256": "b634ab5640e258563c536e658cad87080553df6f34f62269a21d554844e58bfe"
+        }
+      ]
+    }
+  ],
   "runtime_components": [
     {
       "id": "Node.js",
@@ -56,7 +266,8 @@
       "declared_license": "MIT",
       "repository": "https://github.com/babel/babel.git",
       "consumers": [
-        "interactive_react"
+        "interactive_react",
+        "interactive_work"
       ],
       "license_files": [
         {
@@ -83,6 +294,57 @@
       ]
     },
     {
+      "name": "@csstools/postcss-is-pseudo-class",
+      "version": "5.0.3",
+      "declared_license": "MIT-0",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 930,
+          "sha256": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6"
+        }
+      ]
+    },
+    {
+      "name": "@csstools/selector-resolve-nested",
+      "version": "3.1.0",
+      "declared_license": "MIT-0",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 930,
+          "sha256": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6"
+        }
+      ]
+    },
+    {
+      "name": "@csstools/selector-specificity",
+      "version": "5.0.0",
+      "declared_license": "MIT-0",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 930,
+          "sha256": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6"
+        }
+      ]
+    },
+    {
       "name": "@iconify/utils",
       "version": "3.1.4",
       "declared_license": "MIT",
@@ -99,6 +361,40 @@
       ]
     },
     {
+      "name": "@marp-team/marp-core",
+      "version": "4.3.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/marp-team/marp-core",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1087,
+          "sha256": "f2b31d0b3aa8ec75832e76b5deb842d8889f7121e9419414b4e32ab37327e64b"
+        }
+      ]
+    },
+    {
+      "name": "@marp-team/marpit",
+      "version": "3.2.3",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/marp-team/marpit.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1088,
+          "sha256": "2b746ee2296f314dccca30aee79814f18f80b12e4a1e0aef58445bc971230540"
+        }
+      ]
+    },
+    {
       "name": "@mermaid-js/parser",
       "version": "1.2.1",
       "declared_license": "MIT",
@@ -111,6 +407,448 @@
           "name": "LICENSE",
           "bytes": 1077,
           "sha256": "d374061c40bfb6f99c5033290caefda97a9b3e7e477e5ee02f487143ef2177e8"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/number",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/primitive",
+      "version": "1.1.3",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-alert-dialog",
+      "version": "1.1.15",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-collection",
+      "version": "1.1.7",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-compose-refs",
+      "version": "1.1.2",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-context",
+      "version": "1.1.2",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "version": "1.1.15",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-direction",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-dismissable-layer",
+      "version": "1.1.11",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-focus-guards",
+      "version": "1.1.3",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-focus-scope",
+      "version": "1.1.7",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-id",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-label",
+      "version": "2.1.8",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-portal",
+      "version": "1.1.9",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-presence",
+      "version": "1.1.5",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-primitive",
+      "version": "2.1.3",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-primitive",
+      "version": "2.1.4",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-slider",
+      "version": "1.3.6",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "version": "1.2.3",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "version": "1.2.4",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-use-callback-ref",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-use-controllable-state",
+      "version": "1.2.2",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-use-effect-event",
+      "version": "0.0.2",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-use-escape-keydown",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-use-layout-effect",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-use-previous",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "@radix-ui/react-use-size",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/radix-ui/primitives.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/Radix-Primitives-LICENSE.txt",
+          "bytes": 1063,
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+          "source": "https://raw.githubusercontent.com/radix-ui/primitives/main/LICENSE"
         }
       ]
     },
@@ -159,6 +897,86 @@
           "name": "LICENSE",
           "bytes": 1071,
           "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985"
+        }
+      ]
+    },
+    {
+      "name": "@tanstack/query-core",
+      "version": "5.90.16",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/TanStack/query.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1079,
+          "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+        }
+      ]
+    },
+    {
+      "name": "@tanstack/react-query",
+      "version": "5.90.16",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/TanStack/query.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1079,
+          "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+        }
+      ]
+    },
+    {
+      "name": "@trpc/client",
+      "version": "11.8.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/trpc/trpc.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "e714dd84c8fa242600844b05d317a31003423723178c1f1603dbfad1bc68d906"
+        }
+      ]
+    },
+    {
+      "name": "@trpc/react-query",
+      "version": "11.8.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/trpc/trpc.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "e714dd84c8fa242600844b05d317a31003423723178c1f1603dbfad1bc68d906"
+        }
+      ]
+    },
+    {
+      "name": "@trpc/server",
+      "version": "11.8.1",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/trpc/trpc.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "e714dd84c8fa242600844b05d317a31003423723178c1f1603dbfad1bc68d906"
         }
       ]
     },
@@ -214,6 +1032,22 @@
       ]
     },
     {
+      "name": "aria-hidden",
+      "version": "1.2.6",
+      "declared_license": "MIT",
+      "repository": "git+https://github.com/theKashey/aria-hidden.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "30f0cfddf483d1128e3610205020f2041a6c5e837aa999e0aa82e5576187d4a9"
+        }
+      ]
+    },
+    {
       "name": "chart.js",
       "version": "3.9.1",
       "declared_license": "MIT",
@@ -230,6 +1064,38 @@
       ]
     },
     {
+      "name": "chart.js",
+      "version": "4.4.1",
+      "declared_license": "MIT",
+      "repository": "https://github.com/chartjs/Chart.js.git",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 1093,
+          "sha256": "5a0877ad6d818529be4f33009d0942cdf7e2ed7656156f4aba7308459a546030"
+        }
+      ]
+    },
+    {
+      "name": "class-variance-authority",
+      "version": "0.7.1",
+      "declared_license": "Apache-2.0",
+      "repository": "https://github.com/joe-bell/cva.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 10753,
+          "sha256": "0ccbf956cffc8dcf515809433cb5242ee67c94513d46e48c261d68d0880de406"
+        }
+      ]
+    },
+    {
       "name": "clsx",
       "version": "2.1.1",
       "declared_license": "MIT",
@@ -242,6 +1108,38 @@
           "name": "license",
           "bytes": 1104,
           "sha256": "9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97"
+        }
+      ]
+    },
+    {
+      "name": "cookie",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "repository": "jshttp/cookie",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1175,
+          "sha256": "c02110eedc16c7114f1a9bdc026c65626ce1d9c7e27fd51a8e0feee8a48a6858"
+        }
+      ]
+    },
+    {
+      "name": "copy-anything",
+      "version": "4.1.5",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mesqueeb/copy-anything.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1076,
+          "sha256": "91d090a8e06fd0f8b599f7bd5bc9e3d97896548037ef43ee1926c6109b7cd342"
         }
       ]
     },
@@ -274,6 +1172,56 @@
           "name": "LICENSE",
           "bytes": 1081,
           "sha256": "5fb3cf4a14c3c5af6e473a192df8bca10c77754e3a0c6492c79fb92a76a5478a"
+        }
+      ]
+    },
+    {
+      "name": "crypto-js",
+      "version": "4.2.0",
+      "declared_license": "MIT",
+      "repository": "http://github.com/brix/crypto-js.git",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1169,
+          "sha256": "f729d14b7e1bf8adca0dcc38b93b929d14d53fcd5db56c3d1c9b2daa7aa69396"
+        }
+      ]
+    },
+    {
+      "name": "cssesc",
+      "version": "3.0.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mathiasbynens/cssesc.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE-MIT.txt",
+          "bytes": 1077,
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        }
+      ]
+    },
+    {
+      "name": "cssfilter",
+      "version": "0.0.10",
+      "declared_license": "MIT",
+      "repository": "https://github.com/leizongmin/js-css-filter.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1074,
+          "sha256": "6b16a2f12f0ebe66e6940b7cc7fc0100bde0e5738b1f2007d6147950019dbe56"
         }
       ]
     },
@@ -889,6 +1837,7 @@
       "declared_license": "ISC",
       "repository": "https://github.com/d3/d3.git",
       "consumers": [
+        "interactive_work",
         "mermaid_layout"
       ],
       "license_files": [
@@ -964,11 +1913,28 @@
       ]
     },
     {
+      "name": "detect-node-es",
+      "version": "1.1.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/thekashey/detect-node",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1068,
+          "sha256": "54b32293ea560d22cd9b62af9b2cda1a030d910a48c6601d227c5ff2338d95f8"
+        }
+      ]
+    },
+    {
       "name": "dompurify",
-      "version": "3.4.14",
+      "version": "3.4.17",
       "declared_license": "(MPL-2.0 OR Apache-2.0)",
       "repository": "git://github.com/cure53/DOMPurify.git",
       "consumers": [
+        "interactive_frame",
         "mermaid_layout"
       ],
       "license_files": [
@@ -981,6 +1947,44 @@
           "name": "LICENSE-MPL",
           "bytes": 16726,
           "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+        }
+      ]
+    },
+    {
+      "name": "echarts",
+      "version": "5.4.3",
+      "declared_license": "Apache-2.0",
+      "repository": "git+https://github.com/apache/echarts.git",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 12212,
+          "sha256": "9ef11df57e751e8c6d10d54e1855c64d316627bbe89e73326de7e3ccdb8184aa"
+        },
+        {
+          "name": "NOTICE",
+          "bytes": 174,
+          "sha256": "7129cc3d8db9a2e10b820ad6f5f69ffcde16c110d48c2e41917a2d8e81ab57fb"
+        }
+      ]
+    },
+    {
+      "name": "entities",
+      "version": "4.5.0",
+      "declared_license": "BSD-2-Clause",
+      "repository": "git://github.com/fb55/entities.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1260,
+          "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164"
         }
       ]
     },
@@ -1092,11 +2096,48 @@
       ]
     },
     {
+      "name": "fflate",
+      "version": "0.8.2",
+      "declared_license": "MIT",
+      "repository": "https://github.com/101arrowz/fflate",
+      "consumers": [
+        "engine",
+        "interactive_frame",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1069,
+          "sha256": "805f6cb28bb8b6d3a0badd83c93bccd9671fa01a3b4b92b7042b0743325ac243"
+        }
+      ]
+    },
+    {
+      "name": "get-nonce",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "repository": "git@github.com:theKashey/get-nonce.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "acf3b087b348d2f2e731b9d4131af185aad694c1204ce14a46909483fd42da05"
+        }
+      ]
+    },
+    {
       "name": "highlight.js",
       "version": "11.11.1",
       "declared_license": "BSD-3-Clause",
       "repository": "git://github.com/highlightjs/highlight.js.git",
       "consumers": [
+        "engine",
+        "interactive_frame",
+        "parser_worker",
         "renderer"
       ],
       "license_files": [
@@ -1157,6 +2198,24 @@
       ]
     },
     {
+      "name": "js-yaml",
+      "version": "5.5.0",
+      "declared_license": "MIT",
+      "repository": "nodeca/js-yaml",
+      "consumers": [
+        "engine",
+        "interactive_frame",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1084,
+          "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550"
+        }
+      ]
+    },
+    {
       "name": "json-schema-traverse",
       "version": "1.0.0",
       "declared_license": "MIT",
@@ -1174,12 +2233,30 @@
       ]
     },
     {
+      "name": "jspdf",
+      "version": "2.5.1",
+      "declared_license": "MIT",
+      "repository": "https://github.com/MrRio/jsPDF.git",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1142,
+          "sha256": "2d26bfab8a36d2250602c7a7597237e180c5cd3517acc108126e3cb399f483c8"
+        }
+      ]
+    },
+    {
       "name": "katex",
       "version": "0.16.47",
       "declared_license": "MIT",
       "repository": "https://github.com/KaTeX/KaTeX.git",
       "consumers": [
-        "mermaid_layout"
+        "engine",
+        "mermaid_layout",
+        "parser_worker"
       ],
       "license_files": [
         {
@@ -1195,6 +2272,7 @@
       "declared_license": "MIT",
       "repository": "https://github.com/KaTeX/KaTeX.git",
       "consumers": [
+        "interactive_frame",
         "renderer"
       ],
       "license_files": [
@@ -1255,6 +2333,23 @@
     },
     {
       "name": "linkify-it",
+      "version": "5.0.2",
+      "declared_license": "MIT",
+      "repository": "markdown-it/linkify-it",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1058,
+          "sha256": "95e3f7f0e81e9b4940cdfaa1956aaff5e4dfd2fb1565041e7c78eb9a606f23e3"
+        }
+      ]
+    },
+    {
+      "name": "linkify-it",
       "version": "6.1.0",
       "declared_license": "MIT",
       "repository": "git+https://github.com/markdown-it/linkify-it.git",
@@ -1284,6 +2379,23 @@
           "name": "LICENSE",
           "bytes": 1952,
           "sha256": "f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc"
+        }
+      ]
+    },
+    {
+      "name": "lodash.kebabcase",
+      "version": "4.1.1",
+      "declared_license": "MIT",
+      "repository": "lodash/lodash",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1951,
+          "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
         }
       ]
     },
@@ -1321,11 +2433,46 @@
       ]
     },
     {
+      "name": "markdown-it-footnote",
+      "version": "4.0.0",
+      "declared_license": "MIT",
+      "repository": "markdown-it/markdown-it-footnote",
+      "consumers": [
+        "interactive_frame",
+        "renderer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1078,
+          "sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b"
+        }
+      ]
+    },
+    {
+      "name": "markdown-it-front-matter",
+      "version": "0.2.4",
+      "declared_license": "MIT",
+      "repository": "git://github.com/ParkSB/markdown-it-front-matter.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1056,
+          "sha256": "9e1bc1fafae020b5c33cc9cb745c707a5addf109cd814f0dac2d41424b83554a"
+        }
+      ]
+    },
+    {
       "name": "markdown-it-texmath",
       "version": "1.0.0",
       "declared_license": "MIT",
       "repository": "git://github.com/goessner/markdown-it-texmath.git",
       "consumers": [
+        "interactive_frame",
         "renderer"
       ],
       "license_files": [
@@ -1333,6 +2480,23 @@
           "name": "license.txt",
           "bytes": 1096,
           "sha256": "655a4d5721dabe668d3ef640d5587d44534d370e7dc256d4f33740278dc710d5"
+        }
+      ]
+    },
+    {
+      "name": "markdown-it",
+      "version": "14.3.3",
+      "declared_license": "MIT",
+      "repository": "markdown-it/markdown-it",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1073,
+          "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473"
         }
       ]
     },
@@ -1371,6 +2535,39 @@
       ]
     },
     {
+      "name": "mathjax-full",
+      "version": "3.2.2",
+      "declared_license": "Apache-2.0",
+      "repository": "https://github.com/mathjax/Mathjax-src/",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "name": "matter-js",
+      "version": "0.19.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/liabru/matter-js.git",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1092,
+          "sha256": "ed182087be5b26734aa6d4789743de3a97417950e8c1e3ff2e3d19c6462720d3"
+        }
+      ]
+    },
+    {
       "name": "mdurl",
       "version": "2.1.0",
       "declared_license": "MIT",
@@ -1378,6 +2575,7 @@
       "consumers": [
         "engine",
         "interactive_frame",
+        "parser_worker",
         "renderer"
       ],
       "license_files": [
@@ -1401,6 +2599,40 @@
           "name": "LICENSE",
           "bytes": 1089,
           "sha256": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80"
+        }
+      ]
+    },
+    {
+      "name": "mhchemparser",
+      "version": "4.2.1",
+      "declared_license": "Apache-2.0",
+      "repository": "github:mhchem/mhchemParser",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "bytes": 11357,
+          "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+        }
+      ]
+    },
+    {
+      "name": "nanoid",
+      "version": "3.3.20",
+      "declared_license": "MIT",
+      "repository": "ai/nanoid",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1095,
+          "sha256": "da4db1480d9beea3483a2eda5c53b22238d0827d57da162b48f122e04d2d9987"
         }
       ]
     },
@@ -1440,6 +2672,90 @@
       ]
     },
     {
+      "name": "picocolors",
+      "version": "1.1.1",
+      "declared_license": "ISC",
+      "repository": "alexeyraspopov/picocolors",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 787,
+          "sha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750"
+        }
+      ]
+    },
+    {
+      "name": "plotly.js-dist-min",
+      "version": "2.35.2",
+      "declared_license": "MIT",
+      "repository": "https://github.com/plotly/plotly.js.git",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1078,
+          "sha256": "67a26cf80f03ff388f26945dfc1f6caed1a0746ff43871190339b3aee49b94bb"
+        }
+      ]
+    },
+    {
+      "name": "postcss-nesting",
+      "version": "13.0.2",
+      "declared_license": "MIT-0",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 930,
+          "sha256": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6"
+        }
+      ]
+    },
+    {
+      "name": "postcss-selector-parser",
+      "version": "7.1.7",
+      "declared_license": "MIT",
+      "repository": "https://github.com/postcss/postcss-selector-parser.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE-MIT",
+          "bytes": 1092,
+          "sha256": "2998094b38f7ace25f141fb36f334d8338f65a1812978d618b1161f4d77ae10e"
+        }
+      ]
+    },
+    {
+      "name": "postcss",
+      "version": "8.5.31",
+      "declared_license": "MIT",
+      "repository": "postcss/postcss",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1095,
+          "sha256": "5be1f3465bba68a626777f984878814aaf35e7ef8e9fd314d469bcf887050fb8"
+        }
+      ]
+    },
+    {
       "name": "punycode.js",
       "version": "2.3.1",
       "declared_license": "MIT",
@@ -1447,6 +2763,7 @@
       "consumers": [
         "engine",
         "interactive_frame",
+        "parser_worker",
         "renderer"
       ],
       "license_files": [
@@ -1503,6 +2820,71 @@
           "name": "LICENSE.md",
           "bytes": 1086,
           "sha256": "f2da73c752c6b87624755edacf927cbd915fa76555d383e74494bad4a5155ab3"
+        }
+      ]
+    },
+    {
+      "name": "react-remove-scroll-bar",
+      "version": "2.3.8",
+      "declared_license": "MIT",
+      "repository": "https://github.com/theKashey/react-remove-scroll-bar",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "licenses/react-remove-scroll-bar-LICENSE.txt",
+          "bytes": 1093,
+          "sha256": "a79aae0c0f21990d9d963bb3c5a79cdcea9a46f8523ba55c58d7fe776b6ebc84",
+          "source": "https://raw.githubusercontent.com/theKashey/react-remove-scroll-bar/master/LICENSE"
+        }
+      ]
+    },
+    {
+      "name": "react-remove-scroll",
+      "version": "2.7.2",
+      "declared_license": "MIT",
+      "repository": "https://github.com/theKashey/react-remove-scroll",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "30f0cfddf483d1128e3610205020f2041a6c5e837aa999e0aa82e5576187d4a9"
+        }
+      ]
+    },
+    {
+      "name": "react-router",
+      "version": "7.18.4",
+      "declared_license": "MIT",
+      "repository": "https://github.com/remix-run/react-router",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 1161,
+          "sha256": "77c9ee6a9c5d5782fb0c50b50d101189116314c14f7df0a1b0d385fc96a7ba49"
+        }
+      ]
+    },
+    {
+      "name": "react-style-singleton",
+      "version": "2.2.3",
+      "declared_license": "MIT",
+      "repository": "https://github.com/theKashey/react-style-singleton",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "30f0cfddf483d1128e3610205020f2041a6c5e837aa999e0aa82e5576187d4a9"
         }
       ]
     },
@@ -1636,6 +3018,39 @@
       ]
     },
     {
+      "name": "set-cookie-parser",
+      "version": "2.7.3",
+      "declared_license": "MIT",
+      "repository": "nfriedly/set-cookie-parser",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1126,
+          "sha256": "c5c6c5183a789d122f267c405f685037efb87e27fcde28ab1dd7378a2d2f5962"
+        }
+      ]
+    },
+    {
+      "name": "source-map-js",
+      "version": "1.2.2",
+      "declared_license": "BSD-3-Clause",
+      "repository": "7rulnik/source-map-js",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1526,
+          "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd"
+        }
+      ]
+    },
+    {
       "name": "stylis",
       "version": "4.4.0",
       "declared_license": "MIT",
@@ -1652,6 +3067,38 @@
       ]
     },
     {
+      "name": "superjson",
+      "version": "2.2.6",
+      "declared_license": "MIT",
+      "repository": "https://github.com/blitz-js/superjson",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1095,
+          "sha256": "d6b3a220bde9bf72fd0f9aecf71cd48c43ddc652abea727fc98a9b21a9534bb9"
+        }
+      ]
+    },
+    {
+      "name": "tailwind-merge",
+      "version": "3.4.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/dcastil/tailwind-merge.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.md",
+          "bytes": 1070,
+          "sha256": "d4c70c7ce38cea8778f0aed3fc0bef0a9dbd27f13bd8b6773cbd6d37941971e5"
+        }
+      ]
+    },
+    {
       "name": "three",
       "version": "0.128.0",
       "declared_license": "MIT",
@@ -1664,6 +3111,54 @@
           "name": "LICENSE",
           "bytes": 1081,
           "sha256": "7dddf7c5b8fd10ee654db8857d75d104b5557889aa5a91fc4ca545ea7c07062f"
+        }
+      ]
+    },
+    {
+      "name": "three",
+      "version": "0.146.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mrdoob/three.js",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1081,
+          "sha256": "fbf3943930dacbf56aabb8dc5d816440bd16aa6f4cc78ddbdf12106ee1807832"
+        }
+      ]
+    },
+    {
+      "name": "three",
+      "version": "0.158.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mrdoob/three.js",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1081,
+          "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
+        }
+      ]
+    },
+    {
+      "name": "three",
+      "version": "0.160.0",
+      "declared_license": "MIT",
+      "repository": "https://github.com/mrdoob/three.js",
+      "consumers": [
+        "interactive_work"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1081,
+          "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
         }
       ]
     },
@@ -1700,6 +3195,39 @@
       ]
     },
     {
+      "name": "tslib",
+      "version": "2.3.0",
+      "declared_license": "0BSD",
+      "repository": "https://github.com/Microsoft/tslib.git",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "bytes": 655,
+          "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751"
+        }
+      ]
+    },
+    {
+      "name": "uc.micro",
+      "version": "2.1.0",
+      "declared_license": "MIT",
+      "repository": "markdown-it/uc.micro",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "bytes": 1077,
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        }
+      ]
+    },
+    {
       "name": "uc.micro",
       "version": "3.0.0",
       "declared_license": "MIT",
@@ -1718,6 +3246,38 @@
       ]
     },
     {
+      "name": "use-callback-ref",
+      "version": "1.3.3",
+      "declared_license": "MIT",
+      "repository": "https://github.com/theKashey/use-callback-ref/",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "30f0cfddf483d1128e3610205020f2041a6c5e837aa999e0aa82e5576187d4a9"
+        }
+      ]
+    },
+    {
+      "name": "use-sidecar",
+      "version": "1.1.3",
+      "declared_license": "MIT",
+      "repository": "https://github.com/theKashey/use-sidecar",
+      "consumers": [
+        "interactive_react"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1071,
+          "sha256": "30f0cfddf483d1128e3610205020f2041a6c5e837aa999e0aa82e5576187d4a9"
+        }
+      ]
+    },
+    {
       "name": "use-sync-external-store",
       "version": "1.7.0",
       "declared_license": "MIT",
@@ -1730,6 +3290,23 @@
           "name": "LICENSE",
           "bytes": 1088,
           "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ]
+    },
+    {
+      "name": "util-deprecate",
+      "version": "1.0.2",
+      "declared_license": "MIT",
+      "repository": "git://github.com/TooTallNate/util-deprecate.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1102,
+          "sha256": "0154425673db15cdfa80ecba2c9b1f1a867f7197a006764712849bfc3a93cbb7"
         }
       ]
     },
@@ -1763,6 +3340,23 @@
           "bytes": 1626,
           "sha256": "34dee5fd5e5cc756efb5ad4d64652bce719bdf5e900ca5d7538253e737930bc4",
           "source": "https://raw.githubusercontent.com/FormidableLabs/victory/v37.3.6/LICENSE.txt"
+        }
+      ]
+    },
+    {
+      "name": "xss",
+      "version": "1.0.16",
+      "declared_license": "MIT",
+      "repository": "git://github.com/leizongmin/js-xss.git",
+      "consumers": [
+        "engine",
+        "parser_worker"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "bytes": 1127,
+          "sha256": "93dbf94b858812876168fbd4de2da2251ad21d9856a09347ecdbb0aaa56a6e89"
         }
       ]
     },
@@ -1929,8 +3523,8 @@
   ],
   "summary": {
     "runtime_components": 3,
-    "npm_packages": 105,
+    "npm_packages": 188,
     "bundled_fonts": 6,
-    "license_texts": 119
+    "license_texts": 203
   }
 }

@@ -31,6 +31,7 @@ export async function parseExporterHtmlToDraft(input: Readonly<{
   const draft = await envelope.adapter.parse({
     manifest: envelope.manifest,
     payload: envelope.payload,
+    ...(envelope.extensions ? { extensions: envelope.extensions } : {}),
     source: {
       file: path.basename(input.filePath),
       ...envelope.fingerprint,

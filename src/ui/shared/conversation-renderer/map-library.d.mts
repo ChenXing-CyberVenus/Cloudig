@@ -9,7 +9,7 @@ export declare class Map {
   flyTo(options: { center: Coordinate; zoom: number; duration: number }): this;
   getZoom(): number;
   getStyle(): MapStyle;
-  setStyle(style: string, options: { transformStyle: (previous: MapStyle | undefined, next: MapStyle) => MapStyle }): this;
+  setStyle(style: string | MapStyle, options: { transformStyle?: (previous: MapStyle | undefined, next: MapStyle) => MapStyle }): this;
   isStyleLoaded(): boolean;
   on(event: "load" | "error" | "idle" | "movestart" | "dataloading", action: () => void): this;
   remove(): void;

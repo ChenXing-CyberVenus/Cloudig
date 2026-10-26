@@ -21,6 +21,7 @@ port.on("message", async (input: { root: string; directory: string; index: numbe
   };
   try {
     const job = input.job;
+    if (job.agent?.error) throw new TypeError(job.agent.error);
     const extracted = job.official
       ? await extractIndexedOfficialRecord(input.root, job.official, String(job.official.records[0]!["selector"]), undefined, job.zipWorkspace)
       : job.claude

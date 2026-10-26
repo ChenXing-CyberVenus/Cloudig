@@ -47,7 +47,8 @@ public sealed partial class LocalFileResponses(string applicationRoot, string? r
             : uri.Host == "cloudig.local"
                 ? DenyHeaders
                 : "Cache-Control: private, max-age=3600\r\nX-Content-Type-Options: nosniff\r\n";
-        if (work && uri.AbsolutePath == "/runtime/interactive-frame.html" || map && uri.AbsolutePath == "/runtime/map-frame.html") baseHeaders += "Content-Security-Policy: sandbox allow-scripts allow-same-origin\r\n";
+        if (work && uri.AbsolutePath == "/runtime/interactive-frame.html") baseHeaders += "Content-Security-Policy: sandbox allow-scripts allow-same-origin allow-downloads\r\n";
+        if (map && uri.AbsolutePath == "/runtime/map-frame.html") baseHeaders += "Content-Security-Policy: sandbox allow-scripts allow-same-origin\r\n";
         if (method is not ("GET" or "HEAD")) return new(null, 405, "Method Not Allowed", baseHeaders + "Allow: GET, HEAD\r\n");
         try
         {

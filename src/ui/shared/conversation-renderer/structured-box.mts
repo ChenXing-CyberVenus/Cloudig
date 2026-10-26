@@ -1,9 +1,12 @@
+import { followReaderTheme } from "./reader-theme.mts";
 import { containerDisplay } from "../../../core/records/content-container.mts";
 import type { JsonObject, JsonValue } from "../../../core/contracts/types.mts";
 import { quizBox, recipeBox, stepBox } from "./learning-boxes.mts";
 import { chartBox, weatherBox, placesListBox } from "./data-boxes.mts";
 import { mapBox } from "./map-box.mts";
 import { nativeLayoutBox } from "./native-layout-box.mts";
+import { searchReferenceBox, botArchiveCard } from "./archive-cards.mts";
+import { kimiCard } from "./kimi-cards.mts";
 import { boxText as str, boxObject as obj, boxList as list, boxStrings as strings, boxElement as el, boxLabel as tr,
   boxButton as button, boxParagraph as p, boxHeading as heading, boxPager as pager, boxTabs as tabs,
   boxLink as link, boxCopy as copy, boxImages, type BoxContext } from "./box-controls.mts";
@@ -206,6 +209,19 @@ export function renderStructuredBox(ctx: BoxContext, block: JsonObject): HTMLEle
   const data = obj(block["data"]), input = obj(data["input"]), imageItems = list(data["images"]), images = imageItems.map(i => str(i["path"]));
   let root: HTMLElement;
   switch (block["source"]) {
+    case "kimi.com_files":
+    case "kimi.com_question":
+    case "kimi.com_scheduled_task":
+    case "kimi.com_plugin_recommendation":
+    case "kimi.com_website_evidence": root = kimiCard(ctx, block); break;
+    case "chatgpt.com_image_v2":
+    case "chatgpt.com_nav_list": root = searchReferenceBox(ctx, data); break;
+    case "grok.com_bot_widget":
+    case "grok.com_bot_connector": root = botArchiveCard(ctx, data); break;
+    case "gemini.google.com_quiz": root = quizBox(ctx, { title: data["title"] ?? block["title"] ?? "", questions: list(data["questions"]).map(q => {
+      const choices = list(q["choices"]), correct = choices.findIndex(c => c["correct"] === true);
+      return { prompt: q["question"] ?? "", hint: q["hint"] ?? "", options: choices.map((c, i) => ({ id: String(i), text: c["text"] ?? "", explanation: c["explanation"] ?? "" })), ...(correct >= 0 ? { correct_option_id: String(correct) } : {}) };
+    }) }, true); break;
     case "chatgpt.com_genui": root = nativeLayoutBox(ctx, data); break;
     case "claude.ai_translation_display_v0": root = translation(ctx, input); break;
     case "claude.ai_quiz_display_v0": root = quizBox(ctx, input); break;
@@ -248,8 +264,9 @@ function structuredWindow(ctx: BoxContext, block: JsonObject): HTMLElement {
     if (dismiss) return;
     const controller = new AbortController(), dialog = el(ctx, "dialog", "cloudig-conversation-renderer cloudig-interactive-window cloudig-structured-window");
     dialog.dataset["theme"] = root.closest<HTMLElement>("[data-theme]")?.dataset["theme"] === "star-night" ? "star-night" : "dawn";
+    const untheme=followReaderTheme(root,"dawn",theme=>{dialog.dataset["theme"]=theme;});
     const header = el(ctx, "header", "cloudig-interactive-header"), body = el(ctx, "div", "cloudig-interactive-body"); body.dataset["scrollRegion"] = "";
-    const close = () => { if (!dismiss) return; dismiss = undefined; controller.abort(); ctx.signal.removeEventListener("abort", close); dialog.close(); dialog.remove(); if (!ctx.signal.aborted) launch.focus(); };
+    const close = () => { if (!dismiss) return; dismiss = undefined; untheme(); controller.abort(); ctx.signal.removeEventListener("abort", close); dialog.close(); dialog.remove(); if (!ctx.signal.aborted) launch.focus(); };
     dismiss = close;
     const done = button(ctx, "×", close, "cloudig-interactive-close"); done.setAttribute("aria-label", tr(ctx, "关闭作品", "Close work")); done.title = done.getAttribute("aria-label")!;
     header.append(el(ctx, "h2", "", title), done); body.append(renderStructuredBox({ ...ctx, signal: controller.signal }, { ...block, type: "box", display: "box" }));

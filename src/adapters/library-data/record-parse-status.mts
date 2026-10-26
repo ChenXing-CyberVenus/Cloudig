@@ -11,17 +11,18 @@ import { fingerprintFile } from "../storage/stream.mts";
 import { resolveRecordPath, withRecordSnapshot } from "../storage/record-store.mts";
 import { writeRecordProjection, writeRecordInternalJson } from "../storage/record-projection.mts";
 import { readRecordCatalog, uniqueConversation } from "./record-catalog.mts";
-import { createRecordHistoryReader, recordHistoryMatches, recordSourceUnitKey } from "./record-parser-commit.mts";
+import { createRecordHistoryReader, recordHistoryMatches, recordSourceUnitKey, recordSourcePartsFingerprint, type RecordSourcePart } from "./record-parser-commit.mts";
 import { fileCaptureTime } from "./record-source-import.mts";
 import type { CapturedSourceTime } from "../../core/records/source-time.mts";
 import { inspectOfficialJson } from "../parser/official-json-layout.mts";
 import { inspectOfficialZip } from "../parser/official-zip.mts";
 import { probeAgentFile } from "../parser/agent-json.mts";
+import { inspectCodexHeader, resolveCodexChain, type CodexHeader } from "../parser/codex-storage-chain.mts";
 
 const object = (v: unknown): JsonObject => isJsonObject(v) ? v : {};
 const missing = (e: unknown) => e instanceof Error && "code" in e && e.code === "ENOENT";
 const digest = (text: string) => createHash("sha256").update(text).digest("hex");
-export type RecordSource = Readonly<{ path: string; bytes: number; sha256: string; modifiedAt: string; captured?: CapturedSourceTime; stamp: string; format: "exporter-html" | "json-container" | "zip-container" | "json" | "jsonl" | "unknown"; platform?: string; adapterId?: string; declaration?: JsonObject; exporterVersion?: string; agentShards?: readonly string[]; missing?: boolean }>;
+export type RecordSource = Readonly<{ path: string; bytes: number; sha256: string; modifiedAt: string; captured?: CapturedSourceTime; stamp: string; format: "exporter-html" | "json-container" | "zip-container" | "json" | "jsonl" | "unknown"; platform?: string; adapterId?: string; declaration?: JsonObject; exporterVersion?: string; agentShards?: readonly string[]; agentParts?: readonly RecordSourcePart[]; chainError?: string; missing?: boolean }>;
 export type RecordParseUnit = Readonly<{ source: RecordSource; locator?: string }>;
 export type RecordParseStatus = Readonly<{ unit: RecordParseUnit; status: "ready" | "parsed" | "failed" | "unsupported" | "missing"; outdated: boolean; error?: string; conversationId?: string }>;
 export const unitKey = (unit: RecordParseUnit): JsonObject => recordSourceUnitKey(unit.source.path, unit.source.format, unit.source.platform ?? "unknown", unit.locator);
@@ -33,18 +34,23 @@ async function readObject(root: string, file: string): Promise<JsonObject> {
 
 /** Cache source observations, not parse results. Header probing never extracts a message. */
 export async function scanRecordSources(root: string, options: { includeMissing?: boolean } = {}): Promise<readonly RecordSource[]> {
-  const indexPath = "appdata/indexes/sources.json", prior = await readObject(root, indexPath), currentCapturePolicy = prior["schema"] === "cloudig/source-index/1.6.0",
+  // 1.7 adds Zstd probing and derives Codex groups from physical observations;
+  // existing 1.6 observations/capture times remain valid. Dropping that cache
+  // forces every unchanged multi-GB export through a cold scan on page entry.
+  const indexPath = "appdata/indexes/sources.json", prior = await readObject(root, indexPath), currentIndex = prior["schema"] === "cloudig/source-index/1.7.0",
+    currentCapturePolicy = currentIndex || prior["schema"] === "cloudig/source-index/1.6.0",
     cached = currentCapturePolicy || ["cloudig/source-index/1.5.0", "cloudig/source-index/1.4.0", "cloudig/source-index/1.3.0", "cloudig/source-index/1.2.0", "cloudig/source-index/1.1.0"].includes(String(prior["schema"])) ? object(prior["files"]) : {}, files: JsonObject = {}, result: RecordSource[] = [];
   for (const entry of await readdir(await resolveRecordPath(root, "Inbox"), { withFileTypes: true })) {
     if (!entry.isFile() || entry.isSymbolicLink()) continue;
     const relative = `Inbox/${entry.name}`, absolute = await resolveRecordPath(root, relative), info = await lstat(absolute, { bigint: true });
     const stamp = (s: typeof info) => [s.dev, s.ino, s.size, s.mtimeNs, s.ctimeNs].join(":");
     const old = object(cached[relative]); let source: RecordSource, manifest: JsonObject | undefined;
-    const unchanged = (currentCapturePolicy || old["format"] === "exporter-html") && !old["missing"] && old["path"] === relative && old["stamp"] === stamp(info) && /^[a-f0-9]{64}$/u.test(String(old["sha256"])) && Number.isSafeInteger(old["bytes"]) && ["unknown", "exporter-html", "json-container", "zip-container", "json", "jsonl"].includes(String(old["format"]));
+    const needsNewProbe = !currentIndex && /\.jsonl\.zst$/iu.test(entry.name);
+    const unchanged = !needsNewProbe && (currentCapturePolicy || old["format"] === "exporter-html") && !old["missing"] && old["path"] === relative && old["stamp"] === stamp(info) && /^[a-f0-9]{64}$/u.test(String(old["sha256"])) && Number.isSafeInteger(old["bytes"]) && ["unknown", "exporter-html", "json-container", "zip-container", "json", "jsonl"].includes(String(old["format"]));
     if (unchanged) source = old as unknown as RecordSource;
     else {
       const fingerprint = await fingerprintFile(absolute);
-      const format = /\.html?$/iu.test(entry.name) ? "exporter-html" : /\.jsonl$/iu.test(entry.name) ? "jsonl" : /\.json$/iu.test(entry.name) ? "json-container" : /\.zip$/iu.test(entry.name) ? "zip-container" : "unknown";
+      const format = /\.html?$/iu.test(entry.name) ? "exporter-html" : /\.jsonl(?:\.zst)?$/iu.test(entry.name) ? "jsonl" : /\.json$/iu.test(entry.name) ? "json-container" : /\.zip$/iu.test(entry.name) ? "zip-container" : "unknown";
       manifest = format === "exporter-html" ? await probeExporterManifest(absolute).catch(() => undefined) : undefined;
       const declaration = manifest ? { ...(typeof manifest["platform"] === "string" ? { platform: manifest["platform"] } : {}),
         ...(typeof object(manifest["payload"])["format"] === "string" ? { payload: { format: object(manifest["payload"])["format"]! } } : {}) } : undefined;
@@ -72,22 +78,43 @@ export async function scanRecordSources(root: string, options: { includeMissing?
     }
     files[relative] = source as unknown as JsonObject; result.push(source);
   }
-  // Codex life pages are physical JSONL shards of one logical rollout. Keep
-  // one source row and one Conversation while retaining the exact shard paths
-  // for the streaming worker; never expose life01/02/03 as separate chats.
-  const shardGroups = new Map<string, RecordSource[]>();
-  for (const source of result) {
-    if (source.platform !== "codex" || source.format !== "jsonl") continue;
-    const name = source.path.slice("Inbox/".length), match = /^(.*-Codex-life\d+)(?:-\d+)?\.jsonl$/iu.exec(name);
-    if (!match) continue;
-    const key = `Inbox/${match[1]}.jsonl`; const group = shardGroups.get(key) ?? []; group.push(source); shardGroups.set(key, group);
+  // Keep physical observations cached independently. Group only verified storage
+  // ancestry for display/jobs; arbitrary lifeNN filenames are not chain evidence.
+  const codex = result.filter(s => s.platform === "codex" && s.format === "jsonl");
+  const absolute = new Map(await Promise.all(codex.map(async s => [await resolveRecordPath(root, s.path), s] as const)));
+  const headers = new Map(await Promise.all([...absolute.keys()].map(async file => [file, await inspectCodexHeader(file).catch((): CodexHeader => ({}))] as const)));
+  const referenced = new Set([...headers.values()].flatMap(h => h.base ? [h.base.id] : []));
+  const leaves = [...headers].filter(([, h]) => !h.storageId || !referenced.has(h.storageId));
+  const brokenSessions = new Map<string, string>();
+  // A known unresolved continuation makes the logical session incomplete.
+  // Never publish a convenient earlier prefix over its existing full archive.
+  for (const [file, h] of headers) if (h.base && h.sessionId) {
+    try { resolveCodexChain(file, headers); }
+    catch (e) { brokenSessions.set(h.sessionId, e instanceof Error ? e.message : String(e)); }
   }
-  for (const [leaderPath, group] of shardGroups) if (group.length > 1) {
-    const ordered = [...group].sort((a, b) => a.path.localeCompare(b.path, "en", { numeric: true })), leader = ordered[0]!;
-    const sourceHash = createHash("sha256"); for (const source of ordered) sourceHash.update(`${source.path}\0${source.sha256}\0${source.bytes}\n`, "utf8");
-    const merged: RecordSource = { ...leader, bytes: ordered.reduce((sum, source) => sum + source.bytes, 0), sha256: sourceHash.digest("hex"), stamp: ordered.map(source => source.stamp).join("\n"), modifiedAt: ordered.map(source => source.modifiedAt).sort().at(-1)!, agentShards: ordered.map(source => source.path) };
-    for (const source of ordered) delete files[source.path];
-    const actualLeaderPath = leader.path; files[actualLeaderPath] = merged as unknown as JsonObject; for (const source of ordered) if (source.path !== actualLeaderPath) { const index = result.indexOf(source); if (index >= 0) result.splice(index, 1); } const leaderIndex = result.indexOf(leader); if (leaderIndex >= 0) result[leaderIndex] = merged;
+  const groups: { members: RecordSource[]; leaf: RecordSource }[] = [];
+  for (const [file,h] of leaves) {
+    if (h.sessionId && brokenSessions.has(h.sessionId)) continue;
+    try { const chain = resolveCodexChain(file, headers); if (chain.length > 1) groups.push({ members: chain.map(s => absolute.get(s.file)!), leaf: absolute.get(file)! }); }
+    catch { /* Keep the source selectable; parsing reports exact missing/ambiguous ancestry. */ }
+  }
+  for (const [file, h] of headers) {
+    const error = h.sessionId ? brokenSessions.get(h.sessionId) : undefined;
+    if (error) {
+      const index = result.indexOf(absolute.get(file)!);
+      if (index >= 0) result[index] = { ...result[index]!, chainError: error };
+    }
+  }
+  const used = new Set(groups.flatMap(g => g.members));
+  for (let i = result.length - 1; i >= 0; i--) if (used.has(result[i]!)) result.splice(i, 1);
+  for (const group of groups) {
+    const ordered = group.members, first = ordered[0]!;
+    // One chain keeps its original root row stable as new pages arrive. Distinct
+    // leaves sharing a root are real branches, not silently concatenated tails.
+    const leader = groups.filter(g => g.members[0] === first).length === 1 ? first : group.leaf;
+    const parts=ordered.map(s=>({path:s.path,bytes:s.bytes,sha256:s.sha256}));
+    result.push({ ...leader, ...recordSourcePartsFingerprint(parts), stamp: ordered.map(s => s.stamp).join("\n"),
+      modifiedAt: ordered.map(s => s.modifiedAt).sort().at(-1)!, agentShards: ordered.map(s => s.path),agentParts:parts });
   }
   for (const [relative, raw] of Object.entries(cached)) {
     if (files[relative] || !/^Inbox\/[^/]+$/u.test(relative)) continue;
@@ -96,7 +123,7 @@ export async function scanRecordSources(root: string, options: { includeMissing?
     try { await lstat(await resolveRecordPath(root, relative)); continue; } catch (e) { if (!missing(e)) throw e; }
     const absent = { ...old, missing: true } as unknown as RecordSource; files[relative] = absent as unknown as JsonObject; if (options.includeMissing) result.push(absent);
   }
-  const value = { schema: "cloudig/source-index/1.6.0", files };
+  const value = { schema: "cloudig/source-index/1.7.0", files };
   if (JSON.stringify(value) !== JSON.stringify(prior)) await withRecordSnapshot(root, () => writeRecordProjection(root, indexPath, JSON.stringify(value, null, 2) + "\n"));
   return result;
 }
@@ -118,6 +145,7 @@ export async function readRecordParseStatuses(root: string, units: readonly Reco
     const catalog = await readRecordCatalog(root), result: RecordParseStatus[] = [], readHistory = createRecordHistoryReader(root);
     for (const unit of units) {
       if (unit.source.missing) { result.push({ unit, status: "missing", outdated: false }); continue; }
+      if (unit.source.chainError) { result.push({ unit, status: "failed", outdated: false, error: unit.source.chainError }); continue; }
       const key = unitKey(unit), failure = await readObject(root, failurePath(unit));
       let history: JsonObject = {};
       try { history = (await readHistory(key))?.value ?? {}; } catch (e) { if (!(e instanceof TypeError || e instanceof SyntaxError)) throw e; }

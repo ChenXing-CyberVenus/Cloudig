@@ -1,7 +1,7 @@
 {
   "format": "cloudig/bookmark-package",
   "version": "0.2.0",
-  "bookmark_set_version": "2026.10.18.2",
+  "bookmark_set_version": "2026.10.25.5",
   "default_profile": "light",
   "profiles": [
     "light",
@@ -21,29 +21,29 @@
         {
           "id": "chatgpt:light",
           "profile": "light",
-          "version": "3.7.64-light",
+          "version": "3.7.76-light",
           "artifact": "chatgpt/light.min.js",
-          "sha256": "cfbc6f7153d3b2436d4464532bec4f07e8c7fc8b40613d89ab587fc857115c1d",
-          "bytes": 479670,
-          "characters": 470268
+          "sha256": "b77984c7932a403f5044e82219fc14e6f3f10689f31fd4c91303076c680ec373",
+          "bytes": 476246,
+          "characters": 471093
         },
         {
           "id": "chatgpt:full",
           "profile": "full",
-          "version": "1.0.61-full",
+          "version": "1.0.73-full",
           "artifact": "chatgpt/full.min.js",
-          "sha256": "bdc70e6137349e12bdf102a6233aafe8ca181c9a8d2d3503428577bf3e542c70",
-          "bytes": 488284,
-          "characters": 478678
+          "sha256": "bdd2d654e82c93a5fb6add50c66b8a4e01566caec5dd3f833bbf0f60c17ed357",
+          "bytes": 484178,
+          "characters": 478821
         },
         {
           "id": "chatgpt:all_branches",
           "profile": "all_branches",
-          "version": "1.0.61-all-branches",
+          "version": "1.0.73-all-branches",
           "artifact": "chatgpt/all_branches.min.js",
-          "sha256": "7ff2903464936957441045f6021fc47dce9a9d79d68a8831e6bab90525bdbd19",
-          "bytes": 501404,
-          "characters": 491344
+          "sha256": "74b8365db8a923fbabc7f9db9cfd46e9669c64db458d7fffc7823c68dc580495",
+          "bytes": 495604,
+          "characters": 489992
         }
       ]
     },
@@ -56,29 +56,29 @@
         {
           "id": "claude:light",
           "profile": "light",
-          "version": "1.1.72-light",
+          "version": "1.1.76-light",
           "artifact": "claude/light.min.js",
-          "sha256": "c5c8293c1098d9208fac28986a8300ac9a6db6299ad35a36b099aeb831704a76",
-          "bytes": 454113,
-          "characters": 446675
+          "sha256": "e5ab15d840885e8deeb8706a4976d033d08d358101017a672613cae1f8e1b2fa",
+          "bytes": 458218,
+          "characters": 450729
         },
         {
           "id": "claude:full",
           "profile": "full",
-          "version": "1.1.72-full",
+          "version": "1.1.76-full",
           "artifact": "claude/full.min.js",
-          "sha256": "8016d84f40ee155e0c218c0db2356b33207e1719cbed5b82d1fb1c1a2f843270",
-          "bytes": 457261,
-          "characters": 449815
+          "sha256": "b6b2ee53be727a45e717c3cf74e18648bacf43205b019d3926a39dc5e1b68c44",
+          "bytes": 461359,
+          "characters": 453862
         },
         {
           "id": "claude:all_branches",
           "profile": "all_branches",
-          "version": "1.1.72-all-branches",
+          "version": "1.1.76-all-branches",
           "artifact": "claude/all_branches.min.js",
-          "sha256": "667740287abe97be549800c81ce0cb3ecf0d94a25fb7c6c62d3d474454eb8051",
-          "bytes": 467793,
-          "characters": 460152
+          "sha256": "c3fd0d6d7556e28b80f8ee171aa4a2b9e21cbef6b7a8c4c2a4ede1c1eca98486",
+          "bytes": 471891,
+          "characters": 464199
         }
       ]
     },
@@ -91,29 +91,29 @@
         {
           "id": "deepseek:light",
           "profile": "light",
-          "version": "2.8.10-light",
+          "version": "2.8.11-light",
           "artifact": "deepseek/light.min.js",
-          "sha256": "64de4e7913f15c9204a7181f58a88ef9986d664e455cab504b545e4417d96fcc",
-          "bytes": 217991,
-          "characters": 213327
+          "sha256": "9f25728266fc6bf657fbfd4f8dec7ac6caa7659cd9a9ad60da770fde08ce554d",
+          "bytes": 226466,
+          "characters": 221647
         },
         {
           "id": "deepseek:full",
           "profile": "full",
-          "version": "1.0.7-full",
+          "version": "1.0.8-full",
           "artifact": "deepseek/full.min.js",
-          "sha256": "faeff65ac840705d205bdecaf30a2f600403c4b8570f37b1c6ca214c5e725367",
-          "bytes": 222150,
-          "characters": 217260
+          "sha256": "738f3dc7b1ee3e67fd3a73bc7c250edf93e34da2be18c820a774eb1b31ca5503",
+          "bytes": 230636,
+          "characters": 225591
         },
         {
           "id": "deepseek:all_branches",
           "profile": "all_branches",
-          "version": "1.0.8-all-branches",
+          "version": "1.0.9-all-branches",
           "artifact": "deepseek/all_branches.min.js",
-          "sha256": "7479301ff7ff81d77b7b961b1344d8b4b71e6c096da197eaf8a6f600d7c405a1",
-          "bytes": 229024,
-          "characters": 223610
+          "sha256": "69191b50d2fadd0784b82fc5c28d5eb8348548a5423baad881bdeec6ab119156",
+          "bytes": 237514,
+          "characters": 231945
         }
       ]
     },
@@ -126,20 +126,20 @@
         {
           "id": "gemini:light",
           "profile": "light",
-          "version": "2.7.12-light",
+          "version": "2.7.15-light",
           "artifact": "gemini/light.min.js",
-          "sha256": "f0065dbc7038e8a91add81a3248b81b04763c120e58c8f35fee227fe043df458",
-          "bytes": 236947,
-          "characters": 230642
+          "sha256": "86ec52ce6a70110bdef6d752fc2f79a1db7e85ba83bd4114f9347cb95547fd22",
+          "bytes": 484920,
+          "characters": 478176
         },
         {
           "id": "gemini:full",
           "profile": "full",
-          "version": "1.0.8-full",
+          "version": "1.0.11-full",
           "artifact": "gemini/full.min.js",
-          "sha256": "5b1cc06bb7cfca6d0af9bc53b48f777e771e569bd8a951f1cd182a2a5789dd81",
-          "bytes": 249776,
-          "characters": 243118
+          "sha256": "e0f150f1c5e4d97ea4d873b0a7ba44d0b3d517f322638c237f81791b31a728b5",
+          "bytes": 497381,
+          "characters": 490312
         }
       ],
       "fallback": {
@@ -155,29 +155,29 @@
         {
           "id": "grok:light",
           "profile": "light",
-          "version": "2.8.10-light",
+          "version": "2.8.19-light",
           "artifact": "grok/light.min.js",
-          "sha256": "7411e8d637c595b2d255a18ddec65350eae5f9682966cf30e49b0ac41d32479a",
-          "bytes": 239564,
-          "characters": 234034
+          "sha256": "5c13ed51f2a77a4c7d2c144614de6056cb61f3e035ca2ebb2ac823aa5590262a",
+          "bytes": 315997,
+          "characters": 310032
         },
         {
           "id": "grok:full",
           "profile": "full",
-          "version": "1.0.8-full",
+          "version": "1.0.17-full",
           "artifact": "grok/full.min.js",
-          "sha256": "f4727b138362d7c23f6f09bb274342d0871d4c9625765a5fd53214e8e472866f",
-          "bytes": 245747,
-          "characters": 240187
+          "sha256": "167b8c634bcf0fb3838946ad02f1162a7867d221bd83640b48bc4e458136a9f9",
+          "bytes": 322088,
+          "characters": 316093
         },
         {
           "id": "grok:all_branches",
           "profile": "all_branches",
-          "version": "1.0.10-all-branches",
+          "version": "1.0.19-all-branches",
           "artifact": "grok/all_branches.min.js",
-          "sha256": "6d56220256e593e56ac36600649aa5634997ef8d7a33192651fea2013b3401eb",
-          "bytes": 263725,
-          "characters": 257894
+          "sha256": "1abcd2f7cee2b753d358feee166ba9a4faa4ebed114742c1eb51ee64e1069a45",
+          "bytes": 332395,
+          "characters": 326145
         }
       ]
     },
@@ -190,20 +190,20 @@
         {
           "id": "doubao:light",
           "profile": "light",
-          "version": "3.5.7-light",
+          "version": "3.6.3-light",
           "artifact": "doubao/light.min.js",
-          "sha256": "b8da9079ba3cde2164b6eb97066456730166e8d6133314f02eb8cb17f0b1bc06",
-          "bytes": 239952,
-          "characters": 234812
+          "sha256": "e926214d1709cd4559540f2bf5f66a95ee41f45b98d518e274c8a48df68f29d9",
+          "bytes": 319612,
+          "characters": 314104
         },
         {
           "id": "doubao:full",
           "profile": "full",
-          "version": "1.0.5-full",
+          "version": "1.1.3-full",
           "artifact": "doubao/full.min.js",
-          "sha256": "87b349770adebb81dcf7854602c16aca9d39b1a4ab302e4880d6d31f183c599f",
-          "bytes": 243813,
-          "characters": 238509
+          "sha256": "3d6bf2b0c99f2876f8b65c346767b082088f741282d3d6378f7d9994f08297f5",
+          "bytes": 323622,
+          "characters": 317950
         }
       ],
       "fallback": {
@@ -219,29 +219,29 @@
         {
           "id": "kimi:light",
           "profile": "light",
-          "version": "2.9.11-light",
+          "version": "2.10.3-light",
           "artifact": "kimi/light.min.js",
-          "sha256": "34986a60e1cb95dc526d9b85ad2c3784d826ab355d2abe27546cecfe8a1eebb2",
-          "bytes": 229252,
-          "characters": 224279
+          "sha256": "051a0f326e13529218de40827d8013610ff0dafc0838a0a72da08117f1ecd599",
+          "bytes": 289692,
+          "characters": 284237
         },
         {
           "id": "kimi:full",
           "profile": "full",
-          "version": "1.0.7-full",
+          "version": "1.1.2-full",
           "artifact": "kimi/full.min.js",
-          "sha256": "176c2779dee50c5664178f45e32883645bbc0e7bb44128c2d3b7f0026bc1b4f6",
-          "bytes": 237157,
-          "characters": 231618
+          "sha256": "2722057646f33c22ec164f6961c10d14fe67f374c92f35adda4e04f2ce342ef2",
+          "bytes": 297088,
+          "characters": 291087
         },
         {
           "id": "kimi:all_branches",
           "profile": "all_branches",
-          "version": "1.0.7-all-branches",
+          "version": "1.1.2-all-branches",
           "artifact": "kimi/all_branches.min.js",
-          "sha256": "65ec4fa78ef7d3a41bb2175c9f99a260583bbf1810796c43a72d26d9d5dee4d9",
-          "bytes": 248910,
-          "characters": 243157
+          "sha256": "181c9765a4a1a532959e2ffb45532225a4d08110387a617452a33b2e1f8e8b92",
+          "bytes": 308906,
+          "characters": 302691
         }
       ]
     },
@@ -254,29 +254,29 @@
         {
           "id": "qwen:light",
           "profile": "light",
-          "version": "2.6.14-light",
+          "version": "2.6.16-light",
           "artifact": "qwen/light.min.js",
-          "sha256": "41e738935c2f5d2f629d77efd8ac2a264dfd17b2c8376868d3d318e528df200c",
-          "bytes": 216700,
-          "characters": 212231
+          "sha256": "1811160775a617d2f0212fc224754af77aa7bb4b7e5df796eb8964f5fd495bee",
+          "bytes": 262116,
+          "characters": 257638
         },
         {
           "id": "qwen:full",
           "profile": "full",
-          "version": "1.0.11-full",
+          "version": "1.0.13-full",
           "artifact": "qwen/full.min.js",
-          "sha256": "8547b2d7704d858dcf772238ad99acb12f66a60a73626f41a4c859ea4816bf64",
-          "bytes": 219424,
-          "characters": 214897
+          "sha256": "370c23df3b6c4b5534cc70faca10937c6ead1ae9bc204a9a4d083e2c9aaff00c",
+          "bytes": 264838,
+          "characters": 260302
         },
         {
           "id": "qwen:all_branches",
           "profile": "all_branches",
-          "version": "1.0.11-all-branches",
+          "version": "1.0.13-all-branches",
           "artifact": "qwen/all_branches.min.js",
-          "sha256": "e48baf7b7203f242d0093e6afaac9590e9714eeff5bd0a25e68661a77080e258",
-          "bytes": 235018,
-          "characters": 230052
+          "sha256": "3dfa968d2b65204a25aa34ce78e350eee9e6a46745fd2bec17aab90b24e721d6",
+          "bytes": 280431,
+          "characters": 275456
         }
       ]
     },
@@ -353,20 +353,20 @@
         {
           "id": "yuanbao:light",
           "profile": "light",
-          "version": "2.10.10-light",
+          "version": "2.10.12-light",
           "artifact": "yuanbao/light.min.js",
-          "sha256": "2ccd811c22ae769901299333c8034bf316d80468f3a15ea7b14daf9efe169d41",
-          "bytes": 251015,
-          "characters": 245249
+          "sha256": "d8083fe7ee32ae52dedd4b9eaa2ab186bde8e7016657ba604561e1dc872d907e",
+          "bytes": 252733,
+          "characters": 247009
         },
         {
           "id": "yuanbao:full",
           "profile": "full",
-          "version": "1.0.9-full",
+          "version": "1.0.11-full",
           "artifact": "yuanbao/full.min.js",
-          "sha256": "f15d977497e9b690691689f9502367a6e2cca69c1a455db23151b198b2c6888d",
-          "bytes": 254097,
-          "characters": 248303
+          "sha256": "15aa2c18712100944b531a843d723b2c95d709ce5f1405003c7782877d44a52d",
+          "bytes": 255905,
+          "characters": 250111
         }
       ],
       "fallback": {
@@ -382,29 +382,29 @@
         {
           "id": "mistral:light",
           "profile": "light",
-          "version": "2.5.13-light",
+          "version": "2.5.16-light",
           "artifact": "mistral/light.min.js",
-          "sha256": "62fca381a70993974f8257795678dea2e880f7e0bd15fb99d6344cb302ad272e",
-          "bytes": 266010,
-          "characters": 260434
+          "sha256": "d69399271aaebee19925e1307a2b9675cd38206ddfa5bc29defbecea3bd756db",
+          "bytes": 380164,
+          "characters": 374425
         },
         {
           "id": "mistral:full",
           "profile": "full",
-          "version": "1.0.9-full",
+          "version": "1.0.12-full",
           "artifact": "mistral/full.min.js",
-          "sha256": "6b763fa91c45d87be9c6b3a0dbcab066784997b3a7138e72c401a8353aa1a553",
-          "bytes": 270444,
-          "characters": 265056
+          "sha256": "7b1c3ac6cda4169c392b098484b7f7b2aa66d5a67817618ae771f14eb1a63865",
+          "bytes": 384611,
+          "characters": 379060
         },
         {
           "id": "mistral:all_branches",
           "profile": "all_branches",
-          "version": "1.0.9-all-branches",
+          "version": "1.0.12-all-branches",
           "artifact": "mistral/all_branches.min.js",
-          "sha256": "033e5ce2268a291178d2840acd8d2220f207a0b41c03c088a16ef90b5db1494c",
-          "bytes": 283058,
-          "characters": 277227
+          "sha256": "ed0266681cdeacb0cb80ad9541d0ae6c3a17cce65bbbce48b871a385a2816105",
+          "bytes": 397215,
+          "characters": 391221
         }
       ]
     }

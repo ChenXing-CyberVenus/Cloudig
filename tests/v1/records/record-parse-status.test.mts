@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { copyFile, mkdir, mkdtemp, readFile, writeFile, readdir, lstat, realpath, rm, unlink } from "node:fs/promises";
 import path from "node:path";
+import { zstdCompressSync } from "node:zlib";
 import test from "node:test";
 import { createRecordLibrary } from "../../../src/adapters/library-data/record-library.mts";
 import { scanRecordSources, readRecordParseStatuses, recordParseFailure, clearRecordParseFailure, dismissMissingRecordSources, unitKey, selectRecordParseRange, type RecordParseStatus } from "../../../src/adapters/library-data/record-parse-status.mts";
@@ -42,6 +43,25 @@ test("an HTML locator is source metadata, while a container locator identifies a
   for (const locator of ["record-a", "record-b"]) assert.deepEqual(recordHistoryKey(container.path, { source: { format: container.format, locator }, platform: "claude" }), unitKey({ source: container, locator }));
   assert.notDeepEqual(unitKey({ source: container, locator: "record-a" }), unitKey({ source: container, locator: "record-b" }));
 });
+
+test("source-index 1.6 upgrades reuse unchanged observations and only reprobe newly supported Zstd files", async () => temporary(async root => {
+  await writeFile(path.join(root,"Inbox","official.json"),JSON.stringify([{uuid:"sample",name:"Example",chat_messages:[]}]));
+  const compressed=path.join(root,"Inbox","compressed.jsonl.zst");
+  await writeFile(compressed,zstdCompressSync(Buffer.from(JSON.stringify({type:"session_meta",payload:{id:"00000000-0000-7000-8000-000000000001"}})+'\n')));
+  await scanRecordSources(root);
+  const indexPath=path.join(root,"appdata/indexes/sources.json"),index=JSON.parse(await readFile(indexPath,"utf8"));
+  index.schema="cloudig/source-index/1.6.0";
+  const oldObservation={...index.files["Inbox/official.json"],captured:{at:"2026-09-01T00:00:00Z",from:"filesystem:creation_time"}};
+  index.files["Inbox/official.json"]=oldObservation;
+  index.files["Inbox/compressed.jsonl.zst"]={...index.files["Inbox/compressed.jsonl.zst"],format:"unknown"};
+  delete index.files["Inbox/compressed.jsonl.zst"].platform;delete index.files["Inbox/compressed.jsonl.zst"].adapterId;
+  await writeFile(indexPath,JSON.stringify(index));
+  const migrated=await scanRecordSources(root);
+  assert.deepEqual(migrated.find(s=>s.path==="Inbox/official.json"),oldObservation,"unchanged existing formats must not be re-inspected on a compatible index upgrade");
+  const zstd=migrated.find(s=>s.path==="Inbox/compressed.jsonl.zst")!;
+  assert.equal(zstd.format,"jsonl");assert.equal(zstd.platform,"codex");
+  assert.equal(JSON.parse(await readFile(indexPath,"utf8")).schema,"cloudig/source-index/1.7.0");
+}));
 
 test("legacy HTML histories restore completed status without parsing or rewriting originals, and keep safe reparse ownership", async () => temporary(async root => {
   const plan = await prepareRecordParsePlan(root, { mode: "parser", selected: new Set() });

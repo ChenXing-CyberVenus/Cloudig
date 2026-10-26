@@ -1,0 +1,1113 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "pyodide-0.26.2",
+      "delivery": "bundled",
+      "name": "Python · Pyodide 0.26.2",
+      "triggers": [
+        "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"
+      ],
+      "license": "MPL-2.0 / bundled Python licenses",
+      "base": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/",
+      "files": [
+        {
+          "file": "pyodide.js",
+          "url": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js",
+          "mime": "text/javascript",
+          "bytes": 14767,
+          "sha256": "037907919d58ac79dbee2eee57e96507b79fad58260ab847dc6200443915c20f",
+          "aliases": [
+            "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"
+          ]
+        },
+        {
+          "file": "pyodide.asm.js",
+          "url": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.asm.js",
+          "mime": "text/javascript",
+          "bytes": 1229628,
+          "sha256": "704e56d209d8b867c8dd42e754a246db0175e448d59a46530803bdddfdfc78e0",
+          "aliases": [
+            "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.asm.js"
+          ]
+        },
+        {
+          "file": "pyodide.asm.wasm",
+          "url": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.asm.wasm",
+          "mime": "application/wasm",
+          "bytes": 10087885,
+          "sha256": "8f631d8453672664131b2d4c9c41f3adf5d32e9efda2cb421d3fdf38cab57a21",
+          "aliases": [
+            "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.asm.wasm"
+          ]
+        },
+        {
+          "file": "python_stdlib.zip",
+          "url": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/python_stdlib.zip",
+          "mime": "application/zip",
+          "bytes": 2341761,
+          "sha256": "0dd443755a0244ae3052f2e0834413d68c43f362c651edd47b785ea9d26e4853",
+          "aliases": [
+            "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/python_stdlib.zip"
+          ]
+        },
+        {
+          "file": "pyodide-lock.json",
+          "url": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide-lock.json",
+          "mime": "application/json",
+          "bytes": 105980,
+          "sha256": "0cb7ca8faf9c35af92b4d261996ddd51dd9a6c1074ee59279f1570d67af29644",
+          "aliases": [
+            "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide-lock.json"
+          ]
+        },
+        {
+          "file": "LICENSE",
+          "url": "https://raw.githubusercontent.com/pyodide/pyodide/0.26.2/LICENSE",
+          "mime": "text/plain",
+          "bytes": 16725,
+          "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "tfjs-4.22.0",
+      "delivery": "on-demand",
+      "name": "TensorFlow.js 4.22.0",
+      "triggers": [
+        "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4"
+      ],
+      "license": "Apache-2.0",
+      "files": [
+        {
+          "file": "tf.min.js",
+          "url": "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js",
+          "mime": "text/javascript",
+          "bytes": 1469843,
+          "sha256": "300dfae273d20b4046f46a06d735688f03675a807561e9bcb5f664eb2f3d2831",
+          "aliases": [
+            "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4",
+            "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"
+          ]
+        },
+        {
+          "file": "LICENSE",
+          "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+          "mime": "text/plain",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "mobilenet-2.1.1-tfjs-4.22.0",
+      "delivery": "on-demand",
+      "name": "Image recognition · MobileNet",
+      "triggers": [
+        "https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2"
+      ],
+      "license": "Apache-2.0",
+      "model": "MobileNet V1 1.0 224 · ImageNet classification",
+      "files": [
+        {
+          "file": "mobilenet.min.js",
+          "url": "https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js",
+          "mime": "text/javascript",
+          "bytes": 33641,
+          "sha256": "8d647cdfef79d37353fea7a1645a451aca63b0118ad1ec21d451026386411f9e",
+          "aliases": [
+            "https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2",
+            "https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"
+          ]
+        },
+        {
+          "file": "model.json",
+          "url": "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/model.json?tfjs-format=file",
+          "mime": "application/json",
+          "bytes": 47373,
+          "sha256": "df5e03be9797a3dfec102b85bd8609009c77b287f3308860c53b85af0a16a1e1",
+          "aliases": [
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/model.json?tfjs-format=file",
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/model.json?tfjs-format=file"
+          ]
+        },
+        {
+          "file": "group1-shard1of5.bin",
+          "url": "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard1of5.bin?tfjs-format=file",
+          "mime": "application/octet-stream",
+          "bytes": 4194304,
+          "sha256": "90cfca1d2174655d63ac100a8a75f4387d39743c3487dbb55d40d0e9f6334ada",
+          "aliases": [
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard1of5.bin?tfjs-format=file",
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard1of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard1of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard1of5.bin?tfjs-format=file"
+          ]
+        },
+        {
+          "file": "group1-shard2of5.bin",
+          "url": "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard2of5.bin?tfjs-format=file",
+          "mime": "application/octet-stream",
+          "bytes": 4194304,
+          "sha256": "f1ae9da56af590c5baeb929de97883fadb34d22f92cdcb14cac6bb0dabcd1c18",
+          "aliases": [
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard2of5.bin?tfjs-format=file",
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard2of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard2of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard2of5.bin?tfjs-format=file"
+          ]
+        },
+        {
+          "file": "group1-shard3of5.bin",
+          "url": "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard3of5.bin?tfjs-format=file",
+          "mime": "application/octet-stream",
+          "bytes": 4194304,
+          "sha256": "b06f112c23c2510d5834b4ff1d495820e66939b95fc6662c549e4f771d1ebeaa",
+          "aliases": [
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard3of5.bin?tfjs-format=file",
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard3of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard3of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard3of5.bin?tfjs-format=file"
+          ]
+        },
+        {
+          "file": "group1-shard4of5.bin",
+          "url": "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard4of5.bin?tfjs-format=file",
+          "mime": "application/octet-stream",
+          "bytes": 4194304,
+          "sha256": "06b75b39673de9bb124361c4c6f71f62f145264cf5741509a7916ef225de697a",
+          "aliases": [
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard4of5.bin?tfjs-format=file",
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard4of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard4of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard4of5.bin?tfjs-format=file"
+          ]
+        },
+        {
+          "file": "group1-shard5of5.bin",
+          "url": "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard5of5.bin?tfjs-format=file",
+          "mime": "application/octet-stream",
+          "bytes": 111028,
+          "sha256": "8d963e717425e24b6c2b870d03fe13fe2bf593d569effb757b3ecd38b3246716",
+          "aliases": [
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard5of5.bin?tfjs-format=file",
+            "https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1/group1-shard5of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard5of5.bin",
+            "https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_100_224/classification/1/default/1/group1-shard5of5.bin?tfjs-format=file"
+          ]
+        },
+        {
+          "file": "README.md",
+          "url": "https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/README.md",
+          "mime": "text/plain",
+          "bytes": 5175,
+          "sha256": "222d54f91c83472bc66261a7b1d636ade2e905952b6189c435d63b7d3c5f713c",
+          "aliases": []
+        },
+        {
+          "file": "Apache-2.0.txt",
+          "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+          "mime": "text/plain",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "tailwind-3.4.17",
+      "delivery": "bundled",
+      "name": "Tailwind CSS 3.4.17",
+      "triggers": [
+        "https://cdn.tailwindcss.com"
+      ],
+      "license": "MIT",
+      "files": [
+        {
+          "file": "tailwind.js",
+          "url": "https://cdn.tailwindcss.com/3.4.17",
+          "mime": "text/javascript",
+          "bytes": 407279,
+          "sha256": "176e894661aa9cdc9a5cba6c720044cbbf7b8bd80d1c9a142a7c24b1b6c50d15",
+          "aliases": [
+            "https://cdn.tailwindcss.com",
+            "https://cdn.tailwindcss.com/3.4.17"
+          ]
+        },
+        {
+          "file": "LICENSE",
+          "url": "https://cdn.jsdelivr.net/npm/tailwindcss@3.4.17/LICENSE",
+          "mime": "text/plain",
+          "bytes": 1071,
+          "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "font-awesome-6.5.1",
+      "delivery": "bundled",
+      "name": "Font Awesome 6.5.1",
+      "triggers": [
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/"
+      ],
+      "license": "OFL-1.1 / MIT / CC-BY-4.0",
+      "files": [
+        {
+          "file": "css/all.min.css",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
+          "mime": "text/css",
+          "bytes": 102641,
+          "sha256": "c22cfb6520a7fdbb738632834019acf47c78b1279462c0eb4cb83bae83ecb5a7",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          ]
+        },
+        {
+          "file": "webfonts/fa-brands-400.woff2",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2",
+          "mime": "font/woff2",
+          "bytes": 117372,
+          "sha256": "3a8924cd5203a28628716aedb5cef0943da4c3b44e3ffcee90ab06387b41c490",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2"
+          ]
+        },
+        {
+          "file": "webfonts/fa-brands-400.ttf",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.ttf",
+          "mime": "font/ttf",
+          "bytes": 207972,
+          "sha256": "5656d596bc597165a42182f67b2b9f17d2ae47a9e3ef1b042b9a729739730705",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.ttf"
+          ]
+        },
+        {
+          "file": "webfonts/fa-regular-400.woff2",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-regular-400.woff2",
+          "mime": "font/woff2",
+          "bytes": 25452,
+          "sha256": "2bccecf0bc7e96cd5ce4003abeb3ae9ee4a3d19158c4e6edfd2df32d2f0d5721",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-regular-400.woff2"
+          ]
+        },
+        {
+          "file": "webfonts/fa-regular-400.ttf",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-regular-400.ttf",
+          "mime": "font/ttf",
+          "bytes": 68004,
+          "sha256": "5d02dc9b858e3c85a794f87e379857f4fedc4e26cf15001714a9a0e0b1d2294d",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-regular-400.ttf"
+          ]
+        },
+        {
+          "file": "webfonts/fa-solid-900.woff2",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2",
+          "mime": "font/woff2",
+          "bytes": 156496,
+          "sha256": "9fc85f3a4544ab0d570c7f8f9bbb88db8d92c359b2707580ea8b07c75673eae2",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2"
+          ]
+        },
+        {
+          "file": "webfonts/fa-solid-900.ttf",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.ttf",
+          "mime": "font/ttf",
+          "bytes": 419720,
+          "sha256": "fbbf06d7437aa30f3cd44c968380193545a8fc3eadfb7ad897bbb101eefec5a2",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.ttf"
+          ]
+        },
+        {
+          "file": "webfonts/fa-v4compatibility.woff2",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-v4compatibility.woff2",
+          "mime": "font/woff2",
+          "bytes": 4792,
+          "sha256": "4d4a2d7fd1c6684845cb174fdd7fc073bd64cb741286fb247f8b76c2b7b852c4",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-v4compatibility.woff2"
+          ]
+        },
+        {
+          "file": "webfonts/fa-v4compatibility.ttf",
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-v4compatibility.ttf",
+          "mime": "font/ttf",
+          "bytes": 10832,
+          "sha256": "09663a36fc05e7190af8324b855105c5bb511ad94f94b81b34afee503279eca2",
+          "aliases": [
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-v4compatibility.ttf"
+          ]
+        },
+        {
+          "file": "LICENSE.txt",
+          "url": "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/LICENSE.txt",
+          "mime": "text/plain",
+          "bytes": 7427,
+          "sha256": "0aa8f86525273b2efa4f40f4272a188e187704252170e979dc06879adf68d43c",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "noto-sans-sc-20261021",
+      "delivery": "bundled",
+      "name": "Noto Sans SC",
+      "triggers": [
+        "Noto Sans SC",
+        "Noto+Sans+SC"
+      ],
+      "license": "OFL-1.1",
+      "fonts": [
+        {
+          "family": "Noto Sans SC",
+          "weight": "100 900",
+          "alias": "cloudig-font:NotoSansSC-Variable"
+        }
+      ],
+      "files": [
+        {
+          "file": "NotoSansSC.ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+          "mime": "font/ttf",
+          "bytes": 17772300,
+          "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+          "aliases": [
+            "cloudig-font:NotoSansSC-Variable"
+          ]
+        },
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/OFL.txt",
+          "mime": "text/plain",
+          "bytes": 4388,
+          "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "googlesansflex-20261021",
+      "delivery": "bundled",
+      "name": "Google Sans Flex",
+      "triggers": [
+        "Google Sans Flex",
+        "Google+Sans+Flex"
+      ],
+      "license": "OFL-1.1",
+      "fonts": [
+        {
+          "family": "Google Sans Flex",
+          "weight": "100 1000",
+          "alias": "cloudig-font:GoogleSansFlex"
+        },
+        {
+          "family": "Google Sans Flex",
+          "weight": "100 1000",
+          "style": "italic",
+          "variation": "\"slnt\" -10",
+          "alias": "cloudig-font:GoogleSansFlex"
+        }
+      ],
+      "files": [
+        {
+          "file": "GoogleSansFlex[ROND,opsz,slnt,wdth,wght].ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesansflex/GoogleSansFlex%5BROND%2Copsz%2Cslnt%2Cwdth%2Cwght%5D.ttf",
+          "mime": "font/ttf",
+          "bytes": 3910784,
+          "sha256": "a9ac770798857d5e8ac593ced42b22e40a7c08cec98319f92b0eccc2783a77ba",
+          "aliases": [
+            "cloudig-font:GoogleSansFlex"
+          ]
+        },
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesansflex/OFL.txt",
+          "mime": "text/plain",
+          "bytes": 4488,
+          "sha256": "fc13d69f63e36d284b6e383d4d1463d8ad404f0aa065e57cf961252d51063137",
+          "aliases": []
+        },
+        {
+          "file": "TRADEMARKS.md",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesansflex/TRADEMARKS.md",
+          "mime": "text/plain",
+          "bytes": 1585,
+          "sha256": "5cad381c0828db656f32a787a1eff76db3303c74ec4f94668ae9fc2873ffe42f",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "googlesanscode-20261021",
+      "delivery": "bundled",
+      "name": "Google Sans Code",
+      "triggers": [
+        "Google Sans Code",
+        "Google+Sans+Code"
+      ],
+      "license": "OFL-1.1",
+      "fonts": [
+        {
+          "family": "Google Sans Code",
+          "weight": "300 800",
+          "alias": "cloudig-font:GoogleSansCode"
+        },
+        {
+          "family": "Google Sans Code",
+          "weight": "300 800",
+          "style": "italic",
+          "alias": "cloudig-font:GoogleSansCode-Italic"
+        }
+      ],
+      "files": [
+        {
+          "file": "GoogleSansCode[wght].ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesanscode/GoogleSansCode%5Bwght%5D.ttf",
+          "mime": "font/ttf",
+          "bytes": 126224,
+          "sha256": "c9649573afcd966f61096b1e9c3c3115e7b54315ca2adf9839c6f8b17d5f8e1f",
+          "aliases": [
+            "cloudig-font:GoogleSansCode"
+          ]
+        },
+        {
+          "file": "GoogleSansCode-Italic[wght].ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesanscode/GoogleSansCode-Italic%5Bwght%5D.ttf",
+          "mime": "font/ttf",
+          "bytes": 132968,
+          "sha256": "bdf116292f27aca16e2aefb5534042a25f244d3a9187a521ce97fc2117a4a844",
+          "aliases": [
+            "cloudig-font:GoogleSansCode-Italic"
+          ]
+        },
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesanscode/OFL.txt",
+          "mime": "text/plain",
+          "bytes": 4396,
+          "sha256": "ff8f4fbc4f1a71c7d4c6481c48dc2b21c43f8dc15872536667fee45c15d20928",
+          "aliases": []
+        },
+        {
+          "file": "TRADEMARKS.md",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesanscode/TRADEMARKS.md",
+          "mime": "text/plain",
+          "bytes": 1478,
+          "sha256": "d9c627c968837b4a148195153271ca69e98d4bc750b041e0d98ba7b376b1cf50",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "playfair-display-20261021",
+      "delivery": "bundled",
+      "name": "Playfair Display",
+      "license": "OFL-1.1",
+      "triggers": [
+        "Playfair Display",
+        "Playfair+Display"
+      ],
+      "fonts": [
+        {
+          "family": "Playfair Display",
+          "weight": "400 900",
+          "alias": "cloudig-font:PlayfairDisplay"
+        }
+      ],
+      "files": [
+        {
+          "file": "PlayfairDisplay.ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf",
+          "mime": "font/ttf",
+          "bytes": 300724,
+          "sha256": "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6",
+          "aliases": [
+            "cloudig-font:PlayfairDisplay"
+          ]
+        },
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/OFL.txt",
+          "mime": "text/plain",
+          "bytes": 4449,
+          "sha256": "566be814f8e96e93dfa16101331557eb6b5467e9e03f627c0910fe93ca12300e",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "chill-jinshu-song-1.7-medium",
+      "delivery": "bundled",
+      "name": "ChillJinshuSong Medium 1.7",
+      "license": "OFL-1.1",
+      "triggers": [
+        "ChillJinshuSongMedium"
+      ],
+      "fonts": [
+        {
+          "family": "ChillJinshuSongMedium",
+          "weight": 500,
+          "alias": "cloudig-font:ChillJinshuSongMedium",
+          "format": "opentype"
+        }
+      ],
+      "files": [
+        {
+          "file": "ChillJinshuSongMedium.otf",
+          "url": "https://raw.githubusercontent.com/Warren2060/ChillJinshuSong/main/%E5%AF%92%E8%9D%89%E9%94%A6%E4%B9%A6%E5%AE%8BPro_v1.7/ChillJinshuSongMedium.otf",
+          "mime": "font/otf",
+          "bytes": 24825552,
+          "sha256": "bc1d938e727096f9a140046d988489e6816652b886a7fdca02f629445629baa5",
+          "aliases": [
+            "cloudig-font:ChillJinshuSongMedium"
+          ]
+        },
+        {
+          "file": "LICENSE",
+          "url": "https://raw.githubusercontent.com/Warren2060/ChillJinshuSong/main/LICENSE",
+          "mime": "text/plain",
+          "bytes": 4325,
+          "sha256": "027f6f68aa3c651a771d3368e7d1620acaeadfd5d00d23da44332565bc151869",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "open-sans-20261022",
+      "delivery": "bundled",
+      "name": "Open Sans",
+      "triggers": [
+        "Open Sans",
+        "Open+Sans"
+      ],
+      "license": "OFL-1.1",
+      "fonts": [
+        {
+          "family": "Open Sans",
+          "weight": "300 800",
+          "alias": "cloudig-font:open-sans-20261022",
+          "format": "truetype"
+        }
+      ],
+      "files": [
+        {
+          "file": "OpenSans.ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/opensans/OpenSans%5Bwdth%2Cwght%5D.ttf",
+          "mime": "font/ttf",
+          "bytes": 532636,
+          "sha256": "36643644f318a812aab2d2ed3bb98f8cf0872527f835fe9398d95fe6b9adb878",
+          "aliases": [
+            "cloudig-font:open-sans-20261022",
+            "https://raw.githubusercontent.com/google/fonts/main/ofl/opensans/OpenSans%5Bwdth%2Cwght%5D.ttf"
+          ]
+        },
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/opensans/OFL.txt",
+          "mime": "text/plain",
+          "bytes": 4389,
+          "sha256": "fbbbcfef55318de350562559b671360de6d597112ecc5c73881b05092db89602",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "jetbrains-mono-20261022",
+      "delivery": "bundled",
+      "name": "JetBrains Mono",
+      "triggers": [
+        "JetBrains Mono",
+        "JetBrains+Mono"
+      ],
+      "license": "OFL-1.1",
+      "fonts": [
+        {
+          "family": "JetBrains Mono",
+          "weight": "100 800",
+          "alias": "cloudig-font:jetbrains-mono-20261022",
+          "format": "truetype"
+        }
+      ],
+      "files": [
+        {
+          "file": "JetBrainsMono.ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf",
+          "mime": "font/ttf",
+          "bytes": 187208,
+          "sha256": "48715a42ec242c21e9f02692891e147d022299a52e48d5e413e1a942193ffeda",
+          "aliases": [
+            "cloudig-font:jetbrains-mono-20261022",
+            "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf"
+          ]
+        },
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/OFL.txt",
+          "mime": "text/plain",
+          "bytes": 4399,
+          "sha256": "b2fe5e8987594e9ffd1d2ca52a2f5d73eb8335243893c5d6254b5ad69269591d",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "google-sans-v58-400",
+      "delivery": "bundled",
+      "name": "Google Sans",
+      "triggers": [
+        "https://fonts.gstatic.com/s/googlesans/v58/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCI.woff2"
+      ],
+      "license": "OFL-1.1",
+      "fonts": [
+        {
+          "family": "Google Sans",
+          "weight": 400,
+          "alias": "cloudig-font:google-sans-v58-400",
+          "format": "woff2"
+        }
+      ],
+      "files": [
+        {
+          "file": "GoogleSans.woff2",
+          "url": "https://fonts.gstatic.com/s/googlesans/v58/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCI.woff2",
+          "mime": "font/woff2",
+          "bytes": 52280,
+          "sha256": "57147f08949ababe7deef611435ae418475a693e3823769a25c2a39b6ead9ccc",
+          "aliases": [
+            "cloudig-font:google-sans-v58-400",
+            "https://fonts.gstatic.com/s/googlesans/v58/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCI.woff2"
+          ]
+        },
+        {
+          "file": "OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesans/OFL.txt",
+          "mime": "text/plain",
+          "bytes": 4488,
+          "sha256": "2b75ef20f13d83a7514aee452c4782c20cdc9ff2dee17600f44d37a06d4fb958",
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "libmedia-1.3.1",
+      "delivery": "bundled",
+      "name": "Local video decoding · libmedia 1.3.1",
+      "triggers": [],
+      "license": "LGPL-3.0-or-later; FFmpeg decoder components LGPL-2.1-or-later",
+      "base": "https://github.com/zhaohappy/libmedia/tree/152f629d3021fd8013efa464fcb7b55f9fbe7753/",
+      "files": [
+        {
+          "file": "163.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/163.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 3174,
+          "sha256": "f7a1d72db6389cf3786b4b8fd049ba8b78450174d74395473a664b57b6e365b7",
+          "aliases": [
+            "cloudig-media-runtime:163.avplayer.js"
+          ]
+        },
+        {
+          "file": "182.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/182.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 13010,
+          "sha256": "561bd2533d5d16e5463f600d6636e50be95dd9f26cd2d64403efec09a4bd9139",
+          "aliases": [
+            "cloudig-media-runtime:182.avplayer.js"
+          ]
+        },
+        {
+          "file": "195.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/195.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 5815,
+          "sha256": "6a62deb28584b8fe94944b13a5a956aa19c2e224f458a3ea2911ba452df69a1b",
+          "aliases": [
+            "cloudig-media-runtime:195.avplayer.js"
+          ]
+        },
+        {
+          "file": "199.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/199.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 7138,
+          "sha256": "08175b7fd9aef2804e9f28e2bc7b36788e125ebddd418e9c1d3dc1cdddf8f64b",
+          "aliases": [
+            "cloudig-media-runtime:199.avplayer.js"
+          ]
+        },
+        {
+          "file": "239.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/239.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 47862,
+          "sha256": "2d11ea2ebca53d80785051efcb53517cb6b9e4d5dfd8bd56a9acd6af5a235625",
+          "aliases": [
+            "cloudig-media-runtime:239.avplayer.js"
+          ]
+        },
+        {
+          "file": "248.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/248.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 20276,
+          "sha256": "e7dd40aae09c03066c5e00e4f56948ca07ab14d7d2e4a5281677184af9f67b36",
+          "aliases": [
+            "cloudig-media-runtime:248.avplayer.js"
+          ]
+        },
+        {
+          "file": "26.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/26.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 95381,
+          "sha256": "8ca506b724b277f8baaa75e0720c0d6c1b1b85f016f57e2899917b2cfa6caaed",
+          "aliases": [
+            "cloudig-media-runtime:26.avplayer.js"
+          ]
+        },
+        {
+          "file": "261.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/261.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 26575,
+          "sha256": "a22abbdad529b30f57c8d3346ece4216545ee6124a9b2bc24a490baebe905266",
+          "aliases": [
+            "cloudig-media-runtime:261.avplayer.js"
+          ]
+        },
+        {
+          "file": "272.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/272.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 59680,
+          "sha256": "d78ae6bb0531f4865e9331f1ee173c2115d43bbd1d48ec504338b3cc038ddd72",
+          "aliases": [
+            "cloudig-media-runtime:272.avplayer.js"
+          ]
+        },
+        {
+          "file": "325.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/325.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 23979,
+          "sha256": "34ba87d29db5a65a85bf5bd8f940e2fc839f4c4915755bdf26b886d29daa95f8",
+          "aliases": [
+            "cloudig-media-runtime:325.avplayer.js"
+          ]
+        },
+        {
+          "file": "33.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/33.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 10104,
+          "sha256": "4eed360072b7a9bf196df027ee53b1558155e8d4c38bee7b8960d793fc5767ea",
+          "aliases": [
+            "cloudig-media-runtime:33.avplayer.js"
+          ]
+        },
+        {
+          "file": "384.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/384.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 39176,
+          "sha256": "7724724e56070fb62d7ae922d4ab4a9d5cf72259411f92e1ed87588721d16291",
+          "aliases": [
+            "cloudig-media-runtime:384.avplayer.js"
+          ]
+        },
+        {
+          "file": "43.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/43.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 9003,
+          "sha256": "1d28ce4b480ec0133bba2e2c311f59b2c91ab10b5702aeb961e1ccdc0993ff46",
+          "aliases": [
+            "cloudig-media-runtime:43.avplayer.js"
+          ]
+        },
+        {
+          "file": "462.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/462.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 7107,
+          "sha256": "fdd5fdfb5ccd28fe3143508fa3ea3718a9540e25f444b3e739718eed9f4ad4aa",
+          "aliases": [
+            "cloudig-media-runtime:462.avplayer.js"
+          ]
+        },
+        {
+          "file": "502.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/502.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 41190,
+          "sha256": "cc99ac210af6f52db8a7c1c9324b52f44834001f9e66c0d11bd896883723bd15",
+          "aliases": [
+            "cloudig-media-runtime:502.avplayer.js"
+          ]
+        },
+        {
+          "file": "573.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/573.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 44303,
+          "sha256": "e51f5114380919e26b2a4b14ea2d1de12b6fa2eeb35d344eeaf99d8ba9424f1e",
+          "aliases": [
+            "cloudig-media-runtime:573.avplayer.js"
+          ]
+        },
+        {
+          "file": "630.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/630.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 23551,
+          "sha256": "415df8b918bf9fd2a62e1ffc94bb66e6b97e760fbf7cfcc2126757ab0336971f",
+          "aliases": [
+            "cloudig-media-runtime:630.avplayer.js"
+          ]
+        },
+        {
+          "file": "641.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/641.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 2706,
+          "sha256": "90bbc5eb9e71165bf3a2a2c1e9da184947e265c641f6f2100c2324f6b34033b9",
+          "aliases": [
+            "cloudig-media-runtime:641.avplayer.js"
+          ]
+        },
+        {
+          "file": "735.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/735.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 44169,
+          "sha256": "d8df48df8bfb67a69362865a2292676215e3f193baa79aa9a80ae53b2f65bb18",
+          "aliases": [
+            "cloudig-media-runtime:735.avplayer.js"
+          ]
+        },
+        {
+          "file": "747.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/747.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 4114,
+          "sha256": "ee0d20d0101966fa6fa1c72a6eff5b2c6ae46f594b862b42a5998a856445ed5d",
+          "aliases": [
+            "cloudig-media-runtime:747.avplayer.js"
+          ]
+        },
+        {
+          "file": "749.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/749.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 7822,
+          "sha256": "7b482b04b30cae090e90d610e11043419037822a73ff397a159b985017e49f09",
+          "aliases": [
+            "cloudig-media-runtime:749.avplayer.js"
+          ]
+        },
+        {
+          "file": "790.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/790.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 4967,
+          "sha256": "7a8a7e78e770479ceb9400778c97b8d87d5d0c582cf57d1219ace14e66659a0f",
+          "aliases": [
+            "cloudig-media-runtime:790.avplayer.js"
+          ]
+        },
+        {
+          "file": "794.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/794.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 7523,
+          "sha256": "5006169b27c99d077ec00032bbafaf1138c3cff82d948e588f24c2a329c9b8c9",
+          "aliases": [
+            "cloudig-media-runtime:794.avplayer.js"
+          ]
+        },
+        {
+          "file": "850.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/850.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 37102,
+          "sha256": "6bb1452e2a0ff65aa591ce67f4fd0d4c1487115731fb3ee5239f5db11598bbd4",
+          "aliases": [
+            "cloudig-media-runtime:850.avplayer.js"
+          ]
+        },
+        {
+          "file": "881.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/881.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 32452,
+          "sha256": "a0fda825c2be1f5c25fd7a659c384bb79437b7040b1a5329fa4328441de54580",
+          "aliases": [
+            "cloudig-media-runtime:881.avplayer.js"
+          ]
+        },
+        {
+          "file": "932.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/932.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 30412,
+          "sha256": "bb59e5ce50ef6a1cab7b4a4e60f8ea67180ae215d1cc4fbf269972cac05f230f",
+          "aliases": [
+            "cloudig-media-runtime:932.avplayer.js"
+          ]
+        },
+        {
+          "file": "943.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/943.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 85647,
+          "sha256": "d54c87ee87e1f1cb74847d306c35aa08cd5161d5bd2241778bf53c02a6a770dd",
+          "aliases": [
+            "cloudig-media-runtime:943.avplayer.js"
+          ]
+        },
+        {
+          "file": "956.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/956.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 22828,
+          "sha256": "d59993fab247da694514807e502106372d77d9bb2ddcd02931e689b78a3be4e0",
+          "aliases": [
+            "cloudig-media-runtime:956.avplayer.js"
+          ]
+        },
+        {
+          "file": "961.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/961.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 7727,
+          "sha256": "1caa3c3f5fe7b6668ffd67c9abade2cf78f1701b76c653f91c1049286a94604f",
+          "aliases": [
+            "cloudig-media-runtime:961.avplayer.js"
+          ]
+        },
+        {
+          "file": "97.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/97.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 34074,
+          "sha256": "ba8dd58b3ea2d6751dc36bcd66dfe31c25dbdc8567accbb382b74c26bf42fb9b",
+          "aliases": [
+            "cloudig-media-runtime:97.avplayer.js"
+          ]
+        },
+        {
+          "file": "991.avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/991.avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 35962,
+          "sha256": "75972214329948e9321f1980ab2a93ec4cd913579a78656e91e6196be8b74de0",
+          "aliases": [
+            "cloudig-media-runtime:991.avplayer.js"
+          ]
+        },
+        {
+          "file": "avplayer.js",
+          "url": "https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/avplayer.js",
+          "mime": "text/javascript",
+          "bytes": 584379,
+          "sha256": "4efacaa1e4720310cbc301124898ee82d9ff9dbbff5c7ba82b1393db346f2be2",
+          "aliases": [
+            "cloudig-media-runtime:avplayer.js"
+          ]
+        },
+        {
+          "file": "hevc-simd.wasm",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/dist/decode/hevc-simd.wasm",
+          "mime": "application/wasm",
+          "bytes": 1187929,
+          "sha256": "63576fc0752535da9f7f1374e89ab12c22a0cd4425639f0f8162e589af7faf27",
+          "aliases": [
+            "cloudig-media-codec:hevc"
+          ]
+        },
+        {
+          "file": "h264-simd.wasm",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/dist/decode/h264-simd.wasm",
+          "mime": "application/wasm",
+          "bytes": 1715305,
+          "sha256": "0c7ff22730ef4ee7b4f99e57d60b6b6212eb2a9b75de1e8190b1501d97212295",
+          "aliases": [
+            "cloudig-media-codec:h264"
+          ]
+        },
+        {
+          "file": "aac-simd.wasm",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/dist/decode/aac-simd.wasm",
+          "mime": "application/wasm",
+          "bytes": 725214,
+          "sha256": "d261e0f99e83e403e62f88be4368e352eafb25ddc690a0aa10e9130637339b2d",
+          "aliases": [
+            "cloudig-media-codec:aac"
+          ]
+        },
+        {
+          "file": "mp3-simd.wasm",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/dist/decode/mp3-simd.wasm",
+          "mime": "application/wasm",
+          "bytes": 395341,
+          "sha256": "b675e6ccadac5756b9e3633520699d3acdfc3063a00007e73e7d15db3a8ee5ac",
+          "aliases": [
+            "cloudig-media-codec:mp3"
+          ]
+        },
+        {
+          "file": "resample-simd.wasm",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/dist/resample/resample-simd.wasm",
+          "mime": "application/wasm",
+          "bytes": 263311,
+          "sha256": "e4db620d0878198bcb6b8fb16035a259208b739ace8c54a6507057b4f4c5c9dd",
+          "aliases": [
+            "cloudig-media-codec:resample"
+          ]
+        },
+        {
+          "file": "stretchpitch-simd.wasm",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/dist/stretchpitch/stretchpitch-simd.wasm",
+          "mime": "application/wasm",
+          "bytes": 45775,
+          "sha256": "62d52214210a2e7f748cab6e18bbc1d854e76a5bc88df30449109dd6b83c9f91",
+          "aliases": [
+            "cloudig-media-codec:stretchpitch"
+          ]
+        },
+        {
+          "file": "COPYING.LGPLv3",
+          "url": "https://raw.githubusercontent.com/zhaohappy/libmedia/152f629d3021fd8013efa464fcb7b55f9fbe7753/COPYING.LGPLv3",
+          "mime": "text/plain",
+          "bytes": 7650,
+          "sha256": "ea8af5e789cb2d4e9b10bce3874982ade163b749b6bfbdb32e2df21c4d106de1",
+          "aliases": []
+        },
+        {
+          "file": "COPYING.GPLv3",
+          "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/master/COPYING3",
+          "mime": "text/plain",
+          "bytes": 35147,
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "aliases": []
+        },
+        {
+          "file": "COPYING.LGPLv2.1",
+          "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n7.1/COPYING.LGPLv2.1",
+          "mime": "text/plain",
+          "bytes": 26526,
+          "sha256": "b634ab5640e258563c536e658cad87080553df6f34f62269a21d554844e58bfe",
+          "aliases": []
+        }
+      ]
+    }
+  ]
+}

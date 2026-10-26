@@ -1,3 +1,4 @@
+import { workContainer } from "./work-container.mts";
 import type { JsonObject, JsonValue } from "../../core/contracts/types.mts";
 import { isJsonObject } from "../../core/contracts/types.mts";
 
@@ -35,13 +36,10 @@ export function claudeInteractive(block: JsonObject, result: JsonObject | undefi
   }
   if (kind === "visualize") {
     const code = text(input["widget_code"]); if (!code) return;
-    // Full applications/externally loaded engines run only after opening a
-    // Window. A saved tiny inline widget may keep its lightweight Box behavior.
-    const heavy = /<script\b[^>]*(?:\bsrc\s*=|\btype\s*=\s*["']module)|\b(?:THREE\.|WebGLRenderer|AudioContext|requestAnimationFrame\s*\()/iu.test(code);
     const files: JsonObject[] = [{ path: "index.html", resource: write("index.html", code, "text/html") }];
     // Icon names and captured resources are resolved by the caller, never by
     // a network fetch or by changing the original widget source here.
-    return { ...common, display: heavy ? "window" : "box", format: "html", files, entry: "index.html" };
+    return { ...common, display: workContainer({role:"component",source:code}), format: "html", files, entry: "index.html" };
   }
   let format = documentFormats[kind];
   if (!format && !["artifact-files", "published-artifact"].includes(kind)) return;

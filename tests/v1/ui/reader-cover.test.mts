@@ -82,7 +82,7 @@ test("Reader directory theme separates the dark fill from readable text and outl
 
 test("Reader total uses singular for one conversation and both hosts describe title or content search", async () => {
   const source = await readFile(path.join(shellRoot, "pages/reader/reader-cover.js"), "utf8");
-  const definition = source.slice(source.indexOf("function renderRows("), source.indexOf("function renderDust("));
+  const definition = source.slice(source.indexOf("function renderReaderTotal("), source.indexOf("function renderDust("));
   const dom = new JSDOM(await readFile(path.join(shellRoot, "index.html"), "utf8"));
   try {
     const document = dom.window.document;
@@ -94,6 +94,9 @@ test("Reader total uses singular for one conversation and both hosts describe ti
     }
     render(root, { items: [], total: 0, catalog_total: 1 }, "zh-CN");
     assert.equal(root.querySelector("[data-reader-total]")!.textContent, "总1篇对话");
+    assert.equal(root.querySelector("[data-reader-total]")!.hasAttribute("data-i18n"),false,"dynamic counts must not be overwritten by locale defaults on route entry");
+    const header = new Function(definition + ";return renderReaderTotal;")();
+    header(root,{catalog_total:1},"en");assert.equal(root.querySelector("[data-reader-total]")!.textContent,"Total 1 conversation");
     const en = JSON.parse(await readFile(path.join(shellRoot, "locales/en.json"), "utf8"));
     assert.equal(en.reader.searchPlaceholder, "Title or content");
     assert.equal(en.archiver.searchArchive, "Title or content");

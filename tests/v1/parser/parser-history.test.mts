@@ -3,6 +3,15 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { adapterBundleSnapshot } from "../../../src/app/parser/registry.mts";
 
+test("HTML adapters retain explicit update paths from every advertised earlier waterline", async () => {
+  const history = JSON.parse(await readFile(new URL("../../../src/adapters/parser/contracts/parser-history.json", import.meta.url), "utf8"));
+  for (const adapter of adapterBundleSnapshot().adapters.filter(a => a.routes.some(r => r.format === "exporter-html"))) {
+    const previous = new Set<string>(history.releases.flatMap((r: { adapters: Record<string, string> }) => r.adapters[adapter.id] ? [r.adapters[adapter.id]!] : []));
+    previous.delete(adapter.version);
+    for (const version of previous) assert(adapter.update_from.some(p => p.adapter === adapter.id && p.version === version), `${adapter.id} lost update path from ${version}`);
+  }
+});
+
 test("bundled Parser history resolves each delta and ends at the exact current adapter mapping", async () => {
   const data = JSON.parse(await readFile(new URL("../../../src/adapters/parser/contracts/parser-history.json", import.meta.url), "utf8"));
   const source = await readFile(new URL("../../../src/ui/shared/parser-history.js", import.meta.url), "utf8");

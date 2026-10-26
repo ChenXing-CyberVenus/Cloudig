@@ -9,8 +9,34 @@ const VOID_TAGS = new Set(["area", "base", "br", "col", "embed", "hr", "img", "i
 
 function parseAttributes(startTag: string): Record<string, string> {
   const result: Record<string, string> = {};
-  const pattern = /([^\s=/>]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/gu;
-  for (const match of startTag.matchAll(pattern)) result[match[1]!.toLowerCase()] = match[2] ?? match[3] ?? "";
+  // A Full export can put tens of megabytes of base64 in one attribute.
+  // V8's two-byte regexp path (e.g. a Chinese filename beside that data URL)
+  // grows its backtracking stack even for this otherwise simple quoted value.
+  // Locate value terminators directly; content size must not become stack depth.
+  const space = (index: number): boolean => /\s/u.test(startTag[index] ?? "");
+  let cursor = 1;
+  while (cursor < startTag.length && !space(cursor) && !"/>".includes(startTag[cursor]!)) cursor++;
+  while (cursor < startTag.length) {
+    while (space(cursor)) cursor++;
+    if (cursor >= startTag.length || "/>".includes(startTag[cursor]!)) break;
+    const begin = cursor;
+    while (cursor < startTag.length && !space(cursor) && !"=/>".includes(startTag[cursor]!)) cursor++;
+    if (cursor === begin) { cursor++; continue; }
+    const name = startTag.slice(begin, cursor).toLowerCase();
+    while (space(cursor)) cursor++;
+    if (startTag[cursor] !== "=") continue; // Boolean attributes carry no value here.
+    cursor++;
+    while (space(cursor)) cursor++;
+    const quote = startTag[cursor];
+    if (quote !== '"' && quote !== "'") {
+      while (cursor < startTag.length && !space(cursor) && startTag[cursor] !== ">") cursor++;
+      continue; // Keep the existing quoted-attribute extraction contract.
+    }
+    const end = startTag.indexOf(quote, cursor + 1);
+    if (end < 0) break;
+    result[name] = startTag.slice(cursor + 1, end);
+    cursor = end + 1;
+  }
   return result;
 }
 

@@ -1,6 +1,6 @@
-# Cloudig 1.0.7 source snapshot
+# Cloudig 1.0.8 source snapshot
 
-Production code is copied byte-for-byte from build commit `5b1479b04af473a8ec4abdcd5c699c8019495ffd`, the source of the signed 1.0.7 installer. README version links and this snapshot metadata are release documentation. The included bookmark package is the exact accepted set 2026.10.18.2 from that installer.
+Production code is copied byte-for-byte from build commit `266333b6f22290f5e5e598c5eb0eecd7e4a4efee`, the source of the signed 1.0.8 installer. README version links and this snapshot metadata are release documentation. The included bookmark package is the exact accepted set 2026.10.25.5 from that installer.
 
 This is an inspectable source snapshot, without local development history, personal libraries, private test inputs, or platform examples. Public product documents and examples remain available at https://chenxing-cybervenus.github.io/Cloudig/.
 

@@ -9,6 +9,7 @@ const token = location.hash.slice(1), configuredParent = document.querySelector<
 const publicSite = configuredParent === "same-origin", parentOrigin = publicSite ? location.origin : configuredParent;
 const send = (kind: string, url?: string) => parent.postMessage({ protocol: MAP_PROTOCOL, token, kind, ...(url ? { url } : {}) }, parentOrigin);
 let map: MapLibreMap | undefined, started = false;
+let changeTheme: ((theme:"dawn"|"star-night")=>void)|undefined;
 const release = () => { map?.remove(); map = undefined; };
 function mount(points: SavedMapPoint[], theme: "dawn" | "star-night", language: "zh" | "en") {
   document.documentElement.dataset["theme"] = theme; document.documentElement.lang = language;
@@ -50,13 +51,16 @@ function mount(points: SavedMapPoint[], theme: "dawn" | "star-night", language: 
   });
   // Apply the theme before the first style commit: no black/white flash while
   // tiles arrive, and no extra fetch or post-load layer-by-layer mutation.
-  map.setStyle(mapStyleUrl(theme), {transformStyle:(_previous,next)=>mapStyleForTheme(next,theme)});
+  let originalStyle: Parameters<typeof mapStyleForTheme>[0]|undefined;
+  changeTheme=next=>{theme=next;document.documentElement.dataset["theme"]=next;if(originalStyle)map?.setStyle(mapStyleForTheme(originalStyle,next),{});};
+  map.setStyle(mapStyleUrl(theme), {transformStyle:(_previous,next)=>{originalStyle=next;return mapStyleForTheme(next,theme);}});
 }
 if (parentOrigin && (publicSite || parentOrigin !== location.origin) && /^https?:\/\//u.test(parentOrigin)) {
   window.addEventListener("message", event => {
     const data = event.data;
     if (event.source !== parent || event.origin !== parentOrigin || data?.protocol !== MAP_PROTOCOL || data?.token !== token) return;
     if (data.kind === "dispose") { release(); return; }
+    if (data.kind === "theme") { changeTheme?.(data.theme === "star-night" ? "star-night" : "dawn"); return; }
     if (data.kind !== "mount" || started) return;
     if (!Array.isArray(data.places) || !data.places.length || !data.places.every(validMapPoint)) { send("error"); return; }
     started = true;

@@ -14,6 +14,17 @@ import { CONVERSATION_SCHEMA, LIBRARY_SCHEMA, recordSchemas } from "../../core/r
 
 const hash = (v: Uint8Array | string): string => createHash("sha256").update(v).digest("hex");
 const object = (v: unknown): JsonObject => isJsonObject(v) ? v : {};
+export type RecordSourcePart = Readonly<{ path: string; bytes: number; sha256: string }>;
+export function recordSourcePartsFingerprint(parts: readonly RecordSourcePart[]): { bytes: number; sha256: string } {
+  const paths = new Set<string>(), digest=createHash("sha256"); let bytes=0;
+  for(const part of parts){
+    confinedRelativePath(part.path);
+    if(!/^Inbox\/[^/]+$/u.test(part.path)||paths.has(part.path)||!Number.isSafeInteger(part.bytes)||part.bytes<0||!/^[a-f0-9]{64}$/u.test(part.sha256))throw new TypeError("Invalid source shard fingerprint");
+    paths.add(part.path);bytes+=part.bytes;digest.update(`${part.path}\0${part.sha256}\0${part.bytes}\n`,"utf8");
+  }
+  if(!parts.length||!Number.isSafeInteger(bytes))throw new TypeError("Invalid source shard total");
+  return {bytes,sha256:digest.digest("hex")};
+}
 export function recordSourceUnitKey(path: string, format: string, platform: string, locator?: string): JsonObject {
   // An ordinary HTML file is one unit. Only a multi-record container needs a
   // locator to distinguish units; its platform conversation ID is just fact.
@@ -105,7 +116,7 @@ export async function saveExtractedRecord(root: string, input: Readonly<{
 
 /** Worker output is a complete new-schema Conversation; no V8/worker fields enter it. */
 export async function savePreparedRecord(root: string, input: Readonly<{
-  conversation: JsonObject; sourcePath: string; keepPrevious?: boolean; directory?: string; directoryIdentity?: RecordFileIdentity; relocateExisting?: boolean; signal?: AbortSignal; sourceReads?: RecordSourceReads;
+  conversation: JsonObject; sourcePath: string; keepPrevious?: boolean; directory?: string; directoryIdentity?: RecordFileIdentity; relocateExisting?: boolean; signal?: AbortSignal; sourceReads?: RecordSourceReads; sourceParts?: readonly RecordSourcePart[];
 }>): Promise<Readonly<{ path: string; conversation: JsonObject; replaced: boolean; maintenanceWarnings: readonly string[] }>> {
   confinedRelativePath(input.sourcePath);
   if (!input.sourcePath.startsWith("Inbox/")) throw new TypeError("Parser source must be in Inbox");
@@ -174,8 +185,11 @@ export async function savePreparedRecord(root: string, input: Readonly<{
       const leaf = relocating ? previousPath!.slice(previousPath!.lastIndexOf("/") + 1) : outputLeaf(conversation);
       target = `${directory}/${chooseNoReplaceLeaf(leaf, new Set(occupied))}`;
     }
+    const source=object(input.conversation["source"]);
+    if(input.sourceParts){const combined=recordSourcePartsFingerprint(input.sourceParts);
+      if(!input.sourceParts.some(p=>p.path===input.sourcePath)||source["sha256"]!==combined.sha256||source["bytes"]!==combined.bytes)throw new TypeError("Source shard manifest disagrees with parsed Conversation");}
     const reads: RecordReadGuard[] = [ { path: "CloudigLibrary.json", expected: library.sha256 },
-      { path: input.sourcePath, expected: String(object(input.conversation["source"])["sha256"]) } ];
+      ...(input.sourceParts?input.sourceParts.map(part=>({path:part.path,expected:part.sha256})):[{ path: input.sourcePath, expected: String(source["sha256"]) }]) ];
     if (storedHistory && storedHistory.path !== historyPath) reads.push({ path: storedHistory.path, expected: storedHistory.sha256 });
     // Only an explicit successful write of the new format upgrades the Library
     // declaration, in the same transaction. Reads and ordinary old-format
@@ -189,12 +203,13 @@ export async function savePreparedRecord(root: string, input: Readonly<{
     return { target, conversation, previousSha, previousPath, relocating, historyPath, historySha, key, reads, libraryUpgrade };
   });
   // Same human-readable bytes used for write and parse-history fingerprint.
+  const encoding = prepareRecordEncoding("conversation", prepared.conversation);
   const history = { schema: "cloudig/parse-history/1.0.0", source: prepared.key,
-    output: { path: prepared.target, conversation_id: prepared.conversation["conversation_id"], sha256: prepareRecordEncoding("conversation", prepared.conversation).fingerprint.sha256 },
+    output: { path: prepared.target, conversation_id: prepared.conversation["conversation_id"], sha256: encoding.fingerprint.sha256 },
     parser: prepared.conversation["parser"], parsed_at: object(prepared.conversation["lifecycle"])["last_parsed_at"] };
   const saved = await commitRecords(root, [
     ...(prepared.libraryUpgrade ? [prepared.libraryUpgrade] : []),
-    { action: "write", path: prepared.target, kind: "conversation", value: prepared.conversation, expected: prepared.relocating ? null : prepared.previousSha ?? null },
+    { action: "write", path: prepared.target, kind: "conversation", value: prepared.conversation, encoding, expected: prepared.relocating ? null : prepared.previousSha ?? null },
     ...(prepared.relocating ? [{ action: "delete" as const, path: prepared.previousPath!, expected: prepared.previousSha! }] : []),
     { action: "binary", path: prepared.historyPath, data: Buffer.from(JSON.stringify(history, null, 2) + "\n"), expected: prepared.historySha }
   ], { reads: prepared.libraryUpgrade ? prepared.reads.filter(read => read.path !== "CloudigLibrary.json") : prepared.reads, ...(input.sourceReads ? { sourceReads: input.sourceReads } : {}), ...(input.signal ? { signal: input.signal } : {}),

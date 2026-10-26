@@ -1,6 +1,7 @@
 import { formatTimeRange } from "/shared/time/endpoint-editor.js";
 import { observeTitleLayout } from "./title-layout.js";
 import { localizePlatformLabel } from "../../platform-labels.js";
+import { followNavigationItem, visibleNavigationIndex } from "./navigation-position.js";
 
 const platformDefinitions = Object.freeze({
   chatgpt: ["ChatGPT", "/assets/platforms/platform-chatgpt.svg"],
@@ -201,6 +202,7 @@ export function mountReaderConversation(options) {
   let observer;
   let refreshOrdinal = 0;
   let navigationItems = [];
+  let navigationAnchors = [], navigationFrame = 0;
   let currentNavigation = 0;
   let currentMessageId;
   let positionFrame = 0;
@@ -295,7 +297,11 @@ export function mountReaderConversation(options) {
 
   const setCurrentNavigation = (index) => {
     if (navigationItems.length === 0) return;
-    currentNavigation = Math.max(0, Math.min(index, navigationItems.length - 1));
+    const next = Math.max(0, Math.min(index, navigationItems.length - 1));
+    const active = navigationList.children[next];
+    followNavigationItem(navigationList, active);
+    if (currentNavigation === next && active?.dataset.current === "true") return;
+    currentNavigation = next;
     for (const [ordinal, node] of [...navigationList.children].entries()) node.dataset.current = String(ordinal === currentNavigation);
     navigationList.querySelector(".reader-navigation-butterfly-host")?.remove();
     const butterfly = document.createElement("span");
@@ -334,22 +340,31 @@ export function mountReaderConversation(options) {
 
   const watchVisible = () => {
     observer?.disconnect();
-    const anchors = navigationItems.flatMap((item) => {
+    navigationAnchors = navigationItems.flatMap((item, index) => {
       const node = rendererRoot.querySelector(`#${CSS.escape(String(item.anchor))}`);
-      return node ? [node] : [];
+      return node ? [{ index, node }] : [];
     });
-    if (anchors.length === 0) return;
-    observer = new IntersectionObserver((entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting).sort((left, right) => left.boundingClientRect.top - right.boundingClientRect.top);
-      if (visible.length === 0) return;
-      const index = navigationItems.findIndex((item) => item.anchor === visible[0].target.id);
-      if (index >= 0) setCurrentNavigation(index);
-      const anchor = String(visible[0].target.id).replace(/-process-[0-9]+$/u, "");
-      const message = view.messages.find((item) => item.anchor === anchor);
-      if (message?.id) currentMessageId = message.id;
-    }, { root: scroll, rootMargin: "0px 0px -72% 0px", threshold: 0 });
-    anchors.forEach((node) => observer.observe(node));
+    if (!navigationAnchors.length) { if (view.navigation?.has_next) scheduleNavigation(); return; }
+    observer = new IntersectionObserver(scheduleNavigation, { root: scroll, rootMargin: "0px 0px -72% 0px", threshold: 0 });
+    navigationAnchors.forEach(({ node }) => observer.observe(node));
+    scheduleNavigation();
   };
+  const scheduleNavigation = () => {
+    if (navigationFrame || disposed) return;
+    navigationFrame = requestAnimationFrame(() => {
+      navigationFrame = 0; if (disposed) return;
+      const index = visibleNavigationIndex(scroll, navigationAnchors);
+      if (index < 0) {
+        if (view.navigation?.has_next && !pendingPages.has("navigation")) void loadMore("navigation").then(scheduleNavigation).catch(reportError);
+        return;
+      }
+      setCurrentNavigation(index);
+      const anchor = String(navigationItems[index].anchor).replace(/-process-[0-9]+$/u, "");
+      const message = view.messages.find(item => item.anchor === anchor);
+      if (message?.id) currentMessageId = message.id;
+    });
+  };
+  controller.signal.addEventListener("abort", () => document.defaultView?.cancelAnimationFrame(navigationFrame), { once: true });
 
   const visibleMessageId = () => {
     const top = scroll.getBoundingClientRect().top;
@@ -387,13 +402,21 @@ export function mountReaderConversation(options) {
     const id = visibleMessageId() ?? currentMessageId;
     const message = view.messages?.find(item => item.id === id);
     const node = message?.anchor ? rendererRoot.querySelector(`#${CSS.escape(String(message.anchor))}`) : null;
+    // On a theme change the DOM survives. Anchor a visible content boundary,
+    // not only a message heading that may be several screens above a Box.
+    const candidates = [...rendererRoot.querySelectorAll("p,h1,h2,h3,h4,li,blockquote,.cloudig-box,.cloudig-interactive-box")]
+      .map(element => ({element, rect:element.getBoundingClientRect()}))
+      .filter(({rect}) => rect.height > 0 && rect.bottom > viewportTop + 2 && rect.top < viewportTop + scroll.clientHeight);
+    const reading = candidates.sort((a,b) => Math.abs(a.rect.top-viewportTop)-Math.abs(b.rect.top-viewportTop))[0];
     return {
       scrollTop: scroll.scrollTop,
+      element: reading?.element,
+      elementOffset: reading ? reading.rect.top-viewportTop : undefined,
       id,
       offset: node ? node.getBoundingClientRect().top - viewportTop : undefined
     };
   };
-  const restoreScrollAnchor = (snapshot) => {
+  const restoreScrollAnchor = (snapshot, liveTheme = false) => {
     if (!snapshot) return;
     restoreCleanup?.();
     const token = ++restoreToken;
@@ -403,6 +426,9 @@ export function mountReaderConversation(options) {
     let lastHeight = -1;
     let stableFrames = 0;
     let observer;
+    const unlisten = () => {
+      for (const type of ["wheel", "pointerdown", "keydown", "touchstart"]) document.removeEventListener(type, finish, true);
+    };
     suppressPosition = true;
     scroll.style.overflowAnchor = "none";
     const restore = () => {
@@ -410,7 +436,9 @@ export function mountReaderConversation(options) {
       const viewportTop = scroll.getBoundingClientRect().top;
       const message = snapshot.id && view.messages?.find(item => item.id === snapshot.id);
       const node = message?.anchor ? rendererRoot.querySelector(`#${CSS.escape(String(message.anchor))}`) : null;
-      if (node && Number.isFinite(snapshot.offset)) {
+      if (snapshot.element?.isConnected && Number.isFinite(snapshot.elementOffset)) {
+        scroll.scrollTop += snapshot.element.getBoundingClientRect().top - viewportTop - snapshot.elementOffset;
+      } else if (node && Number.isFinite(snapshot.offset)) {
         scroll.scrollTop += node.getBoundingClientRect().top - viewportTop - snapshot.offset;
       } else {
         scroll.scrollTop = snapshot.scrollTop;
@@ -426,6 +454,7 @@ export function mountReaderConversation(options) {
       if (frame) cancelAnimationFrame(frame);
       if (timer) clearTimeout(timer);
       observer?.disconnect();
+      unlisten();
       scroll.style.overflowAnchor = previousOverflowAnchor;
       suppressPosition = false;
       restoreCleanup = undefined;
@@ -437,7 +466,7 @@ export function mountReaderConversation(options) {
       const height = scroll.scrollHeight;
       stableFrames = height === lastHeight ? stableFrames + 1 : 0;
       lastHeight = height;
-      if (stableFrames >= 2) finish();
+      if (stableFrames >= 2) { if (!liveTheme) finish(); }
       else frame = requestAnimationFrame(settle);
     };
     observer = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
@@ -448,11 +477,16 @@ export function mountReaderConversation(options) {
     observer?.observe(rendererRoot);
     observer?.observe(main);
     frame = requestAnimationFrame(() => { frame = requestAnimationFrame(settle); });
-    timer = setTimeout(finish, 600);
+    if (liveTheme) {
+      // A later frame/font/image may resize after any fixed timeout. Keep the
+      // same live anchor until the reader takes control, without rerendering.
+      for (const type of ["wheel", "pointerdown", "keydown", "touchstart"]) document.addEventListener(type, finish, { passive:true, capture:true });
+    } else timer = setTimeout(finish, 600);
     restoreCleanup = () => {
       if (frame) cancelAnimationFrame(frame);
       if (timer) clearTimeout(timer);
       observer?.disconnect();
+      unlisten();
       if (token === restoreToken) {
         scroll.style.overflowAnchor = previousOverflowAnchor;
         suppressPosition = false;
@@ -591,7 +625,7 @@ export function mountReaderConversation(options) {
         renderer.append(next); renderBranches(); watchVisible(); applySearch();
       } else if (kind === "navigation") {
         view = { ...view, navigation: { ...page, items: [...view.navigation.items, ...page.items] } };
-        renderNavigation();
+        renderNavigation(); watchVisible();
       } else {
         view = { ...view, branch: { ...view.branch, leaves: { ...page, items: [...view.branch.leaves.items, ...page.items] } } };
         renderBranches();
@@ -632,7 +666,7 @@ export function mountReaderConversation(options) {
   for (const [owner, kind] of [[scroll, "messages"], [navigationList, "navigation"]]) {
     owner.addEventListener("scroll", () => {
       if (owner.scrollHeight - owner.scrollTop - owner.clientHeight < 250) void loadMore(kind).catch(reportError);
-      if (kind === "messages") schedulePosition();
+      if (kind === "messages") { schedulePosition(); scheduleNavigation(); }
     }, { passive: true, signal: controller.signal });
   }
   let branchBusy = false;
@@ -827,7 +861,7 @@ export function mountReaderConversation(options) {
       titleLayout.schedule();
       if (languageChanged) rebuildRenderer();
       else if (themeChanged) { renderer.setTheme(state.theme); renderBranches(); watchVisible(); applySearch(); fillShortPage(); }
-      if (languageChanged || themeChanged) restoreScrollAnchor(scrollAnchor);
+      if (languageChanged || themeChanged) restoreScrollAnchor(scrollAnchor, themeChanged && !languageChanged);
       if (loadingPhase) showLoading(loadingPhase);
     },
     cleanup

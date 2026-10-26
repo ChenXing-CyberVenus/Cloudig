@@ -1,15 +1,17 @@
 import { MAP_LIMITS, MAP_PROTOCOL, type SavedMapPoint } from "./map-protocol.mts";
+import { followReaderTheme } from "./reader-theme.mts";
 import { boxElement as el, boxButton as button, boxLabel as tr, type BoxContext } from "./box-controls.mts";
 
 export function openSavedMap(ctx: BoxContext, title: string, places: readonly SavedMapPoint[], anchor: HTMLElement, frameUrl = "https://cloudig-map.local/runtime/map-frame.html"): () => void {
   const document = ctx.document, host = document.defaultView!;
   const dialog = el(ctx, "dialog", "cloudig-conversation-renderer cloudig-interactive-window cloudig-map-window");
-  const theme = anchor.closest<HTMLElement>("[data-theme]")?.dataset["theme"] === "star-night" ? "star-night" : "dawn";
+  let theme: "dawn"|"star-night" = anchor.closest<HTMLElement>("[data-theme]")?.dataset["theme"] === "star-night" ? "star-night" : "dawn";
   dialog.dataset["theme"] = theme; dialog.setAttribute("aria-label", title);
   const header = el(ctx, "header", "cloudig-interactive-header"), body = el(ctx, "div", "cloudig-interactive-body");
   const status = el(ctx, "p", "cloudig-interactive-status", tr(ctx, "正在加载地图…", "Loading map…")); status.setAttribute("role", "status");
   let frame: HTMLIFrameElement | undefined, timer: ReturnType<typeof setTimeout> | undefined, token = "", closed = false;
   const origin = new URL(frameUrl, document.baseURI).origin;
+  const untheme=followReaderTheme(anchor,theme,next=>{theme=next;dialog.dataset["theme"]=next;frame?.contentWindow?.postMessage({protocol:MAP_PROTOCOL,token,kind:"theme",theme},origin);});
   if (!ctx.mapSameOrigin && origin === new URL(document.baseURI).origin) throw new Error("Map runtime requires a separate origin");
   const stop = () => { clearTimeout(timer); if (frame) frame.contentWindow?.postMessage({ protocol: MAP_PROTOCOL, token, kind: "dispose" }, origin); frame?.remove(); frame = undefined; };
   const fail = () => { clearTimeout(timer); status.hidden = false; status.textContent = tr(ctx, "地图暂时无法加载，请检查网络后重试。已保存的地点资料不受影响。", "Map unavailable. Check your connection and retry; saved place details remain available."); dialog.dataset["state"] = "failed"; };
@@ -33,7 +35,7 @@ export function openSavedMap(ctx: BoxContext, title: string, places: readonly Sa
   };
   const close = () => {
     if (closed) return; closed = true; stop(); host.removeEventListener("message", receive); ctx.signal.removeEventListener("abort", close);
-    dialog.close(); dialog.remove(); if (!ctx.signal.aborted) anchor.focus();
+    untheme(); dialog.close(); dialog.remove(); if (!ctx.signal.aborted) anchor.focus();
   };
   const dismiss = button(ctx, "×", close, "cloudig-interactive-close"); dismiss.setAttribute("aria-label", tr(ctx, "关闭地图", "Close map")); dismiss.title = dismiss.getAttribute("aria-label")!;
   const retry = button(ctx, tr(ctx, "重新加载", "Reload"), start, "cloudig-interactive-button");

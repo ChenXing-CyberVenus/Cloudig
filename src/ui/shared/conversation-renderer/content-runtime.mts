@@ -3,6 +3,7 @@ import "katex/contrib/mhchem";
 import MarkdownIt from "markdown-it";
 import type { MarkdownIt as MarkdownItInstance } from "markdown-it";
 import texmath from "markdown-it-texmath";
+import footnote from "markdown-it-footnote";
 import hljs from "highlight.js";
 import { osisInlineDollarRanges, type InlineDollarRange } from "./dollar-boundaries.mjs";
 
@@ -25,7 +26,7 @@ function externalHttpUrl(value: string): boolean {
   }
 }
 
-function markdownRuntime(): MarkdownItInstance {
+export function createMarkdownRenderer(options: Readonly<{ localResources?: boolean }> = {}): MarkdownItInstance {
   const markdown = new MarkdownIt({
     html: false,
     linkify: true,
@@ -33,7 +34,9 @@ function markdownRuntime(): MarkdownItInstance {
     typographer: false,
     highlight: highlightCode
   });
-  markdown.validateLink = externalHttpUrl;
+  const validMarkdownLink = markdown.validateLink;
+  if (options.localResources) markdown.use(footnote);
+  markdown.validateLink = value => externalHttpUrl(value) || options.localResources === true && validMarkdownLink(value) && !/^[a-z][a-z\d+.-]*:/iu.test(value);
   markdown.renderer.rules["softbreak"] = (_tokens, _index, _options, env) => env?.["preserveLineBreaks"] ? "<br>\n" : "\n";
   markdown.use(texmath, {
     engine: katex,
@@ -63,14 +66,16 @@ function markdownRuntime(): MarkdownItInstance {
   const original = markdown.renderer.rules["link_open"];
   markdown.renderer.rules["link_open"] = (tokens, index, options, env, renderer) => {
     const token = tokens[index]!;
-    token.attrSet("rel", "noopener noreferrer");
-    token.attrSet("data-cloudig-external", "true");
+    if (externalHttpUrl(String(token.attrGet("href") ?? ""))) {
+      token.attrSet("rel", "noopener noreferrer");
+      token.attrSet("data-cloudig-external", "true");
+    }
     return original ? original(tokens, index, options, env, renderer) : renderer.renderToken(tokens, index, options);
   };
   // Embedded image bytes use canonical resource blocks. A URL still present in
   // Markdown is only a source reference, not an offline image: keep its exact
   // position, alt and title as a readable link, just like the exported HTML.
-  markdown.renderer.rules["image"] = (tokens, index, options, env, renderer) => {
+  if (!options.localResources) markdown.renderer.rules["image"] = (tokens, index, options, env, renderer) => {
     const token = tokens[index]!;
     const url = String(token.attrGet("src") ?? "");
     const alt = renderer.renderInlineAsText(token.children ?? [], options, env);
@@ -112,7 +117,7 @@ function highlightCode(source: string, language = ""): string {
 }
 
 export function createOfflineContentRuntime(): OfflineContentRuntime {
-  const markdown = markdownRuntime();
+  const markdown = createMarkdownRenderer();
   let mermaidQueue: Promise<unknown> = Promise.resolve();
   let disposed = false;
   let frame: HTMLIFrameElement | undefined;

@@ -18,6 +18,29 @@ const svgBytes = Buffer.from("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=
 const svgData = `data:image/svg+xml;base64,${svgBytes.toString("base64")}`;
 const fileData = `data:text/plain;base64,${Buffer.from("hello", "utf8").toString("base64")}`;
 
+test("Claude HTML flags retain platform identity and raw future fields across all three profiles", async () => {
+  for (const profile of ["light", "full", "all-branches"] as const) {
+    const scope = await disposable();
+    try {
+      const format = `osis.claude.chat-export/${profile === "light" ? "light-dom" : profile === "full" ? "full-capture" : "all-branches"}-v1`;
+      const payload = fixturePayload(format), message = (payload["messages"] as JsonObject[])[1]!;
+      payload["artifacts"] = []; payload["resources"] = []; message["attachments"] = []; message["media"] = [];
+      message["blocks"] = [{ type: "text", markdown: "Before" }, { type: "flag", raw: { type: "flag", flag: "new_future_flag", extra: { reason: "Source-owned notice" }, start_timestamp: "2026-10-21T00:00:00Z" } }, { type: "text", markdown: "After" }];
+      const header = manifest(profile, format); delete header["capture_diagnostics"];
+      await writeFile(scope.file, html(header, payload, ""));
+      const parsed = await extractHtmlRecord({ filePath: scope.file, temporaryRoot: scope.base });
+      const record = assembleConversationRecord({ ...parsed, parserVersion: "1.1.39", timestamp: "2026-10-21T00:00:00.000Z" });
+      const blocks = ((record["messages"] as JsonObject)["items"] as JsonObject[])[1]!["content"] as JsonObject[];
+      const notice = blocks.find(b => b["title"] === "Claude platform flag")!;
+      assert(notice); assert.match(String(notice["text"]), /new_future_flag/); assert.match(String(notice["text"]), /Source-owned notice/);
+      const identity = (record["identity"] as JsonObject[]).find(f => f["source_id"] === notice["speaker"]);
+      assert.equal(identity?.["role"], "system");
+      assert.equal(blocks.filter(b => b["title"] === "Claude platform flag").length, 1);
+      assert.equal(parsed.parsed.systemLogErrors.length, 0);
+    } finally { await rm(scope.base, { recursive: true, force: true }); }
+  }
+});
+
 test("Cowork captured activities project tool IDs once in place in Light and Full", async () => {
   for (const profile of ["light", "full"] as const) {
     const scope = await disposable();

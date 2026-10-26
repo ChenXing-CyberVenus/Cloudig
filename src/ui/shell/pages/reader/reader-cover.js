@@ -347,6 +347,15 @@ function rowPaper(row, index) {
   return fragment;
 }
 
+function renderReaderTotal(root, model, language) {
+  const total = root.querySelector("[data-reader-total]");
+  const count = Number.isSafeInteger(model.catalog_total) ? model.catalog_total : Number.isSafeInteger(model.total) ? model.total : (model.items ?? []).length;
+  total.textContent = count > 0
+    ? language === "en" ? `Total ${count} conversation${count === 1 ? "" : "s"}` : `总${count}篇对话`
+    : language === "en" ? "No conversations" : "暂无会话";
+  total.title = total.textContent;
+}
+
 function renderRows(root, model, language, timeField, onOpen, onMenu) {
   const host = root.querySelector("[data-reader-list]");
   host.replaceChildren();
@@ -362,6 +371,7 @@ function renderRows(root, model, language, timeField, onOpen, onMenu) {
     items.forEach((row, index) => {
       const rowRoot = document.createElement("div");
       rowRoot.className = "reader-list-row";
+      rowRoot.dataset.overflowScope = "";
       const button = document.createElement("button");
       button.type = "button";
       button.className = "reader-row-open";
@@ -381,12 +391,12 @@ function renderRows(root, model, language, timeField, onOpen, onMenu) {
       title.dataset.overflowText = "";
       title.textContent = String(row.title ?? row.filename ?? "");
       title.title = title.textContent;
+      rowRoot.title = title.textContent;
       const meta = document.createElement("span");
       meta.className = "reader-row-meta";
       meta.append(platformMark(assetByPlatform.get(String(row.platform)) ?? "/assets/platforms/platform-unknown.svg", String(row.platform)));
       const models = document.createElement("span");
       models.textContent = Array.isArray(row.models) && row.models.length > 0 ? row.models.join(" · ") : String(row.platform ?? "AI");
-      models.title = models.textContent;
       const date = document.createElement("span");
       date.textContent = dateLabel(row, timeField, language);
       const count = document.createElement("span");
@@ -409,11 +419,7 @@ function renderRows(root, model, language, timeField, onOpen, onMenu) {
   root.dataset.readerEmpty = String(catalogTotal === 0);
   root.querySelector("[data-reader-visible-count]").textContent = String(visible);
   root.querySelector("[data-reader-total-count]").textContent = String(catalogTotal);
-  const total = root.querySelector("[data-reader-total]");
-  total.textContent = catalogTotal > 0
-    ? language === "en" ? `Total ${catalogTotal} conversation${catalogTotal === 1 ? "" : "s"}` : `总${catalogTotal}篇对话`
-    : language === "en" ? "No conversations" : "暂无会话";
-  total.title = total.textContent;
+  renderReaderTotal(root, model, language);
 }
 
 function renderDust(root) {
@@ -859,6 +865,10 @@ export function mountReaderCover(options) {
     element: root,
     selectForReading,
     refreshAll: refresh,
+    updateHeader(nextState) {
+      options.state = nextState;
+      renderReaderTotal(root, model, nextState.language);
+    },
     updateState(nextState) {
       options.state = nextState;
       closeTimeFieldPopover();

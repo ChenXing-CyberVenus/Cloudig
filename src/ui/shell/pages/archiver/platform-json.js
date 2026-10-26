@@ -63,7 +63,7 @@ export function mountPlatformJsonIndex({ root, state, onImport, onClose }) {
       section.append(heading, grid); body.append(section);
     }
     const footer = document.createElement('footer'), note = document.createElement('p'), back = document.createElement('button');
-    note.textContent = en() ? 'You can also copy supported JSON, JSONL, or ZIP files into Inbox, then refresh. The original files are kept.' : '也可直接把受支持的JSON、JSONL或ZIP复制进Inbox，再刷新列表。原文件完整保留。'; note.className = 'archiver-json-stage';
+    note.textContent = en() ? 'You can also copy supported JSON, JSONL, JSONL.ZST, or ZIP files into Inbox, then refresh. The original files are kept.' : '也可直接把受支持的JSON、JSONL、JSONL.ZST或ZIP复制进Inbox，再刷新列表。原文件完整保留。'; note.className = 'archiver-json-stage';
     back.type = 'button'; back.className = 'cloudig-button cloudig-button-filled'; back.dataset.jsonClose = ''; back.textContent = en() ? 'Return to Archiver' : '返回档案馆'; footer.append(note, back);
     host.append(header, body, footer);
   }

@@ -7,6 +7,8 @@
   --cloudig-message-leading: 52px;
   --cloudig-message-gap: 10px;
   --cloudig-process-dot-size: 7px;
+  --cloudig-node-fill: #cd7d7c;
+  --cloudig-node-ring: #edebeb;
   --cloudig-process-inset: 0px;
   --cloudig-process-group-padding: 13px;
   --cloudig-process-group-border: 1px;
@@ -37,6 +39,8 @@
 }
 
 .cloudig-conversation-renderer[data-theme="star-night"] {
+  --cloudig-node-fill: #5125a5;
+  --cloudig-node-ring: #999999;
   --cloudig-text: #e7e2e3;
   --cloudig-muted: #aaa1a4;
   --cloudig-process-text: #aaa1a4;
@@ -117,17 +121,19 @@
   border: 0;
   color: inherit;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: var(--cloudig-message-leading) minmax(0, 1fr);
   font: inherit;
   font-weight: 700;
-  gap: 5px;
-  grid-column: 1;
+  column-gap: var(--cloudig-message-gap);
+  grid-column: 1 / -1;
   min-width: 0;
   padding: 0;
   position: relative;
   z-index: 1;
 }
+
+.cloudig-message-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; text-align: left; }
 
 .cloudig-avatar {
   align-items: center;
@@ -155,19 +161,21 @@
 .cloudig-message-name {
   font-size: 12px;
   line-height: 1.2;
-  max-width: 52px;
+  max-width: 100%;
   overflow-wrap: anywhere;
 }
 
 .cloudig-message-meta {
+  font-weight: 400;
   align-self: start;
-  align-items: center;
+  align-items: flex-start;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 5px;
   grid-column: 2;
   justify-self: start;
   min-width: 0;
+  max-width: 100%;
 }
 
 .cloudig-model-tag {
@@ -194,9 +202,16 @@
   min-width: 0;
 }
 
+/* A duration-only status is a compact caption for what follows, not a whole
+   paragraph. Other boundaries keep the normal 12px block rhythm. */
+.cloudig-message-content:has(> .cloudig-process-static) { row-gap: 0; }
+.cloudig-message-content:has(> .cloudig-process-static) > * + * { margin-block-start: 12px; }
+.cloudig-message-content > .cloudig-process-static + * { margin-block-start: 4px; }
+.cloudig-process-static { line-height: 1.4; }
+
 .cloudig-message-user .cloudig-message-content {
   background: var(--cloudig-user-bubble);
-  border-radius: 14px;
+  border-radius: 0 14px 14px 14px;
   padding: 16px 18px;
 }
 
@@ -228,8 +243,13 @@
 
 .cloudig-text,
 .cloudig-rich .plain-text { white-space: pre-wrap; }
+.cloudig-rich .osis-thinking-body { white-space: pre-wrap; } /* legacy exported plain-text thought body */
 .cloudig-rich p,
 .cloudig-rich .qwen-markdown-paragraph { margin: 0 0 .85em; }
+
+/* Nested platform wrappers do not add a paragraph's after-spacing at the
+   bottom of a bubble. Interior paragraphs and authored line breaks stay. */
+.cloudig-rich :where(div,section,article,blockquote,li,td) > :last-child { margin-bottom: 0; }
 
 /* Archive task lists share Reader's choice colours, without the live-form
    disabled fade. Hang the square in the bullet gutter; wrapped lines and
@@ -372,7 +392,8 @@
 .cloudig-tool-message-group > .cloudig-fold-body > .cloudig-message[data-process-continuation] { padding-top: 0; }
 
 .cloudig-process::before {
-  background: var(--cloudig-accent);
+  background: var(--cloudig-node-fill);
+  border: 2px solid var(--cloudig-node-ring);
   border-radius: 50%;
   content: "";
   height: var(--cloudig-process-dot-size);
@@ -385,8 +406,20 @@
 /* A process group already has a real source avatar.  Do not add a second
    red/orange dot that users could mistake for another speaker or identity. */
 .cloudig-process-axis-row::before,
-.cloudig-process::before,
+.cloudig-process-axis-row > .cloudig-process::before,
 .cloudig-process-axis-row > .cloudig-process .cloudig-process::before { display: none; }
+
+/* Body/continuation nodes use the designed ring on the same axis; a real
+   identity avatar already marks its own node. Inner process rows in an Agent
+   group remain unmarked, avoiding the former second red-dot identity. */
+.cloudig-message-content { position: relative; }
+.cloudig-message-content:not(:has(> .cloudig-process:first-child))::before {
+  content: ""; position: absolute;
+  left: calc(var(--cloudig-axis-x) - var(--cloudig-message-leading) - var(--cloudig-message-gap) - var(--cloudig-process-inset) - var(--cloudig-process-dot-size) / 2);
+  top: 12px; width: var(--cloudig-process-dot-size); height: var(--cloudig-process-dot-size);
+  background: var(--cloudig-node-fill); border: 2px solid var(--cloudig-node-ring); border-radius: 50%;
+}
+.cloudig-process-axis-row .cloudig-message-content::before { display: none; }
 
 .cloudig-fold-title {
   color: var(--cloudig-muted);
@@ -520,6 +553,12 @@ details[open] > .cloudig-fold-title::before {
 .cloudig-diagram-display[data-renderer="local"] { background: var(--cloudig-diagram-local-canvas); }
   .cloudig-diagram-display > .cloudig-resource-image { margin-inline: auto; }
   .cloudig-inline-resource > .cloudig-resource-image { display: inline-block; vertical-align: middle; }
+  .cloudig-source-brand { display:block; color:var(--cloudig-muted); margin-top:3px; font-size:13px; }
+  .cloudig-references { border-top:1px solid var(--cloudig-border); padding-top:12px; margin-top:18px; }
+  .cloudig-conversation-renderer .cloudig-image-fallback { display:flex; align-items:center; gap:12px; padding:12px 16px; min-height:0; height:auto; width:auto; border:1px solid var(--cloudig-border); border-radius:8px; color:var(--cloudig-muted); background:transparent; font-size:14px; }
+  .cloudig-image-fallback > svg { flex:0 0 24px; width:24px; height:24px; }
+  .cloudig-image-fallback > .cloudig-resource-metadata { min-width:0; overflow-wrap:anywhere; }
+  .cloudig-image-fallback > a { margin-left:auto; flex-shrink:0; }
 
 .cloudig-media-viewport,
 .cloudig-diagram-display {
@@ -574,7 +613,10 @@ details[open] > .cloudig-fold-title::before {
 .cloudig-attachment-open:focus-visible { outline: 2px solid var(--cloudig-accent); outline-offset: 3px; }
 .cloudig-attachment-open:disabled { opacity: .45; cursor: default; }
 .cloudig-attachment > .cloudig-resource-save,
+.cloudig-file-actions > .cloudig-attachment-open,
 .cloudig-media-actions > .cloudig-resource-save { align-items: center; display: inline-flex; gap: 6px; width: auto; min-height: 36px; height: auto; padding: 6px 10px; border: 1px solid var(--cloudig-border); border-radius: 8px; color: var(--cloudig-accent); font: 700 14px/1.4 var(--cloudig-font-ui, sans-serif); }
+.cloudig-file-actions {display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap;}
+@container (max-width:420px) { .cloudig-file-actions {grid-column:2 / -1;} }
 .cloudig-resource-save svg { flex: 0 0 20px; }
 .cloudig-media-actions { display: flex; justify-content: flex-end; margin-top: 6px; }
 @media (prefers-reduced-motion:reduce) { .cloudig-attachment { transition: none; } .cloudig-attachment:hover { transform: none; } }

@@ -19,3 +19,19 @@ test("isolated JSX compiler renders React state and actual Lucide exports withou
     assert.deepEqual(errors, []);
   } finally { dom.window.close(); }
 });
+
+test("saved React projects resolve local modules, strip type-only imports and keep routing inside the work", async () => {
+  const built=await analyzeReactWorkBundle(process.cwd()), code=built.outputFiles.find((f:{path:string})=>f.path.endsWith("react-work.js"))!.text;
+  const errors:unknown[]=[], log=new VirtualConsole();log.on("jsdomError",e=>errors.push(e));
+  const dom=new JSDOM('<div id="root"></div>',{url:"https://cloudig-work.invalid/frame",runScripts:"dangerously",pretendToBeVisual:true,virtualConsole:log});
+  try{
+    Object.assign(dom.window,{TextEncoder,TextDecoder});
+    const script=dom.window.document.createElement("script");script.textContent=code;dom.window.document.body.append(script);
+    const files=[{path:"src/main.tsx",source:'import React from "react";import{createRoot}from"react-dom/client";import{BrowserRouter,Link,Routes,Route}from"react-router";import App from"@/App";createRoot(document.getElementById("root")!).render(<BrowserRouter><Link to="/second">Next</Link><Routes><Route path="/" element={<App/>}/><Route path="/second" element={<p>Second</p>}/></Routes></BrowserRouter>);'},
+      {path:"src/App.tsx",source:'import type {Server} from "../missing-server";export default function App(){return <p>{import.meta.env.MODE}</p>}'}].map(f=>({...f,url:"blob:"+f.path}));
+    (dom.window as any).CloudigReactWork.mountProject(files,"src/main.tsx");
+    for(let n=0;n<30&&!dom.window.document.querySelector("a");n++)await new Promise(r=>setTimeout(r,10));
+    assert.match(dom.window.document.body.textContent!,/production/);
+    dom.window.document.querySelector<HTMLAnchorElement>("a")!.click();await new Promise(r=>setTimeout(r,30));assert.match(dom.window.document.body.textContent!,/Second/);assert.equal(dom.window.location.pathname,"/frame");assert.deepEqual(errors,[]);
+  }finally{dom.window.close()}
+});

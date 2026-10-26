@@ -1,5 +1,5 @@
 /** Runtime policy, not Conversation fields. No source code runs in the Parser. */
-import type { JsonValue } from "../../../core/contracts/types.mts";
+import type { JsonObject, JsonValue } from "../../../core/contracts/types.mts";
 export type InteractiveBindings = Readonly<{ values: Readonly<Record<string, JsonValue>>; callbacks: readonly string[] }>;
 export const INTERACTIVE_LIMITS = Object.freeze({
   statePerWorkBytes: 5 * 1024 * 1024,
@@ -9,7 +9,13 @@ export const INTERACTIVE_LIMITS = Object.freeze({
   inlineMinimumHeight: 120,
   inlineMaximumHeight: 640,
   assetMemoryBytes: 64 * 1024 * 1024,
-  assetReadConcurrency: 4
+  assetReadConcurrency: 4,
+  officeParts: 256,
+  officePartBytes: 32 * 1024 * 1024,
+  officeTotalBytes: 64 * 1024 * 1024,
+  sheetColumns: 16384,
+  sheetRows: 100000,
+  sheetColumnPixels: 1800
 });
 export const INTERACTIVE_PROTOCOL = "cloudig/interactive-runtime/1";
 export type InteractiveFile = Readonly<{ path: string; mime: string; bytes: ArrayBuffer; aliases?: readonly string[] }>;
@@ -29,6 +35,10 @@ export type InteractivePackage = Readonly<{
   language?: "zh" | "en";
   scrollCss?: string;
   bindings?: InteractiveBindings;
+  data?: JsonObject;
+  documents?: readonly string[];
+  /** Runtime-only read view of an attachment, never serialized to records. */
+  preview?: boolean;
 }>;
 
 // The user explicitly chose session-only progress for 1.0.2. This map is never

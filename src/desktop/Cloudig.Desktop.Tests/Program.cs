@@ -17,10 +17,19 @@ if (args.Length == 5 && args[0] == "--official-import-check") { await OfficialIm
 if (args.Length == 1 && args[0] == "--update-check-test") { await ReleaseUpdateChecks.RunAsync(); return; }
 if (args.Length == 1 && args[0] == "--library-instance-check") { await LibraryInstanceChecks.RunAsync(); return; }
 if (args.Length == 1 && args[0] == "--storage-probe-check") { StorageProbeChecks.Run(); return; }
+if (args.Length == 1 && args[0] == "--work-download-check")
+{
+    WorkDownloadChecks.Run();
+    var workCheckRoot = Path.GetFullPath(Path.Combine("tests/private/work-download-check", Guid.NewGuid().ToString("N")));
+    await RuntimeFileResponseChecks.RunAsync(workCheckRoot);
+    VerifiedDownloadClient.PlainPath(workCheckRoot); Directory.Delete(workCheckRoot, recursive: true);
+    Console.WriteLine("PASS work/map CSP and local runtime resource boundaries"); return;
+}
 if (args.Length == 2 && args[0] == "--library-instance-worker") { await LibraryInstanceChecks.WorkerAsync(args[1]); return; }
 if (args.Length == 2 && args[0] == "--native-file-move-check") { await NativeFileMoveChecks.RunAsync(args[1]); return; }
 if (args.Length == 2 && args[0] == "--markdown-clipboard-check") { await MarkdownClipboardChecks.RunAsync(args[1]); return; }
 if (args.Length == 2 && args[0] == "--download-check") { await DownloadChecks.RunAsync(args[1]); return; }
+if (args.Length == 2 && args[0] == "--optional-components-check") { await OptionalWorkComponentChecks.RunAsync(args[1]); return; }
 if (args.Length == 2 && args[0] == "--example-live-check") { await DownloadChecks.LiveAsync(args[1]); return; }
 if (args.Length == 2 && args[0] == "--portable-update-check") { await PortableUpdateChecks.RunAsync(args[1]); return; }
 if (args.Length == 4 && args[0] == "--portable-update-check") { await PortableUpdateChecks.RunAsync(args[1],args[2],args[3]); return; }

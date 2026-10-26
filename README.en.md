@@ -6,7 +6,7 @@
 
 Cloudig: Free tool to export, organize & read AI conversations from 12 web platforms
 
-**Windows x64:** [Download Cloudig V1.0.7 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.7/Cloudig-1.0.7-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
+**Windows x64:** [Download Cloudig V1.0.8 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.8/Cloudig-1.0.8-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
 Do not install it in `Program Files`; choose a directory with write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall.
 
@@ -24,9 +24,9 @@ Cloudig turns captured HTML, official platform exports, and Agent Tool files int
 <p><strong>Archiver · StarNight</strong></p>
 <img src="docs/assets/readme/Archiver-StarNight.webp" alt="Cloudig Archiver StarNight" width="100%">
 
-**[Source code · Cloudig V1.0.7](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.7)**
+**[Source code · Cloudig V1.0.8](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.8)**
 
-## V1.0.7 highlights
+## V1.0.8 highlights
 
 ### Web bookmark export
 
@@ -123,3 +123,4 @@ Cloudig V1.0 DawnGlow includes Dawn and StarNight themes, with Chinese and Engli
 ChenXing.CyberVenus is responsible for interface design and architectural standards. Osis is responsible for implementation and selected documentation.
 
 **If Cloudig helps you, please give it a Star on GitHub.**
+

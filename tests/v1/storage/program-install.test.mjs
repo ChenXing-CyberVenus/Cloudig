@@ -39,6 +39,16 @@ test("a failed program switch restores earlier components and leaves business da
   assert.deepEqual((await readdir(base)).sort(), ["installed", "payload"]);
 }));
 
+test("on-demand app components survive replacement and rollback without entering the release payload",async()=>fixture(async({payload,installed})=>{
+  const file="app/optional-components/runtime-1/component.wasm";
+  await mkdir(path.dirname(path.join(installed,file)),{recursive:true});await writeFile(path.join(installed,file),"verified optional bytes");
+  await assert.rejects(installV1ProgramFiles(payload,installed,{beforeInstall:relative=>{if(relative==="bookmarks")throw Error("interrupted");}}),/interrupted/);
+  assert.equal(await readFile(path.join(installed,file),"utf8"),"verified optional bytes");
+  await installV1ProgramFiles(payload,installed);
+  assert.equal(await readFile(path.join(installed,file),"utf8"),"verified optional bytes");
+  await assert.rejects(readFile(path.join(payload,file)),{code:"ENOENT"});
+}));
+
 async function onlineExamples(payload, installed) {
   const id = "example-0123456789abcdefabcd", html = "<p>Curated original</p>", record = '{"example":true}';
   const entry = (relative, bytes) => ({ path: relative, bytes: Buffer.byteLength(bytes), sha256: createHash("sha256").update(bytes).digest("hex") });

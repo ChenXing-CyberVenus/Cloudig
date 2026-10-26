@@ -25,7 +25,7 @@ export const platformJsonImportGuides = Object.freeze({
   sillytavern: { input: 'jsonl', file: '*.jsonl', zh: '选择 SillyTavern 的聊天 JSONL 文件；每个文件是一篇会话。', en: 'Choose a SillyTavern chat JSONL file; each file is one conversation.' },
   'kimi-code': { input: 'jsonl', file: '*.jsonl', zh: '选择 Kimi Code 的 wire JSONL 文件；每个文件是一篇会话。', en: 'Choose a Kimi Code wire JSONL file; each file is one conversation.' },
   'claude-code': { input: 'jsonl', file: '*.jsonl', zh: '选择 Claude Code 的 session JSONL 文件；每个文件是一篇会话。', en: 'Choose a Claude Code session JSONL file; each file is one conversation.' },
-  codex: { input: 'jsonl', file: '*.jsonl', zh: '选择 Codex 的 rollout JSONL 文件。life 分片会作为同一逻辑来源继续合并。', en: 'Choose a Codex rollout JSONL file. life shards will be grouped as one logical source.' }
+  codex: { input: 'jsonl', file: '*.jsonl / *.jsonl.zst', zh: '选择 Codex 的 rollout JSONL 或 JSONL.ZST 文件；分页会话请一并选择保留原始名称的所有分片。', en: 'Choose Codex rollout JSONL or JSONL.ZST files. For paginated sessions, select all shards with their original filenames.' }
 });
 export const platformJsonQuotes = Object.freeze({
   'zh-CN': ['为何“采云”？意义就在深渊与星河之间，在文字与思念之中。', '“慰藉逐渐地来自信息——同时来自真实的和想象的信息。”——赛斯·劳埃德《编程宇宙》'],

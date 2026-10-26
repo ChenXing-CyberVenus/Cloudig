@@ -8,7 +8,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { build } from "esbuild";
-import { analyzeReactWorkBundle } from "./build-v1-work-dependencies.mjs";
+import { analyzeReactWorkBundle, analyzeFilePreviewBundle, analyzeDocumentPreviewBundle } from "./build-v1-work-dependencies.mjs";
 import { analyzeMapRuntime } from "./build-v1-map-runtime.mjs";
 
 export const V1_THIRD_PARTY_INVENTORY = "cloudig/third-party-inventory/1.0.0";
@@ -100,8 +100,10 @@ export async function analyzeV1BundleMetafiles(repository = defaultRoot) {
   // Match the actual desktop bundles, including isolated worker/frame
   // entry points that are intentionally absent from the main bundles.
   const interactiveReact = await analyzeReactWorkBundle(repository);
+  const filePreview = await analyzeFilePreviewBundle(repository);
+  const documentPreview = await analyzeDocumentPreviewBundle(repository);
   const mapRuntime = await analyzeMapRuntime(repository);
-  return { engine: engine.metafile, parser_worker: parserWorker.metafile, renderer: renderer.metafile, mermaid_layout: mermaidLayout.metafile, interactive_frame: interactiveFrame.metafile, interactive_react: interactiveReact.metafile, map_frame: mapRuntime.frame.metafile, map_worker: mapRuntime.worker.metafile };
+  return { engine: engine.metafile, parser_worker: parserWorker.metafile, renderer: renderer.metafile, mermaid_layout: mermaidLayout.metafile, interactive_frame: interactiveFrame.metafile, interactive_react: interactiveReact.metafile, file_preview: filePreview.metafile, document_preview: documentPreview.metafile, map_frame: mapRuntime.frame.metafile, map_worker: mapRuntime.worker.metafile };
 }
 
 async function npmInventory(repository, metafiles) {
@@ -127,7 +129,7 @@ async function npmInventory(repository, metafiles) {
   // absent from the main UI bundle's metafile. They are still shipped software.
   const workManifest = JSON.parse(await readFile(path.join(repository, "src/ui/runtime-dependencies/manifest.json"), "utf8"));
   for (const library of [...workManifest.libraries, ...(workManifest.icons ?? [])]) {
-    const directory = path.join(repository, "node_modules", library.package);
+    const directory = path.join(repository, "node_modules", library.install_as ?? library.package);
     const metadata = JSON.parse(await readFile(path.join(directory, "package.json"), "utf8"));
     if (metadata.version !== library.version) throw new Error(`Work dependency drift: ${library.package}`);
     if(library.package_file){const bytes=await readFile(path.join(directory,library.package_file));if(sha256(bytes)!==library.sha256)throw new Error(`Work dependency byte drift: ${library.package}`);}
@@ -186,6 +188,8 @@ function combinedText(inventory, npmRows, runtimeRows) {
     lines.push(`================================================================================`, `${entry.name}@${entry.version}`, `Declared license: ${entry.declared_license ?? "see included license text"}`, `Bundled by: ${entry.consumers.join(", ")}`, "");
     for (const license of entry.license_texts) lines.push(`--- ${license.name} / sha256 ${license.sha256} ---`, license.text, "");
   }
+  lines.push("Work components (bundled in app/web/runtime/dependencies/components, or installed on demand in app/optional-components; each includes its license files)", "");
+  for (const entry of inventory.optional_runtime_components ?? []) lines.push(`${entry.id}: ${entry.name} — ${entry.license} [${entry.delivery}]`, `Source: ${entry.source}`, ...entry.licenses.map(file => `  ${file.url} / sha256 ${file.sha256}`), "");
   lines.push(`Inventory schema: ${inventory.schema}`, "");
   return `${lines.join("\n")}\n`;
 }
@@ -233,6 +237,11 @@ export async function writeV1ThirdPartyInventory({ repository = defaultRoot, out
   const inventory = {
     schema: V1_THIRD_PARTY_INVENTORY,
     scope: "runtime components, packages present in bundle metafiles, and explicitly bundled UI fonts",
+    optional_runtime_components: JSON.parse(await readFile(path.join(workRoot, "optional-components.json"), "utf8")).components.map(component => ({
+      id: component.id, name: component.name, license: component.license, delivery: component.delivery, source: component.base,
+      bytes: component.files.reduce((total, file) => total + file.bytes, 0),
+      licenses: component.files.filter(file => !file.aliases.length && /LICENSE|COPYING|OFL|Apache/iu.test(file.file)).map(file => ({ file: file.file, url: file.url, sha256: file.sha256 }))
+    })),
     runtime_components: runtimeRows.map((entry) => ({
       id: entry.id,
       version: entry.version,

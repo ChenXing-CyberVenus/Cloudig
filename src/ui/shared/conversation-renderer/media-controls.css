@@ -1,0 +1,13 @@
+.cloudig-audio-controls{--media-accent:#a52525;--media-button:#a52525;--media-button-ink:#fff;--media-ink:#523e38;--media-edge:#bd8f72;--media-fill:#f1dfcc;display:grid;grid-template-columns:48px minmax(80px,1fr) auto auto;align-items:center;gap:14px;width:100%;padding:16px 18px;border:1px solid var(--media-edge);border-radius:12px;background:var(--media-fill);color:var(--media-ink);box-sizing:border-box;font:14px/1.4 system-ui,sans-serif}
+:is([data-theme=star-night],[data-cloudig-theme=star-night]) .cloudig-audio-controls{--media-accent:#ffa92e;--media-button:#5125a5;--media-button-ink:#ffa92e;--media-ink:#e2d9ed;--media-edge:#7d668f;--media-fill:#31293d}
+.cloudig-audio-controls button{display:grid;place-items:center;box-sizing:border-box;border:0;border-radius:50%;padding:0;width:36px;height:36px;background:transparent;color:var(--media-ink);cursor:pointer}
+.cloudig-audio-controls .cloudig-audio-toggle{width:48px;height:48px;background:var(--media-button);color:var(--media-button-ink);box-shadow:0 2px 4px #0003}
+.cloudig-audio-controls button:hover{filter:brightness(1.15)}.cloudig-audio-controls button:focus-visible{outline:2px solid var(--media-accent);outline-offset:3px}
+.cloudig-audio-controls button:disabled{opacity:.5;cursor:default}
+.cloudig-audio-controls svg{width:22px;height:22px;fill:currentColor;display:block;pointer-events:none}.cloudig-audio-time{white-space:nowrap;font-variant-numeric:tabular-nums}
+.cloudig-audio-volume{display:grid;grid-template-columns:32px minmax(48px,1fr) 34px;align-items:center;gap:6px;width:150px;max-width:100%}.cloudig-audio-volume-value{font-size:12px;font-variant-numeric:tabular-nums;text-align:right}
+.cloudig-audio-controls :is(.cloudig-audio-seek,.cloudig-audio-volume-range){appearance:none;min-width:0;width:100%;height:6px;margin:0;padding:0;border:0;border-radius:6px;background:linear-gradient(to right,var(--media-accent) var(--media-progress,0%),var(--media-edge) var(--media-progress,0%));accent-color:var(--media-accent);cursor:pointer}
+:is(.cloudig-audio-seek,.cloudig-audio-volume-range)::-webkit-slider-thumb{appearance:none;width:14px;height:14px;border:2px solid var(--media-fill);border-radius:50%;background:var(--media-accent);box-shadow:0 0 0 1px var(--media-accent)}
+.cloudig-audio-status{grid-column:1/-1;margin:0;font-size:13px}.cloudig-audio-status:empty{display:none}
+audio[data-cloudig-controls]{display:none!important}
+@media(max-width:440px){.cloudig-audio-controls{grid-template-columns:44px minmax(0,1fr) auto;gap:10px;padding:12px}.cloudig-audio-controls .cloudig-audio-toggle{width:44px;height:44px;grid-row:1/3}.cloudig-audio-time{grid-column:3;grid-row:1;font-size:12px}.cloudig-audio-volume{grid-column:2/-1;grid-row:2;justify-self:end}}

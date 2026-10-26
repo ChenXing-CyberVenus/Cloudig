@@ -7,6 +7,8 @@ import {
 } from "parse5";
 
 import { mapSequential, type AdapterManifest, type AdapterParseContext, type SourceAdapter } from "../../app/parser/adapter.mts";
+import { MistralWork } from "./mistral-work.mts";
+import { WorkResources } from "./work-resources.mts";
 import { canonicalizeJcs } from "../../core/contracts/deterministic-json.mts";
 import type { JsonObject, JsonValue } from "../../core/contracts/types.mts";
 import { isJsonObject } from "../../core/contracts/types.mts";
@@ -527,6 +529,7 @@ function projectFragment(input: Readonly<{
   diagrams: MistralDiagramPool;
   resources: MistralResourcePool;
   limitations: JsonObject[];
+  work?: MistralWork;
 }>): JsonObject[] {
   const fragment = parseFragment(input.html);
   const blocks: JsonObject[] = [];
@@ -571,6 +574,11 @@ function projectFragment(input: Readonly<{
       if (parent === fragment && hasClass(child, "osis-turn-meta")) continue;
       if (isElement(parent) && hasClass(parent, "osis-message") && hasClass(child, "assistant-model")) continue;
       if (hasClass(child, "osis-public-thinking") || hasClass(child, "osis-tool-section") || hasClass(child, "osis-tool-card") || hasClass(child, "osis-sources")) continue;
+      const canvas = attribute(child, "data-osis-canvas-id"), version = attribute(child, "data-osis-canvas-version");
+      if (canvas && version !== undefined) {
+        const work = input.work?.project(`${canvas}::${version}`, input.owner);
+        if (work) { if (work.length) next.push(defaultTreeAdapter.createTextNode(work.map(addBlock).join(""))); continue; }
+      }
       if (hasClass(child, "osis-attachments")) {
         const markers = attachmentMarkers(child);
         if (markers) next.push(defaultTreeAdapter.createTextNode(markers));
@@ -652,6 +660,8 @@ function projectFragment(input: Readonly<{
 async function parseMistral(context: AdapterParseContext, profile: Profile, payloadName: string): Promise<JsonObject> {
   const limitations: JsonObject[] = [];
   const resources = new MistralResourcePool(context.payload, context.reading);
+  const work = context.record && context.extensions?.mistralWork ? new MistralWork(context.extensions.mistralWork, new WorkResources(resources.values)) : undefined;
+  await work?.prepare();
   const sources = new MistralSourcePool();
   const fragments = new Map<string, string[]>();
   for (const fragment of context.reading?.fragments ?? []) {
@@ -672,7 +682,8 @@ async function parseMistral(context: AdapterParseContext, profile: Profile, payl
       return attachment;
     });
     const diagrams = new MistralDiagramPool(message["diagram_sources"], context.reading?.mermaid ?? [], owner);
-    const body = (fragments.get(owner) ?? []).flatMap((html) => projectFragment({ html, owner, attachments, diagrams, resources, limitations }));
+    const body = (fragments.get(owner) ?? []).flatMap((html) => projectFragment({ html, owner, attachments, diagrams, resources, limitations, ...(work ? { work } : {}) }));
+    if (work) body.push(...work.remaining(owner));
     if (body.length === 0) {
       const markdown = sourceText(message["content_markdown"]);
       if (markdown) body.push({ type: "markdown", text: markdown });
@@ -732,7 +743,7 @@ async function parseMistral(context: AdapterParseContext, profile: Profile, payl
 }
 
 function manifest(id: string, payload: string, profile: Profile): AdapterManifest {
-  return { id, version: "3.0.6", family: "mistral", routes: [{ format: "exporter-html", platform: "mistral", payload, profile }], target: "cloudig/conversation/1.0.0", update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5"].map(version => ({ adapter: id, version, action: "reparse_source" as const })) };
+  return { id, version: "3.0.9", family: "mistral", routes: [{ format: "exporter-html", platform: "mistral", payload, profile }], target: "cloudig/conversation/1.0.2", update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8"].map(version => ({ adapter: id, version, action: "reparse_source" as const })) };
 }
 
 export const MISTRAL_LIGHT_MANIFEST = manifest("mistral-light-dom-rsc-v2", "osis.mistral.chat-export/light-dom-rsc-v2", "light");

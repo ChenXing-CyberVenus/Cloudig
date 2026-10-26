@@ -36,7 +36,7 @@ internal static class RuntimeFileResponseChecks
         Directory.CreateDirectory(Path.Combine(root, "runtime"));
         await File.WriteAllTextAsync(Path.Combine(root, "runtime", "interactive-frame.html"), "<!doctype html>");
         var work = server.Open("https://cloudig-work.invalid/runtime/interactive-frame.html", "GET");
-        if (work.Status != 200 || !work.Headers.Contains("sandbox allow-scripts allow-same-origin")) throw new InvalidOperationException("Work origin lost its sandbox policy");
+        if (work.Status != 200 || !work.Headers.Contains("sandbox allow-scripts allow-same-origin allow-downloads")) throw new InvalidOperationException("Work origin lost its sandbox/download policy");
         work.Content!.Dispose();
         foreach (var name in new[] { "map-frame.html", "map-frame.js", "map-frame.css", "map-worker.js" })
         {
@@ -44,6 +44,7 @@ internal static class RuntimeFileResponseChecks
             var map = server.Open("https://cloudig-map.local/runtime/" + name, "GET");
             if (map.Status != 200 || name.EndsWith(".html") && !map.Headers.Contains("sandbox allow-scripts allow-same-origin")) throw new InvalidOperationException("Dedicated map runtime was not served locally");
             map.Content!.Dispose();
+            if (map.Headers.Contains("allow-downloads")) throw new InvalidOperationException("Map acquired work downloads");
             if (server.Open("https://cloudig-work.invalid/runtime/" + name, "GET").Status != 403) throw new InvalidOperationException("Untrusted works acquired the map runtime origin");
         }
         foreach (var denied in new[] { "index.html", relative, "主题样式.css" })

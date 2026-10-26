@@ -77,6 +77,15 @@ export async function installV1ProgramFiles(payloadRoot, publishRoot, { beforeIn
       const next = path.join(stage, "next", relative); await mkdir(path.dirname(next), { recursive: true });
       await cp(path.join(payload, relative), next, { recursive: true });
     }
+    // Optional components were installed on demand, not shipped in this build.
+    // Preserve them across a developer package replacement without putting
+    // them into the distributable payload or touching the old app before swap.
+    const optional = path.join(publish, "app", "optional-components"), optionalInfo = await maybeStat(optional);
+    if (optionalInfo) {
+      if (!optionalInfo.isDirectory() || optionalInfo.isSymbolicLink()) throw new Error("Optional program components must be a plain directory");
+      await files(optional);
+      await cp(optional, path.join(stage, "next", "app", "optional-components"), { recursive: true, force: false });
+    }
     for (const relative of components) {
       await beforeInstall?.(relative);
       const target = path.join(publish, relative), previous = path.join(stage, "previous", relative);

@@ -13,10 +13,10 @@ export function bindOverflowText(root, signal) {
     delete active.node.dataset.scrolling;
     active = null;
   };
-  const start = node => {
+  const start = (node, area = node) => {
     stop();
     if (!node.isConnected || node.scrollWidth <= node.clientWidth + 1) return;
-    const state = { node, frame: 0, started: null };
+    const state = { node, area, frame: 0, started: null };
     active = state;
     node.dataset.scrolling = "true";
     const tick = now => {
@@ -32,13 +32,15 @@ export function bindOverflowText(root, signal) {
     state.frame = view.requestAnimationFrame(tick);
   };
   root.addEventListener("pointerover", event => {
-    const node = event.target.closest?.("[data-overflow-text]");
-    if (node && root.contains(node) && !inside(node, event.relatedTarget)) start(node);
+    const scope = event.target.closest?.("[data-overflow-scope]");
+    const node = scope?.querySelector("[data-overflow-text]") ?? event.target.closest?.("[data-overflow-text]");
+    const area = scope ?? node;
+    if (node && root.contains(node) && !inside(area, event.relatedTarget)) start(node, area);
   }, { signal });
   root.addEventListener("pointerout", event => {
-    if (active && inside(active.node, event.target) && !inside(active.node, event.relatedTarget)) stop();
+    if (active && inside(active.area, event.target) && !inside(active.area, event.relatedTarget)) stop();
   }, { signal });
   root.addEventListener("pointerleave", stop, { signal });
-  view.addEventListener("resize", () => { if (active) start(active.node); }, { signal, passive: true });
+  view.addEventListener("resize", () => { if (active) start(active.node, active.area); }, { signal, passive: true });
   signal.addEventListener("abort", stop, { once: true });
 }

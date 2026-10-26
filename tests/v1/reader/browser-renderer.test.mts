@@ -35,6 +35,33 @@ const labels: RendererLabels = {
   otherParty: "其他"
 };
 
+test("source-owned inline icon geometry and missing map photos do not become oversized or broken images", async () => {
+  const dom=new JSDOM("<main></main>"),root=dom.window.document.querySelector<HTMLElement>("main")!;let reads=0;
+  const renderer=createConversationRenderer({root,labels,theme:"dawn",resolveResource:async()=>{reads++;return{url:"data:image/png;base64,AA=="}}});
+  try{
+    renderer.render({messages:[{party:{role:"user"},blocks:[{category:"content",value:{type:"html",html:'<p><span class="plugin-node"><img data-cloudig-resource="icon" width="20" height="20" style="display:inline-block;width:20px;height:20px;vertical-align:middle">Plugin</span> question</p>'},resources:[{id:"icon",name:"icon.png",availability:"embedded"}]}]},
+      {party:{role:"assistant"},blocks:[{category:"content",value:{type:"box",source:"claude.ai_places_map_display_v0",format:"structured",data:{input:{locations:[{name:"Place",place_id:"place",latitude:1,longitude:2}]},result:[{type:"text",text:JSON.stringify({enriched_places:{place:{photos:[{url:"https://example.test/unavailable.jpg"}]}}})}]}}}]}]});
+    await new Promise(r=>setTimeout(r,0));const icon=root.querySelector<HTMLImageElement>(".plugin-node img")!;assert.equal(icon.style.width,"20px");assert.equal(icon.style.height,"20px");assert.equal(icon.style.display,"inline-block");
+    assert.equal(root.querySelector(".cloudig-image-fallback a")?.getAttribute("href"),"https://example.test/unavailable.jpg");assert.equal(root.querySelector(".cloudig-image-fallback img"),null);assert.equal(reads,1);
+  }finally{renderer.destroy();dom.window.close()}
+});
+
+test("message caption keeps the source time beside the avatar, including expanded process records", async () => {
+  const dom = new JSDOM("<main></main>"), root = dom.window.document.querySelector<HTMLElement>("main")!;
+  const renderer = createConversationRenderer({ root, labels, theme: "dawn", resolveAvatar: async () => ({ url: "data:image/svg+xml,<svg/>" }) });
+  try {
+    renderer.render({ messages: [
+      { party: { role: "assistant", name: "Long-model-name".repeat(30), avatar: "a" }, timestamp: "2026-10-21T01:02:03Z", blocks: [{ category: "content", value: { type: "text", text: "Answer" } }] },
+      { party: { role: "tool" }, timestamp: "2026-10-21T01:03:04Z", blocks: [{ category: "tool", value: { type: "tool_result", text: "Result" } }] }
+    ] });
+    assert.equal(root.querySelector(".cloudig-message-heading time")?.getAttribute("datetime"), "2026-10-21T01:02:03Z");
+    assert.equal(root.querySelector(".cloudig-message-heading .cloudig-message-name")?.textContent, "Long-model-name".repeat(30));
+    const fold=root.querySelector<HTMLDetailsElement>(".cloudig-tool-message-group")!;
+    fold.open=true;fold.dispatchEvent(new dom.window.Event("toggle"));await new Promise(r=>setTimeout(r,0));
+    assert.equal(fold.querySelector("time")?.getAttribute("datetime"), "2026-10-21T01:03:04Z");
+  } finally { renderer.destroy(); dom.window.close(); }
+});
+
 test("saved user uploads expose named save actions, without downloading a thumbnail as its file", () => {
   const dom = new JSDOM("<main></main>"), root = dom.window.document.querySelector<HTMLElement>("main")!, saved: string[] = [];
   const renderer = createConversationRenderer({ root, labels, theme: "star-night", onOpenResource: id => { saved.push(id); } });
@@ -95,6 +122,8 @@ test('system, reasoning-only and tool messages share one collapsed process fold 
   assert.equal(group.querySelectorAll('.cloudig-message-identity').length, 0);
   assert.equal(group.querySelectorAll('.cloudig-process-group-identity').length, 1);
   assert.equal(root.querySelectorAll('.cloudig-process-axis-row > .cloudig-process-group-axis-avatar').length, 1, 'the first process avatar must remain outside the fold details');
+  const css = readFileSync(new URL('../../../src/ui/shared/conversation-renderer/renderer.css', import.meta.url), 'utf8');
+  assert.match(css, /\.cloudig-process-axis-row > \.cloudig-process::before,[\s\S]*?\{ display: none; \}/u, 'the outer fold must not add an offset duplicate dot beside its identity avatar');
   assert(root.textContent!.includes('exec')); assert(root.textContent!.includes('read_file')); assert(root.textContent!.includes('done'));
   renderer.destroy(); dom.window.close();
 });
@@ -107,6 +136,19 @@ test('Agent-to-Agent delegation messages stay discoverable as independent assist
   assert.equal(root.querySelectorAll('.cloudig-message').length, 1);
   assert.match(root.textContent ?? '', /老婆决定建立新的文档奥思/u);
   renderer.destroy(); dom.window.close();
+});
+test('desktop pagination counts canonical envelopes, not the system and author visual segments within them', () => {
+  const dom = new JSDOM('<main></main>'), root = dom.window.document.querySelector<HTMLElement>('main')!;
+  const renderer = createConversationRenderer({root,labels,theme:'dawn'});
+  renderer.render({messages:[{anchor:'one',party:{role:'user',name:'User'},blocks:[
+    {category:'content',value:{type:'text',text:'Before'}},
+    {category:'content',value:{type:'status',title:'Platform flag',text:'Saved flag',party:{role:'system',name:'System'}}},
+    {category:'content',value:{type:'text',text:'After'}}
+  ]},{anchor:'two',party:{role:'assistant',name:'AI'},blocks:[{category:'content',value:{type:'text',text:'Answer'}}]}]});
+  const native=readFileSync(new URL('../../../src/desktop/Cloudig.Desktop/MainWindow.xaml.cs',import.meta.url),'utf8');
+  const selector=/CanonicalAuditMessageSelector = "([^"]+)"/u.exec(native)![1]!;
+  assert.equal(root.querySelectorAll('.cloudig-message').length,4);assert.deepEqual([...root.querySelectorAll(selector)].map(n=>n.id),['one','two']);
+  renderer.destroy();dom.window.close();
 });
 
 test('external Agent messages stay as independent assistant articles outside the process fold', () => {
@@ -450,7 +492,8 @@ test("an attachment thumbnail stays inside its matching file card, not as a full
   assert.equal(root.querySelectorAll(".cloudig-attachment .cloudig-attachment-thumbnail img").length, 1);
   assert.equal(root.querySelectorAll(".cloudig-message-content > .cloudig-image").length, 1);
   assert.equal(root.querySelectorAll("img").length, 2);
-  assert.equal(root.querySelectorAll(".cloudig-attachment > .cloudig-attachment-open").length, 1);
+  assert.equal(root.querySelectorAll(".cloudig-attachment .cloudig-resource-save").length, 1);
+  assert.equal(root.querySelectorAll(".cloudig-attachment .cloudig-resource-preview").length, 1);
   assert.equal(root.querySelectorAll(".cloudig-image:not(.cloudig-attachment-thumbnail) .cloudig-resource-save").length, 1);
   renderer.destroy(); dom.window.close();
 });
@@ -476,6 +519,23 @@ test("captured rich cards and table alignment replay static styles without page 
   assert.equal(root.querySelector<HTMLElement>("td")!.style.textAlign, "center");
   assert.equal(root.querySelector("math")?.getAttribute("style"), "color: red;");
   renderer.destroy(); dom.window.close();
+});
+
+test("legacy split Kimi tables share one grid and scroller in both themes without modifying the saved JSON", () => {
+  for (const theme of ["dawn", "star-night"] as const) {
+    const dom = new JSDOM("<main></main>"), root = dom.window.document.querySelector<HTMLElement>("main")!;
+    const renderer = createConversationRenderer({ root, labels, theme });
+    const html = '<div class="markdown-table"><div class="table-header" style="background:white"><table class="header-table"><thead><tr><th>L</th><th data-osis-align="right">R<div class="table-buttons"><button>Copy</button></div></th></tr></thead></table></div><div class="table-container"><table class="body-table"><tbody><tr><td>Longer text</td><td data-osis-align="right">2</td></tr></tbody></table></div></div>';
+    const input = { messages: [{ party: { role: "assistant" as const }, blocks: [{ category: "content" as const, value: { type: "html", html } }] }] };
+    const before = JSON.stringify(input);
+    renderer.render(input);
+    assert.equal(root.querySelectorAll("table").length, 1);
+    assert.equal(root.querySelectorAll(".cloudig-table-scroll").length, 1);
+    assert.equal(root.querySelectorAll(".table-header, .table-buttons").length, 0);
+    assert.equal(root.querySelector("th[data-osis-align]")!.getAttribute("data-osis-align"), "right");
+    assert.equal(JSON.stringify(input), before);
+    renderer.destroy(); dom.window.close();
+  }
 });
 
 test("rich tables own one local scroll container without swallowing nearby content or changing cells", () => {
@@ -600,8 +660,8 @@ test("hundreds of messages and appended pages share one avatar request per ident
   renderer.append({ messages }); await tick();
   assert.equal(requested, 2); assert.equal(root.querySelectorAll(".cloudig-avatar img").length, 400);
   renderer.setTheme("star-night"); await tick(); await tick();
-  assert.equal(requested, 4); assert.equal(released, 2);
-  renderer.destroy(); assert.equal(released, 4); dom.window.close();
+  assert.equal(requested, 2); assert.equal(released, 0);
+  renderer.destroy(); assert.equal(released, 2); dom.window.close();
 });
 
 test("offline content runtime renders Markdown and full KaTeX locally without enabling raw HTML", () => {
@@ -938,13 +998,13 @@ test("shared renderer keeps roles, process folds, sources, resources and diagram
   assert.equal(diagrams.at(-1)?.theme, "dawn");
   assert.match(decodeURIComponent(root.querySelector<HTMLImageElement>(".cloudig-mermaid-image")!.src.split(",").slice(1).join(",")), /data-theme="dawn"/u);
   assert.equal(resolvedResources.includes("r3"), false);
-  assert.equal(root.querySelector(".cloudig-external-resource")?.textContent, "remote");
+  assert.equal(root.querySelector(".cloudig-image-fallback .cloudig-resource-metadata")?.textContent, "remote");
 
-  root.querySelector<HTMLButtonElement>(".cloudig-attachment-open")!.click();
+  root.querySelector<HTMLButtonElement>(".cloudig-attachment .cloudig-resource-save")!.click();
   root.querySelector<HTMLButtonElement>(".cloudig-message-identity")!.click();
   renderer.materializeDeferred();
-  root.querySelector<HTMLAnchorElement>(".cloudig-source-link")!.click();
-  root.querySelector<HTMLAnchorElement>(".cloudig-external-resource")!.click();
+  root.querySelector<HTMLAnchorElement>(".cloudig-source-list .cloudig-source-link")!.click();
+  root.querySelector<HTMLAnchorElement>(".cloudig-image-fallback a")!.click();
   assert.deepEqual(openedResources, ["r2"]);
   assert.deepEqual(editedRoles, ["user"]);
   assert.deepEqual(openedExternal, ["https://example.com/source", "https://example.com/remote.png"]);
@@ -954,10 +1014,25 @@ test("shared renderer keeps roles, process folds, sources, resources and diagram
   assert.equal(root.dataset["theme"], "star-night");
   assert.equal(diagrams.at(-1)?.theme, "star-night");
   assert.match(decodeURIComponent(root.querySelector<HTMLImageElement>(".cloudig-mermaid-image")!.src.split(",").slice(1).join(",")), /data-theme="star-night"/u);
-  assert.ok(released.includes("r1"));
-  assert.ok(released.includes("user-avatar"));
+  assert.equal(released.includes("r1"),false);
+  assert.equal(released.includes("user-avatar"),false);
 
   renderer.destroy();
+  assert.ok(released.includes("r1"));
+  assert.ok(released.includes("user-avatar"));
   assert.equal(root.childElementCount, 0);
   dom.window.close();
+});
+
+
+test("theme updates retain the exact message, process, media and work DOM",async()=>{
+ const dom=new JSDOM('<main></main>',{url:'https://cloudig.local/index.html'}),root=dom.window.document.querySelector<HTMLElement>('main')!;
+ let reads=0;const renderer=createConversationRenderer({root,labels,theme:'dawn',resolveResource:async()=>{reads++;return{url:'data:text/html,<p>Work</p>'}}});
+ try{
+ renderer.render({messages:[{id:'a',anchor:'a',party:{role:'assistant',name:'AI'},blocks:[{category:'reasoning',value:{type:'reasoning',text:'Process'}},{category:'content',value:{type:'box',source:'example.test_widget',format:'html',entry:'index.html',files:[{path:'index.html',resource:'r'}]},resources:[{id:'r',mime:'text/html',availability:'embedded'}]}]}]});
+ await new Promise(r=>setTimeout(r,30));const message=root.querySelector('article'),box=root.querySelector('.cloudig-interactive-box'),frame=root.querySelector('iframe'),fold=root.querySelector('details')!;fold.open=true;
+ assert.ok(frame,"the running work must actually mount"); renderer.setTheme('star-night');await new Promise(r=>setTimeout(r,0));
+ assert.equal(root.querySelector('article'),message);assert.equal(root.querySelector('.cloudig-interactive-box'),box);assert.equal(root.querySelector('iframe'),frame);assert.equal(fold.open,true);assert.equal(box?.getAttribute('data-theme'),'star-night');assert.equal(reads,1);
+ renderer.setTheme('dawn');await new Promise(r=>setTimeout(r,0));assert.equal(root.querySelector('iframe'),frame);assert.equal(box?.getAttribute('data-theme'),'dawn');
+ }finally{renderer.destroy();dom.window.close()}
 });

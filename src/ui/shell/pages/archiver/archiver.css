@@ -251,6 +251,10 @@
   :root[data-theme="star-night"] [data-page="archiver"] .archiver-parse-settings-popover select { background: rgb(30 30 30 / 56%); border-color: var(--cloudig-orange); }
   [data-page="archiver"] .archiver-parse-settings-popover hr { border: 0; border-top: 1px solid var(--archiver-line); margin: 9px 0; }
   [data-page="archiver"] .archiver-parse-settings-popover > p { color: #d97757; font-size: 12px; line-height: 1.4; margin: 10px 0 15px; }
+  [data-page="archiver"] .archiver-parse-settings-popover > .archiver-empty-parse-notice { display:flex; align-items:center; gap:12px; color:#a52525; background:#f8d8a0; font-size:16px; font-weight:700; line-height:1.6; padding:14px 16px; border:2px solid currentColor; border-radius:8px; }
+  [data-page="archiver"] .archiver-empty-parse-notice::before { content:"!"; display:grid; place-items:center; flex:0 0 24px; height:24px; border:2px solid currentColor; border-radius:50%; font:bold 18px/1 sans-serif; }
+  :root[data-theme="star-night"] [data-page="archiver"] .archiver-parse-settings-popover > .archiver-empty-parse-notice { color:#ffca83; background:#3b2b54; border-color:#ffa92e; }
+  [data-page="archiver"] .archiver-parse-settings-popover > .archiver-empty-parse-notice[hidden] { display:none; }
   [data-page="archiver"] .archiver-parse-settings-popover .archiver-settings-note { align-items: center; display: flex; gap: 7px; }
   [data-page="archiver"] .archiver-settings-note svg { fill: none; flex: none; height: 18px; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; width: 18px; }
   [data-page="archiver"] .archiver-parse-settings-popover footer { display: flex; gap: 14px; justify-content: flex-end; }

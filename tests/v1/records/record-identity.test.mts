@@ -75,9 +75,12 @@ test("global/platform fallback and apply-all remain independent for names and av
   const c = await conversation(root); let state = await readRecordIdentityState(root), value = draft(state); party(value, "assistant")["name"] = "Global"; obj(obj(value["platforms"])["chatgpt"])["name"] = "Platform";
   await commitRecordIdentity(root, { expected: state.revision, draft: value, timestamp: later }); let reading = await readConversationRecord(root, String(c["conversation_id"]), builtins);
   assert.equal(reading.resolved.assistantName, "Platform"); assert.equal(reading.resolved.assistantAvatar, "app/chatgpt.svg");
+  const displayed = () => (projectRecordForReading(reading.conversation, reading.resolved, reading.mark)["messages"] as JsonObject[]).filter(m => m["role"] === "assistant").map(m => obj(m["party"])["name"]);
+  assert(displayed().length > 0); assert(displayed().every(name => name === "Platform"));
   state = await readRecordIdentityState(root); value = draft(state); party(value, "assistant")["apply_to_all"] = true;
   await commitRecordIdentity(root, { expected: state.revision, draft: value, timestamp: later }); reading = await readConversationRecord(root, String(c["conversation_id"]), builtins);
   assert.equal(reading.resolved.assistantName, "Global"); assert.equal(reading.resolved.assistantAvatar, "app/chatgpt.svg");
+  assert(displayed().every(name => name === "Global"), "the saved global selection must reach every main-assistant avatar name, not only the cover");
   state = await readRecordIdentityState(root); value = draft(state); party(value, "assistant")["name"] = null;
   await commitRecordIdentity(root, { expected: state.revision, draft: value, timestamp: later }); assert.equal((await readConversationRecord(root, String(c["conversation_id"]), builtins)).resolved.assistantName, "ChatGPT");
 }));

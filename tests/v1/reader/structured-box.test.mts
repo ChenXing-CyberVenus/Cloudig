@@ -5,6 +5,7 @@ import { createPropertyExpression, latest, validateStyleMin, type StyleSpecifica
 import type { JsonObject } from "../../../src/core/contracts/types.mts";
 import { renderStructuredBox } from "../../../src/ui/shared/conversation-renderer/structured-box.mts";
 import { recipeQuantity } from "../../../src/ui/shared/conversation-renderer/recipe-units.mts";
+import { createOfflineContentRuntime } from "../../../src/ui/shared/conversation-renderer/content-runtime.mts";
 import { MAP_PROTOCOL, mapResourceUrl, validMapPoint } from "../../../src/ui/shared/conversation-renderer/map-protocol.mts";
 import { openSavedMap } from "../../../src/ui/shared/conversation-renderer/map-window.mts";
 import { MAP_NIGHT_HIERARCHY, MAP_NIGHT_PALETTE, mapStyleForTheme, mapStyleUrl, type MapStyle } from "../../../src/ui/shared/conversation-renderer/map-theme.mts";
@@ -167,6 +168,15 @@ test("quiz preserves each answer, gates next, supports Flashcards and leaves the
   v.click("Flashcards"); assert(!v.root.textContent!.includes("Because yes")); v.click("View answer"); assert(v.root.textContent!.includes("Because yes"));
   v.click("Next"); assert(!v.root.textContent!.includes("Because yes")); v.click("View answer"); assert(v.root.textContent!.includes("No answer in the saved record"));
   v.close();
+});
+test("Gemini quiz renders source math and retains the explanation belonging to the chosen answer", () => {
+ const dom=new JSDOM('<!doctype html>'),document=dom.window.document,abort=new AbortController(),runtime=createOfflineContentRuntime();
+ const block:JsonObject={type:'box',source:'gemini.google.com_quiz',format:'structured',data:{questions:[{question:'**Question**: $x=1$',hint:'Try `$x$`',choices:[{text:'$x=0$',correct:false,explanation:'Zero is **wrong**.'},{text:'$x=1$',correct:true,explanation:'One is correct.'}]}]}};
+ const before=JSON.stringify(block);
+ const root=renderStructuredBox({document,language:'en',signal:abort.signal,image:()=>document.createElement('img'),richText:source=>{const node=document.createElement('div');node.innerHTML=runtime.renderMarkdown(source);return node;}},block);
+ assert(root.querySelector('.cloudig-box-question strong'));assert(root.querySelector('.katex'));
+ root.querySelector<HTMLButtonElement>('.cloudig-box-choice')!.click();assert.equal(root.querySelector('.cloudig-box-feedback strong')?.textContent,'wrong');assert.equal(JSON.stringify(block),before);
+ abort.abort();runtime.dispose?.();dom.window.close();
 });
 
 test("steps default to one step, page and expand, with no forged source actions", () => {

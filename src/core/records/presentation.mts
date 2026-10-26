@@ -7,6 +7,8 @@ const text = (v: JsonValue | undefined): string | undefined => typeof v === "str
 export type RecordPresentation = Readonly<{
   conversationName: string; platform: string; models: readonly string[];
   userName: string; assistantName: string; userAvatar: string; assistantAvatar: string;
+  /** Selected display settings, distinct from source/model fallback names. */
+  userDisplayName?: string; assistantDisplayName?: string;
   contentTime: Readonly<{ state: "set" | "unavailable"; range?: JsonValue }>;
   effectiveEditedAt: string;
 }>;
@@ -31,13 +33,15 @@ export function resolveRecordPresentation(input: Readonly<{
   const assistantOrder = bindings["apply_assistant_to_all"] === true ? [assistant] : [platformIdentity, assistant];
   const models = mark && Object.hasOwn(mark, "models")
     ? (mark["models"] as JsonObject[]).length ? (mark["models"] as JsonObject[]).map(f => frontName(f)!) : [frontName(sourceDefault) ?? localDefaultName(builtins.assistant)]
-    : [...new Set([...(conversation["models"] ?? []) as string[], ...(conversation["identity"] as JsonObject[]).filter(f => f["role"] === "assistant").map(frontName).filter((n): n is string => Boolean(n))])];
+    : [...new Set([...(conversation["models"] ?? []) as string[], ...(conversation["identity"] as JsonObject[]).filter(f => f["role"] === "assistant" && !isAgentInstanceSourceId(text(f["source_id"]))).map(frontName).filter((n): n is string => Boolean(n))])];
   const sourceEdit = String(object(conversation["lifecycle"])["cloudig_edited_at"]), markEdit = text(mark?.["edited_at"]);
+  const userDisplayName = frontName(user), assistantDisplayName = assistantOrder.map(frontName).find(Boolean);
   return {
     conversationName: text(mark?.["conversation_title"]) ?? text(title["filename"]) ?? text(title["original"]) ?? (input.language === "en" ? "Untitled conversation" : "未命名会话"),
     platform, models,
     userName: text(names["user"]) ?? frontName(user) ?? localDefaultName(builtins.user),
     assistantName: text(names["assistant"]) ?? assistantOrder.map(frontName).find(Boolean) ?? localDefaultName(defaults),
+    ...(userDisplayName ? { userDisplayName } : {}), ...(assistantDisplayName ? { assistantDisplayName } : {}),
     userAvatar: avatar(user) ?? builtins.user.avatar,
     assistantAvatar: assistantOrder.map(avatar).find(Boolean) ?? defaults.avatar,
     contentTime: mark?.["content_time"] ? { state: "set", range: object(mark["content_time"])["range"]! } : { state: "unavailable" },
@@ -49,8 +53,13 @@ export function resolveRecordPresentation(input: Readonly<{
 export function projectRecordForReading(conversation: JsonObject, resolved: RecordPresentation, mark?: JsonObject, options?: Readonly<{ resolveAgentAvatar?: (reference: string) => string }>): JsonObject {
   const fronts = new Map((conversation["identity"] as JsonObject[]).map(f => [String(f["source_id"]), f]));
   // The current one-user editor is not authority to rename every member of a group chat.
-  const userOverride = [...fronts.values()].filter(f => f["role"] === "user").length === 1 ? text(object(mark?.["names"])["user"]) : undefined;
+  const userOverride = [...fronts.values()].filter(f => f["role"] === "user").length === 1 ? text(object(mark?.["names"])["user"]) ?? resolved.userDisplayName : undefined;
   const assistantOverride = text(object(mark?.["names"])["assistant"]);
+  // A Mark model list is one conversation-level user declaration, not an
+  // inferred per-message assignment. Display the same complete declaration
+  // for the main assistant; guest Agents keep their own source identity.
+  const hasModelOverride = !!mark && Object.hasOwn(mark, "models");
+  const modelDisplay = hasModelOverride ? resolved.models.join(" / ") : undefined;
   const blocks = (list: JsonObject[], inherited: string | undefined): JsonObject[] => list.map(raw => {
     const b = { ...raw }, speaker = text(b["speaker"]) ?? inherited;
     const front = fronts.get(speaker ?? "");
@@ -70,10 +79,10 @@ export function projectRecordForReading(conversation: JsonObject, resolved: Reco
     const sourceId = text(message["speaker"]), front = fronts.get(sourceId ?? ""), role = text(front?.["role"]) ?? "system", name = frontName(front);
     const agentInstance = role === "assistant" && isAgentInstanceSourceId(sourceId);
     const party: JsonObject = role === "user" ? { role, name: userOverride ?? name ?? resolved.userName, avatar: resolved.userAvatar }
-      : role === "assistant" ? { role, name: agentInstance ? name ?? AGENT_INSTANCE_NAME : assistantOverride ?? name ?? resolved.assistantName, avatar: agentInstance ? options?.resolveAgentAvatar?.(AGENT_INSTANCE_AVATAR) ?? AGENT_INSTANCE_AVATAR : resolved.assistantAvatar, ...(agentInstance ? { avatar_variant: "agent-instance" } : {}) }
+      : role === "assistant" ? { role, name: agentInstance ? name ?? AGENT_INSTANCE_NAME : assistantOverride ?? resolved.assistantDisplayName ?? modelDisplay ?? name ?? resolved.assistantName, avatar: agentInstance ? options?.resolveAgentAvatar?.(AGENT_INSTANCE_AVATAR) ?? AGENT_INSTANCE_AVATAR : resolved.assistantAvatar, ...(agentInstance ? { avatar_variant: "agent-instance" } : {}) }
         : { role, ...(name ? { name } : {}) };
     return { ...message, role, ...(name ? { name } : {}), party,
-      ...(role === "assistant" && name && (!mark || !Object.hasOwn(mark, "models")) ? { model: name } : {}),
+      ...(role === "assistant" && name && !agentInstance && !hasModelOverride ? { model: name } : {}),
       content: blocks(message["content"] as JsonObject[], sourceId) };
   });
   return { conversation_id: conversation["conversation_id"]!, platform: conversation["platform"]!, source: conversation["source"]!,

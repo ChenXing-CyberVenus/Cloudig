@@ -1,7 +1,10 @@
+import { workContainer } from "./work-container.mts";
 import { parseFragment, serializeOuter, type DefaultTreeAdapterTypes as Tree } from "parse5";
 import { isJsonObject, type JsonObject, type JsonValue } from "../../core/contracts/types.mts";
 import { parseDilProgram, unwrapDil, isDilJsx, walkDil, dilLiteral, dilVisibleText, DIL_VIEW_FORMAT, DIL_SOURCE_FORMAT, type DilAst } from "../../core/records/dil-program.mts";
 import { inertStandaloneSvg, inertHtmlEvidence } from "./inert-html.mts";
+import { staticDilEvidence } from "./dil-static-evidence.mts";
+import { projectSearchReferences } from "./chatgpt-search-references.mts";
 const obj = (v: JsonValue | undefined): JsonObject => isJsonObject(v) ? v : {};
 const list = (v: JsonValue | undefined): JsonObject[] => Array.isArray(v) ? v.filter(isJsonObject) : [];
 const str = (v: JsonValue | undefined): string => typeof v === "string" ? v : "";
@@ -43,7 +46,7 @@ function rootRefs(root: DilAst, constants: JsonObject, widgets: JsonObject): num
 }
 function heavyReference(ref: JsonObject): boolean {
   const data = obj(ref["data"]), category = str(ref["category"]), language = str(data["language"]), source = str(data["content"]);
-  if (category === "app_block") return /<script\b|<canvas\b/iu.test(source) || !/<(?:video|audio)\b/iu.test(source);
+  if (category === "app_block") return workContainer({role:"component",source}) === "window";
   return category === "code_block" && ["html", "jsx", "tsx", "react"].includes(language) && (data["interactive"] === true || data["model_previewable"] === true);
 }
 
@@ -57,6 +60,7 @@ export class ChatGptIntelligentUi {
     if (this.#cache.has(id)) return structuredClone(this.#cache.get(id)!);
     const record = obj(obj(this.#extension["records"])[id]);
     if (record["message_id"] !== id) throw new TypeError("Missing owned Intelligent UI record");
+    if (descriptor["projection"] === "search_references") return projectSearchReferences(part, record, obj(this.#extension["resources"]), this.#write);
     const raw = obj(record["raw"]), metadata = obj(raw["metadata"]), dil = obj(metadata["model_dil_v2"]), source = str(dil["code"]);
     if (!source) throw new TypeError("Intelligent UI has no saved definition");
     const program = parseDilProgram(source), constants = obj(dil["constants"]), references = list(metadata["content_references"]), widgets = obj(dil["clientDefinedWidgets"]);
@@ -131,21 +135,27 @@ export class ChatGptIntelligentUi {
     const capturedState = { ...obj(basic["state"]) };
     for (const [key,values] of observedStates) if (values.size === 1 && !Object.hasOwn(capturedState,key)) capturedState[key] = [...values][0]!;
     const iconName = (n: DilAst): string => isDilJsx(n) && n["arguments"][0]?.value === "icon" ? str(obj(dilLiteral(n["arguments"][1], constants))["name"]) : "";
+    const savedIcons = (owner: Tree.Element): Tree.Element[] => elements(owner).filter(e => {
+      if (e.tagName !== "svg" || attr(e, "data-d-component") !== "icon") return false;
+      // The exported attachment link adds its own download glyph; it is not
+      // an icon declared by this DIL program and cannot shift source ordinals.
+      for (let parent = e.parentNode; parent && parent !== owner; parent = "parentNode" in parent ? parent.parentNode : null)
+        if ("tagName" in parent && attr(parent, "data-osis-ui-file-resource") !== undefined) return false;
+      return true;
+    });
     const visit = (n: DilAst, ancestors: DilAst[]): void => {
       if (!n || typeof n !== "object") return;
       const name = iconName(n);
       if (name && !icons[name]) for (const ancestor of [...ancestors].reverse()) {
         const tag = ancestor["arguments"][0]?.value;
-        if (!["button", "row", "box", "card", "text", "title", "caption", "table-cell", "list-item"].includes(tag)) continue;
+        if (typeof tag !== "string" || tag === "icon") continue;
         const hints = dilVisibleText(ancestor, constants).split("\n").map(norm).filter(s => s.length >= 2).slice(0, 2);
         if (!hints.length) continue;
-        const candidates = dom.filter(e => attr(e, "data-osis-native-component") === tag && hints.every(h => domText.get(e)!.includes(h)))
+        const sourceIcons: DilAst[] = []; walkDil(ancestor, a => { if (iconName(a)) sourceIcons.push(a); }); sourceIcons.sort((a,b) => a.start-b.start);
+        const candidates = dom.filter(e => attr(e, "data-osis-native-component") === tag && hints.every(h => domText.get(e)!.includes(h)) && savedIcons(e).length === sourceIcons.length)
           .sort((a, b) => elements(a).length - elements(b).length);
         const parent = candidates[0]; if (!parent || candidates[1] && elements(candidates[1]).length === elements(parent).length) continue;
-        const sourceIcons: DilAst[] = []; walkDil(ancestor, a => { if (iconName(a)) sourceIcons.push(a); }); sourceIcons.sort((a,b) => a.start-b.start);
-        const savedIcons = elements(parent).filter(e => e.tagName === "svg" && attr(e, "data-d-component") === "icon");
-        if (sourceIcons.length !== savedIcons.length) continue;
-        const at = sourceIcons.indexOf(n), saved = at >= 0 ? savedIcons[at] : undefined, clean = saved && inertStandaloneSvg(serializeOuter(saved));
+        const at = sourceIcons.indexOf(n), saved = at >= 0 ? savedIcons(parent)[at] : undefined, clean = saved && inertStandaloneSvg(serializeOuter(saved));
         if (clean) { const path = register(`icon-${name}`, { src: svgUrl(clean), mime_type: "image/svg+xml" }, `${name}.svg`); if (path) icons[name] = path; break; }
       }
       const next = isDilJsx(n) ? [...ancestors, n] : ancestors;
@@ -154,7 +164,7 @@ export class ChatGptIntelligentUi {
         else if (value && typeof value === "object") visit(value as DilAst, next);
       }
     };
-    for (const root of program.roots) visit(root, []);
+    for (const root of program.roots) visit(staticDilEvidence(root, constants), []);
     for (const placement of list(record["placements"])) if (placement["method"] === "owner_scoped_map") { const p = resourcePaths[str(placement["resource_id"])]; if (p) snapshots[String(placement["reference_index"])] = p; }
     // Preserve existing source-owned Mermaid pictures rather than repaint them.
     const mermaids = dom.filter(n => (attr(n, "class") || "").split(/\s/u).some(c => c === "osis-mermaid-card" || c === "osis-ui-mermaid"));

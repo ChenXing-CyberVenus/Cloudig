@@ -14,6 +14,10 @@ export function mapBox(ctx: BoxContext, input: JsonObject, result: JsonObject, i
     if (validMapPoint(candidate)) points.push(candidate);
     const card = el(ctx, "section", "cloudig-box-product"), ownedImages = id ? images.filter(i => str(i["source_id"]) === id) : [];
     const gallery = boxImages(ctx, ownedImages.map(i => str(i["path"])), name); if (gallery) card.append(gallery);
+    else {
+      const original = list(extra["photos"]).map(photo => str(photo["url"])).find(url => /^https?:\/\//iu.test(url));
+      if (original) card.append(ctx.image(original, name));
+    }
     card.append(heading(ctx, name)); if (notes) card.append(p(ctx, notes));
     if (typeof extra["rating"] === "number") card.append(p(ctx, `${tr(ctx, "来源评分", "Saved rating")} ${extra["rating"]}${typeof extra["rating_count"] === "number" ? ` · ${extra["rating_count"]}` : ""}`, true));
     if (str(location["address"])) card.append(p(ctx, str(location["address"])));

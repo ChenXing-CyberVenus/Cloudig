@@ -5,6 +5,7 @@ import { isJsonObject } from "../../core/contracts/types.mts";
 import { embeddedBase64DataUrl, embeddedImageDataUrl } from "./embedded-data.mts";
 import { normalizeMermaidSource, projectMarkdownWithDiagrams } from "./markdown-diagrams.mts";
 import { capturedTextPanel, restoreCapturedProcess } from "./inert-html.mts";
+import { deepSeekCodeProjector } from "./deepseek-code.mts";
 
 type Profile = "light" | "full" | "tree";
 type MermaidRecord = Readonly<{ messageId: string; source: string; dataUrl: string }>;
@@ -154,6 +155,14 @@ class DeepSeekResourcePool {
       bytes: embedded.byteLength,
       sha256,
       ...(embedded.byteLength === 0 ? {} : { data_base64: embedded.dataBase64 })
+    });
+  }
+
+  addWorkFile(name: string, source: string, mime: string): string {
+    const embedded = embeddedBase64DataUrl(`data:${mime};base64,${Buffer.from(source, "utf8").toString("base64")}`);
+    return this.#allocate(`work\u0000${name}\u0000${mime}\u0000${embedded.sha256}`, {
+      kind: "file", availability: "embedded", name, mime, bytes: embedded.byteLength,
+      sha256: embedded.sha256, ...(embedded.byteLength ? { data_base64: embedded.dataBase64 } : {})
     });
   }
 }
@@ -374,8 +383,10 @@ async function parseDeepSeek(context: AdapterParseContext, profile: Profile, pay
   const models: string[] = [];
   const messages = await mapSequential(items, async (item, index) => {
     const sourceId = sourceText(item["message_id"]);
-    const captured = capturedTextPanel(sourceId ? reading.get(sourceId) : undefined, item["role"] === "user" ? "user-bubble" : "answer");
-    const content = restoreCapturedProcess(projectMessage(item, resources, sources, mermaid, limitations, captured), sourceId ? reading.get(sourceId) ?? "" : "", "thinking");
+    const works = context.record ? deepSeekCodeProjector(item, (name, source, mime) => resources.addWorkFile(name, source, mime)) : undefined;
+    const captured = works?.has("RESPONSE") ? undefined : capturedTextPanel(sourceId ? reading.get(sourceId) : undefined, item["role"] === "user" ? "user-bubble" : "answer");
+    const original = projectMessage(item, resources, sources, mermaid, limitations, captured);
+    const content = restoreCapturedProcess(works ? works.project(original) : original, sourceId ? reading.get(sourceId) ?? "" : "", "thinking");
     if (sourceId) contentByOwner.set(sourceId, content);
     const model = sourceText(item["model"]);
     if (model && !models.includes(model)) models.push(model);
@@ -438,11 +449,11 @@ async function parseDeepSeek(context: AdapterParseContext, profile: Profile, pay
 function manifest(id: string, payload: string, profile: Profile): AdapterManifest {
   return {
     id,
-    version: "3.0.4",
+    version: "3.0.6",
     family: "deepseek",
     routes: [{ format: "exporter-html", platform: "deepseek", payload, profile }],
-    target: "cloudig/conversation/1.0.0",
-    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "3.0.0", "3.0.1", "3.0.2", "3.0.3"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
+    target: "cloudig/conversation/1.0.2",
+    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
   };
 }
 

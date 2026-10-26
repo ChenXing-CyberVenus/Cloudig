@@ -30,6 +30,7 @@ public partial class MainWindow : Window
     private readonly ConcurrentDictionary<string, byte> _pickerTokens = new(StringComparer.Ordinal);
     private EngineJsonlClient? _engine;
     private LocalFileResponses? _localFiles;
+    private OptionalWorkComponents? _workComponents;
     private CoreWebView2Environment? _webViewEnvironment;
     private WebViewCacheSession? _webViewCache;
     private readonly TaskCompletionSource _browserExited = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -331,6 +332,7 @@ public partial class MainWindow : Window
                 else if (audit.Query.Contains("interaction=branch-only", StringComparison.Ordinal)) await VerifyReaderBranchRoundtripAsync(audit);
                 else await VerifyReaderResourceScrollAsync(audit);
                 if (audit.Query.Contains("reading-fixes=1", StringComparison.Ordinal)) await VerifyReadingFixesAsync(audit);
+                if (audit.Query.Contains("reader-seven=1", StringComparison.Ordinal)) await VerifyReaderFinalReviewAsync(audit);
                 if (audit.Query.Contains("intelligent-ui=1", StringComparison.Ordinal)) await VerifyIntelligentUiAsync(audit);
                 if (audit.Query.Contains("interaction=nested-process", StringComparison.Ordinal)) await VerifyNestedProcessAsync(audit);
                 if (audit.Query.Contains("claude-context=1", StringComparison.Ordinal)) await VerifyClaudeContextAsync(audit);
@@ -1161,6 +1163,19 @@ public partial class MainWindow : Window
         }
         var next = await _engine!.SendAsync("archiver.parse.plan", Json("{\"sources\":[],\"one_click\":true}"));
         if (next.GetProperty("total").GetInt32() != 0) throw new InvalidDataException("One-click parse incorrectly requeued completed HTML files.");
+        using (var point = JsonDocument.Parse(await WebView.CoreWebView2.ExecuteScriptAsync("(()=>{const b=document.querySelector('[data-archiver-parse-all]'),r=b.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return !b.disabled&&b.contains(document.elementFromPoint(x,y))?{x,y}:null})()"))) {
+            if(point.RootElement.ValueKind==JsonValueKind.Null)throw new InvalidDataException("Empty-scope action is disabled or obstructed.");
+            foreach(var type in new[]{"mouseMoved","mousePressed","mouseReleased"})await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent",JsonSerializer.Serialize(new{type,x=point.RootElement.GetProperty("x").GetDouble(),y=point.RootElement.GetProperty("y").GetDouble(),button="left",buttons=type=="mousePressed"?1:0,clickCount=1}));
+        }
+        const string emptyNotice = "document.querySelector('[data-archiver-parse-settings-popover]').hidden===false&&document.querySelector('.archiver-empty-parse-notice').hidden===false";
+        for(var i=0;i<100&&await WebView.CoreWebView2.ExecuteScriptAsync(emptyNotice)!="true";i++)await Task.Delay(50);
+        if(await WebView.CoreWebView2.ExecuteScriptAsync(emptyNotice)!="true")throw new InvalidDataException("Empty-scope settings notice did not open.");
+        var noticePaint=await WebView.CoreWebView2.ExecuteScriptAsync("(()=>{const n=document.querySelector('.archiver-empty-parse-notice'),s=getComputedStyle(n),icon=getComputedStyle(n,'::before');return {weight:s.fontWeight,colour:s.color,background:s.backgroundColor,icon:icon.content,height:n.getBoundingClientRect().height}})()");
+        using(var paint=JsonDocument.Parse(noticePaint))if(int.Parse(paint.RootElement.GetProperty("weight").GetString()!)<700||!paint.RootElement.GetProperty("icon").GetString()!.Contains('!')||paint.RootElement.GetProperty("height").GetDouble()<30)throw new InvalidDataException("Empty-scope notice lost its prominent attention treatment");
+        await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".empty-notice-paint.json"),noticePaint);
+        await using(var capture=File.Create(Path.ChangeExtension(audit.OutputFile,".empty-scope-settings.png")))await WebView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png,capture);
+        await WebView.CoreWebView2.ExecuteScriptAsync("document.querySelector('[data-parse-settings-cancel]').click();document.querySelector('[data-archiver-parse-settings]').click()");
+        if(await WebView.CoreWebView2.ExecuteScriptAsync("document.querySelector('.archiver-empty-parse-notice').hidden&&document.querySelector('.archiver-empty-parse-notice').getBoundingClientRect().height===0")!="true")throw new InvalidDataException("The previous empty-scope warning leaked into ordinary settings");
         TraceVisualAudit("parse-status-passed", $"completed={expected};pending=0;next_parse=0;refresh=true");
         await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".parse-batch-timing.json"),JsonSerializer.Serialize(new { layer="real-wpf-button-to-refreshed-ui", selected=expected, created=Directory.GetFiles(target,"*.json").Length, completed_statuses=expected, pending_statuses=0, next_parse=0, confirmation_ms=confirmationMs, first_progress_ms=progressMs, confirmed_to_refreshed_ms=parsedMs, user_library_touched=false },new JsonSerializerOptions { WriteIndented=true }));
     }
@@ -1258,7 +1273,7 @@ public partial class MainWindow : Window
                     (()=>{const node=[...document.querySelectorAll({{JsonSerializer.Serialize(selector)}})].find(n=>n.getBoundingClientRect().height>0);if(!node)return null;
                       if(!node.hasAttribute('data-overflow-text'))throw new Error('Missing shared title interaction');
                       window.__cloudigHoverAudit={node,original:node.textContent};node.textContent='短名';
-                      const r=node.getBoundingClientRect();return {x:r.left+Math.min(12,r.width/2),y:r.top+r.height/2};})()
+                      const row=node.closest('[data-overflow-scope]'),r=(row??node).getBoundingClientRect();if(row&&row.title!==window.__cloudigHoverAudit.original)throw new Error('Row tooltip lost full title');return {x:r.left+Math.min(12,r.width/2),y:row?r.bottom-8:r.top+r.height/2};})()
                     """);
                 if(initial=="null") continue;
                 using(var point=JsonDocument.Parse(initial))
@@ -1270,8 +1285,8 @@ public partial class MainWindow : Window
                 var longPoint=await WebView.CoreWebView2.ExecuteScriptAsync("""
                     (()=>{const a=window.__cloudigHoverAudit,n=a.node;n.textContent=a.original;a.extended=n.scrollWidth<=n.clientWidth+1;
                       if(a.extended)n.textContent=(a.original+' / 完整长标题 branch01 (2) ').repeat(8);
-                      const r=n.getBoundingClientRect();a.width=r.width;a.height=r.height;
-                      return {x:r.left+Math.min(12,r.width/2),y:r.top+r.height/2};})()
+                      const r=n.getBoundingClientRect();a.width=r.width;a.height=r.height;const row=n.closest('[data-overflow-scope]'),hit=(row??n).getBoundingClientRect();
+                      return {x:hit.left+Math.min(12,hit.width/2),y:row?hit.bottom-8:hit.top+hit.height/2};})()
                     """);
                 using(var point=JsonDocument.Parse(longPoint))
                     await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent",JsonSerializer.Serialize(new{type="mouseMoved",x=point.RootElement.GetProperty("x").GetDouble(),y=point.RootElement.GetProperty("y").GetDouble()}));
@@ -1435,6 +1450,9 @@ public partial class MainWindow : Window
         TraceVisualAudit("reader-nested-process-passed",facts);
     }
 
+    // A canonical message can contain separate system/assistant visual nodes.
+    // Count its envelope once; never mistake those portraits for extra records.
+    private const string CanonicalAuditMessageSelector = ".cloudig-message-envelope,.cloudig-message:not(.cloudig-message-envelope .cloudig-message)";
     private async Task VerifyReaderResourceScrollAsync(VisualAuditOptions audit)
     {
         await VerifyReaderBranchRoundtripAsync(audit);
@@ -1452,12 +1470,12 @@ public partial class MainWindow : Window
                   document.querySelectorAll('.cloudig-resource-image').forEach(i=>i.loading='eager');
                   s.scrollTop={{(expected.HasValue ? "s.scrollHeight" : "s.scrollTop+Math.max(500,s.clientHeight*.8)")}};
                   return s.scrollTop+s.clientHeight>=s.scrollHeight-2
-                    && {{(expected.HasValue ? $"document.querySelectorAll('.cloudig-message').length==={expected.Value}" : "true")}};})()
+                    && {{(expected.HasValue ? $"document.querySelectorAll('{CanonicalAuditMessageSelector}').length==={expected.Value}" : "true")}};})()
                 """);
             await Task.Delay(100);
             if(raw=="true") { done=true; break; }
         }
-        if(!done) throw new InvalidOperationException("Reader scroll did not reach its bounded test endpoint.");
+        if(!done) throw new InvalidOperationException("Reader scroll did not reach its bounded test endpoint: "+await WebView.CoreWebView2.ExecuteScriptAsync($"({{canonical:document.querySelectorAll('{CanonicalAuditMessageSelector}').length,visual:document.querySelectorAll('.cloudig-message').length,expected:{expected??-1}}})"));
         if(expected.HasValue) await VerifyReaderPaginationEndpointAsync(audit, expected.Value, query["expected-last-message"], query["expected-last-navigation"]);
         JsonElement result = default;
         for(var attempt=0;attempt<100;attempt++)
@@ -1466,7 +1484,7 @@ public partial class MainWindow : Window
             // iteration. This audit inspects all resources, including offscreen
             // ones, so include those late arrivals rather than waiting forever.
             await WebView.CoreWebView2.ExecuteScriptAsync("document.querySelectorAll('.cloudig-resource-image').forEach(i=>i.loading='eager')");
-            var raw=await WebView.CoreWebView2.ExecuteScriptAsync("({messages:document.querySelectorAll('.cloudig-message').length,avatars:document.querySelectorAll('.cloudig-avatar img').length,images:document.querySelectorAll('.cloudig-resource-image').length,pending:[...document.querySelectorAll('.cloudig-resource-image,.cloudig-avatar img')].filter(i=>!i.complete).length,broken:[...document.querySelectorAll('.cloudig-resource-image,.cloudig-avatar img')].filter(i=>i.complete&&!i.naturalWidth).length,failed:document.querySelectorAll('[data-cloudig-resource-error=true]').length,loading:[...document.querySelectorAll('.cloudig-resource-state')].filter(n=>/正在|loading/i.test(n.textContent)).length,open_process:document.querySelectorAll('.cloudig-process[open]').length,errors:Number(document.documentElement.dataset.runtimeErrors??0)})");
+            var raw=await WebView.CoreWebView2.ExecuteScriptAsync($"({{messages:document.querySelectorAll('{CanonicalAuditMessageSelector}').length,avatars:document.querySelectorAll('.cloudig-avatar img').length,images:document.querySelectorAll('.cloudig-resource-image').length,pending:[...document.querySelectorAll('.cloudig-resource-image,.cloudig-avatar img')].filter(i=>!i.complete).length,broken:[...document.querySelectorAll('.cloudig-resource-image,.cloudig-avatar img')].filter(i=>i.complete&&!i.naturalWidth).length,failed:document.querySelectorAll('[data-cloudig-resource-error=true]').length,loading:[...document.querySelectorAll('.cloudig-resource-state')].filter(n=>/正在|loading/i.test(n.textContent)).length,open_process:document.querySelectorAll('.cloudig-process[open]').length,errors:Number(document.documentElement.dataset.runtimeErrors??0)}})");
             using var facts=JsonDocument.Parse(raw); result=facts.RootElement.Clone();
             var portraitSlots = int.Parse(await WebView.CoreWebView2.ExecuteScriptAsync("document.querySelectorAll('.cloudig-avatar').length"));
             if(result.GetProperty("pending").GetInt32()==0 && result.GetProperty("loading").GetInt32()==0 && result.GetProperty("avatars").GetInt32()==portraitSlots) break;
@@ -1589,7 +1607,13 @@ public partial class MainWindow : Window
                 const wrapper=table.parentElement,s=getComputedStyle(wrapper);
                 if(!wrapper.classList.contains('cloudig-table-scroll')||s.overflowX!=='auto'||getComputedStyle(table).display!=='table')
                   throw new Error('Table lost its local scroll owner or table formatting context');
-                return {tableWidth:table.getBoundingClientRect().width,wrapperWidth:wrapper.clientWidth,scrollWidth:wrapper.scrollWidth,rows:table.rows.length};
+                const head=table.tHead?.rows[0],body=table.tBodies[0]?.rows[0];
+                let columns=null;
+                if(table.closest('.markdown-table')&&head&&body&&head.cells.length===body.cells.length&&[...head.cells,...body.cells].every(c=>c.colSpan===1&&c.rowSpan===1)){
+                  columns=[...head.cells].map((c,i)=>{const h=c.getBoundingClientRect(),b=body.cells[i].getBoundingClientRect();return {header:h.width,body:b.width,offset:Math.abs(h.left-b.left),difference:Math.abs(h.width-b.width)};});
+                  if(columns.some(c=>c.offset>1||c.difference>1))throw new Error('Captured table header/body columns diverged');
+                }
+                return {tableWidth:table.getBoundingClientRect().width,wrapperWidth:wrapper.clientWidth,scrollWidth:wrapper.scrollWidth,rows:table.rows.length,columns};
               });
               const original=root.querySelector('.cloudig-rich table');if(!original)return {tables:facts,stress:null};
               const wrapper=original.parentElement,probe=original.cloneNode(true),oldScroll=wrapper.scrollLeft;
@@ -1610,7 +1634,7 @@ public partial class MainWindow : Window
             """);
         if(tableLayoutRaw is "null" or "undefined") throw new InvalidOperationException("Reader table layout audit did not finish");
         await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".table-layout.json"),tableLayoutRaw);
-        foreach(var (selector, suffix) in new[]{("[data-audit-user-lines]", "user-lines"),(".cloudig-diagram:is([data-diagram-format=mermaid],[data-diagram-format=markmap],[data-diagram-format=svg])", "diagram"),(".cloudig-message-content > .cloudig-rich pre", "code"),(".cloudig-rich div[style*='border-radius']", "rich-card"),(".cloudig-rich table", "table"),(".cloudig-rich section:has(h2)", "rich-section"),(".cloudig-message:has(.cloudig-attachment-thumbnail)", "attachment")})
+        foreach(var (selector, suffix) in new[]{("[data-audit-user-lines]", "user-lines"),(".cloudig-diagram:is([data-diagram-format=mermaid],[data-diagram-format=markmap],[data-diagram-format=svg])", "diagram"),(".cloudig-message-content > .cloudig-rich pre", "code"),(".cloudig-rich div[style*='border-radius']", "rich-card"),(".cloudig-rich table", "table"),(".cloudig-rich table:has([data-osis-align=center])", "table-alignment"),(".cloudig-rich section:has(h2)", "rich-section"),(".cloudig-message:has(.cloudig-attachment-thumbnail)", "attachment")})
         {
             var located=await WebView.CoreWebView2.ExecuteScriptAsync($$"""
                 (()=>{const target=document.querySelector({{JsonSerializer.Serialize(selector)}}),s=document.querySelector('[data-reader-conversation-scroll]');if(!target)return false;s.scrollTop+=target.getBoundingClientRect().top-s.getBoundingClientRect().top-16;return true;})()
@@ -1705,7 +1729,7 @@ public partial class MainWindow : Window
     private async Task VerifyReaderPaginationEndpointAsync(VisualAuditOptions audit, int expected, string? lastMessage, string? lastNavigation)
     {
         var facts = await WebView.CoreWebView2.ExecuteScriptAsync($$"""
-            (()=>{const messages=[...document.querySelectorAll('.cloudig-message')];
+            (()=>{const messages=[...document.querySelectorAll('{{CanonicalAuditMessageSelector}}')];
               return {messages:messages.length,last_message:messages.at(-1)?.id??null};})()
             """);
         using(var document=JsonDocument.Parse(facts))
@@ -2375,7 +2399,11 @@ public partial class MainWindow : Window
             })()
             """;
         var lastFrame = "unavailable";
-        for (var attempt = 0; attempt < 240; attempt++)
+        // Fresh large Inbox copies incur a real first-file scan before the
+        // Archiver can publish its snapshot. Do not kill that scan at the old
+        // ~15 s screenshot budget; retain trace timings and a finite 60 s cap.
+        var readinessBudget = audit.Query.Contains("interaction=parse-batch", StringComparison.Ordinal) ? 1200 : 240;
+        for (var attempt = 0; attempt < readinessBudget; attempt++)
         {
             var encoded = await WebView.CoreWebView2.ExecuteScriptAsync(script);
             var json = JsonSerializer.Deserialize<string>(encoded);
@@ -2446,7 +2474,7 @@ public partial class MainWindow : Window
             "webview-process-failed",
             $"kind={args.ProcessFailedKind};reason={args.Reason};exit={args.ExitCode};process={args.ProcessDescription}");
         core.PermissionRequested += (_, args) => args.State = CoreWebView2PermissionState.Deny;
-        core.DownloadStarting += (_, args) => args.Cancel = true;
+        core.DownloadStarting += OnWorkDownloadStarting;
         core.WebMessageReceived += OnWebMessageReceived;
         if (_layout.VisualAudit is not null)
             core.WebResourceResponseReceived += (_, args) =>
@@ -3113,12 +3141,23 @@ public partial class MainWindow : Window
         if (viewRoot is not null) Directory.CreateDirectory(viewRoot);
         _localFiles?.Dispose();
         _localFiles = new LocalFileResponses(_layout.WebRoot, viewRoot);
+        _workComponents ??= new OptionalWorkComponents(Path.GetDirectoryName(_layout.WebRoot)!, _layout.CacheRoot,
+            _layout.VisualAudit?.Query.Contains("work-offline=1", StringComparison.Ordinal) == true ? new System.Net.Http.HttpClient(new OfflineWorkAuditHttp()) : null);
         WebView.CoreWebView2.AddWebResourceRequestedFilter("https://cloudig.local/*", CoreWebView2WebResourceContext.All, CoreWebView2WebResourceRequestSourceKinds.All);
         WebView.CoreWebView2.AddWebResourceRequestedFilter("https://cloudig-runtime.local/*", CoreWebView2WebResourceContext.All, CoreWebView2WebResourceRequestSourceKinds.All);
         WebView.CoreWebView2.AddWebResourceRequestedFilter("https://cloudig-work.invalid/*", CoreWebView2WebResourceContext.All, CoreWebView2WebResourceRequestSourceKinds.All);
         WebView.CoreWebView2.AddWebResourceRequestedFilter("https://cloudig-map.local/*", CoreWebView2WebResourceContext.All, CoreWebView2WebResourceRequestSourceKinds.All);
-        WebView.CoreWebView2.WebResourceRequested += (_, args) =>
+        WebView.CoreWebView2.WebResourceRequested += async (_, args) =>
         {
+            if (OptionalWorkComponents.Handles(args.Request.Uri) && _workComponents is { } components)
+            {
+                using var deferral = args.GetDeferral();
+                var environment = WebView.CoreWebView2.Environment;
+                var optional = await components.OpenAsync(args.Request.Uri, args.Request.Method);
+                if (_resourcesClosed) { optional.Content?.Dispose(); return; }
+                args.Response = environment.CreateWebResourceResponse(optional.Content, optional.Status, optional.Reason, optional.Headers);
+                return;
+            }
             var response = _localFiles?.Open(args.Request.Uri, args.Request.Method);
             if (response is null) return;
             args.Response = WebView.CoreWebView2.Environment.CreateWebResourceResponse(response.Content, response.Status, response.Reason, response.Headers);
@@ -3279,7 +3318,7 @@ public partial class MainWindow : Window
             Multiselect = true,
             RestoreDirectory = true,
             Title = zippedExport ? "选择完整官方 ZIP，无需解压 / Select official ZIP exports" : agentJsonl ? "选择 Agent Tool JSONL / Import Agent Tool JSONL" : kind is "claude_json" or "platform_json" ? "选择平台 JSON / Import Platform JSON" : "选择采云书签 HTML",
-            Filter = zippedExport ? "Official export ZIP (*.zip)|*.zip" : agentJsonl ? "Agent Tool JSONL (*.jsonl)|*.jsonl" : kind is "claude_json" or "platform_json" ? "Platform JSON (*.json)|*.json" : "采云书签 HTML (*.html)|*.html"
+            Filter = zippedExport ? "Official export ZIP (*.zip)|*.zip" : agentJsonl ? "Agent Tool JSONL (*.jsonl;*.jsonl.zst)|*.jsonl;*.jsonl.zst" : kind is "claude_json" or "platform_json" ? "Platform JSON (*.json)|*.json" : "采云书签 HTML (*.html)|*.html"
         };
         if (kind is not ("html" or "claude_json" or "platform_json")) throw new InvalidDataException("Source picker kind is invalid.");
         TraceVisualAudit("source-picker-request", JsonSerializer.Serialize(new { kind, platform, title = dialog.Title, filter = dialog.Filter }));
@@ -3734,10 +3773,18 @@ public partial class MainWindow : Window
     {
         if (_resourcesClosed) return;
         _resourcesClosed = true;
+        CancelWorkDownloads();
         StopStartupSun();
         _loadingVisible.TrySetResult(false);
         _libraryReady.TrySetResult(false);
         foreach (var request in _webRequests.Values) request.Cancel();
+        if (_workComponents is not null)
+        {
+            try { await _workComponents.DisposeAsync(); }
+            catch (IOException error) { TraceVisualAudit("component-cache-retained", error.Message); }
+            catch (UnauthorizedAccessException error) { TraceVisualAudit("component-cache-retained", error.Message); }
+            _workComponents = null;
+        }
         if (_preparedUpdate is not null) { try { PortableUpdateClient.Discard(_preparedUpdate); } catch (IOException) { } _preparedUpdate = null; }
         WebView.Dispose();
         _localFiles?.Dispose();

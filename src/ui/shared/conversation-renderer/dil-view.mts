@@ -2,7 +2,7 @@ import { isJsonObject, type JsonObject } from "../../../core/contracts/types.mts
 import { DilSession, DIL_SOURCE_FORMAT, DIL_VIEW_FORMAT, type DilNode } from "../../../core/records/dil-program.mts";
 import { parseRecordJson } from "../../../core/records/json.mts";
 import { containerDisplay } from "../../../core/records/content-container.mts";
-import { paintDil, morphDilChildren, dilColor, type DilAction } from "./dil-controls.mts";
+import { paintDil, morphDilChildren, dilColor, bindDilCarousels, type DilAction } from "./dil-controls.mts";
 import { boxImages, boxLink, type BoxContext } from "./box-controls.mts";
 import { chartBox } from "./data-boxes.mts";
 import { savedDilChart } from "./dil-chart-evidence.mts";
@@ -14,6 +14,7 @@ import { readInteractiveState, saveInteractiveState, type InteractiveFile, type 
 import { loadInteractiveDependencies } from "./interactive-dependencies.mts";
 import { renderSavedDil } from "./chatgpt-dil.mts";
 import { bindWorkWindowLayout } from "./work-window-layout.mts";
+import { followReaderTheme, readerTheme } from "./reader-theme.mts";
 
 const obj=(v:unknown):JsonObject=>isJsonObject(v)?v:{};
 const str=(v:unknown):string=>typeof v==="string"?v:"";
@@ -25,6 +26,7 @@ type Context={bundle:JsonObject;session:DilSession};
 export type DilContexts=Map<string,Promise<Context>>;
 export type DilViewOptions=BoxContext&Readonly<{
   theme:"dawn"|"star-night"; stateKey:string;
+  themeRoot?:HTMLElement;
   readFile:(path:string,signal:AbortSignal)=>Promise<InteractiveFile|undefined>;
   attachment:(path:string,title?:string)=>HTMLElement;
   text:(value:JsonObject)=>HTMLElement;
@@ -34,6 +36,15 @@ export type DilViewOptions=BoxContext&Readonly<{
 export const isDilView=(block:JsonObject):boolean=>!!containerDisplay(block)&&obj(block["data"])["format"]===DIL_VIEW_FORMAT;
 let viewInstance=0;
 const findNode=(v:any,key:string):DilNode|undefined=>{if(v?.key===key)return v;for(const c of Array.isArray(v)?v:v?.children??[]){const n=findNode(c,key);if(n)return n;}return;};
+function directionGlyph(document:Document,name:string):SVGElement|undefined{
+  // A collapsed native popup may not have captured its glyph. The declared
+  // direction still has an exact meaning; use a small neutral fallback, never
+  // replace a captured SVG or invent a replacement for an unknown icon name.
+  const match=/^(chevron|arrow)-(up|right|down|left)$/u.exec(name);if(!match)return;
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg"),path=document.createElementNS(svg.namespaceURI,"path");
+  svg.setAttribute("viewBox","0 0 24 24");svg.setAttribute("width","1em");svg.setAttribute("height","1em");svg.setAttribute("fill","none");svg.setAttribute("stroke","currentColor");svg.setAttribute("stroke-width","2");svg.setAttribute("stroke-linecap","round");svg.setAttribute("stroke-linejoin","round");
+  path.setAttribute("d",match[1]==="chevron"?"m6 9 6 6 6-6":"M12 4v16m-7-7 7 7 7-7");path.setAttribute("transform",`rotate(${({down:0,left:90,up:180,right:270} as Record<string,number>)[match[2]!]} 12 12)`);svg.append(path);return svg;
+}
 
 function context(options:DilViewOptions,cache:DilContexts):Promise<Context>{
   const existing=cache.get(options.stateKey);if(existing)return existing;
@@ -105,7 +116,7 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
     const run=()=>{
       closeRun?.();
       const entry="work.html";
-      const instance=openInteractiveWindow({document,title,entry,format:"html",source:"chatgpt.com_app_block",inlineParent:host,flowHeight:options.inWindow===true,stateKey:`${options.stateKey}:${referenceIndex}`,theme:options.theme,language:options.language,signal:controller.signal,
+      const instance=openInteractiveWindow({document,title,entry,format:"html",source:"chatgpt.com_app_block",inlineParent:host,flowHeight:options.inWindow===true,stateKey:`${options.stateKey}:${referenceIndex}`,theme:readerTheme(options.themeRoot,options.theme),...(options.themeRoot?{themeRoot:options.themeRoot}:{}),language:options.language,signal:controller.signal,
         ...(options.frameUrl?{frameUrl:options.frameUrl,opaqueOrigin:true}:{}),bindings,
         readFiles:async readSignal=>{
           const files:InteractiveFile[]=[{path:entry,mime:"text/html",bytes:new TextEncoder().encode(currentSource).buffer as ArrayBuffer}];
@@ -119,7 +130,7 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
   const widget=(v:DilNode,key:string):HTMLElement|undefined=>{
     const p=v.props;
     if(v.tag==="icon"){
-      const n=placeholder(v,key,h=>{const path=obj(bundle["icons"])[String(p["name"])];if(typeof path==="string")h.append(options.image(path,String(p["name"]),"current"));else h.textContent="◇";});n.className="cloudig-dil-icon";n.setAttribute("aria-hidden","true");
+      const n=placeholder(v,key,h=>{const name=String(p["name"]),path=obj(bundle["icons"])[name];if(typeof path==="string")h.append(options.image(path,name,"current"));else {const glyph=directionGlyph(document,name);if(glyph)h.append(glyph);else h.textContent="◇";}});n.className="cloudig-dil-icon";n.setAttribute("aria-hidden","true");
       return n;
     }
     if(v.tag==="chart"||v.tag==="pie-chart")return placeholder(v,key,h=>{const update=()=>{const current=findNode(session.render(index),v.key)??v;h.replaceChildren(chart(options,current));};update();updates.set(key,update);});
@@ -179,6 +190,7 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
     if(ref["category"]==="code_block")return options.text({type:"code",language:str(data["language"]),code:str(data["content"])});
     const fallback=document.createElement("div");fallback.textContent=str(ref["alt"]);return fallback;
   };
+  const refreshCarousels=bindDilCarousels(parent,signal);
   const paint=()=>{
     if(signal.aborted)return;const nextActions=new Map<string,DilAction>(),fresh=document.createElement("div");mounts.clear();
     fresh.append(paintDil({document,session,actions:nextActions,special:widget,language:options.language,idPrefix,math:(tex,display)=>options.text({type:"math",tex,display})},session.render(index)));
@@ -187,6 +199,7 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
     for(const node of parent.querySelectorAll<HTMLElement>("[data-dil-preserve]")){const key=node.dataset["dilPreserve"]!;live.add(key);if(node.dataset["dilMounted"])continue;node.dataset["dilMounted"]="true";mounts.get(key)?.(node);}
     for(const [key,close]of views)if(!live.has(key)){close();views.delete(key);}
     for(const [key,update]of updates){if(live.has(key))update();else updates.delete(key);}
+    refreshCarousels();
   };
   for(const event of ["click","input","change","submit"]){const handle=(e:Event)=>{
     const target=e.target instanceof document.defaultView!.Element?e.target.closest<HTMLElement>("[data-dil-action]"):null;
@@ -213,7 +226,8 @@ export function renderDilView(options:DilViewOptions,block:JsonObject,cache:DilC
       if(signal.aborted||close)return;const abort=new AbortController(),dialog=document.createElement("dialog"),header=document.createElement("header"),caption=document.createElement("h2"),done=document.createElement("button"),body=document.createElement("div"),view=document.createElement("div");
       dialog.className="cloudig-conversation-renderer cloudig-interactive-window cloudig-dil-window";dialog.dataset["theme"]=options.theme;header.className="cloudig-interactive-header";caption.textContent=title;done.type="button";done.className="cloudig-interactive-close";done.textContent="×";done.setAttribute("aria-label",options.language==="en"?"Close":"关闭");body.className="cloudig-interactive-body";body.dataset["scrollRegion"]="";view.className="cloudig-dil-view";
       const sizing=bindWorkWindowLayout(dialog,header,body,view);
-      close=()=>{if(!close)return;close=undefined;sizing.close();abort.abort();dialog.close();dialog.remove();signal.removeEventListener("abort",dismiss);if(!signal.aborted)open.focus();};const dismiss=()=>close?.();
+      const untheme=followReaderTheme(options.themeRoot,options.theme,theme=>{dialog.dataset["theme"]=theme;});
+      close=()=>{if(!close)return;close=undefined;untheme();sizing.close();abort.abort();dialog.close();dialog.remove();signal.removeEventListener("abort",dismiss);if(!signal.aborted)open.focus();};const dismiss=()=>close?.();
       done.addEventListener("click",dismiss);dialog.addEventListener("cancel",e=>{e.preventDefault();dismiss();});signal.addEventListener("abort",dismiss,{once:true});header.append(caption,done);body.append(view);dialog.append(header,body);document.body.append(dialog);dialog.showModal();sizing.refresh();void mount(view,{...options,signal:abort.signal,inWindow:true}).then(sizing.refresh);
     });host.append(h,open);
   }else void mount(host,options);

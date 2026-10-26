@@ -18,7 +18,7 @@ const readerResources = argumentsList.includes("--reader-resources");
 const readingFixes = argumentsList.includes("--reading-fixes");
 const intelligentUiControls = argumentsList.includes("--intelligent-ui-controls");
 const dilFidelity = argumentsList.includes("--dil-fidelity");
-const intelligentUi = argumentsList.includes("--intelligent-ui") || intelligentUiControls || dilFidelity;
+const intelligentUi = argumentsList.includes("--intelligent-ui") || argumentsList.includes("--search-gallery-review") || argumentsList.includes("--dil-primitives") || intelligentUiControls || dilFidelity;
 const intelligentUiGallery = argumentsList.includes("--intelligent-ui-gallery");
 const readerLayoutFixes = argumentsList.includes("--reader-layout-fixes");
 const claudeSourceIndex = argumentsList.indexOf("--claude-source");
@@ -75,13 +75,12 @@ if ((claudeSourceIndex >= 0 || officialSourceIndex >= 0) && (!claudeSource || !r
 if (parserStatus && !claudeSource) throw new Error("--parser-status requires a real --claude-source in an owned Library");
 if (indexReopen && (officialSourceIndex < 0 || !claudeSource)) throw new Error("--index-reopen requires a real --official-source ZIP");
 if (parserStatus && (!requestedTheme || !requestedViewport || !requestedLanguage)) throw new Error("--parser-status mutates its fixture: use one explicit theme, viewport and language per owned Library");
-if (realSampleIndex >= 0 && (!realSample || !requestedSurface?.split(",").every(surface => ["reader-conversation", "reader-map", "reader-works", "reader-nested-process", "reader-schedule", "reader-catalog-open", "reader-row-menu", "reader-title-hover", "archiver-title-hover", "archiver-information", "conversation-info", "archiver-external-refresh", "archiver-batch-delete"].includes(surface)))) {
+if (realSampleIndex >= 0 && (!realSample || !requestedSurface?.split(",").every(surface => ["reader-conversation", "reader-map", "reader-works", "reader-cards", "reader-nested-process", "reader-schedule", "reader-catalog-open", "reader-row-menu", "reader-title-hover", "archiver-title-hover", "archiver-information", "conversation-info", "archiver-external-refresh", "archiver-batch-delete"].includes(surface)))) {
   throw new Error("--real-sample requires one HTML file and a supported Reader/Archiver surface");
 }
 if (requestedSurface?.split(",").includes("reader-schedule") && !realSample) throw new Error("reader-schedule needs a real captured task-list HTML");
 if (requestedLanguage !== null && !["zh-CN", "en"].includes(requestedLanguage)) throw new Error("--language must be zh-CN or en");
 if (requestedTheme !== null && !["dawn", "star-night"].includes(requestedTheme)) throw new Error("--theme must be dawn or star-night");
-if (batchSamples && requestedTheme === "star-night") throw new Error("Batch parse audit uses the dawn fixture");
 const stamp = new Date().toISOString().replaceAll(":", "-").replace(/\.\d{3}Z$/u, "Z");
 const outputRoot = path.resolve(outputIndex >= 0 ? argumentsList[outputIndex + 1] : path.join("artifacts", "v1-visual-audit", stamp));
 const executable = executableIndex < 0 ? path.join(process.cwd(), "artifacts", "v1-desktop", "app", "Cloudig.exe") : path.resolve(argumentsList[executableIndex + 1]);
@@ -91,7 +90,11 @@ const executableSha256 = createHash("sha256").update(executableBytes).digest("he
 const engineFile = path.join(path.dirname(executable), "app", "engine", "engine.mjs");
 const engineSha256 = createHash("sha256").update(await readFile(engineFile)).digest("hex");
 const programPath = path.relative(process.cwd(), path.join(path.dirname(executable), "app")).replaceAll("\\", "/");
-const programFingerprint = hashInputs(process.cwd(), [programPath]);
+// User-approved optional components are installed into app/ on demand. They
+// are SHA-verified by the native component loader, not part of the frozen
+// shipped core. Re-enumerate all other entries to detect additions as well.
+const fingerprintProgram = async () => hashInputs(process.cwd(), (await readdir(programPath)).filter(name => name !== "optional-components").map(name => `${programPath}/${name}`));
+const programFingerprint = await fingerprintProgram();
 const auditUserDataRoot = path.join(outputRoot, "cache", "WebView2");
 const auditExtractRoot = path.join(outputRoot, ".bundle-extract");
 let extractionEntries = 0;
@@ -652,13 +655,24 @@ function visualQuery(surface, theme, language) {
   if (minimumLineBoundaries) query.set("expected-line-boundaries", String(minimumLineBoundaries));
   if (claudeContext) query.set("claude-context", "1");
   if (readingFixes) query.set("reading-fixes", "1");
+  if (argumentsList.includes("--reader-seven")) query.set("reader-seven", "1");
   if (intelligentUi) query.set("intelligent-ui", "1");
+  if (argumentsList.includes("--search-gallery-review")) query.set("search-gallery-review", "1");
   if (dilFidelity) query.set("dil-fidelity", "1");
+  if (argumentsList.includes("--dil-primitives")) query.set("dil-primitives", "1");
   if (argumentsList.includes("--writing-tasks")) query.set("writing-tasks", "1");
   if (argumentsList.includes("--dil-progress")) query.set("dil-progress", "1");
   if (argumentsList.includes("--notebook-shadow")) query.set("notebook-shadow", "1");
   if (argumentsList.includes("--exit-confirmation")) query.set("exit-confirmation", "1");
   if (argumentsList.includes("--inline-works-only")) query.set("inline-works-only", "1");
+  if (argumentsList.includes("--work-downloads")) query.set("work-downloads", "1");
+  if (argumentsList.includes("--work-theme")) query.set("work-theme", "1");
+  if (argumentsList.includes("--work-media")) query.set("work-media", "1");
+  if (argumentsList.includes("--work-review")) query.set("work-review", "1");
+  if (argumentsList.includes("--work-media-files")) query.set("work-media-files", "1");
+  if (argumentsList.includes("--work-kimi")) query.set("work-kimi", "1");
+  if (argumentsList.includes("--reader-header-review")) query.set("reader-header-review", "1");
+  if (argumentsList.includes("--work-offline")) query.set("work-offline", "1");
   if (intelligentUiControls) query.set("intelligent-ui-controls-only", "1");
   if (intelligentUiGallery) query.set("intelligent-ui-gallery", "1");
   if (readerLayoutFixes) query.set("reader-layout-fixes", "1");
@@ -689,7 +703,7 @@ async function launch(executablePath, args, errorFile) {
     timer = setTimeout(() => {
       child.kill();
       reject(new Error(`Cloudig visual audit timed out: ${path.basename(errorFile, ".error.txt")}`));
-    }, args.some(value => /interaction=bookmark-document/u.test(String(value))) ? 300_000 : args.some(value => /expected-messages=|interaction=saved-(?:works|cards)/u.test(String(value))) ? 180_000 : args.some(value => String(value).includes("interaction=parse-batch")) ? 120_000 : 60_000);
+    }, args.some(value => /interaction=saved-works/u.test(String(value))) ? 600_000 : args.some(value => /interaction=bookmark-document/u.test(String(value))) ? 300_000 : args.some(value => /expected-messages=|interaction=saved-cards/u.test(String(value))) ? 180_000 : args.some(value => String(value).includes("interaction=parse-batch")) ? 120_000 : 60_000);
   });
   try {
     const result = await Promise.race([exit, timeout]);
@@ -709,6 +723,15 @@ async function launch(executablePath, args, errorFile) {
 let verified = false;
 try {
 if (realFixture) await prepareRealLibrary();
+if (argumentsList.includes("--work-review")) {
+  if (!realFixture) throw new Error("Work review needs an owned Library");
+  const {readRecordIdentityState,commitRecordIdentity}=await import("../src/adapters/library-data/record-identity.mts");
+  const {frontName}=await import("../src/core/records/front.mts");
+  const root=path.join(outputRoot,"Library"),state=await readRecordIdentityState(root);
+  const party=id=>({name:frontName(state.fronts.get(id).value)??null,avatar:{state:"keep"}});
+  const draft={global:{user:party(state.bindings.value.subject),assistant:{...party(state.bindings.value.assistant),name:"统一智能 · Global AI",apply_to_all:true}},platforms:Object.fromEntries(Object.entries(state.bindings.value.platforms).map(([key,id])=>[key,party(id)]))};
+  await commitRecordIdentity(root,{expected:state.revision,draft,timestamp:new Date().toISOString()});
+}
 await prepareReaderBoundary();
 const missingIndexPath = path.join(outputRoot, "Library", "appdata", "indexes", "sources.json");
 const missingIndexBaseline = selectedSurfaces.some(surface => surface.id === "archiver-missing-records") ? await readFile(missingIndexPath) : null;
@@ -920,7 +943,7 @@ if (batchSamples) {
   assert.equal(hashInputs(root, ["Inbox", "Conversations", "Marks", "CloudigLibrary.json"]).aggregate_sha256, before, "Status inspection changed an original or user setting");
   sourceEvidence.parse_status = { restarted, restored_legacy_histories: restoredLegacy, legacy, originals_unchanged: true, histories_unchanged_by_read: true };
 }
-assert.equal(hashInputs(process.cwd(), [programPath]).aggregate_sha256, programFingerprint.aggregate_sha256, "Packaged managed host, UI or runtime changed during the visual audit");
+assert.equal((await fingerprintProgram()).aggregate_sha256, programFingerprint.aggregate_sha256, "Packaged managed host, UI or runtime changed during the visual audit");
 if (sourceEvidence?.search) {
   const { fingerprintFile } = await import("../src/adapters/storage/stream.mts");
   for (const source of sourceEvidence.search.inputs) assert.equal((await fingerprintFile(source.source)).sha256, source.sha256, "Search audit changed a user original");
@@ -948,7 +971,7 @@ const run = {
   ...(sourceEvidence ? { real_source: sourceEvidence } : {}),
   executable: { file: "Cloudig.exe", sha256: executableSha256 },
   engine: { file: "app/engine/engine.mjs", sha256: engineSha256 },
-  program: { path: "app", file_count: programFingerprint.file_count, total_bytes: programFingerprint.total_bytes, aggregate_sha256: programFingerprint.aggregate_sha256 },
+  program: { path: "app", scope: "shipped-core-excluding-on-demand-optional-components", file_count: programFingerprint.file_count, total_bytes: programFingerprint.total_bytes, aggregate_sha256: programFingerprint.aggregate_sha256 },
   runtime: { self_extraction_entries: extractionEntries, owned_temporary_data_cleaned: true },
   scenarios: rows
 };

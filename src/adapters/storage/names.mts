@@ -16,7 +16,7 @@ export function chooseNoReplaceLeaf(requested: string, occupied: ReadonlySet<str
   const folded = new Set([...occupied].map((entry) => entry.toLocaleLowerCase("en-US")));
   if (!folded.has(filename.toLocaleLowerCase("en-US"))) return filename;
 
-  const extensionAt = filename.lastIndexOf(".");
+  const extensionAt = /\.jsonl\.zst$/iu.test(filename) ? filename.length - ".jsonl.zst".length : filename.lastIndexOf(".");
   const stem = extensionAt > 0 ? filename.slice(0, extensionAt) : filename;
   const extension = extensionAt > 0 ? filename.slice(extensionAt) : "";
   for (let index = 2; index < Number.MAX_SAFE_INTEGER; index += 1) {

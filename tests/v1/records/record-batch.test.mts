@@ -6,7 +6,7 @@ import test from "node:test";
 import { createRecordLibrary } from "../../../src/adapters/library-data/record-library.mts";
 import { RecordSourceReads, commitRecords } from "../../../src/adapters/storage/record-store.mts";
 import { runRecordParseBatch, type RecordBatchProgress } from "../../../src/app/parser/record-batch.mts";
-import { recordParserParallelism, prepareRecordJobs } from "../../../src/app/parser/record-workers.mts";
+import { recordParserParallelism, recordParserAdmission, prepareRecordJobs } from "../../../src/app/parser/record-workers.mts";
 import { indexRecordClaudeContainer } from "../../../src/adapters/parser/record-claude-index.mts";
 import { decodeRecord } from "../../../src/core/records/index.mts";
 import { readRecordSystemLog } from "../../../src/adapters/library-data/record-system-log.mts";
@@ -22,6 +22,9 @@ async function noSpools(root: string) { assert.deepEqual(await readdir(path.join
 
 test("worker admission uses hardware headroom without making it an input size limit", () => {
   assert.equal(recordParserParallelism(1, 100), 1); assert.equal(recordParserParallelism(32, 64 * 1024 ** 3), 6); assert.equal(recordParserParallelism(8, 3 * 1024 ** 3), 2);
+  assert.equal(recordParserAdmission(64*1024**3),4*1024**3);
+  assert.equal(recordParserAdmission(2*1024**3),512*1024**2);
+  assert.equal(recordParserAdmission(32*1024**2),32*1024**2);
 });
 
 test("confirmed batch uses workers, reports progress, preserves distinct filenames and collects individual failures", async () => temporary(async root => {

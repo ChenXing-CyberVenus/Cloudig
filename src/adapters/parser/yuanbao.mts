@@ -63,6 +63,19 @@ function timestamp(value: JsonValue | undefined): string | undefined {
   return Number.isFinite(date.valueOf()) ? date.toISOString() : undefined;
 }
 
+function messageTimestamp(value: JsonValue | undefined): string | undefined {
+  const times = object(value), seconds = times?.["create_time"];
+  if (typeof seconds === "number" && Number.isSafeInteger(seconds) && seconds > 0) {
+    const date = new Date(seconds * 1000);
+    if (Number.isFinite(date.valueOf())) {
+      const iso = date.toISOString();
+      if (/^\d{4}-/u.test(iso)) return iso;
+    }
+  }
+  const iso = times?.["created_at"];
+  return typeof iso === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/u.test(iso) ? timestamp(iso) : undefined;
+}
+
 
 function unique(input: readonly string[]): string[] {
   return [...new Set(input)];
@@ -507,6 +520,7 @@ async function parseYuanbao(context: AdapterParseContext, profile: Profile, payl
     fragments.set(fragment.messageId, list);
   }
   const input = orderedMessages(context.payload, limitations);
+  const messageTimes: string[] = [];
   let missingMath = 0;
   const messages = await mapSequential(input, async (message, index) => {
     const owner = sourceText(message["id"])!;
@@ -531,11 +545,14 @@ async function parseYuanbao(context: AdapterParseContext, profile: Profile, payl
       ...(sourceIds.length > 0 ? [{ type: "citations", sources: sourceIds }] : [])
     ];
     const role = message["role"] === "user" ? "user" : message["role"] === "assistant" ? "assistant" : message["role"] === "system" ? "system" : "other";
+    const time = messageTimestamp(message["timestamps"]);
+    if (time) messageTimes.push(time);
     const recordParent = index > 0 ? sourceText(input[index - 1]!["id"]) : undefined;
     context.record?.message(index, { id: owner, ...(recordParent ? { parent: recordParent } : {}), role });
     await context.onProgress?.(index + 1, input.length);
-    return { role, ...(role === "other" ? { name: sourceText(message["role"]) ?? "Yuanbao" } : {}), content };
+    return { role, ...(role === "other" ? { name: sourceText(message["role"]) ?? "Yuanbao" } : {}), ...(time ? { timestamp: time } : {}), content };
   });
+  messageTimes.sort();
   if (missingMath > 0) limitations.push({ code: "math_source_missing", detail: `${missingMath} visible Yuanbao math node(s) retain static rendering because source TeX was unavailable` });
   const manifestSource = object(context.manifest["source"]);
   const exporter = object(context.manifest["exporter"]);
@@ -561,6 +578,7 @@ async function parseYuanbao(context: AdapterParseContext, profile: Profile, payl
     content_time: { basis: "unavailable" },
     provider: "tencent",
     platform: "yuanbao",
+    ...(messageTimes.length ? { message_time: { start: messageTimes[0]!, ...(messageTimes.at(-1) !== messageTimes[0] ? { end: messageTimes.at(-1)! } : {}) } } : {}),
     ...(title ? { title } : {}),
     messages,
     ...(resources.values.length > 0 ? { resources: resources.values } : {}),
@@ -572,11 +590,11 @@ async function parseYuanbao(context: AdapterParseContext, profile: Profile, payl
 function manifest(id: string, payload: string, profile: Profile): AdapterManifest {
   return {
     id,
-    version: "3.0.6",
+    version: "3.0.7",
     family: "yuanbao",
     routes: [{ format: "exporter-html", platform: "yuanbao", payload, profile }],
     target: "cloudig/conversation/1.0.0",
-    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
+    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
   };
 }
 

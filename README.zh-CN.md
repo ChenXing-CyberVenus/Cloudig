@@ -6,7 +6,7 @@
 
 采云：免费的AI平台对话导出、管理与阅读工具。
 
-**Windows x64：** [下载采云 V1.0.7 东方既白 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.7/Cloudig-1.0.7-Setup.exe) · [查看全部发布版本](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
+**Windows x64：** [下载采云 V1.0.8 东方既白 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.8/Cloudig-1.0.8-Setup.exe) · [查看全部发布版本](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
 不要安装到 `Program Files`，选择有写入权限的目录。采云是完整的便携目录：复制就是备份，移走就是搬家，删除就是卸载。
 
@@ -28,9 +28,9 @@
 
 <p align="center"><em>档案馆 Archiver：导入、解析、管理与导出。</em></p>
 
-**[源码 Source code · Cloudig V1.0.7](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.7)**
+**[源码 Source code · Cloudig V1.0.8](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.8)**
 
-## V1.0.7 核心能力
+## V1.0.8 核心能力
 
 ### 1. 网页书签导出
 
@@ -127,3 +127,4 @@ Reader 离线阅读已经解析的档案，保留分支、思考、工具调用�
 晨星 ChenXing.CyberVenus 负责界面设计与架构标准。奥思 Osis 负责代码实现与部分文档编纂。
 
 **如果采云帮到你，请在 GitHub 点一个 Star，谢谢。**
+

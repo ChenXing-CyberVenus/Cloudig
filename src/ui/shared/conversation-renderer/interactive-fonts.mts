@@ -1,4 +1,4 @@
-export type WorkFont = Readonly<{ family: string; weight: number | string; style?: string; alias: string }>;
+export type WorkFont = Readonly<{ family: string; weight: number | string; style?: string; alias: string; variation?: string; format?: string }>;
 
 /** Google stylesheet declarations are requirements, not permission to use a CDN. */
 export function verifyWorkFontRequests(sources: string, fonts: readonly WorkFont[]): void {
@@ -30,5 +30,5 @@ export function verifyWorkFontRequests(sources: string, fonts: readonly WorkFont
 }
 
 export function workFontCss(fonts: readonly WorkFont[]): string {
-  return fonts.map(font => `@font-face{font-family:${JSON.stringify(font.family)};font-style:${font.style ?? "normal"};font-weight:${font.weight};font-display:block;src:url("${font.alias}") format("truetype");}`).join("\n");
+  return fonts.map(font => `@font-face{font-family:${JSON.stringify(font.family)};font-style:${font.style ?? "normal"};font-weight:${font.weight};${font.variation ? `font-variation-settings:${font.variation};` : ""}font-display:block;src:url("${font.alias}") format("${font.format ?? "truetype"}");}`).join("\n");
 }

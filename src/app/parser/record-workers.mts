@@ -14,11 +14,14 @@ import { prepareOfficialZipWorkspace, splitZipRecordSelector, type ZipWorkspace 
 import type { AgentFamily } from "../../adapters/parser/agent-json.mts";
 
 export const RECORD_PARSER_LIMITS = Object.freeze({ maxWorkers: 6, reservedCpus: 2, memoryPerWorker: 1536 * 1024 ** 2,
-  maxAdmissionBytes: 512 * 1024 ** 2, minimumAdmissionBytes: 32 * 1024 ** 2, sourceExpansion: 8, minimumJobBytes: 8 * 1024 ** 2, progressIntervalMs: 80 });
+  maxAdmissionBytes: 4 * 1024 ** 3, minimumAdmissionBytes: 32 * 1024 ** 2, freeMemoryDivisor: 4, sourceExpansion: 8, minimumJobBytes: 8 * 1024 ** 2, progressIntervalMs: 80 });
+export function recordParserAdmission(free = freemem()): number {
+  return Math.max(RECORD_PARSER_LIMITS.minimumAdmissionBytes, Math.min(RECORD_PARSER_LIMITS.maxAdmissionBytes, free / RECORD_PARSER_LIMITS.freeMemoryDivisor));
+}
 export function recordParserParallelism(logical = availableParallelism(), free = freemem()): number {
   return Math.max(1, Math.min(RECORD_PARSER_LIMITS.maxWorkers, logical - RECORD_PARSER_LIMITS.reservedCpus, Math.floor(free / RECORD_PARSER_LIMITS.memoryPerWorker)));
 }
-export type RecordParseJob = Readonly<{ sourcePath: string; official?: RecordOfficialIndex; zipWorkspace?: ZipWorkspace; claude?: Readonly<{ source: RecordClaudeIndex["source"]; record: JsonObject }>; agent?: Readonly<{ family: AgentFamily; format: "json" | "jsonl"; source: Readonly<{ bytes: number; sha256: string }>; shards?: readonly string[] }> }>;
+export type RecordParseJob = Readonly<{ sourcePath: string; official?: RecordOfficialIndex; zipWorkspace?: ZipWorkspace; claude?: Readonly<{ source: RecordClaudeIndex["source"]; record: JsonObject }>; agent?: Readonly<{ family: AgentFamily; format: "json" | "jsonl"; source: Readonly<{ bytes: number; sha256: string }>; shards?: readonly string[]; error?: string }> }>;
 export const recordJobSelector = (job: RecordParseJob): string | undefined => {
   const value = (job.official?.records[0] ?? job.claude?.record)?.["selector"];
   return typeof value === "string" ? value : undefined;
@@ -66,7 +69,7 @@ export async function* prepareRecordJobs(root: string, jobs: readonly RecordPars
   const cache = await resolveRecordPath(root, "cache"), session = await createRuntimeCacheSession(cache, await realpath(root));
   const directory = path.join(session.root, "Parser");
   const slots: Slot[] = [], metrics = { workers: Math.min(work.length, options.workers ?? recordParserParallelism(), recordParserParallelism()), maxActive: 0, prepared: 0, spoolBytes: 0, threadIds: [] as number[] };
-  const admission = Math.max(RECORD_PARSER_LIMITS.minimumAdmissionBytes, Math.min(RECORD_PARSER_LIMITS.maxAdmissionBytes, freemem() / 8));
+  const admission = recordParserAdmission();
   let next = 0, activeBytes = 0, closing = false, callbackError: unknown;
   const abort = () => { for (const slot of slots) if (slot.work) slot.finish?.({ type: "error", index: slot.work.index, error: { name: "AbortError", message: "Parser cancelled" } }); };
   const dispatch = () => {

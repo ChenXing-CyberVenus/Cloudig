@@ -93,6 +93,12 @@ public partial class MainWindow
         await CheckAsync($$"""(()=>{const n=document.querySelector('.standard-document'),r=n.getBoundingClientRect(),h=n.parentElement.getBoundingClientRect(),s=n.querySelector('.standard-scroll');return Math.abs(r.x-h.x)<1&&Math.abs(r.width-h.width)<1&&r.bottom<=innerHeight+1&&s.scrollHeight>s.clientHeight&&s.scrollWidth<=s.clientWidth+1&&document.querySelectorAll('.standard-prose table').length==={{expectedTables}};})()""", "Document geometry or complete content failed.");
         await WebView.CoreWebView2.ExecuteScriptAsync("(()=>{const h=[...document.querySelectorAll('.standard-prose h4')].find(n=>n.textContent.startsWith('Box')),s=document.querySelector('.standard-scroll');if(h)s.scrollTop+=h.getBoundingClientRect().top-s.getBoundingClientRect().top-8;})()");
         await CaptureAsync("box-window-fields");
+        await CheckAsync("(()=>{const t=document.querySelector('.standard-prose').textContent;return t.includes('appdata/reader-state.json')&&t.includes('chatgpt.com_dil')&&t.includes('agent-thread:')&&t.includes('records/compat/');})()", "Updated Standard facts are absent from the packaged page.");
+        await WebView.CoreWebView2.ExecuteScriptAsync("(()=>{const d=[...document.querySelectorAll('.standard-prose details')].find(d=>d.querySelector(':scope > summary')?.textContent.includes('Box')&&d.querySelector(':scope > summary')?.textContent.includes('1.0.2'));if(d)d.dataset.standardExample='';})()");
+        await ClickAsync("[data-standard-example] > summary");
+        await CheckAsync("(()=>{const d=document.querySelector('[data-standard-example]');return d.open&&d.querySelector('pre').textContent.includes('cloudig/conversation/1.0.2');})()", "Shared-resource example did not open.");
+        await CaptureAsync("shared-resource-example");
+        await ClickAsync("[data-standard-example] > summary");
         await ClickAsync(".standard-value-toggle");
         await CheckAsync("(()=>{const b=document.querySelector('.standard-value-toggle');return b.getAttribute('aria-expanded')==='false'&&b.querySelector('img').src.endsWith('-Grey.svg')&&b.closest('section').querySelector('.standard-section-body').hidden;})()", "Heading did not fold to the grey variant.");
         await CaptureAsync("folded");

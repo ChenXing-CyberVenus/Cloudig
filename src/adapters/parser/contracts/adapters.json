@@ -1,10 +1,10 @@
 {
   "schema": "cloudig/adapter-bundle/1.0.0",
-  "parser": "1.1.39",
+  "parser": "1.1.51",
   "adapters": [
     {
       "id": "chatgpt-light-items-v2",
-      "version": "3.0.7",
+      "version": "3.0.10",
       "family": "chatgpt",
       "routes": [
         {
@@ -65,12 +65,27 @@
           "adapter": "chatgpt-light-items-v2",
           "version": "3.0.6",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-light-items-v2",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-light-items-v2",
+          "version": "3.0.8",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-light-items-v2",
+          "version": "3.0.9",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "chatgpt-full-v1",
-      "version": "3.0.7",
+      "version": "3.0.10",
       "family": "chatgpt",
       "routes": [
         {
@@ -131,12 +146,27 @@
           "adapter": "chatgpt-full-v1",
           "version": "3.0.6",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-full-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-full-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-full-v1",
+          "version": "3.0.9",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "chatgpt-all-branches-v1",
-      "version": "3.0.7",
+      "version": "3.0.10",
       "family": "chatgpt",
       "routes": [
         {
@@ -197,12 +227,27 @@
           "adapter": "chatgpt-all-branches-v1",
           "version": "3.0.6",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-all-branches-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-all-branches-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-all-branches-v1",
+          "version": "3.0.9",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "gemini-light-dom-v2",
-      "version": "3.0.5",
+      "version": "3.0.9",
       "family": "gemini",
       "routes": [
         {
@@ -212,7 +257,7 @@
           "profile": "light"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "gemini-light-dom-v2",
@@ -253,12 +298,32 @@
           "adapter": "gemini-light-dom-v2",
           "version": "3.0.4",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-light-dom-v2",
+          "version": "3.0.5",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-light-dom-v2",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-light-dom-v2",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-light-dom-v2",
+          "version": "3.0.8",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "gemini-full-v1",
-      "version": "3.0.5",
+      "version": "3.0.9",
       "family": "gemini",
       "routes": [
         {
@@ -268,7 +333,7 @@
           "profile": "full"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "gemini-full-v1",
@@ -309,12 +374,32 @@
           "adapter": "gemini-full-v1",
           "version": "3.0.4",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-full-v1",
+          "version": "3.0.5",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-full-v1",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-full-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "gemini-full-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "deepseek-light-messages-v2",
-      "version": "3.0.4",
+      "version": "3.0.6",
       "family": "deepseek",
       "routes": [
         {
@@ -324,7 +409,7 @@
           "profile": "light"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "deepseek-light-messages-v2",
@@ -365,12 +450,22 @@
           "adapter": "deepseek-light-messages-v2",
           "version": "3.0.3",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "deepseek-light-messages-v2",
+          "version": "3.0.4",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "deepseek-light-messages-v2",
+          "version": "3.0.5",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "deepseek-full-v1",
-      "version": "3.0.4",
+      "version": "3.0.6",
       "family": "deepseek",
       "routes": [
         {
@@ -380,7 +475,7 @@
           "profile": "full"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "deepseek-full-v1",
@@ -421,12 +516,22 @@
           "adapter": "deepseek-full-v1",
           "version": "3.0.3",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "deepseek-full-v1",
+          "version": "3.0.4",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "deepseek-full-v1",
+          "version": "3.0.5",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "deepseek-all-branches-v1",
-      "version": "3.0.4",
+      "version": "3.0.6",
       "family": "deepseek",
       "routes": [
         {
@@ -436,7 +541,7 @@
           "profile": "tree"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "deepseek-all-branches-v1",
@@ -477,12 +582,22 @@
           "adapter": "deepseek-all-branches-v1",
           "version": "3.0.3",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "deepseek-all-branches-v1",
+          "version": "3.0.4",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "deepseek-all-branches-v1",
+          "version": "3.0.5",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "grok-light-dom-v2",
-      "version": "3.0.7",
+      "version": "3.0.8",
       "family": "grok",
       "routes": [
         {
@@ -492,7 +607,7 @@
           "profile": "light"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "grok-light-dom-v2",
@@ -553,12 +668,17 @@
           "adapter": "grok-light-dom-v2",
           "version": "3.0.6",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "grok-light-dom-v2",
+          "version": "3.0.7",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "grok-full-v1",
-      "version": "3.0.7",
+      "version": "3.0.8",
       "family": "grok",
       "routes": [
         {
@@ -568,7 +688,7 @@
           "profile": "full"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "grok-full-v1",
@@ -629,12 +749,17 @@
           "adapter": "grok-full-v1",
           "version": "3.0.6",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "grok-full-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "grok-all-branches-v1",
-      "version": "3.0.7",
+      "version": "3.0.8",
       "family": "grok",
       "routes": [
         {
@@ -644,7 +769,7 @@
           "profile": "tree"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "grok-all-branches-v1",
@@ -705,12 +830,17 @@
           "adapter": "grok-all-branches-v1",
           "version": "3.0.6",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "grok-all-branches-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "doubao-light-dom-v2",
-      "version": "3.0.4",
+      "version": "3.0.9",
       "family": "doubao",
       "routes": [
         {
@@ -720,7 +850,7 @@
           "profile": "light"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "doubao-light-dom-v2",
@@ -756,12 +886,37 @@
           "adapter": "doubao-light-dom-v2",
           "version": "3.0.3",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-light-dom-v2",
+          "version": "3.0.4",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-light-dom-v2",
+          "version": "3.0.5",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-light-dom-v2",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-light-dom-v2",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-light-dom-v2",
+          "version": "3.0.8",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "doubao-full-dom-v1",
-      "version": "3.0.4",
+      "version": "3.0.9",
       "family": "doubao",
       "routes": [
         {
@@ -771,7 +926,7 @@
           "profile": "full"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "doubao-full-dom-v1",
@@ -807,12 +962,37 @@
           "adapter": "doubao-full-dom-v1",
           "version": "3.0.3",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-full-dom-v1",
+          "version": "3.0.4",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-full-dom-v1",
+          "version": "3.0.5",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-full-dom-v1",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-full-dom-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "doubao-full-dom-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "kimi-light-dom-v2",
-      "version": "3.0.6",
+      "version": "3.0.11",
       "family": "kimi",
       "routes": [
         {
@@ -822,7 +1002,7 @@
           "profile": "light"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "kimi-light-dom-v2",
@@ -878,12 +1058,37 @@
           "adapter": "kimi-light-dom-v2",
           "version": "3.0.5",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-light-dom-v2",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-light-dom-v2",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-light-dom-v2",
+          "version": "3.0.8",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-light-dom-v2",
+          "version": "3.0.9",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-light-dom-v2",
+          "version": "3.0.10",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "kimi-full-dom-v1",
-      "version": "3.0.6",
+      "version": "3.0.11",
       "family": "kimi",
       "routes": [
         {
@@ -893,7 +1098,7 @@
           "profile": "full"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "kimi-full-dom-v1",
@@ -949,12 +1154,37 @@
           "adapter": "kimi-full-dom-v1",
           "version": "3.0.5",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-full-dom-v1",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-full-dom-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-full-dom-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-full-dom-v1",
+          "version": "3.0.9",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-full-dom-v1",
+          "version": "3.0.10",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "kimi-all-branches-v1",
-      "version": "3.0.6",
+      "version": "3.0.11",
       "family": "kimi",
       "routes": [
         {
@@ -964,7 +1194,7 @@
           "profile": "tree"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "kimi-all-branches-v1",
@@ -1019,6 +1249,31 @@
         {
           "adapter": "kimi-all-branches-v1",
           "version": "3.0.5",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-all-branches-v1",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-all-branches-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-all-branches-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-all-branches-v1",
+          "version": "3.0.9",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "kimi-all-branches-v1",
+          "version": "3.0.10",
           "action": "reparse_source"
         }
       ]
@@ -1503,7 +1758,7 @@
     },
     {
       "id": "yuanbao-light-dom-v2",
-      "version": "3.0.6",
+      "version": "3.0.7",
       "family": "yuanbao",
       "routes": [
         {
@@ -1564,12 +1819,17 @@
           "adapter": "yuanbao-light-dom-v2",
           "version": "3.0.5",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "yuanbao-light-dom-v2",
+          "version": "3.0.6",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "yuanbao-full-dom-v1",
-      "version": "3.0.6",
+      "version": "3.0.7",
       "family": "yuanbao",
       "routes": [
         {
@@ -1630,12 +1890,17 @@
           "adapter": "yuanbao-full-dom-v1",
           "version": "3.0.5",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "yuanbao-full-dom-v1",
+          "version": "3.0.6",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "mistral-light-dom-rsc-v2",
-      "version": "3.0.6",
+      "version": "3.0.9",
       "family": "mistral",
       "routes": [
         {
@@ -1645,7 +1910,7 @@
           "profile": "light"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "mistral-light-dom-rsc-v2",
@@ -1696,12 +1961,27 @@
           "adapter": "mistral-light-dom-rsc-v2",
           "version": "3.0.5",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-light-dom-rsc-v2",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-light-dom-rsc-v2",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-light-dom-rsc-v2",
+          "version": "3.0.8",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "mistral-full-v1",
-      "version": "3.0.6",
+      "version": "3.0.9",
       "family": "mistral",
       "routes": [
         {
@@ -1711,7 +1991,7 @@
           "profile": "full"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "mistral-full-v1",
@@ -1762,12 +2042,27 @@
           "adapter": "mistral-full-v1",
           "version": "3.0.5",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-full-v1",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-full-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-full-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "mistral-all-branches-v1",
-      "version": "3.0.6",
+      "version": "3.0.9",
       "family": "mistral",
       "routes": [
         {
@@ -1777,7 +2072,7 @@
           "profile": "tree"
         }
       ],
-      "target": "cloudig/conversation/1.0.0",
+      "target": "cloudig/conversation/1.0.2",
       "update_from": [
         {
           "adapter": "mistral-all-branches-v1",
@@ -1828,12 +2123,27 @@
           "adapter": "mistral-all-branches-v1",
           "version": "3.0.5",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-all-branches-v1",
+          "version": "3.0.6",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-all-branches-v1",
+          "version": "3.0.7",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "mistral-all-branches-v1",
+          "version": "3.0.8",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "claude-light-dom-v1",
-      "version": "3.0.11",
+      "version": "3.0.13",
       "family": "claude",
       "routes": [
         {
@@ -1929,12 +2239,22 @@
           "adapter": "claude-light-dom-v1",
           "version": "3.0.10",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-light-dom-v1",
+          "version": "3.0.11",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-light-dom-v1",
+          "version": "3.0.12",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "claude-full-capture-v1",
-      "version": "3.0.11",
+      "version": "3.0.13",
       "family": "claude",
       "routes": [
         {
@@ -2035,12 +2355,22 @@
           "adapter": "claude-full-capture-v1",
           "version": "3.0.10",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-full-capture-v1",
+          "version": "3.0.11",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-full-capture-v1",
+          "version": "3.0.12",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "claude-all-branches-v1",
-      "version": "3.0.11",
+      "version": "3.0.13",
       "family": "claude",
       "routes": [
         {
@@ -2140,6 +2470,16 @@
         {
           "adapter": "claude-all-branches-v1",
           "version": "3.0.10",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-all-branches-v1",
+          "version": "3.0.11",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-all-branches-v1",
+          "version": "3.0.12",
           "action": "reparse_source"
         }
       ]
@@ -2417,7 +2757,7 @@
     },
     {
       "id": "codex-rollout-jsonl",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "family": "codex",
       "routes": [
         {
@@ -2431,7 +2771,7 @@
       "update_from": [
         {
           "adapter": "codex-rollout-jsonl",
-          "version": "1.0.7",
+          "version": "1.0.8",
           "action": "reparse_source"
         }
       ]

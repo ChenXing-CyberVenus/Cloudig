@@ -90,7 +90,7 @@ public partial class MainWindow
                 await Task.Delay(1100);
                 if (before != await Read($"{selected}.innerHTML")) throw new InvalidDataException("Saved DIL changed after pointer input or timer wait");
             }
-            else if (source.Contains("quiz_display", StringComparison.Ordinal))
+            else if (source.Contains("quiz_display", StringComparison.Ordinal) || source.EndsWith("_quiz", StringComparison.Ordinal))
             {
                 await Point(selector + " .cloudig-box-choice"); await Check($"Boolean({selected}.querySelector('.cloudig-box-feedback'))");
                 await Label(selector, "卡片", "Flashcards"); await Label(selector, "查看答案", "View answer");

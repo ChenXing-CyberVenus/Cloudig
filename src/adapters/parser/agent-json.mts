@@ -3,10 +3,10 @@
 // `fromMessages`; keep this adapter's probing code permissive rather than
 // duplicating a second schema type for every vendor's event envelope.
 // @ts-nocheck
-import { createReadStream } from "node:fs";
 import { readFile } from "node:fs/promises";
-import * as readline from "node:readline";
 import path from "node:path";
+import { streamAgentJsonl } from "./agent-jsonl-stream.mts";
+import { planCodexChain, codexChainRecords } from "./codex-storage-chain.mts";
 import type { JsonObject, JsonValue } from "../../core/contracts/types.mts";
 import { isJsonObject } from "../../core/contracts/types.mts";
 import type { AdapterManifest, SourceMessageFacts } from "../../app/parser/adapter.mts";
@@ -28,7 +28,7 @@ const manifests: Readonly<Record<AgentFamily, AdapterManifest>> = {
   sillytavern: { id: "sillytavern-message-jsonl", version: "1.0.2", family: "sillytavern", routes: [{ format: "jsonl", platform: "sillytavern", payload: "sillytavern-message-jsonl", profile: "container" }], target: "cloudig/conversation/1.0.0", update_from: [{ adapter: "sillytavern-message-jsonl", version: "1.0.1", action: "reparse_source" }] },
   "kimi-code": { id: "kimi-code-wire-jsonl", version: "1.0.3", family: "kimi-code", routes: [{ format: "jsonl", platform: "kimi-code", payload: "kimi-code-wire-jsonl", profile: "container" }], target: "cloudig/conversation/1.0.0", update_from: [{ adapter: "kimi-code-wire-jsonl", version: "1.0.2", action: "reparse_source" }] },
   "claude-code": { id: "claude-code-session-jsonl", version: "1.0.3", family: "claude-code", routes: [{ format: "jsonl", platform: "claude-code", payload: "claude-code-session-jsonl", profile: "container" }], target: "cloudig/conversation/1.0.0", update_from: [{ adapter: "claude-code-session-jsonl", version: "1.0.2", action: "reparse_source" }] },
-  codex: { id: "codex-rollout-jsonl", version: "1.0.8", family: "codex", routes: [{ format: "jsonl", platform: "codex", payload: "codex-rollout-jsonl", profile: "container" }], target: "cloudig/conversation/1.0.0", update_from: [{ adapter: "codex-rollout-jsonl", version: "1.0.7", action: "reparse_source" }] }
+  codex: { id: "codex-rollout-jsonl", version: "1.0.9", family: "codex", routes: [{ format: "jsonl", platform: "codex", payload: "codex-rollout-jsonl", profile: "container" }], target: "cloudig/conversation/1.0.0", update_from: [{ adapter: "codex-rollout-jsonl", version: "1.0.8", action: "reparse_source" }] }
 };
 
 const object = (value: unknown): JsonObject => isJsonObject(value) ? value : {};
@@ -42,7 +42,7 @@ const finiteTime = (value: unknown): string | undefined => {
   if (typeof value === "string" && value.trim()) { const date = new Date(value); return Number.isFinite(date.valueOf()) ? date.toISOString() : undefined; }
   return undefined;
 };
-const stem = (file: string): string => path.parse(file).name;
+const stem = (file: string): string => path.parse(file.replace(/\.jsonl\.zst$/iu, ".jsonl")).name;
 
 export function agentManifest(family: AgentFamily): AdapterManifest { return manifests[family]; }
 
@@ -82,19 +82,8 @@ export function probeAgentJsonl(values: readonly JsonObject[]): AgentProbe | und
 }
 
 async function* agentJsonlRecords(filePath: string, signal?: AbortSignal, onProgress?: (bytes: number) => void): AsyncGenerator<JsonObject> {
-  const info = await import("node:fs/promises").then(fs => fs.stat(filePath));
-  const stream = createReadStream(filePath, { encoding: "utf8", highWaterMark: 512 * 1024 });
-  const input = readline.createInterface({ input: stream, crlfDelay: Infinity });
-  let completed = 0, count = 0;
-  try {
-    for await (const line of input) {
-      signal?.throwIfAborted(); completed += Buffer.byteLength(line, "utf8") + 1; onProgress?.(Math.min(completed, info.size));
-      if (!line.trim()) continue;
-      let value: unknown; try { value = JSON.parse(line.replace(/^\uFEFF/u, "")); } catch (error) { throw new SyntaxError(`Invalid JSONL record: ${error instanceof Error ? error.message : String(error)}`); }
-      if (!isJsonObject(value)) throw new TypeError("Agent JSONL record must be an object");
-      count++; yield value;
-    }
-  } finally { input.close(); stream.destroy(); }
+  let count = 0;
+  for await (const row of streamAgentJsonl(filePath, { signal, onProgress })) { count++; yield row.value; }
   if (!count) throw new TypeError("Agent JSONL source is empty");
 }
 export async function readAgentJsonl(filePath: string, signal?: AbortSignal, onProgress?: (bytes: number) => void): Promise<JsonObject[]> {
@@ -385,48 +374,79 @@ function kimiCode(root: JsonObject[], source: Readonly<{ file: string; bytes: nu
   return fromMessages({ family: "kimi-code", source, format: "jsonl", platform: "kimi-code", messages, facts, models, captured });
 }
 
-function codex(root: JsonObject[], source: Readonly<{ file: string; bytes: number; sha256: string }>, captured?: CapturedSourceTime): ExtractedRecord {
+async function codex(root: AsyncIterable<JsonObject>, source: Readonly<{ file: string; bytes: number; sha256: string }>, captured?: CapturedSourceTime): Promise<ExtractedRecord> {
   const messages: JsonObject[] = [], facts: SourceMessageFacts[] = [], models: string[] = [];
-  const seenIds = new Set<string>();
-  let activeModel: string | undefined, activeAgent: string | undefined;
+  const seenIds = new Map<string, number>(), agents = new Map<string, JsonObject>(), limitations: JsonObject[] = [];
+  let activeModel: string | undefined, eventMirror = false, lastPair: { index: number; event: boolean; role: string; signature: string } | undefined;
   const isCodexBoundary = (raw: JsonObject | undefined): boolean => {
     const type = text(raw?.["type"]), payload = object(raw?.["payload"]);
     return type === "turn_context" || type === "session_meta" || (type === "event_msg" && ["task_started", "task_complete", "thread_rolled_back"].includes(text(payload["type"]) ?? ""));
   };
-  const canonicalMirror = (index: number, role: "user" | "assistant", value: unknown, direction: -1 | 1): boolean => {
-    const comparable = transportComparableText(value);
-    if (!comparable) return false;
-    for (let cursor = index + direction; cursor >= 0 && cursor < root.length; cursor += direction) {
-      const raw = root[cursor];
-      if (isCodexBoundary(raw)) return false;
-      const payload = object(raw?.["payload"]);
-      if (raw?.["type"] !== "response_item" || payload["type"] !== "message") continue;
-      const canonicalRole = text(payload["role"]);
-      if (canonicalRole !== role) return false;
-      return transportComparableText(payload["content"] ?? payload["text"]) === comparable;
-    }
-    return false;
-  };
   const add = (role: string, content: JsonObject[], id?: string, model?: string, timestamp?: string, extra: JsonObject = {}) => {
     if (!content.length) return;
-    if (id && seenIds.has(id)) return;
-    if (id) seenIds.add(id);
+    const signature = JSON.stringify([content, extra.sourceId ?? null]);
+    // Only opposite wire representations may pair by adjacent content. Two
+    // canonical messages (even identical ones) are never text-deduplicated.
+    const paired = id ? seenIds.get(id) : undefined;
+    const local = lastPair && lastPair.event !== eventMirror && lastPair.role === role && lastPair.signature === signature ? lastPair.index : undefined;
+    const existing = paired ?? local;
+    if (existing !== undefined) {
+      if (!eventMirror) {
+        const message = messages[existing];
+        if (content.some(block => typeof block.text === "string" && block.text.length > 0 || block.type !== "reasoning")) message.content = content;
+        if (id) { message.id = id; facts[existing] = { ...facts[existing], id }; seenIds.set(id, existing); }
+        if (model) { facts[existing] = { ...facts[existing], model }; models.push(model); }
+      }
+      lastPair = undefined;
+      return;
+    }
+    if (id) seenIds.set(id, messages.length);
     const messageId = id ?? `m${messages.length + 1}`, parent = messages.at(-1)?.["id"];
     messages.push({ id: messageId, ...(parent ? { parent } : {}), role, ...(timestamp ? { timestamp } : {}), content }); facts.push({ id: messageId, ...(parent ? { parent } : {}), role, ...(model ? { model } : {}), ...extra });
+    if (model && role === "assistant") models.push(model);
+    lastPair = { index: messages.length - 1, event: eventMirror, role, signature };
   };
-  for (const [index, raw] of root.entries()) {
+  for await (let raw of root) {
+    if (isCodexBoundary(raw)) lastPair = undefined;
+    eventMirror = false;
+    if (raw.type === "turn_context") activeModel = text(object(raw.payload).model);
+    if (raw.type === "event_msg") {
+      const p = object(raw.payload), item = object(p.item), kind = text(item.type);
+      if (p.type === "item_completed" && kind === "SubAgentActivity" && text(item.agent_path))
+        agents.set(item.agent_path, { ...(text(item.agent_thread_id) ? { thread: item.agent_thread_id } : {}), ...(text(item.model) ? { model: item.model } : {}) });
+      if (p.type === "item_completed" && ["UserMessage", "AgentMessage", "Reasoning"].includes(kind)) {
+        const content = list(item.content).map(v => isJsonObject(v) && v.type === "Text" ? { ...v, type: "text" } : v);
+        raw = { ...raw, type: "response_item", payload: kind === "Reasoning"
+          ? { type: "reasoning", id: item.id, summary: list(item.summary_text).map(t => ({ type: "summary_text", text: t })), content: item.raw_content }
+          : { type: "message", id: item.id, role: kind === "UserMessage" ? "user" : "assistant", content, ...(item.model ? { model: item.model } : {}) } };
+        eventMirror = true;
+      } else if (["user_message", "agent_message"].includes(p.type)) {
+        raw = { ...raw, type: "response_item", payload: { ...p, type: "message", role: p.type === "user_message" ? "user" : "assistant", content: p.message ?? p.text } };
+        eventMirror = true;
+      }
+    }
     const type = text(raw["type"]), payload = object(raw["payload"]), event = object(payload["payload"]), role = text(payload["role"]);
-    const settings = object(payload["thread_settings"]), collaboration = object(payload["collaboration_mode"]), configuredModel = text(payload["model"]) ?? text(settings["model"]) ?? text(object(collaboration["settings"])["model"]);
-    if (configuredModel) { activeModel = configuredModel; models.push(configuredModel); }
     const sender = text(payload["agent_name"]) ?? text(payload["sender"]) ?? text(payload["source_agent"]);
-    if (sender) activeAgent = sender;
     if (type === "response_item") {
-      const kind = text(payload["type"]), model = text(payload["model"]) ?? activeModel, timestamp = finiteTime(raw["timestamp"]); if (model) { activeModel = model; models.push(model); }
+      const kind = text(payload["type"]), model = text(payload["model"]) ?? activeModel, timestamp = finiteTime(raw["timestamp"]);
+      if (kind === "agent_message") {
+        const author = text(payload.author) ?? sender ?? "codex-external", known = agents.get(author) ?? {};
+        const blocks = list(payload.content), plaintext = blocks.filter(b => object(b).type !== "encrypted_content");
+        const body = wireText(plaintext).replace(/^Message Type:[^\n]*\nTask name:[^\n]*\nSender:[^\n]*\nPayload:\s*\n?/u, "");
+        const encrypted = blocks.some(b => object(b).type === "encrypted_content");
+        const sourceId = text(known.thread) ? `agent-thread:${known.thread}` : `agent:${author}`;
+        const content = codexContentValue(body);
+        if (encrypted) { content.push({ type: "status", title: "Encrypted Agent message", text: "原文件未提供此段来信的明文 / This source contains encrypted content without plaintext.", format: "text" }); limitations.push({ code: "encrypted_agent_content", detail: `Source message ${text(payload.id) ?? "unknown"}; sender ${author}` }); }
+        // SubAgentActivity.model is launch configuration, not proof of which
+        // model authored a later message (fallback/switching may occur).
+        add("assistant", content, text(payload.id), text(payload.model), timestamp, { sourceId, name: author });
+        continue;
+      }
       if (role && ["user", "assistant", "system", "developer"].includes(role)) {
         const value = payload["content"] ?? payload["text"];
         const external = role === "user" ? codexExternalAgentEnvelope(value) : undefined;
         if (external) {
-          const sourceId = external.sourceThreadId ? `agent-thread:${external.sourceThreadId}` : activeAgent ? `agent:${activeAgent}` : "agent:codex-external";
+          const sourceId = external.sourceThreadId ? `agent-thread:${external.sourceThreadId}` : sender ? `agent:${sender}` : "agent:codex-external";
           const explicitModel = text(payload["model"]);
           const explicitSender = text(payload["agent_name"]) ?? text(payload["sender"]);
           add("assistant", codexContentValue(external.text), text(payload["id"]), explicitModel, timestamp, {
@@ -435,16 +455,16 @@ function codex(root: JsonObject[], source: Readonly<{ file: string; bytes: numbe
           });
         } else {
           const normalizedRole = role === "developer" || (role === "user" && isCodexSystemContext(value)) ? "system" : role;
-          add(normalizedRole, codexContentValue(value), text(payload["id"]), model, timestamp);
+          add(normalizedRole, codexContentValue(value), text(payload["id"]), sender ? text(payload["model"]) : model, timestamp, sender ? { name: sender, sourceId: `agent:${sender}` } : {});
         }
       }
-      else if (kind === "reasoning") { const reasoning = contentValue(payload["summary"] ?? payload["content"] ?? payload["text"], "reasoning"); add("assistant", reasoning.length ? reasoning : text(payload["encrypted_content"]) ? [{ type: "reasoning", title: "Codex encrypted reasoning", text: "Codex exported this reasoning in encrypted form; plaintext is unavailable to the offline Parser." }] : [], text(payload["id"]), model, timestamp); }
+      else if (kind === "reasoning") { const summary = contentValue(payload["summary"], "reasoning"), reasoning = summary.length ? summary : contentValue(payload["content"] ?? payload["text"], "reasoning"); add("assistant", reasoning.length ? reasoning : text(payload["encrypted_content"]) ? [{ type: "reasoning", title: "Codex encrypted reasoning" }] : [], text(payload["id"]), model, timestamp); }
       else if (["function_call", "tool_search_call", "web_search_call", "custom_tool_call"].includes(String(kind))) { const call = text(payload["call_id"]) ?? text(payload["id"]), name = text(payload["name"]) ?? text(payload["tool_name"]) ?? kind; add("assistant", [part("tool", name, { kind: "call", title: name, ...(call ? { call } : {}), input: payload["arguments"] ?? payload["input"] ?? payload["action"] ?? payload["query"] ?? null })], text(payload["id"]), model, timestamp); }
       else if (["function_call_output", "tool_search_output", "web_search_output", "custom_tool_call_output"].includes(String(kind))) {
         const call = text(payload["call_id"]) ?? text(payload["id"]), output = payload["output"] ?? payload["result"] ?? payload["tools"] ?? payload["action"] ?? null;
         const external = kind === "function_call_output" ? codexExternalAgentEnvelope(output) : undefined;
         if (external) {
-          const sourceId = external.sourceThreadId ? `agent-thread:${external.sourceThreadId}` : activeAgent ? `agent:${activeAgent}` : "agent:codex-external";
+          const sourceId = external.sourceThreadId ? `agent-thread:${external.sourceThreadId}` : sender ? `agent:${sender}` : "agent:codex-external";
           const explicitModel = text(payload["model"]), explicitSender = text(payload["agent_name"]) ?? text(payload["sender"]);
           add("assistant", codexContentValue(external.text), text(payload["id"]), explicitModel, timestamp, {
             sourceId,
@@ -454,21 +474,23 @@ function codex(root: JsonObject[], source: Readonly<{ file: string; bytes: numbe
           add("tool", [part("tool", codexToolTitle(output), { kind: "result", ...(call ? { call } : {}), output })], text(payload["id"]), model, timestamp);
         }
       }
-    } else if (type === "event_msg") {
-      const eventType = text(payload["type"]), value = eventType === "user_message" || eventType === "agent_message" ? payload["message"] ?? payload["text"] : undefined;
-      if (eventType === "thread_settings_applied") { const applied = text(object(payload["thread_settings"])["model"]); if (applied) { activeModel = applied; models.push(applied); } }
-      if (value !== undefined) {
-        const mirrorRole = eventType === "user_message" ? "user" : "assistant";
-        if (canonicalMirror(index, mirrorRole, value, eventType === "user_message" ? -1 : 1)) continue;
-        const content = codexContentValue(value), role = eventType === "user_message" ? (isCodexSystemContext(value) ? "system" : "user") : "assistant";
-        add(role, content, undefined, activeModel, finiteTime(raw["timestamp"]), activeAgent ? { name: activeAgent, sourceId: `agent:${activeAgent}` } : {});
-      }
     }
   }
-  return fromMessages({ family: "codex", source, format: "jsonl", platform: "codex", messages, facts, models, captured });
+  // A canonical ID may replace an immediately preceding event's generated ID.
+  for (let i = 1; i < messages.length; i++) { messages[i].parent = messages[i - 1].id; facts[i] = { ...facts[i], parent: messages[i - 1].id }; }
+  const result = fromMessages({ family: "codex", source, format: "jsonl", platform: "codex", messages, facts, models, captured });
+  if (limitations.length) result.parsed.draft.limitations = limitations;
+  return result;
 }
 
 export async function extractAgentRecord(input: Readonly<{ filePath: string; source: Readonly<{ file: string; bytes: number; sha256: string }>; format: "json" | "jsonl"; family: AgentFamily; shards?: readonly string[]; captured?: CapturedSourceTime; signal?: AbortSignal; onProgress?: (phase: string, completed: number, total: number) => void }>): Promise<ExtractedRecord> {
+  if (input.family === "codex") {
+    const chain = await planCodexChain(input.shards?.at(-1) ?? input.filePath, input.shards ?? [], input.signal);
+    const result = await codex(codexChainRecords(chain, { signal: input.signal, onProgress: bytes => input.onProgress?.("scan", Math.min(bytes, input.source.bytes), input.source.bytes) }), input.source, input.captured);
+    if (chain.length > 1) result.parsed.draft.limitations = [...(result.parsed.draft.limitations ?? []), { code: "codex_inherited_ranges", detail: JSON.stringify(chain.map(s => ({ file: path.basename(s.file), storage_id: s.header.storageId ?? null, decoded_end_exclusive: s.end ?? null, ordinal_end_exclusive: s.nextOrdinal ?? null }))) }];
+    if (!result.parsed.draft.messages?.length) throw new TypeError("Agent source codex contains no visible conversation messages");
+    return result;
+  }
   const files = input.shards?.length ? input.shards : [input.filePath], values: unknown[] = [];
   for (const file of files) { const value = await readRoot(file, input.format, input.signal, completed => input.onProgress?.("scan", completed, input.source.bytes)); if (input.format === "jsonl") values.push(...(value as JsonObject[])); else values.push(value); }
   const root = input.format === "jsonl" ? values as JsonObject[] : values.flatMap(value => Array.isArray(value) ? value.map(object) : [object(value)]);
@@ -477,14 +499,14 @@ export async function extractAgentRecord(input: Readonly<{ filePath: string; sou
     : input.family === "sillytavern" ? sillyTavern(root, input.source, input.captured)
     : input.family === "kimi-code" ? kimiCode(root, input.source, input.captured)
     : input.family === "claude-code" ? claudeCode(root, input.source, input.captured)
-    : codex(root, input.source, input.captured);
+    : await codex((async function* () { yield* root; })(), input.source, input.captured);
   if (!result.parsed.draft["messages"] || !(result.parsed.draft["messages"] as JsonValue[]).length) throw new TypeError(`Agent source ${input.family} contains no visible conversation messages`);
   return result;
 }
 
 export async function probeAgentFile(filePath: string, format: "json" | "jsonl", signal?: AbortSignal): Promise<AgentProbe | undefined> {
   if (format === "json") return probeAgentJson(JSON.parse((await readFile(filePath)).toString("utf8").replace(/^\uFEFF/u, "")));
-  const values: JsonObject[] = []; const stream = createReadStream(filePath, { encoding: "utf8", highWaterMark: 256 * 1024 }), input = readline.createInterface({ input: stream, crlfDelay: Infinity });
-  try { for await (const line of input) { signal?.throwIfAborted(); if (!line.trim()) continue; try { const value = JSON.parse(line.replace(/^\uFEFF/u, "")); if (isJsonObject(value)) values.push(value); } catch { break; } if (values.length >= 32) break; } } finally { input.close(); stream.destroy(); }
+  const values: JsonObject[] = [];
+  for await (const { value } of streamAgentJsonl(filePath, { signal })) { values.push(value); if (values.length >= 32) break; }
   return probeAgentJsonl(values);
 }

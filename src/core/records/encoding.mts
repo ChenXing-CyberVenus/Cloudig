@@ -60,13 +60,24 @@ export function* recordJsonChunks(value: JsonValue): Generator<string> {
   if (parts.length) yield parts.join("");
 }
 
-export function prepareRecordEncoding(kind: RecordKind, value: unknown): Readonly<{
+export type PreparedRecordEncoding = Readonly<{
   fingerprint: Readonly<{ bytes: number; sha256: string }>; chunks(): Generator<string>;
-}> {
+}>;
+const preparedValues = new WeakMap<PreparedRecordEncoding, { kind: RecordKind; value: unknown }>();
+/** Only a locally validated encoding of this exact value may be reused.
+ * The storage writer still hashes staged bytes and rejects subsequent mutation. */
+export function reuseRecordEncoding(kind: RecordKind, value: unknown, encoding: PreparedRecordEncoding): PreparedRecordEncoding {
+  const proof = preparedValues.get(encoding);
+  if (proof?.kind !== kind || proof.value !== value) throw new TypeError("Prepared encoding belongs to another record");
+  return encoding;
+}
+export function prepareRecordEncoding(kind: RecordKind, value: unknown): PreparedRecordEncoding {
   const valid = validateRecord(kind, value);
   if (!valid.ok) throw new TypeError(valid.issues.map(i => `${i.path}: ${i.message}`).join("; "));
   const output = kind === "library" ? { cloudig_standard: CLOUDIG_STANDARD, ...valid.value } : valid.value;
   const digest = createHash("sha256"); let bytes = 0;
   for (const chunk of recordJsonChunks(output)) { digest.update(chunk, "utf8"); bytes += Buffer.byteLength(chunk); }
-  return { fingerprint: { bytes, sha256: digest.digest("hex") }, chunks: () => recordJsonChunks(output) };
+  const encoding = Object.freeze({ fingerprint: Object.freeze({ bytes, sha256: digest.digest("hex") }), chunks: () => recordJsonChunks(output) });
+  preparedValues.set(encoding, { kind, value });
+  return encoding;
 }

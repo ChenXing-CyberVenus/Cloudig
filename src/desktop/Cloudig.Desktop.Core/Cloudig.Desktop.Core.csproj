@@ -9,6 +9,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Cloudig.Desktop.Tests" />
     <EmbeddedResource Include="..\..\core\contracts\machine\cache-policy.json" LogicalName="Cloudig.CachePolicy.json" />
+    <EmbeddedResource Include="..\..\ui\runtime-dependencies\optional-components.json" LogicalName="Cloudig.OptionalWorkComponents.json" />
     <EmbeddedResource Include="..\..\core\contracts\machine\move-limits.json" LogicalName="Cloudig.MoveLimits.json" />
     <EmbeddedResource Include="PortableLibraryMove.ps1" LogicalName="Cloudig.PortableLibraryMove.ps1" />
     <EmbeddedResource Include="PortableUpdate.ps1" LogicalName="Cloudig.PortableUpdate.ps1" />

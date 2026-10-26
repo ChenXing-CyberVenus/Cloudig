@@ -22,7 +22,7 @@ function fixture(){
  return{parser,writes,blocks,bundle};
 }
 test("owned UI definition is saved once, split by native units, not by sparse fallback offsets",()=>{
- const f=fixture();assert.deepEqual(f.blocks.map(b=>b["type"]),["html","box","box","window","diagram"]);
+ const f=fixture();assert.deepEqual(f.blocks.map(b=>b["type"]),["html","box","box","box","diagram"]);
  assert.equal(f.blocks[4]!["rendered"],"original-diagram");assert.equal(f.writes.filter(w=>w["name"]==="ui.json").length,1);
  const boxes=f.blocks.filter(b=>b["data"]);assert.ok(boxes.every(b=>(b["data"]as JsonObject)["format"]===DIL_VIEW_FORMAT));
  assert.deepEqual(boxes[0]!["files"],boxes[2]!["files"]);assert.equal(f.writes[0]!["name"],"sample.zip");
@@ -33,4 +33,15 @@ test("message ownership is mandatory and repeated projection cannot mutate the c
  const f=fixture();assert.throws(()=>f.parser.project({intelligent_ui:{record_id:"m1"}},["m2"]),/different source message/u);
  f.blocks[1]!["type"]="changed";assert.equal(f.parser.project({intelligent_ui:{record_id:"m1"}},["m1"])![1]!["type"],"box");
  assert.equal(f.parser.project({type:"html",html:"old HTML"},["m1"]),undefined);
+});
+test("literal map icon evidence retains item order, ignores attachment chrome, and requires matching owner arity",()=>{
+ const code='DIL.render(__dil.jsx("box",null,__dil.jsx("box",null,__dil.jsx("text",null,"Repeat label")),__dil.jsx("icon",{name:"arrow-down"}),[{label:"Alpha",icon:"first"},{label:"Beta",icon:"second"}].map(x=>__dil.jsx("row",null,__dil.jsx("icon",{name:x.icon}),__dil.jsx("text",null,x.label)))));';
+ const svg=(d:string)=>`<svg data-d-component="icon" viewBox="0 0 24 24"><path d="${d}"/></svg>`;
+ const html=`<div data-osis-native-component="box"><div data-osis-native-component="box">Repeat label</div>${svg('M0 0v4')}<div data-osis-native-component="row">${svg('M1 0v4')}Alpha<a data-osis-ui-file-resource="attachment">${svg('M9 0v4')}</a></div><div data-osis-native-component="row">${svg('M2 0v4')}Beta</div></div>`;
+ const writes:JsonObject[]=[],extension:JsonObject={records:{m:{message_id:"m",raw:{metadata:{model_dil_v2:{code,constants:{}}}}}}};
+ const parser=new ChatGptIntelligentUi(extension,p=>{writes.push(p);return`r${writes.length}`;});parser.project({intelligent_ui:{record_id:"m"},html},["m"]);
+ const bundle=JSON.parse(Buffer.from(String(writes.find(p=>p["name"]==="ui.json")!["src"]).split(',')[1]!,"base64").toString());assert.equal(bundle.code,code);assert.deepEqual(Object.keys(bundle.icons).sort(),["arrow-down","first","second"]);
+ for(const[name,path]of[["first","M1 0v4"],["second","M2 0v4"]]){const value=writes.find(p=>p["name"]===`${name}.svg`)!;assert.ok(Buffer.from(String(value["src"]).split(',')[1]!,"base64").toString().includes(path!));}
+ const ambiguous=new ChatGptIntelligentUi(extension,p=>{if(String(p["name"]).endsWith('.svg'))throw new Error('Ambiguous glyph claimed');return 'r';});
+ ambiguous.project({intelligent_ui:{record_id:"m"},html:html+html},["m"]);
 });

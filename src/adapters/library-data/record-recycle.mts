@@ -41,14 +41,17 @@ export async function pendingRecordRecycles(root: string) {
     const found = await pendingUnlocked(root); return { items: found.plans.map(p => ({ operation: p.plan.operation_id, conversation_id: p.plan.conversation_id, files: p.plan.files.map(f => ({ ...f })) })), issues: found.issues };
   });
 }
-async function checkFiles(root: string, plan: RecyclePlan) {
+async function checkFiles(root: string, plan: RecyclePlan, verifyIdentity = true) {
   const remaining: RecycleFile[] = [], absent: RecycleFile[] = [];
   for (const file of plan.files) {
     try {
-      const actual = await fingerprintFile(await resolveRecordPath(root, file.path));
+      // Identity and fingerprint come from one verified read. After prepare
+      // (or resume), identical bytes prove the already-checked identity; do
+      // not decode/validate every embedded resource again before native delete.
+      const record = verifyIdentity ? file.kind === "mark" ? await readStoredRecord(root, "mark", file.path) : await readStoredConversationMetadata(root, file.path) : undefined;
+      const actual = record ? {sha256: record.sha256, bytes: "bytes" in record ? record.bytes : (await lstat(await resolveRecordPath(root, file.path))).size} : await fingerprintFile(await resolveRecordPath(root, file.path));
       if (actual.sha256 !== file.sha256 || actual.bytes !== file.bytes) throw new TypeError(`Recycle original changed: ${file.path}`);
-      if (file.kind === "mark") { const mark = await readStoredRecord(root, "mark", file.path); if (mark.value["target"] !== plan.conversation_id) throw new TypeError("Recycle Mark belongs to another conversation"); }
-      else { const conversation = await readStoredConversationMetadata(root, file.path); if (conversation.value["conversation_id"] !== plan.conversation_id) throw new TypeError("Recycle Conversation identity changed"); }
+      if (record && record.value[file.kind === "mark" ? "target" : "conversation_id"] !== plan.conversation_id) throw new TypeError("Recycle record identity changed");
       remaining.push(file);
     } catch (e) { if (missing(e)) absent.push(file); else throw e; }
   }
@@ -73,7 +76,10 @@ export class RecordRecycleSession {
       if (!conversation || conversation.path !== selected.path || conversation.sha256 !== selected.conversationSha || (mark?.sha256 ?? null) !== selected.markSha || catalog.issues.some(i => i.path.startsWith("Marks/"))) throw new TypeError("Selected Conversation or Mark changed before deletion");
       const files: RecycleFile[] = [{ kind: "conversation", path: conversation.path, bytes: conversation.bytes, sha256: conversation.sha256 }];
       if (mark) files.push({ kind: "mark", path: mark.path, bytes: (await lstat(await resolveRecordPath(this.#root, mark.path))).size, sha256: mark.sha256 });
-      const id = uuidV7(), plan = checked({ schema: "cloudig/recycle/1.0.0", operation_id: id, conversation_id: selected.id, created_at: timestamp, files }, id); await checkFiles(this.#root, plan);
+      // The catalog has already validated these exact record bytes/identities
+      // (and revalidated changed files). Recheck content, not all JSON/resources.
+      // Resuming an on-disk intent still independently validates its identities.
+      const id = uuidV7(), plan = checked({ schema: "cloudig/recycle/1.0.0", operation_id: id, conversation_id: selected.id, created_at: timestamp, files }, id); await checkFiles(this.#root, plan, false);
       signal?.throwIfAborted();
       await mkdir(await resolveRecordPath(this.#root, base), { recursive: true }); const handle = await open(await resolveRecordPath(this.#root, location(id)), "wx", 0o600);
       try { await handle.writeFile(JSON.stringify(plan, null, 2) + "\n"); await handle.sync(); } finally { await handle.close(); }
@@ -96,7 +102,7 @@ export class RecordRecycleSession {
     const guard = await acquireRecordSnapshot(this.#root); let retained = false;
     try {
       const current = await load(this.#root, active.entry.plan.operation_id); if (current.sha256 !== active.entry.sha256) throw new TypeError("Recycle intent changed before native execution");
-      const files = await checkFiles(this.#root, current.plan); signal?.throwIfAborted(); active.guard = guard; retained = true;
+      const files = await checkFiles(this.#root, current.plan, false); signal?.throwIfAborted(); active.guard = guard; retained = true;
       return { plan: token, files: files.remaining.map(f => ({ ...f })) };
     } finally { if (!retained) await guard.release(); }
   }
@@ -107,7 +113,7 @@ export class RecordRecycleSession {
     active.guard ??= await acquireRecordSnapshot(this.#root);
     try {
       if (!started && !requireComplete) { await forget(this.#root, active.entry); return { status: "cancelled" }; }
-      const checked = await checkFiles(this.#root, active.entry.plan);
+      const checked = await checkFiles(this.#root, active.entry.plan, false);
       if (!checked.remaining.length || !requireComplete && !checked.absent.length) await forget(this.#root, active.entry);
       if (requireComplete && checked.remaining.length) throw new TypeError("Windows has not recycled all selected originals");
       return { status: checked.remaining.length ? checked.absent.length ? "partial" : "cancelled" : "recycled", remaining: checked.remaining.map(f => ({ ...f })) };

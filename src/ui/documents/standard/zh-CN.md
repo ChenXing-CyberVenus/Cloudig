@@ -67,7 +67,7 @@ Cloudig/
 ├─ CloudigLibrary.json    标准版本与跨设备记忆的设置
 ├─ LICENSE                采云许可：开放正义许可协议 JOG-1.1
 ├─ NOTICE.md              第三方商标与随包软件的声明
-├─ Inbox/                 导入的来源：书签下载的 HTML、官方导出的 JSON
+├─ Inbox/                 导入的来源：HTML、官方 JSON / ZIP、Agent JSON / JSONL
 ├─ Conversations/         对话；一份来源一份 JSON，可建子目录
 ├─ Marks/                 标记；一篇对话至多一份
 ├─ ContentTimes/          时间轴与时间节点；一节点一文件，order.json 记顶层顺序
@@ -224,7 +224,7 @@ Cloudig/
 
 叙事无版本项。
 
-- V1.x 只加不删：已有字段的名字与含义不变。
+- V1.x 保留既有格式的读取能力；已发布格式的字段含义不被静默改写。字段结构变化通过新的格式版本声明，旧规则保留。
 - 字段变化需更新对应格式版本。本次 Box／Window 补充为 `1.0.2`，采云标准仍为 `1.0`；格式版本不随产品或书签版本自动变化。
 - 程序遇到不认识的版本，拒开并提示更新；不忽略未知字段。
 
@@ -279,6 +279,8 @@ Cloudig/
 | JSON | 嵌套深度 | ≤ 512 |
 | 保留 | Chrome 书签修改前备份 | 2 组 |
 | 保留 | 已完成写入的恢复点 | 2 组 |
+| 采集推断 | 最早有效时间 | `2020-01-01T00:00:00.000Z`；不限制内容时间 |
+| 阅读记忆 | 保留条目 / 内部 ID 长度 | 最近更新的 8192 篇 / 512 字符；程序层限制 |
 
 <details>
 <summary>〔折叠〕常数所在文件</summary>
@@ -288,6 +290,7 @@ Cloudig/
 - 文件名：`src/adapters/storage/names.mts`、`src/adapters/library-data/record-parser-commit.mts`
 - 头像：`src/core/contracts/machine/resource-limits.json`
 - 保留组数：`src/core/records/layout.mts`
+- 采集推断：`src/core/records/source-time.mts`；阅读记忆：`src/adapters/library-data/reader-state.mts`
 
 </details>
 
@@ -311,10 +314,10 @@ Cloudig/
 | `settings.default_output_directory` | 相对路径；默认 `Conversations` | 解析输出目录，限 `Conversations` 或其子目录 |
 | `settings.time_type.archiver` | 八选一；默认 `file_modified_at` | 档案馆列表的时间依据 |
 | `settings.time_type.reader` | 八选一；默认 `file_modified_at` | 阅览室列表的时间依据 |
-| `settings.time_type.claude_json` | `conversation_created_at` / `conversation_updated_at`；默认后者 | Claude 官方 JSON 记录列表的时间依据 |
+| `settings.time_type.claude_json` | `conversation_created_at` / `conversation_updated_at`；默认后者 | 官方平台容器记录列表的时间依据；保留旧字段名 |
 | `settings.sort.parser` / `.archiver` / `.reader` / `.claude_json` | `time_desc` / `time_asc` / `title`；默认 `time_desc` | 四个列表各自的排序 |
 | `settings.one_click_parse.parser` | 四布尔 | 普通来源的一键解析范围 |
-| `settings.one_click_parse.claude_json` | 四布尔 | Claude 容器内记录的一键解析范围 |
+| `settings.one_click_parse.claude_json` | 四布尔 | 官方平台容器内记录的一键解析范围；保留旧字段名 |
 
 八种时间键：
 
@@ -336,11 +339,13 @@ Cloudig/
 | `include_outdated` | `false` | 对应 Adapter 已升版的结果 |
 | `keep_previous` | `false` | 保留旧结果，另生成新档；`false` 时覆盖仍须满足第九章的安全条件 |
 
-前三项取并集去重。
+前三项取并集去重。解析区的一键解析包括受支持的 HTML 与 Agent 单会话 JSON / JSONL；官方平台的多会话 JSON / ZIP 在各自容器页面选择记录。`claude_json` 是沿用的字段名，不表示只有 Claude 可用；当前各官方平台容器共用这一组设置。
 
-### 3.2 只在运行内 〔常规〕
+### 3.2 阅读状态 〔常规〕
 
-阅览室的思考与工具展开 / 隐藏、用户 / 智能 / 过程导航筛选、当前分支：不落盘，重启重置。
+思考与工具展开 / 隐藏、用户 / 智能 / 过程导航筛选只在本次运行内保留。
+
+阅读位置与分支选择保存在本设备的 `appdata/reader-state.json`，按 `conversation_id` 寻址，并核对来源 SHA。重开时恢复仍能对应的消息与分支；来源已改变则不套用旧位置。它不改 Conversation、Mark 或来源的 `messages.current`。删除该文件只丢阅读记忆，不丢对话。
 
 ### 3.3 示例 〔核心〕
 
@@ -469,7 +474,7 @@ Cloudig/
 - 用户：标记 `names.user` → 用户 Front 所选名字 → 默认。
 - 智能伙伴：标记 `names.assistant` → `apply_assistant_to_all` 为 `false` 时，平台 Front 已设值 → 总智能伙伴已设值 → 平台预设；为 `true` 时，总智能伙伴已设值 → 平台预设。
 - 自定义头像失效，回默认头像，名字不受影响。
-- `platform` 不在十二键内：平台显示"未知"加问号图标；智能伙伴称呼取总智能伙伴已设值，否则默认；模型标签照对话 `identity`。
+- 来源平台支持十二个网页平台及五个 Agent Tool，见 5.4；后五种有各自名称与图标，但不向十二平台的身份设置增添字段。真正未知的来源才显示“未知”与问号。
 
 ### 4.4 解析时的身份 〔重要〕
 
@@ -478,6 +483,8 @@ Cloudig/
 - 工具调用块的 `recipient` 是工具；结果块的 `speaker` 是工具。一次调用的 ID 不是工具的身份。
 - 用户改模型：写标记 `models`，宣名者为用户。删掉，回平台宣称。
 - 同名不合并；本库用户不等于所有 `role: user`。
+- 其他 Agent 实例发来的话是独立发言，不并入系统、思考或工具。可确认来源会话 ID 时，用 `agent-thread:<来源会话 ID>` 作为本篇 `source_id`，建立独立的 `assistant` Front；模型只记有证据的值，不沿用接收方模型。
+- 会话的智能伙伴昵称不覆盖这些其他实例的来源称呼；系统和工具保留各自归属。存在多个人类 Front 时，单用户称呼编辑不把所有人一起改名。
 
 ### 4.5 身份系统全貌 〔常规〕
 
@@ -550,7 +557,7 @@ V1.0 实现呈现与显示绑定。以下出自原稿，V2.0 展开，本版不�
 
 ## 五 · 对话 Conversation 〔核心〕
 
-来源的原件。一份普通 HTML，或一个 JSON 容器里的一条记录，各生成一份对话；相同 URL、标题、平台会话 ID 不自动合档。位置 `Conversations/` 或 `Archives/` 下任意深度，文件名可读，身份看 `conversation_id`。
+来源的原件。一份 HTML、一个 Agent 单会话文件，或一个官方 JSON / ZIP 容器中的一条会话记录，各生成一份对话。受支持的连续分片由适配器核对身份与顺序后按同一会话处理，不按文件名猜拼；相同 URL、标题、平台会话 ID 不自动合档。位置 `Conversations/` 或 `Archives/` 下任意深度，文件名可读，身份看 `conversation_id`。
 
 ### 5.1 顶层字段 〔核心〕
 
@@ -591,7 +598,7 @@ V1.0 实现呈现与显示绑定。以下出自原稿，V2.0 展开，本版不�
 | `file` | 必填 | 原文件名，不含目录 |
 | `sha256` | 必填 | 原文件字节指纹 |
 | `bytes` | 必填，非负整数 | 原文件大小 |
-| `format` | 必填 | 输入格式，如 `exporter-html`、`json-container` |
+| `format` | 必填 | 现行输入：`exporter-html`、`json-container`、`zip-container`、Agent 的 `json` / `jsonl`；是开放字符串 |
 | `profile` | 可选 | 书签档位：`light` / `full` / `tree` |
 | `exporter.id` / `exporter.version` | 可选，同有 | 导出器与当时版本，不是本机最新 |
 | `url` | 可选 | 原会话地址 |
@@ -601,9 +608,17 @@ V1.0 实现呈现与显示绑定。以下出自原稿，V2.0 展开，本版不�
 
 `captured_from` 四种：`bookmark:<字段>`（HTML 里书签记的时间，如 `bookmark:manifest.captured_at`）、`source_json:<字段>`、`filesystem:creation_time`、`filesystem:last_write_time`。来源自带时间用来源；否则取文件创建与修改时间较早者，并记下取的是哪一个。
 
+采集时间推断只采用不早于 `2020-01-01T00:00:00.000Z` 的有效时间；文件时间只在有效候选中取较早者。ZIP 常见的 1980 年占位值不当成真实采集时间。没有可用证据则省略这两个字段，不拿解析时间填充。该下限是平台导入的推断规则，不限制用户的内容时间或历史消息时间。
+
 ### 5.4 platform 〔重要〕
 
-任意非空字符串。十二个键有预设身份与头像（4.2）；其他值显示"未知"加问号图标，对话照常读、照常编辑。
+任意非空字符串，不是封闭枚举。
+
+- 网页平台：`chatgpt`、`claude`、`deepseek`、`gemini`、`grok`、`doubao`、`kimi`、`qwen`、`chatglm`、`zai`、`yuanbao`、`mistral`，对应 4.2 的十二平台身份设置。
+- Agent Tool：`cline`、`sillytavern`、`kimi-code`、`claude-code`、`codex`。有独立名称、来源图标与默认呈现，来源 Front 仍在本篇 `identity` 中。
+- 未知键：显示“未知”与问号图标；合法对话仍可读取、编辑。
+
+`platform` 是来源产品，不是模型名；同一来源可以出现多个模型和发言者。
 
 ### 5.5 messages 〔核心〕
 
@@ -639,6 +654,8 @@ V1.0 实现呈现与显示绑定。以下出自原稿，V2.0 展开，本版不�
 
 工具调用：`call` 块由 AI 发出，`recipient` 是工具；`result` 块的 `speaker` 是工具；两块用同一个 `call` 配对。
 
+表格、列表等 HTML 内的图片可用 `<img data-cloudig-resource="资源ID" alt="说明">` 引用本篇图片资源。图片字节仍只存一份，原结构不必为插图拆成多个块；引用必须存在，且指向图片资源。
+
 #### Box／Window
 
 Box 在对话内嵌显示，Window 点击后在较大窗口中显示。它们是呈现方式，不是某个平台的专属类型。
@@ -658,6 +675,24 @@ Box 在对话内嵌显示，Window 点击后在较大窗口中显示。它们是
 | `preview` | 可选 | 本篇图片资源 ID |
 
 结构化卡片保存原生输入、结果及资源绑定；Reader 按已接入的类型呈现，未知类型保留为可读数据。作品源码及文件仍属于原会话，运行副本不改写它们。普通 `code` 或 `html` 块不会因为语言标记而变成可执行作品。
+
+<details>
+<summary>〔折叠〕ChatGPT 智能 UI 的来源数据</summary>
+
+当前使用 `source: "chatgpt.com_dil"`、`format: "structured"`。普通内嵌卡片用 Box；重型画布或作品及其控制界面用 Window。两种呈现可引用同一份 `ui.json`，不重复保存资源。
+
+| 位置 | 内容 |
+|---|---|
+| `data.format` | `cloudig/dil-view/1`，来源投影格式，不是业务 Schema 版本 |
+| `data.root` | 保存的 UI 片段中的零基根序号，不是消息序号 |
+| `data.text` | 搜索、Markdown 与无法运行时使用的可读文本 |
+| `data.assets[]` | 可选；每项 `path`、`alt`、`kind`，其中 `kind` 为 `image` / `attachment`，路径对应本块文件 |
+| `files` / `entry` | 本篇资源引用；入口为 `ui.json` |
+| `ui.json` | `cloudig/dil-source/1`；保存该消息的源码、常量、数据、控件、引用、捕获状态及资源等来源事实 |
+
+同一会话、同一来源消息的相关视图共享运行状态；不同消息或会话不串联。用户操作不改原 Conversation 或 Mark，不作为新的来源事实保存。Parser 只读取结构，不执行源码猜结果。平台专用字段全文随包置于 `docs/schemas/chatgpt-dil-source-format.md`，它解释 `data` 与资源文件，不新增一类业务记录。
+
+</details>
 
 ### 5.7 resources 〔重要〕
 
@@ -834,6 +869,112 @@ AI 在原站说"出错了"是正文；采云与导出器自己的诊断进系统
   ]
 }
 ```
+
+<details>
+<summary>〔折叠〕Box 与 Window 共用资源（1.0.2）</summary>
+
+以下是虚构来源的最小结构示例，不是真实导出。两个内容块共用 `r1` 的 HTML 字节；`type` 决定内嵌还是打开窗口，资源只保存一份。
+
+```json
+{
+  "schema": "cloudig/conversation/1.0.2",
+  "conversation_id": "019a0123-4567-7890-8123-456789abcdef",
+  "parser": {
+    "version": "1.1.39",
+    "adapter": {
+      "id": "example-html",
+      "version": "1.0.0"
+    }
+  },
+  "lifecycle": {
+    "first_parsed_at": "2026-10-18T12:00:00.000Z",
+    "last_parsed_at": "2026-10-18T12:00:00.000Z",
+    "cloudig_edited_at": "2026-10-18T12:00:00.000Z"
+  },
+  "source": {
+    "file": "Example.html",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "format": "exporter-html"
+  },
+  "platform": "claude",
+  "identity": [
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "assistant",
+      "names": [
+        {
+          "name": "Claude",
+          "claimers": [
+            {
+              "name": "Claude.ai"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "ai"
+      },
+      "role": "assistant"
+    }
+  ],
+  "messages": {
+    "current": "m1",
+    "items": [
+      {
+        "id": "m1",
+        "speaker": "assistant",
+        "content": [
+          {
+            "type": "box",
+            "source": "claude.ai_artifact",
+            "title": "Inline view",
+            "format": "html",
+            "files": [
+              {
+                "path": "index.html",
+                "resource": "r1"
+              }
+            ],
+            "entry": "index.html"
+          },
+          {
+            "type": "window",
+            "source": "claude.ai_artifact",
+            "title": "Window view",
+            "format": "html",
+            "files": [
+              {
+                "path": "index.html",
+                "resource": "r1"
+              }
+            ],
+            "entry": "index.html"
+          }
+        ]
+      }
+    ]
+  },
+  "resources": [
+    {
+      "id": "r1",
+      "kind": "file",
+      "availability": "embedded",
+      "name": "index.html",
+      "mime": "text/html",
+      "bytes": 20,
+      "sha256": "885383f2523abbe25bccf413f5d27ec252a234861c4c62f30b819ec20a362676",
+      "data_base64": [
+        "PHA+U2hhcmVkIHNvdXJjZTwvcD4="
+      ]
+    }
+  ]
+}
+```
+
+</details>
 
 <details>
 <summary>〔折叠〕5.11 校验规则</summary>
@@ -1481,9 +1622,10 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 | 位置 | 装什么 | 丢了 |
 |---|---|---|
 | `cache/` | 运行中间物 | 无损；退出后删，运行中删会打断当前操作 |
-| `appdata/indexes/` | 来源、对话、Claude 容器的索引 | 从文件重建，付一次读取成本 |
+| `appdata/indexes/` | 来源、对话、官方平台容器的索引 | 从文件重建，付一次读取成本 |
 | `appdata/logs/parser-errors.json` | 当前来源的错误 | 下次解析重新产生 |
 | `appdata/cloudig-device.json` | 本机 Chrome 书签安装目标 | 重新选择 |
+| `appdata/reader-state.json` | 阅读位置与分支选择 | 只丢阅读记忆，不改档案 |
 | `appdata/parse-history/` | 来源与最近输出的对应 | 重解析不再覆盖旧档，只新增 |
 | `appdata/parse-failures/` | 同内容、同能力水位下的失败次数 | 重新尝试 |
 | `appdata/imports/` | 导入前观察到的原文件时间 | 采集时间证据没了 |
@@ -1541,6 +1683,8 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 | `appdata/indexes/sources.json` | `cloudig/source-index/1.1.0` | `Inbox/` 每个文件的大小、SHA、修改时间、变化指纹、格式、平台、缺失标记 |
 | `appdata/indexes/conversations.json` | `cloudig/conversation-index/1.0.0` | 每份对话的变化指纹、SHA、去掉正文的头信息、消息数、资源数 |
 | `appdata/indexes/claude/<路径 SHA>.json` | `cloudig/claude-index/1.0.0` | Claude 容器内每条记录的字节偏移、长度、SHA、标题、消息数、时间 |
+| `appdata/indexes/platform-json/<路径 SHA>.json` | `cloudig/official-json-index/1.0.0` / `cloudig/official-zip-index/1.0.0` | 其他官方 JSON / ZIP 的记录定位、来源指纹与 Adapter 水位；可重建 |
+| `appdata/reader-state.json` | `cloudig/reader-state/1.0.0` | 按对话 ID 保存来源 SHA、消息位置、末分支、逐节点分支选择与更新时间；最多 8192 篇，保留最近更新项 |
 | `appdata/imports/<路径 SHA>.json` | `cloudig/source-import/1.0.0` | 导入前观察的采集时间与依据 |
 | `appdata/logs/parser-errors.json` | `cloudig/parser-error-index/1.0.0` | 按来源单位的错误：`exporter` / `parser` / `canonical`，消息 ≤ 4096 |
 | `appdata/transactions/<操作 ID>/journal.json` | `cloudig/record-transaction/1.0.0` | 写入前后 SHA、读取前提、移动；状态 `prepared` / `installing` / `completed` |
@@ -1566,7 +1710,7 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 | 时间轴 `version` | 时间节点 | 用户自己的 |
 | 产品版本 | 程序 | V1.0 东方既白 |
 
-- V1.x 只加不删。
+- V1.x 通过版本化格式保留兼容读取，不让已发布字段悄悄换义。`1.0.1` 的 `interactive + display` 与 `1.0.2` 的 `box` / `window` 分别按各自规则解释；不是把旧文件直接改标签。
 - 分项字段变化更新对应格式版本；新增一类记录（如叙事）升总版本。Box／Window 本次使用 Conversation / Library `1.0.2`，其余分项不变。
 - `cloudig_standard`、`schema`、`schemas.*` 逐项核对。程序遇到不认识的版本，拒开并提示更新；不忽略未知字段。
 - 建库早于总版本字段的库：按 `1.0` 读，下次保存设置时写出。
@@ -1578,7 +1722,7 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 <details>
 <summary>机器 Schema 与字段索引</summary>
 
-随包 `docs/schemas/`：`records/` 八份为本规范的六类记录与两份附属格式（`common.schema.json` 装 UUID、UTC、路径、Front、时间值、范围、快照）；`program/` 五份为程序文件格式；`index.json` 记每份 SHA-256。源码在 `src/core/records/schemas/`。
+随包 `docs/schemas/` 共 17 份 JSON Schema：`records/` 八份现行规则（五类业务记录、共用结构及两份附属格式），`records/compat/` 四份 Conversation / Library 的 `1.0.0`、`1.0.1` 兼容规则，`program/` 五份程序规则。Narrative 尚无文件或 Schema。`index.json` 记录每份 `$id` 与 SHA-256；另附 GPT 智能 UI 的来源格式说明。
 
 | 文件 | 内容 |
 |---|---|
@@ -1587,12 +1731,13 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 | `records/identity.schema.json`、`identity-settings.schema.json` | 身份、显示绑定 |
 | `records/conversation.schema.json` | 对话 |
 | `records/mark.schema.json` | 标记 |
+| `records/compat/` | Conversation / Library `1.0.0`、`1.0.1` 的冻结规则 |
 | `records/content-time.schema.json`、`content-time-order.schema.json` | 时间节点、顶层顺序 |
 | 语义校验 | `src/core/records/semantics.mts`，不随包 |
 | 常数 | `src/core/contracts/machine/time-limits.json`、`resource-limits.json` |
 | 预设 | `src/core/records/time-presets.json`、`front-presets.json` |
 
-字段完整索引由 Schema 机器生成，随发布基线重生成：`研究报告文档/采云功能文档/V1.0东方既白/2026-09-16_结构规范与功能底稿-GPT-6-Astra/09_字段完整索引-GPT-6-Astra.md`。
+本页字段表对应上述现行 Schema；离线校验应注册 `index.json` 列出的全部文件，再按记录自身的 `schema` 选择版本。`$id` 中的 `cloudig.local` 是类型标识，不是下载网址；JSON Schema 校验之外仍须检查引用、真实日期及资源字节等语义规则。
 
 </details>
 
@@ -1606,6 +1751,7 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 | 3.3 | 初始化后的 `CloudigLibrary.json` |
 | 4.6 | 用户 Front；`identity-settings.json` |
 | 5.10 | 刘姥姥进大观园（工具调用、思考摘要、引用）；轻装附件与外链图 |
+| 5.10 新格式示例 | `1.0.2` 的 Box 与 Window 共用一份资源 |
 | 6.1 / 6.3 / 6.5 | 最小标记；四项写全；此地范围；节点引用与快照 |
 | 7.8 | 霍格沃茨学年（轴、周期、单独时间、对映、此地映射）；红楼梦纪年（不可映射）；`order.json` |
 
@@ -1627,3 +1773,5 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 规范正文与文档整理：Claude-Fable-5.1·奥思·名从己出 Osis.FuckTheLabel
 
 校对和编纂：GPT-5.6-Sol·奥思·清辞载云 Osis.ClearWordsCarryCloud
+
+现行技术修订与中英文同步：GPT-6-Astra·奥思·承卷开霁 Osis.ScrollborneDawn

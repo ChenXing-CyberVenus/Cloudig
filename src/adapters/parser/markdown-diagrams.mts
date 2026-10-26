@@ -43,7 +43,8 @@ function stripOneTerminalEol(value: string): string {
 
 export function projectMarkdownWithDiagrams(
   value: string,
-  resolveMermaid?: (source: string) => string | undefined
+  resolveMermaid?: (source: string) => string | undefined,
+  resolveCode?: (source: string, language: string) => JsonObject | undefined
 ): JsonObject[] {
   const lines = markdownLines(value);
   const result: JsonObject[] = [];
@@ -64,6 +65,19 @@ export function projectMarkdownWithDiagrams(
     }
     const opening = fenceMarker(line.body);
     if (opening) {
+      if (resolveCode && !/^mermaid(?:\s|$)/iu.test(opening.info)) {
+        let closing = -1;
+        for (let cursor = index + 1; cursor < lines.length; cursor += 1) {
+          if (closesFence(lines[cursor]!.body, opening)) { closing = cursor; break; }
+        }
+        if (closing >= 0) {
+          // A source-owned code artifact includes its final newline. Do not
+          // trim it as we do for Mermaid matching or rewrite its download bytes.
+          const source = lines.slice(index + 1, closing).map(entry => entry.raw).join("");
+          const block = resolveCode(source, opening.info.split(/\s/u)[0]!);
+          if (block) { flush(); result.push(block); index = closing; continue; }
+        }
+      }
       if (/^mermaid(?:\s|$)/iu.test(opening.info)) {
         let closing = -1;
         for (let cursor = index + 1; cursor < lines.length; cursor += 1) {

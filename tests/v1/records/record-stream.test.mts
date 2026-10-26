@@ -6,7 +6,7 @@ import test from "node:test";
 import { spawn } from "node:child_process";
 import { JSDOM } from "jsdom";
 import { pathToFileURL } from "node:url";
-import { recordJsonChunks, prepareRecordEncoding, RECORD_ENCODING_LIMITS } from "../../../src/core/records/encoding.mts";
+import { recordJsonChunks, prepareRecordEncoding, reuseRecordEncoding, RECORD_ENCODING_LIMITS } from "../../../src/core/records/encoding.mts";
 import { encodeRecord, validateRecord, validateConversationRecordMetadata } from "../../../src/core/records/index.mts";
 import { inspectRecordConversation, materializeRecordResource, streamRecordResource } from "../../../src/adapters/reader/record-resource.mts";
 import { commitRecords, pendingRecordOperations } from "../../../src/adapters/storage/record-store.mts";
@@ -44,6 +44,17 @@ test("streamed Reader projections omit absent optional properties without losing
   assert.equal([...recordJsonChunks(value)].join(""), `${JSON.stringify(value, null, 2)}\n`);
   assert.throws(() => [...recordJsonChunks(undefined as never)], /non-JSON/u);
 });
+
+test("prepared encoding reuse is exact-value bound and mutation is caught before installation",async()=>temporary(async root=>{
+  await createRecordLibrary(root,{timestamp:"2026-10-23T12:00:00Z",anchor:{date:"2026-10-23",offset:"Z"}});
+  const c=await conversation([Buffer.from('same')]),encoding=prepareRecordEncoding('conversation',c);
+  assert.equal(reuseRecordEncoding('conversation',c,encoding),encoding);
+  assert.throws(()=>reuseRecordEncoding('conversation',structuredClone(c),encoding),/another record/u);
+  assert.throws(()=>reuseRecordEncoding('conversation',c,{...encoding}),/another record/u);
+  c['title']={filename:'changed after preparation'};
+  await assert.rejects(commitRecords(root,[{action:'write',kind:'conversation',path:'Conversations/test.json',expected:null,value:c,encoding}]),/changed while preparing/u);
+  assert.deepEqual(await readdir(path.join(root,'Conversations')),[]);
+}));
 
 test("resource indexing skips a single large segment without imposing a Schema segment size", async () => temporary(async root => {
   const data = Buffer.alloc(8 * 1024 * 1024, 0xfe), c = await conversation([data]), file = path.join(root, "conversation.json");

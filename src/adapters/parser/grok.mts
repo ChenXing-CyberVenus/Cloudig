@@ -639,6 +639,9 @@ function orderedTreeItems(items: readonly JsonObject[], limitations: JsonObject[
 }
 
 async function parseGrok(context: AdapterParseContext, profile: Profile, payloadName: string): Promise<JsonObject> {
+  const bot = object(context.payload["bot"]), isBot = bot?.["format"] === "osis.grok.bot-timeline/v1";
+  const botEntries = new Map(values(bot?.["projections"]).flatMap(v => { const e = object(v), id = sourceText(e?.["entryId"]); return e && id ? [[id, e] as const] : []; }));
+  if (isBot && profile === "tree") profile = "full"; // BOT's Tree download is explicitly a linear timeline; Light stays Light.
   const limitations: JsonObject[] = [];
   const resources = new GrokResourcePool(context.payload, context.reading?.images ?? []);
   const sources = new GrokSourcePool();
@@ -662,6 +665,7 @@ async function parseGrok(context: AdapterParseContext, profile: Profile, payload
   const allocateCall = () => `x${++callSequence}`;
   const messages = await mapSequential(items, async (item, index) => {
     const sourceId = sourceText(item["source_id"]);
+    const botEntry = sourceId ? botEntries.get(sourceId) : undefined;
     const rawResponseId = sourceText(item["response_id"]) ?? (sourceId ? responseId(sourceId) : undefined);
     const owners = unique([sourceId, rawResponseId].filter((value): value is string => value !== undefined));
     const owner = sourceId ?? (rawResponseId ? `response-${rawResponseId}` : `grok-message-${index}`);
@@ -681,7 +685,7 @@ async function parseGrok(context: AdapterParseContext, profile: Profile, payload
       return resources.addOccurrence(attachment, owner, limitations);
     });
     const panelClass = item["role"] === "user" ? "user-bubble" : "assistant-content";
-    const excluded = item["role"] === "user" ? [] : ["thinking", "answer-sources", "assistant-model"];
+    const excluded = [...(item["role"] === "user" ? [] : ["thinking", "answer-sources", "assistant-model"]), ...(isBot ? ["bot-time"] : [])];
     const textPanel = capturedTextPanel(reading.get(owner), panelClass, undefined, excluded);
     const captured: readonly JsonObject[] | undefined = textPanel ? [{ type: "html", html: textPanel }]
       : capturedPanelWithMermaid(reading.get(owner), panelClass, excluded)?.map(part => {
@@ -689,7 +693,9 @@ async function parseGrok(context: AdapterParseContext, profile: Profile, payload
         const record = mermaid.take(owners, part.mermaid);
         return { type: "diagram", format: "mermaid", source: part.mermaid, ...(record ? { rendered: resources.addDiagram(record.dataUrl) } : {}) };
       });
-    const body = projectBody(item, owners, mermaid, resources, captured);
+    const body = botEntry && ["widget", "connector"].includes(String(botEntry["kind"]))
+      ? { blocks: [{ type: "box", source: `grok.com_bot_${botEntry["kind"]}`, format: "structured", title: sourceText(botEntry["prompt"] ?? botEntry["connector"]) ?? "Grok BOT", data: { entry: botEntry } }] as JsonObject[], links: [] as string[] }
+      : projectBody(item, owners, mermaid, resources, captured);
     messageSourceIds.push(...sources.addAll(capturedReferences(reading.get(owner) ?? "", "grok-image").filter(source => !body.links.includes(String(source["url"])))));
     const remainingImages = resources.addRemainingImages(owner, limitations);
     const unclaimed = resources.addUnclaimedForOwner(owner, limitations);
@@ -706,7 +712,7 @@ async function parseGrok(context: AdapterParseContext, profile: Profile, payload
     if (allSourceIds.length > 0) content.push({ type: "citations", sources: allSourceIds });
     const model = sourceText(item["model"] ?? response?.["model"]);
     if (model && !models.includes(model)) models.push(model);
-    const role = item["role"] === "user" ? "user" : item["role"] === "assistant" ? "assistant" : "other";
+    const role = item["role"] === "user" ? "user" : item["role"] === "assistant" ? "assistant" : item["role"] === "system" ? "system" : "other";
     const parentRaw = sourceText(item["parent_response_id"]);
     const parent = profile === "tree" && parentRaw ? localIds.get(parentRaw) : undefined;
     const recordId = rawResponseId ?? owner;
@@ -719,7 +725,7 @@ async function parseGrok(context: AdapterParseContext, profile: Profile, payload
       role,
       ...(role === "other" ? { name: sourceText(item["role"]) ?? "Grok" } : {}),
       ...(model ? { model } : {}),
-      ...(timestamp(item["create_time"] ?? response?.["createTime"]) ? { timestamp: timestamp(item["create_time"] ?? response?.["createTime"])! } : {}),
+      ...(timestamp(item["timestamp"] ?? item["create_time"] ?? response?.["createTime"]) ? { timestamp: timestamp(item["timestamp"] ?? item["create_time"] ?? response?.["createTime"])! } : {}),
       content
     };
     await context.onProgress?.(index + 1, items.length);
@@ -784,11 +790,11 @@ async function parseGrok(context: AdapterParseContext, profile: Profile, payload
 function manifest(id: string, payload: string, profile: Profile): AdapterManifest {
   return {
     id,
-    version: "3.0.7",
+    version: "3.0.8",
     family: "grok",
     routes: [{ format: "exporter-html", platform: "grok", payload, profile }],
-    target: "cloudig/conversation/1.0.0",
-    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "2.0.3", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
+    target: "cloudig/conversation/1.0.2",
+    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "2.0.3", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
   };
 }
 

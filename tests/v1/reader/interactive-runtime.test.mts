@@ -2,13 +2,31 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { JSDOM } from "jsdom";
-import { prepareInteractiveHtml } from "../../../src/ui/shared/conversation-renderer/interactive-document.mts";
+import { prepareInteractiveHtml, unwrapWorkDocument } from "../../../src/ui/shared/conversation-renderer/interactive-document.mts";
 import { openInteractiveWindow } from "../../../src/ui/shared/conversation-renderer/interactive-window.mts";
 import { loadInteractiveDependencies } from "../../../src/ui/shared/conversation-renderer/interactive-dependencies.mts";
 import { interactiveReactDocument } from "../../../src/ui/shared/conversation-renderer/interactive-react-document.mts";
 import { INTERACTIVE_LIMITS, INTERACTIVE_PROTOCOL, readInteractiveState, saveInteractiveState, type InteractivePackage } from "../../../src/ui/shared/conversation-renderer/interactive-protocol.mts";
 
 const bytes = (text: string) => new TextEncoder().encode(text).buffer;
+test("a whole-document source fence is unwrapped only for the running HTML copy", () => {
+  const source = "```html\n<!doctype html><html><body>Original</body></html>\n```\n";
+  assert.equal(unwrapWorkDocument(source), "<!doctype html><html><body>Original</body></html>");
+  for (const value of ["Notes\n" + source, "```html\nJust prose\n```", "````html\n<html></html>\n```", "<p>```html</p>"]) assert.equal(unwrapWorkDocument(value), value);
+  const dom = new JSDOM("<!doctype html>");
+  const input: InteractivePackage = { protocol: INTERACTIVE_PROTOCOL, token: "wrapped", entry: "source.html", format: "html", theme: "dawn", state: {}, files: [{ path: "source.html", mime: "text/html", bytes: bytes(source) }] };
+  const html = prepareInteractiveHtml(input, dom.window.document, () => "blob:null/test");
+  assert(html.includes("Original")); assert(!html.includes("```")); assert.equal(new TextDecoder().decode(input.files[0]!.bytes), source); dom.window.close();
+});
+test("captured dependency bytes take precedence over bundled aliases", async t => {
+  const original = globalThis.fetch; let calls = 0;
+  globalThis.fetch = (async () => { calls++; throw new Error("Unexpected dependency download"); }) as typeof fetch;
+  t.after(() => { globalThis.fetch = original; });
+  const alias = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js";
+  const result = await loadInteractiveDependencies([{ path: "index.html", mime: "text/html", bytes: bytes(`<script src="${alias}"></script>`) },
+    { path: "original-library.js", mime: "text/javascript", bytes: bytes("window.original=true"), aliases: [alias] }], new AbortController().signal, "https://cloudig.local/runtime/");
+  assert.equal(calls, 0); assert.deepEqual(result.files, []);
+});
 function dialogDom(): JSDOM {
   const dom = new JSDOM("<!doctype html>", { url: "https://cloudig.local/index.html" });
   // JSDOM has no top-layer dialog implementation. These tests cover lifecycle,
@@ -18,12 +36,46 @@ function dialogDom(): JSDOM {
   return dom;
 }
 
+test("source/work tabs preserve a live work, including loading completion and failure retry", async () => {
+  const dom=dialogDom(),abort=new AbortController();let reads=0;
+  const work=openInteractiveWindow({document:dom.window.document,title:"Editor",entry:"index.html",stateKey:"source-tabs",theme:"dawn",language:"en",signal:abort.signal,
+    readFiles:async()=>{reads++;return[{path:"index.html",mime:"text/html",bytes:bytes("<textarea>original</textarea>")}];}});
+  const tick=()=>new Promise(resolve=>setTimeout(resolve,0));
+  const click=(name:string)=>[...work.element.querySelectorAll("button")].find(b=>b.textContent===name)!.click();
+  try {
+    await tick();const frame=work.element.querySelector("iframe")!, token=new URL(frame.src).hash.slice(1);
+    const send=(kind:string,detail:unknown=null)=>dom.window.dispatchEvent(new dom.window.MessageEvent("message",{source:frame.contentWindow,data:{protocol:INTERACTIVE_PROTOCOL,token,kind,detail}}));
+    send("resize",{height:234,layout:"flow"});const height=work.element.style.getPropertyValue("--cloudig-window-height");
+    click("Source");assert.equal(work.element.querySelector("iframe"),frame,"viewing source must not discard the author's JS heap");
+    assert.equal(work.element.style.getPropertyValue("--cloudig-window-height"),height,"source view must not resize and reset an authored canvas");
+    assert.equal(work.element.dataset["state"],"source");send("loaded");assert.equal(work.element.dataset["state"],"source","late load must not overwrite the selected tab");
+    click("Work");await tick();assert.equal(work.element.querySelector("iframe"),frame);assert.equal(work.element.dataset["state"],"ready");
+    click("Work");await tick();assert.equal(reads,1,"active Work is not an implicit reset button");assert.equal(work.element.querySelector("iframe"),frame);
+    click("Source");send("error","Broken dependency");assert.equal(work.element.dataset["state"],"source");click("Work");await tick();assert.notEqual(work.element.querySelector("iframe"),frame,"failed mounts remain retryable");assert.equal(reads,2);
+    work.close();assert.equal(dom.window.document.querySelector("iframe"),null);
+  } finally {abort.abort();dom.window.close();}
+});
+
+test("work document navigation stays inside declared files and isolates each file's session state",async()=>{
+  const dom=dialogDom(),abort=new AbortController(),document=dom.window.document;
+  const work=openInteractiveWindow({document,title:"Report",entry:"report.md",format:"document",stateKey:"report-navigation",theme:"dawn",language:"en",signal:abort.signal,
+    data:{research:{entry:"report.md",visuals:[{path:"visual.html",title:"Graph"},{path:"https://bad.test",title:"Not a file"}]}},
+    readFiles:async()=>[{path:"report.md",mime:"text/markdown",bytes:bytes("Report")},{path:"visual.html",mime:"text/html",bytes:bytes("<p>Graph</p>")}]});
+  const tick=()=>new Promise(resolve=>setTimeout(resolve,0));await tick();
+  const send=(frame:HTMLIFrameElement,kind:string,detail:unknown)=>dom.window.dispatchEvent(new dom.window.MessageEvent("message",{source:frame.contentWindow,data:{protocol:INTERACTIVE_PROTOCOL,token:new URL(frame.src).hash.slice(1),kind,detail}}));
+  const original=document.querySelector("iframe")!;send(original,"state",{report:"kept"});send(original,"document","https://bad.test");assert.equal(document.querySelector("iframe"),original);
+  send(original,"document","visual.html");await tick();const child=document.querySelector("iframe")!;assert.notEqual(child,original);assert.equal(document.querySelector("h2")!.textContent,"Graph");
+  send(child,"state",{graph:"separate"});assert.equal(readInteractiveState("report-navigation")["report"],"kept");assert.equal(readInteractiveState("report-navigation\u0000visual.html")["graph"],"separate");
+  [...document.querySelectorAll("button")].find(button=>button.textContent==="Back to document")!.click();await tick();assert.equal(document.querySelector("h2")!.textContent,"Report");
+  assert.equal(document.querySelector("select")!.options.length,2);work.close();assert.equal(document.querySelector("iframe"),null);saveInteractiveState("report-navigation",{});saveInteractiveState("report-navigation\u0000visual.html",{});dom.window.close();
+});
+
 test("public website work bootstrap keeps an opaque sandbox and the same scoped channel lifecycle", async () => {
   const dom=dialogDom(),abort=new AbortController();
   const work=openInteractiveWindow({document:dom.window.document,title:'Public example',entry:'index.html',stateKey:'public',theme:'dawn',language:'en',signal:abort.signal,
     readFiles:async()=>[{path:'index.html',mime:'text/html',bytes:bytes('<p>Original</p>')}],frameUrl:'https://cloudig.local/runtime/interactive-frame.html',opaqueOrigin:true});
   await new Promise(resolve=>setTimeout(resolve,0));
-  const frame=dom.window.document.querySelector('iframe')!,suppliedToken=new URL(frame.src).hash.slice(1);assert.equal(frame.getAttribute('sandbox'),'allow-scripts');assert(!frame.hasAttribute('srcdoc'));assert(suppliedToken);
+  const frame=dom.window.document.querySelector('iframe')!,suppliedToken=new URL(frame.src).hash.slice(1);assert.equal(frame.getAttribute('sandbox'),'allow-scripts allow-downloads');assert(!frame.hasAttribute('srcdoc'));assert(suppliedToken);
   assert.equal(work.element.dataset['state'],'loading');
   dom.window.dispatchEvent(new dom.window.MessageEvent('message',{source:frame.contentWindow,origin:'null',data:{protocol:INTERACTIVE_PROTOCOL,token:suppliedToken,kind:'loaded'}}));
   assert.equal(work.element.dataset['state'],'ready');assert((work.element.querySelector('.cloudig-interactive-status') as HTMLElement).hidden);
@@ -55,12 +107,26 @@ test("unknown executable dependencies fail explicitly, never fetch a CDN behind 
   assert.throws(() => prepareInteractiveHtml(input, dom.window.document, () => "blob:null/test"), /Dependency is not bundled/u); dom.window.close();
 });
 
-test("transparent work canvases match the host scheme without overriding authored colours",()=>{
+test("theme-aware work canvases match the host without overriding authored colours",()=>{
  const dom=new JSDOM('<!doctype html>');
  try{for(const theme of ['dawn','star-night']as const){const source='<style>body{background:#123456} :root{color-scheme:light dark}</style><p>Work</p>';
  const html=prepareInteractiveHtml({protocol:INTERACTIVE_PROTOCOL,token:'scheme',entry:'index.html',theme,state:{},files:[{path:'index.html',mime:'text/html',bytes:bytes(source)}]},dom.window.document,()=> 'blob:local');
- assert(html.includes(`@layer cloudig-work-defaults { :root { color-scheme: ${theme==='star-night'?'dark':'light'}; } }`));assert(html.includes('body{background:#123456} :root{color-scheme:light dark}'));
+ assert(html.includes(':root[data-cloudig-theme="star-night"]{color-scheme:dark}'));assert(html.includes('body{background:#123456} :root{color-scheme:light dark}'));
  }}finally{dom.window.close();}
+});
+
+test("independent HTML keeps a light canvas for fixed dark ink; theme contracts still follow Cloudig",()=>{
+ const dom=new JSDOM('<!doctype html>');
+ try { for(const source of ['<div style="background:transparent;color:#333">Readable</div>', '<style>.label{color:#555}</style><span class="label">Readable</span>']) {
+   const input:InteractivePackage={protocol:INTERACTIVE_PROTOCOL,token:'canvas',entry:'index.html',format:'html',theme:'star-night',state:{},files:[{path:'index.html',mime:'text/html',bytes:bytes(source)}]};
+   const html=prepareInteractiveHtml(input,dom.window.document,()=> 'blob:local');
+   assert(html.includes('color-scheme: light;'));
+   const parsed=new dom.window.DOMParser().parseFromString(html,'text/html');
+   assert.equal(parsed.body.textContent?.trim(),'Readable');
+   assert(source.includes('#333')?parsed.body.innerHTML.includes('color:#333'): [...parsed.querySelectorAll('style')].some(s=>s.textContent==='.label{color:#555}'));
+   assert(prepareInteractiveHtml({...input,source:'claude.ai_visualize'},dom.window.document,()=> 'blob:local').includes(':root[data-cloudig-theme="star-night"]{color-scheme:dark}'));
+   assert.equal(new TextDecoder().decode(input.files[0]!.bytes),source);
+ }} finally {dom.window.close();}
 });
 
 test("session state is isolated, bounded, immutable to callers and not a disk record", () => {
@@ -86,7 +152,7 @@ test("the runtime only accepts messages from its own wrapper and destroys it on 
   const opened = openInteractiveWindow({ document: dom.window.document, title: "Work", entry: "index.html", stateKey: "owned", theme: "star-night", language: "zh", signal: controller.signal,
     readFiles: async () => [{ path: "index.html", mime: "text/html", bytes: bytes("<p>Work</p>") }] });
   await new Promise(resolve => setTimeout(resolve, 0));
-  const frame = opened.element.querySelector("iframe")!; assert(frame); assert.equal(frame.getAttribute("sandbox"), "allow-scripts allow-same-origin");
+  const frame = opened.element.querySelector("iframe")!; assert(frame); assert.equal(frame.getAttribute("sandbox"), "allow-scripts allow-same-origin allow-downloads");
   assert.notEqual(new URL(frame.src).origin, new URL(dom.window.location.href).origin);
   const token = new URL(frame.src).hash.slice(1);
   dom.window.dispatchEvent(new dom.window.MessageEvent("message", { source: dom.window as unknown as Window, data: { protocol: INTERACTIVE_PROTOCOL, token, kind: "state", detail: { stolen: "no" } } }));
@@ -102,6 +168,15 @@ test("a work is refused when its frame endpoint would share the application orig
   assert.equal(opened.element.querySelector("iframe"), null); assert(opened.element.textContent!.includes("requires a separate origin")); opened.close(); dom.window.close();
 });
 
+test("author runtime diagnostics do not poison a loaded work or become reading text; mount errors remain visible", async () => {
+ const dom=dialogDom(),abort=new AbortController();const w=openInteractiveWindow({document:dom.window.document,title:"Work",entry:"index.html",stateKey:"diagnostic",theme:"dawn",language:"en",signal:abort.signal,readFiles:async()=>[{path:"index.html",mime:"text/html",bytes:bytes("<p>Work</p>")}]});
+ try{await new Promise(r=>setTimeout(r,0));const frame=w.element.querySelector("iframe")!,token=new URL(frame.src).hash.slice(1);
+ const send=(kind:string,detail:unknown)=>dom.window.dispatchEvent(new dom.window.MessageEvent("message",{source:frame.contentWindow,data:{protocol:INTERACTIVE_PROTOCOL,token,kind,detail}}));
+ send("runtime-diagnostic","Authored exception");send("loaded",null);assert.equal(w.element.dataset["state"],"ready");assert.equal(w.element.dataset["runtimeDiagnostic"],"Authored exception");assert(!w.element.textContent!.includes("Authored exception"));
+ send("error","Missing dependency");assert.equal(w.element.dataset["state"],"failed");assert(w.element.textContent!.includes("Missing dependency"));
+ }finally{abort.abort();dom.window.close();}
+});
+
 test("inline Boxes enlarge and return without recreating their live iframe; collapse releases it", async () => {
   const dom = dialogDom(), controller = new AbortController(), parent = dom.window.document.createElement("section"); dom.window.document.body.append(parent);
   const opened = openInteractiveWindow({ document: dom.window.document, title: "Pulse", entry: "index.html", inlineParent: parent, stateKey: "inline", source: "claude.ai_visualize",
@@ -112,9 +187,9 @@ test("inline Boxes enlarge and return without recreating their live iframe; coll
   assert.equal(opened.element.parentElement, parent); assert(opened.element.classList.contains("cloudig-interactive-box"));
   const post = (detail: unknown) => dom.window.dispatchEvent(new dom.window.MessageEvent("message", { source: frame.contentWindow, data: { protocol: INTERACTIVE_PROTOCOL, token, kind: "resize", detail } }));
   post(234); assert.equal(opened.element.style.getPropertyValue("--cloudig-inline-height"), "234px");
-  post(10000); assert.equal(opened.element.style.getPropertyValue("--cloudig-inline-height"), `${INTERACTIVE_LIMITS.inlineMaximumHeight}px`);
+  post(10000); assert.equal(opened.element.style.getPropertyValue("--cloudig-inline-height"), "10000px");
   buttons().find(b => b.textContent === "Enlarge")!.click(); assert(!opened.element.classList.contains("cloudig-interactive-box"));
-  assert.equal(opened.element.querySelector("iframe"), frame); post(400); assert.equal(opened.element.style.getPropertyValue("--cloudig-inline-height"), "640px");
+  assert.equal(opened.element.querySelector("iframe"), frame); post(400); assert.equal(opened.element.style.getPropertyValue("--cloudig-inline-height"), "10000px");
   buttons().find(b => b.getAttribute("aria-label") === "Back to conversation")!.click();
   assert(opened.element.classList.contains("cloudig-interactive-box")); assert.equal(opened.element.querySelector("iframe"), frame);
   buttons().find(b => b.getAttribute("aria-label") === "Collapse work")!.click(); assert.equal(opened.element.querySelector("iframe"), null);
@@ -164,7 +239,7 @@ test("Visualize receives its native ramps and saved icon masks without changing 
 test("Visualize dynamic cloud icons keep their saved mask after every slider draw", async () => {
   const host = new JSDOM("<!doctype html>"), source = `<input id="clouds" type="range" min="0" max="12" value="5" oninput="draw(this.value)"><span id="count"></span><div id="sky"></div><script>function draw(v){count.textContent=v;sky.innerHTML=Number(v)?'<i class="ti ti-cloud"></i>'.repeat(Number(v)):'None'}draw(5)</script>`;
   const input: InteractivePackage = { protocol: INTERACTIVE_PROTOCOL, token: "clouds", entry: "index.html", source: "claude.ai_visualize", theme: "dawn", state: {}, icons: [{ name: "cloud", path: "cloud.svg" }], files: [{ path: "index.html", mime: "text/html", bytes: bytes(source) }, { path: "cloud.svg", mime: "image/svg+xml", bytes: bytes("<svg/>") }] };
-  let n = 0; const html = prepareInteractiveHtml(input, host.window.document, () => `blob:work/icon-${++n}`), dom = new JSDOM(html, { runScripts: "dangerously", url: "https://cloudig-work.invalid" });
+  let n = 0; const html = prepareInteractiveHtml(input, host.window.document, () => `blob:work/icon-${++n}`), dom = new JSDOM(html, { runScripts: "dangerously", url: "https://cloudig-work.invalid", beforeParse(window) { Object.assign(window, { fetch: globalThis.fetch }); } });
   const check = (number: number) => { const range = dom.window.document.querySelector<HTMLInputElement>("input")!; range.value = String(number); range.dispatchEvent(new dom.window.Event("input")); assert.equal(dom.window.document.querySelectorAll(".ti-cloud").length, number); for (const icon of dom.window.document.querySelectorAll(".ti-cloud")) assert.equal(dom.window.getComputedStyle(icon).maskImage, 'url("blob:work/icon-2")'); };
   assert(html.includes("--text-accent:#534AB7")); check(5); check(0); check(12); assert.equal(new TextDecoder().decode(input.files[0]!.bytes), source); dom.window.close(); host.window.close();
 });
@@ -188,7 +263,7 @@ test("known UMD libraries load only from the local runtime and retain their exac
     const input: InteractivePackage = { protocol: INTERACTIVE_PROTOCOL, token: "umd", entry: "index.html", theme: "dawn", state: {}, files: [
       { path: "index.html", mime: "text/html", bytes: bytes('<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script><script>document.body.dataset.ready="yes"</script>') }, ...result.files] };
     const html = prepareInteractiveHtml(input, dom.window.document, () => `blob:work/lib-${++i}`);
-    assert(html.includes('src="blob:work/lib-2"')); assert(!html.includes("https://cdnjs.cloudflare.com")); dom.window.close();
+    assert(html.includes('src="blob:work/lib-2"')); assert(!html.includes('src="https://cdnjs.cloudflare.com')); dom.window.close();
   } finally { globalThis.fetch = originalFetch; }
 });
 

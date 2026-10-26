@@ -1118,6 +1118,7 @@ function applyLocale(values = currentLocale) {
   }
   applyNames();
   if (!currentRoute.startsWith("reader/conversation/")) currentPage?.updateState?.(state);
+  else currentPage?.updateHeader?.(state);
   activeConversation?.controller.updateState?.(state);
   activeTimeCover?.updateState?.(state);
   activeTimeEditor?.updateLanguage?.(state.language);
@@ -2494,6 +2495,7 @@ async function performArchiverParse(rows, settings = {}) {
     );
     activeParseOperation = previewOperation;
     const plan = await previewOperation.promise;
+    if (settings.one_click && plan.state === "ready" && plan.total === 0) { currentPage?.showEmptyParseScope?.(); return false; }
     if (plan.state !== "ready" || !plan.plan) return false;
     while ((plan.items ?? []).length < (plan.total ?? 0)) {
       const page = await request("archiver.parse.items", { plan: plan.plan, offset: plan.items.length, limit: 200 });

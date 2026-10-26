@@ -15,7 +15,15 @@ test("captured reference recovery is limited to the named search/image slots", a
   const context = { manifest: {}, payload: { messages: [{ id: "m", role: "assistant", public_processes: [], sources: [] }], message_order: ["m"] }, source: { file: "fixture.html", bytes: 1, sha256: "0".repeat(64) }, reading: { images: [], files: [], mermaid: [], fragments: [{ messageId: "m", html: search + '<div class="rich-content"><p>Answer</p></div>' }] } };
   const kimi = await kimiLightAdapter.parse(context);
   assert.equal((kimi["sources"] as JsonObject[])[0]!["snippet"], "First\nSecond");
-  assert.ok(((kimi["messages"] as JsonObject[])[0]!["content"] as JsonObject[]).some(b => b["type"] === "citations"));
+  const blocks=(kimi["messages"] as JsonObject[])[0]!["content"] as JsonObject[];
+  const searchResult=blocks.find(b=>b["type"]==="tool");
+  assert.deepEqual((searchResult?.["output"] as JsonObject)?.["sources"],[(kimi["sources"] as JsonObject[])[0]!["id"]],"search references stay owned by the process result");
+  assert.equal(blocks.some(b=>b["type"]==="citations"),false,"do not repeat process sources as final-answer citations");
+  const ordered=await kimiLightAdapter.parse({...context,reading:{...context.reading,fragments:[{messageId:"m",html:'<div class="outer-chrome">Not answer prose</div>'+search+'<div class="rich-content"><p>First answer</p></div><details class="osis-tool"><summary>Read file</summary><p>Saved result</p></details><div class="rich-content"><p>Second answer</p></div>'}]}});
+  const sequence=(ordered["messages"] as JsonObject[])[0]!["content"] as JsonObject[];
+  assert.deepEqual(sequence.map(b=>b["type"]),["tool","html","tool","html"]);
+  assert.match(String(sequence[1]!["html"]),/First answer/);assert.match(String(sequence[3]!["html"]),/Second answer/);
+  assert(!JSON.stringify(sequence).includes("Not answer prose"));assert.match(JSON.stringify(sequence[2]!["output"]),/Saved result/);
   const grok = await grokLightAdapter.parse({ ...context, payload: { messages: [{ id: "m", source_id: "m", role: "assistant", raw_message: "Answer" }] }, reading: { ...context.reading, fragments: [{ messageId: "m", html: '<div class="assistant-content">Answer</div><div class="image-source-link"><a href="https://example.com/image-page">Image source</a></div>' }] } });
   assert.equal((grok["sources"] as JsonObject[])[0]!["url"], "https://example.com/image-page");
 });

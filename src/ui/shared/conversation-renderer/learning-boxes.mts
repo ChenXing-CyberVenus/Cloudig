@@ -5,8 +5,10 @@ import { recipeTimer } from "./recipe-timer.mts";
 import { recipeQuantity, type RecipeUnitMode } from "./recipe-units.mts";
 
 /** Answers and page choices are session-local; neither mutates the captured call. */
-export function quizBox(ctx: BoxContext, input: JsonObject): HTMLElement {
+export function quizBox(ctx: BoxContext, input: JsonObject, formatted = false): HTMLElement {
   const root = el(ctx, "section", "cloudig-box cloudig-box-quiz"), questions = list(input["questions"]);
+  const prose = (text: string): HTMLElement => formatted && ctx.richText ? ctx.richText(text) : p(ctx, text);
+  const prompt = (text: string): HTMLElement => { const node = el(ctx, "div", "cloudig-box-question"); node.append(prose(text)); return node; };
   let index = 0, flashcards = false, revealed = false;
   const answers = new Map<number, string>();
   const paint = () => {
@@ -14,14 +16,15 @@ export function quizBox(ctx: BoxContext, input: JsonObject): HTMLElement {
     root.replaceChildren(tabs(ctx, [tr(ctx, "测验", "Quiz"), tr(ctx, "卡片", "Flashcards")], flashcards ? 1 : 0,
       n => { flashcards = n === 1; revealed = false; paint(); }));
     const q = questions[index]; if (!q) { root.append(p(ctx, str(input["description"]))); return; }
-    if (!flashcards) root.append(el(ctx, "h4", "cloudig-box-question", str(q["prompt"])));
+    if (!flashcards) root.append(prompt(str(q["prompt"])));
     const options = list(q["options"]), answer = answers.get(index), correct = str(q["correct_option_id"]);
     if (flashcards) {
       const face = el(ctx, "div", "cloudig-box-flashcard");
       if (revealed) {
-        face.append(el(ctx, "h4", "cloudig-box-question", str(options.find(o => str(o["id"]) === correct)?.["text"]) || tr(ctx, "原记录未提供答案", "No answer in the saved record")));
-        if (str(q["explanation"])) face.append(p(ctx, str(q["explanation"])));
-      } else face.append(el(ctx, "h4", "cloudig-box-question", str(q["prompt"])));
+        const correctOption = options.find(o => str(o["id"]) === correct);
+        face.append(prompt(str(correctOption?.["text"]) || tr(ctx, "原记录未提供答案", "No answer in the saved record")));
+        if (str(q["explanation"] ?? correctOption?.["explanation"])) face.append(prose(str(q["explanation"] ?? correctOption?.["explanation"])));
+      } else face.append(prompt(str(q["prompt"])));
       face.append(button(ctx, revealed ? tr(ctx, "查看问题", "View question") : tr(ctx, "查看答案", "View answer"), () => { revealed = !revealed; paint(); }));
       root.append(face);
     } else {
@@ -30,7 +33,7 @@ export function quizBox(ctx: BoxContext, input: JsonObject): HTMLElement {
         const id = str(option["id"]) || String(ordinal);
         const choice = button(ctx, "", () => { answers.set(index, id); paint(); }, "cloudig-box-choice");
         const marker = el(ctx, "span", "cloudig-box-choice-marker"); marker.setAttribute("aria-hidden", "true");
-        choice.append(marker, el(ctx, "span", "", str(option["text"])));
+        choice.append(marker, formatted ? prose(str(option["text"])) : el(ctx, "span", "", str(option["text"])));
         choice.setAttribute("aria-pressed", String(id === answer));
         choice.disabled = answer !== undefined && !!correct;
         if (answer !== undefined) choice.dataset["result"] = correct && id === correct ? "correct" : id === answer ? (correct ? "incorrect" : "selected") : "idle";
@@ -41,9 +44,11 @@ export function quizBox(ctx: BoxContext, input: JsonObject): HTMLElement {
         const feedback = el(ctx, "div", "cloudig-box-feedback"); feedback.setAttribute("role", "status");
         feedback.dataset["result"] = correct ? answer === correct ? "correct" : "incorrect" : "selected";
         const text = correct ? str(q[answer === correct ? "correct_feedback" : "incorrect_feedback"]) || (answer === correct ? tr(ctx, "回答正确", "Correct") : tr(ctx, "再看看答案", "Review the answer")) : tr(ctx, "已选择；原记录未提供判分答案", "Selected; no grading answer in the saved record");
-        feedback.append(p(ctx, text)); if (str(q["explanation"])) feedback.append(p(ctx, str(q["explanation"]))); root.append(feedback);
+        feedback.append(prose(text));
+        const explanation = str(options.find(o => str(o["id"]) === answer)?.["explanation"] ?? q["explanation"]);
+        if (explanation) feedback.append(prose(explanation)); root.append(feedback);
       } else if (str(q["hint"])) {
-        const hint = el(ctx, "details", "cloudig-box-hint"); hint.append(el(ctx, "summary", "", tr(ctx, "提示", "Hint")), p(ctx, str(q["hint"]))); root.append(hint);
+        const hint = el(ctx, "details", "cloudig-box-hint"); hint.append(el(ctx, "summary", "", tr(ctx, "提示", "Hint")), prose(str(q["hint"]))); root.append(hint);
       }
     }
     root.append(pager(ctx, questions.length, index, n => { index = n; revealed = false; paint(); }, flashcards || answer !== undefined));

@@ -68,7 +68,8 @@ const profileNumbers = Object.freeze({
 /*
  * This is the only hand-edited acceptance state.
  *
- * Remove an id after the user explicitly accepts that exact current artifact.
+ * Remove an id after explicit acceptance, including user-delegated verification
+ * that passes for that exact current artifact; record the evidence accurately.
  * Add it again whenever that profile receives a new version requiring retest.
  * This list controls acceptance metadata only. It must never reduce the files
  * copied into candidate/test: the one-click installer treats its sibling

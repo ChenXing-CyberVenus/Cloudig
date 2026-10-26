@@ -3,7 +3,7 @@ import type { InteractiveState, InteractiveBindings } from "./interactive-protoc
 /** This self-contained function is serialized into the sandboxed work document.
  * Its only outward capability is reporting this one work's in-memory progress.
  * No bridge commands, resource reads, network proxies or filesystem paths. */
-export function interactiveClient(config: { token: string; state: InteractiveState; stateLimit: number; errorLimit: number; theme: string; scrollRegions?: boolean; bindings?: InteractiveBindings }): void {
+export function interactiveClient(config: { token: string; state: InteractiveState; stateLimit: number; errorLimit: number; theme: string; scrollRegions?: boolean; bindings?: InteractiveBindings; documents?:readonly string[] }): void {
   const protocol = "cloudig/interactive-runtime/1";
   const send = (kind: string, detail: unknown) => window.parent.postMessage({ protocol, token: config.token, kind, detail }, "*");
   let bindings = config.bindings;
@@ -48,8 +48,8 @@ export function interactiveClient(config: { token: string; state: InteractiveSta
   // Authored themes continue to work. This hint is available to future works,
   // but no broad CSS recolouring is applied to the author's canvas or artwork.
   document.documentElement.dataset["cloudigTheme"] = config.theme;
-  window.addEventListener("error", event => send("error", String(event.message).slice(0, config.errorLimit)));
-  window.addEventListener("unhandledrejection", () => send("error", "Unhandled error in saved work"));
+  window.addEventListener("error", event => send("runtime-diagnostic", String(event.message).slice(0, config.errorLimit)));
+  window.addEventListener("unhandledrejection", () => send("runtime-diagnostic", "Unhandled error in saved work"));
   window.addEventListener("load", () => send("loaded", null), { once: true });
   let heightSignature="", viewportSelectors:string[]=[], layoutReady=false;
   const relativeHeight=(value:string)=>/100(?:\.0+)?%|\d+(?:\.\d+)?(?:d|s|l)?vh/iu.test(value);
@@ -78,7 +78,12 @@ export function interactiveClient(config: { token: string; state: InteractiveSta
     const detail={height,layout:viewport?"viewport":"flow"},signature=JSON.stringify(detail);
     if(signature!==heightSignature){heightSignature=signature;send("resize",detail);}
   };
-  const resize = typeof ResizeObserver === "function" ? new ResizeObserver(reportHeight) : undefined; resize?.observe(document.body);
+  const resize = typeof ResizeObserver === "function" ? new ResizeObserver(reportHeight) : undefined;
+  // This prelude runs in the head, as it would in a normal HTML document.
+  // Body installation belongs to the parser phase, not to the host prelude.
+  const observeBody=()=>{if(document.body)resize?.observe(document.body);};
+  document.addEventListener("DOMContentLoaded",observeBody,{once:true});
+  if(document.body)observeBody();
   const resized=()=>{collectViewportSelectors();layoutReady=true;reportHeight();};
   window.addEventListener("load", resized, { once: true });window.addEventListener("resize",resized);
   window.addEventListener("pagehide", () => {resize?.disconnect();window.removeEventListener("resize",resized);}, { once: true });
@@ -110,13 +115,28 @@ export function interactiveClient(config: { token: string; state: InteractiveSta
   }
   window.addEventListener("message", event => {
     if (event.source !== window.parent || event.data?.protocol !== protocol || event.data?.token !== config.token) return;
-    if (event.data.kind === "theme") document.documentElement.dataset["cloudigTheme"] = String(event.data.theme);
+    if (event.data.kind === "theme") {
+      document.documentElement.dataset["cloudigTheme"] = String(event.data.theme);
+      if (document.documentElement.hasAttribute("data-cloudig-managed-theme")) document.documentElement.dataset["theme"] = event.data.theme === "star-night" ? "dark" : "light";
+      const scrollStyle=document.querySelector("style[data-cloudig-scroll-fallback]");
+      if(scrollStyle && typeof event.data.scrollCss === "string")scrollStyle.textContent=event.data.scrollCss;
+      for(const style of document.querySelectorAll<HTMLStyleElement>("style[data-cloudig-theme-style]"))style.media=style.dataset["cloudigThemeStyle"]===event.data.theme?"all":"not all";
+      reportHeight();
+    }
     if (event.data.kind === "bindings" && bindings && event.data.detail?.values && Array.isArray(event.data.detail.callbacks)) { bindings = event.data.detail; for (const effect of effects) effect(); }
   });
   document.addEventListener("click", event => {
+    const choice=(event.target instanceof Element?event.target:null)?.closest<HTMLElement>("[data-cloudig-document]");
+    const file=choice?.dataset["cloudigDocument"];
+    if(file&&config.documents?.includes(file)){event.preventDefault();send("document",file);return;}
     const link = (event.target instanceof Element ? event.target : null)?.closest("a");
     // Do not let a source page turn the runtime surface into an external web
     // browser. Fragment navigation inside this work remains available.
-    if (link && !link.getAttribute("href")?.startsWith("#")) event.preventDefault();
+    if (link && !link.getAttribute("href")?.startsWith("#")) {
+      // Let the browser handle locally generated files. This covers ordinary
+      // anchors and file libraries; external navigation stays blocked.
+      const generated = link.hasAttribute("download") && /^(?:blob:|data:)/iu.test(link.href);
+      if (!generated) event.preventDefault();
+    }
   }, true);
 }

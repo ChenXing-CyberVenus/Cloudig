@@ -678,11 +678,17 @@ export function mountArchiver(options) {
   };
 
   const parseSettingsPanel = root.querySelector("[data-archiver-parse-settings-popover]");
+  const emptyParseNotice = document.createElement("p");
+  emptyParseNotice.className = "archiver-empty-parse-notice";
+  emptyParseNotice.setAttribute("role", "status");
+  emptyParseNotice.hidden = true;
+  parseSettingsPanel.prepend(emptyParseNotice);
   let settingsTarget = null;
   const setParseSettingsOpen = (open) => {
     if (!open && settingsTarget?.busy) return;
     parseSettingsPanel.hidden = !open;
     root.dataset.parseSettingsOpen = String(open);
+    if (!open) emptyParseNotice.hidden = true;
   };
   setParseSettingsOpen(false);
   let activeFilterPopover = null;
@@ -884,7 +890,7 @@ export function mountArchiver(options) {
     sourceSortButton.title = sourceSort === "title" ? (root.lang === "en" ? "Title order" : "标题排序") : sourceSort === "captured_asc" ? (root.lang === "en" ? "Capture time ascending" : "采集时间顺序") : (root.lang === "en" ? "Capture time descending" : "采集时间倒序");
     sourceSortButton.querySelector("img").src = sourceSort === "title" ? "/assets/reader/Button-Name-Flower.svg" : sourceSort === "captured_asc" ? "/assets/reader/Button-Time-Clock.svg" : "/assets/reader/Button-Time-Tea.svg";
     const parseAll = root.querySelector("[data-archiver-parse-all]");
-    parseAll.disabled = !(parseSettings.parse_unparsed && Number(sourceModel.statuses?.pending ?? 0) > 0 || parseSettings.update_outdated && Number(sourceModel.statuses?.update_action ?? 0) > 0 || parseSettings.parse_selected && sourceSelection.size > 0);
+    parseAll.disabled = false;
     const platformButton = root.querySelector("[data-archive-platform]");
     platformButton.textContent = archivePlatforms.size === allPlatformDefinitions.length
       ? (root.lang === "en" ? "Platform ▼" : "选择平台 ▼")
@@ -1322,6 +1328,14 @@ export function mountArchiver(options) {
       updateOperationProgress(region, event, filenames);
     },
     clearProgress() { root.querySelector("[data-archiver-progress]").hidden = true; },
+    showEmptyParseScope() {
+      syncParseSettings();
+      setWorkflowOpen(false);
+      emptyParseNotice.textContent = root.lang === "en" ? "No files can be parsed within the current one-click settings." : "当前一键解析范围内，没有可解析的文件。";
+      emptyParseNotice.hidden = false;
+      setParseSettingsOpen(true);
+      parseSettingsPanel.querySelector("[data-parse-target-directory]")?.focus();
+    },
     openJsonImport(previewPlatform) {
       jsonImportView?.cleanup(); claudeView?.cleanup(); claudeView = null;
       root.querySelector('[data-archiver-claude-view]').hidden = true;

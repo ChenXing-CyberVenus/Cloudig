@@ -4,20 +4,20 @@ import {
   versionedBookmarkletName
 } from "./bookmarklet-layout.mjs";
 
-export const bookmarkSetVersion = "2026.10.18.2";
+export const bookmarkSetVersion = "2026.10.25.5";
 
 export const bookmarkletTargets = [
-  { id: "deepseek", label: "DeepSeek", version: "2.8.10-light", baselineVersion: "2.8.0", source: bookmarkletPath("stable", "deepseek", "2026-07-14_DeepSeek会话导出HTML书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "deepseek", "2026-07-14_DeepSeek会话导出HTML书签单行版-GPT-5.6-Sol.min.js"), katex: false },
-  { id: "chatgpt", label: "ChatGPT", version: "3.7.64-light", baselineVersion: "3.7.2", source: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
-  { id: "gemini", label: "Gemini", version: "2.7.12-light", baselineVersion: "2.7.0", source: bookmarkletPath("stable", "gemini", "2026-07-16_Gemini会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "gemini", "2026-07-16_Gemini会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
-  { id: "grok", label: "Grok", version: "2.8.10-light", baselineVersion: "2.6.0", source: bookmarkletPath("stable", "grok", "2026-07-16_Grok会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "grok", "2026-07-16_Grok会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
-  { id: "doubao", label: "豆包", version: "3.5.7-light", baselineVersion: "3.4.0", source: bookmarkletPath("stable", "doubao", "2026-07-16_豆包会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "doubao", "2026-07-16_豆包会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
+  { id: "deepseek", label: "DeepSeek", version: "2.8.11-light", baselineVersion: "2.8.0", source: bookmarkletPath("stable", "deepseek", "2026-07-14_DeepSeek会话导出HTML书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "deepseek", "2026-07-14_DeepSeek会话导出HTML书签单行版-GPT-5.6-Sol.min.js"), katex: false },
+  { id: "chatgpt", label: "ChatGPT", version: "3.7.76-light", baselineVersion: "3.7.2", source: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "chatgpt", "2026-07-15_ChatGPT会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
+  { id: "gemini", label: "Gemini", version: "2.7.15-light", baselineVersion: "2.7.0", source: bookmarkletPath("stable", "gemini", "2026-07-16_Gemini会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "gemini", "2026-07-16_Gemini会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
+  { id: "grok", label: "Grok", version: "2.8.19-light", baselineVersion: "2.6.0", source: bookmarkletPath("stable", "grok", "2026-07-16_Grok会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "grok", "2026-07-16_Grok会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
+  { id: "doubao", label: "豆包", version: "3.6.3-light", baselineVersion: "3.4.0", source: bookmarkletPath("stable", "doubao", "2026-07-16_豆包会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "doubao", "2026-07-16_豆包会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
   { id: "chatglm", label: "ChatGLM", version: "2.5.12-light", baselineVersion: "2.5.0", source: bookmarkletPath("stable", "chatglm", "2026-07-17_ChatGLM会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "chatglm", "2026-07-17_ChatGLM会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
-  { id: "kimi", label: "Kimi", version: "2.9.11-light", baselineVersion: "2.9.0", source: bookmarkletPath("stable", "kimi", "2026-07-17_Kimi会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "kimi", "2026-07-17_Kimi会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
-  { id: "mistral", label: "Mistral", version: "2.5.13-light", baselineVersion: "2.5.0", source: bookmarkletPath("stable", "mistral", "2026-07-17_Mistral会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "mistral", "2026-07-17_Mistral会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
-  { id: "qwen", label: "Qwen", version: "2.6.14-light", baselineVersion: "2.6.0", source: bookmarkletPath("stable", "qwen", "2026-07-17_Qwen会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "qwen", "2026-07-17_Qwen会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
+  { id: "kimi", label: "Kimi", version: "2.10.3-light", baselineVersion: "2.9.0", source: bookmarkletPath("stable", "kimi", "2026-07-17_Kimi会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "kimi", "2026-07-17_Kimi会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
+  { id: "mistral", label: "Mistral", version: "2.5.16-light", baselineVersion: "2.5.0", source: bookmarkletPath("stable", "mistral", "2026-07-17_Mistral会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "mistral", "2026-07-17_Mistral会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
+  { id: "qwen", label: "Qwen", version: "2.6.16-light", baselineVersion: "2.6.0", source: bookmarkletPath("stable", "qwen", "2026-07-17_Qwen会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "qwen", "2026-07-17_Qwen会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: false },
   { id: "zai", label: "Z.ai", version: "2.7.12-light", baselineVersion: "2.7.0", source: bookmarkletPath("stable", "zai", "2026-07-17_Z.ai会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "zai", "2026-07-17_Z.ai会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true },
-  { id: "yuanbao", label: "腾讯元宝", version: "2.10.10-light", baselineVersion: "2.9.0", source: bookmarkletPath("stable", "yuanbao", "2026-07-17_腾讯元宝会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "yuanbao", "2026-07-17_腾讯元宝会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true }
+  { id: "yuanbao", label: "腾讯元宝", version: "2.10.12-light", baselineVersion: "2.9.0", source: bookmarkletPath("stable", "yuanbao", "2026-07-17_腾讯元宝会话导出HTML轻量书签-GPT-5.6-Sol.js"), min: bookmarkletPath("stable", "yuanbao", "2026-07-17_腾讯元宝会话导出HTML轻量书签单行版-GPT-5.6-Sol.min.js"), katex: true }
 ];
 
 export function validateBookmarkSetVersion(value, label = "registry") {

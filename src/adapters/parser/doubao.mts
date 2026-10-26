@@ -14,6 +14,8 @@ import { embeddedBase64DataUrl, embeddedImageDataUrl } from "./embedded-data.mts
 import { inertHtmlEvidence, preserveNestedImage } from "./inert-html.mts";
 import { normalizeMermaidSource, projectMarkdownWithDiagrams } from "./markdown-diagrams.mts";
 import { extractMermaidCardsFromFragment } from "./reading-evidence.mts";
+import { DoubaoRichContent } from "./doubao-rich.mts";
+import { WorkResources } from "./work-resources.mts";
 
 type Profile = "light" | "full";
 type Parent = DefaultTreeAdapterTypes.ParentNode;
@@ -82,6 +84,25 @@ function descendants(parent: Parent): Element[] {
   };
   visit(parent);
   return result;
+}
+
+function messageTimestamp(message: JsonObject, fragments: readonly string[]): string | undefined {
+  const times = object(message["timestamps"]);
+  // The export distinguishes completion from creation; an edit is not a new
+  // utterance. Preserve the same instant the source uses, never updated_at.
+  const fromPayload = (message["role"] === "assistant" ? timestamp(times?.["completed_at"]) : undefined)
+    ?? timestamp(times?.["created_at"]);
+  if (fromPayload) return fromPayload;
+  for (const html of fragments) {
+    for (const node of descendants(parseFragment(html))) {
+      if (node.tagName !== "time" || !hasClass(node, "osis-doubao-message-time")) continue;
+      const parent = node.parentNode;
+      if (!parent || !("tagName" in parent) || !hasClass(parent, "message-shell")) continue;
+      const value = timestamp(attribute(node, "datetime"));
+      if (value) return value;
+    }
+  }
+  return undefined;
 }
 
 function firstDataUrl(parent: Parent): string | undefined {
@@ -277,8 +298,12 @@ function projectFragment(input: Readonly<{
   mermaid: MermaidPool;
   resources: DoubaoResourcePool;
   limitations: JsonObject[];
+  timestamp?: string;
+  rich?: DoubaoRichContent;
+  record?: AdapterParseContext["record"];
 }>): JsonObject[] {
   const fragment = parseFragment(input.html);
+  input.rich?.capture(fragment, input.owner);
   const blocks: JsonObject[] = [];
   const usedAttachments = new Set<number>();
   const byIdentifier = new Map(input.attachments.flatMap((attachment, index) => {
@@ -313,7 +338,39 @@ function projectFragment(input: Readonly<{
         next.push(child);
         continue;
       }
-      if (hasClass(child, "osis-thinking")) continue;
+      // Exporter chrome is a sibling of thoughts and the answer, not prose.
+      // Only discard it at the declared message shell; equal authored classes
+      // inside rich content are not a licence to remove the author's words.
+      if (isElement(parent as Child) && hasClass(parent as Element, "message-shell")) {
+        if (hasClass(child, "assistant-model")) continue;
+        // Move this exact instant into the standard message-time slot. Without
+        // a valid matching timestamp, retain the visible source instead.
+        if (input.timestamp && child.tagName === "time" && hasClass(child, "osis-doubao-message-time")
+          && timestamp(attribute(child, "datetime")) === input.timestamp) continue;
+      }
+      const task=input.rich?.subtask(child,input.owner);
+      if(task){
+        const content:JsonObject[]=[{type:"status",title:"任务信息",format:"json",text:JSON.stringify(task.task,null,2)}];
+        for(const part of task.parts){
+          const projected=projectFragment({...input,html:part.html,owner:part.owner,attachments:[]});
+          for(const block of projected)input.record?.block(block,{role:part.role,sourceId:part.sourceId});
+          content.push(...projected);
+        }
+        next.push(defaultTreeAdapter.createTextNode(addBlock({type:"status",title:task.title,content})));continue;
+      }
+      if (hasClass(child, "osis-thinking")) {
+        if (input.rich) {
+          const summary = child.childNodes.find((n): n is Element => isElement(n) && n.tagName === "summary");
+          const plain = (p: Parent): string => p.childNodes.map(n => "value" in n ? n.value : "childNodes" in n ? plain(n) : "").join("");
+          const title = summary ? plain(summary).trim() : "";
+          child.childNodes = child.childNodes.filter(n => n !== summary);
+          const content = projectFragment({ ...input, html: serialize(child), attachments: [] });
+          if (content.length) next.push(defaultTreeAdapter.createTextNode(addBlock({ type: "reasoning", ...(title ? { title } : {}), content })));
+        }
+        continue;
+      }
+      const rich = input.rich?.node(child, input.owner);
+      if (rich) { if (rich.length) next.push(defaultTreeAdapter.createTextNode(rich.map(addBlock).join(""))); continue; }
       if (hasClass(child, "osis-expanded-attachments")) {
         const markers = attachmentMarkers(child);
         if (markers) next.push(defaultTreeAdapter.createTextNode(markers));
@@ -354,8 +411,10 @@ function projectFragment(input: Readonly<{
     for (const child of next) child.parentNode = parent;
   };
   rewrite(fragment);
-  const rich = descendants(fragment).find((element) => hasClass(element, "rich-content"));
-  const serialized = serialize(rich ?? fragment);
+  // Reading fragments are already scoped to this message. A rich-content
+  // descendant is only the answer; thoughts/tools may be its siblings.
+  // Selecting the first such descendant silently drops their markers.
+  const serialized = serialize(fragment);
   const projected: JsonObject[] = [];
   for (const part of serialized.split(/(\uE000CLOUDIG_DOUBAO_BLOCK_[0-9]+\uE001)/u)) {
     const match = /^\uE000CLOUDIG_DOUBAO_BLOCK_([0-9]+)\uE001$/u.exec(part);
@@ -365,7 +424,12 @@ function projectFragment(input: Readonly<{
       continue;
     }
     const evidence = inertHtmlEvidence(part);
-    if (evidence.html) projected.push({ type: "html", html: evidence.html });
+    if (evidence.html) {
+      const content = parseFragment(evidence.html);
+      const visible = (n: DefaultTreeAdapterTypes.Node): boolean => "value" in n ? !!n.value.trim()
+        : "tagName" in n && (["img", "svg", "math", "hr", "br", "input"].includes(n.tagName) || n.childNodes.some(visible));
+      if (content.childNodes.some(visible)) projected.push({ type: "html", html: evidence.html });
+    }
   }
   const unplaced = input.attachments.flatMap((attachment, index) => (
     usedAttachments.has(index) ? [] : [input.resources.addAttachment(attachment, undefined, input.limitations)]
@@ -376,6 +440,7 @@ function projectFragment(input: Readonly<{
 async function parseDoubao(context: AdapterParseContext, profile: Profile, payloadName: string): Promise<JsonObject> {
   const limitations: JsonObject[] = [];
   const resources = new DoubaoResourcePool();
+  const rich = context.record && context.extensions?.doubaoRichContent ? new DoubaoRichContent(context.extensions.doubaoRichContent, new WorkResources(resources.values)) : undefined;
   const mermaid = new MermaidPool(context.reading?.mermaid ?? []);
   const fragments = new Map<string, string[]>();
   for (const fragment of context.reading?.fragments ?? []) {
@@ -391,9 +456,11 @@ async function parseDoubao(context: AdapterParseContext, profile: Profile, paylo
       if (!attachment) throw new TypeError("Doubao attachment occurrence is not an object");
       return attachment;
     });
-    const publicThought = message["role"] === "assistant" ? thoughtBlocks(message, owner, mermaid, resources) : [];
     const htmlFragments = fragments.get(owner) ?? [];
-    const body = htmlFragments.flatMap((html) => projectFragment({ html, owner, attachments, mermaid, resources, limitations }));
+    const time = messageTimestamp(message, htmlFragments);
+    const hasNativeProcess = rich && htmlFragments.some(html => /class="[^"]*\bosis-thinking\b/u.test(html));
+    const publicThought = message["role"] === "assistant" && !hasNativeProcess ? thoughtBlocks(message, owner, mermaid, resources) : [];
+    const body = htmlFragments.flatMap((html) => projectFragment({ html, owner, attachments, mermaid, resources, limitations, ...(time ? { timestamp: time } : {}), ...(rich ? { rich } : {}), ...(context.record ? {record:context.record} : {}) }));
     if (htmlFragments.length === 0) {
       limitations.push({ code: "doubao_reading_fragment_missing", at: `/messages/${index}`, detail: "The source payload had a message but no owned rich reading fragment" });
     }
@@ -406,6 +473,7 @@ async function parseDoubao(context: AdapterParseContext, profile: Profile, paylo
     await context.onProgress?.(index + 1, rawMessages.length);
     return {
       role,
+      ...(time ? { timestamp: time } : {}),
       ...(role === "other" ? { name: sourceText(message["role"]) ?? "豆包" } : {}),
       content: [...publicThought, ...body]
     };
@@ -448,11 +516,11 @@ async function parseDoubao(context: AdapterParseContext, profile: Profile, paylo
 function manifest(id: string, payload: string, profile: Profile): AdapterManifest {
   return {
     id,
-    version: "3.0.4",
+    version: "3.0.9",
     family: "doubao",
     routes: [{ format: "exporter-html", platform: "doubao", payload, profile }],
-    target: "cloudig/conversation/1.0.0",
-    update_from: ["1.0.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
+    target: "cloudig/conversation/1.0.2",
+    update_from: ["1.0.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8"].map(version => ({ adapter: id, version, action: "reparse_source" as const }))
   };
 }
 

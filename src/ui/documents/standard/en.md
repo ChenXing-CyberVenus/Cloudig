@@ -70,7 +70,7 @@ Cloudig/
 ├─ CloudigLibrary.json    Schema version and settings remembered across devices
 ├─ LICENSE                Cloudig license: the Justice For Open Good License, JOG-1.1
 ├─ NOTICE.md              Third-party trademark and bundled-software notices
-├─ Inbox/                 Imported sources: HTML saved by the bookmarklet, official JSON exports
+├─ Inbox/                 Imported sources: HTML, official JSON / ZIP, Agent JSON / JSONL
 ├─ Conversations/         Conversations; one JSON per source, subfolders allowed
 ├─ Marks/                 Marks; at most one per conversation
 ├─ ContentTimes/          Timelines and time nodes; one node per file, order.json holds the top-level order
@@ -230,7 +230,7 @@ A fixed combination of the six kinds of format, declared in `CloudigLibrary.json
 
 Narrative has no version entry.
 
-- V1.x is additive: existing field names and meanings do not change.
+- V1.x retains support for existing record formats; published field meanings are not silently rewritten. Structural changes receive a new format version, with the earlier rules retained.
 - Field changes require a new version of the affected format. This Box/Window addition uses `1.0.2`, while Cloudig Standard remains `1.0`; format versions do not automatically follow product or bookmarklet versions.
 - When the program encounters an unrecognized version, it refuses to open the file and asks the user to update. It does not ignore unknown fields.
 
@@ -285,6 +285,8 @@ Field tables use three conditions: **required** — must exist whenever its cont
 | JSON | Nesting depth | ≤ 512 |
 | Retention | Backups made before Chrome bookmark changes | 2 sets |
 | Retention | Recovery points for completed writes | 2 sets |
+| Capture inference | Earliest valid time | `2020-01-01T00:00:00.000Z`; not a content-time limit |
+| Reading memory | Retained entries / internal ID length | 8192 most recently updated conversations / 512 characters; program-level limits |
 
 <details>
 <summary>〔Fold〕Where the constants are defined</summary>
@@ -294,6 +296,7 @@ Field tables use three conditions: **required** — must exist whenever its cont
 - Filenames: `src/adapters/storage/names.mts`, `src/adapters/library-data/record-parser-commit.mts`
 - Avatars: `src/core/contracts/machine/resource-limits.json`
 - Retained sets: `src/core/records/layout.mts`
+- Capture inference: `src/core/records/source-time.mts`; reading memory: `src/adapters/library-data/reader-state.mts`
 
 </details>
 
@@ -319,10 +322,10 @@ All fields are required.
 | `settings.default_output_directory` | Relative path; default `Conversations` | Parse output directory; only `Conversations` or one of its subdirectories |
 | `settings.time_type.archiver` | One of eight values; default `file_modified_at` | Time used by the Archiver list |
 | `settings.time_type.reader` | One of eight values; default `file_modified_at` | Time used by the Reader list |
-| `settings.time_type.claude_json` | `conversation_created_at` / `conversation_updated_at`; default the latter | Time used by the list of records in an official Claude JSON export |
+| `settings.time_type.claude_json` | `conversation_created_at` / `conversation_updated_at`; default the latter | Time basis for official platform-container records; the legacy key is retained |
 | `settings.sort.parser` / `.archiver` / `.reader` / `.claude_json` | `time_desc` / `time_asc` / `title`; default `time_desc` | Independent sort order for each of the four lists |
 | `settings.one_click_parse.parser` | Four Booleans | One-click parsing scope for ordinary sources |
-| `settings.one_click_parse.claude_json` | Four Booleans | One-click parsing scope for records inside a Claude container |
+| `settings.one_click_parse.claude_json` | Four Booleans | One-click scope for records in official platform containers; the legacy key is retained |
 
 The eight time keys:
 
@@ -344,11 +347,13 @@ The four one-click parsing options, independently stored for each scope:
 | `include_outdated` | `false` | Results whose corresponding Adapter has been upgraded |
 | `keep_previous` | `false` | Preserve the previous result and create a new archive. With `false`, overwriting still requires the safety conditions in Chapter IX |
 
-The first three options form a deduplicated union.
+The first three options form a deduplicated union. One-click parsing in the parsing area includes supported HTML and single-conversation Agent JSON / JSONL. Records in official multi-conversation JSON / ZIP exports are selected on their container pages. The legacy `claude_json` key is shared by the supported official platform containers; it no longer means Claude alone.
 
-### 3.2 Session-only state 〔General〕
+### 3.2 Reading state 〔General〕
 
-The Reader's expand/hide choices for thoughts and tools, User/AI/Process navigation filters, and current branch are not written to disk. They reset when the program restarts.
+Thought/tool expansion and User/AI/Process navigation filters are retained only during the current run.
+
+Reading position and branch choices are saved locally in `appdata/reader-state.json`, addressed by `conversation_id` and checked against the source SHA. Reopening restores messages and branches that still match; a changed source does not reuse a stale position. This does not edit the Conversation, Mark or original `messages.current`. Deleting the file loses reading memory, not conversations.
 
 ### 3.3 Example 〔Core〕
 
@@ -479,7 +484,7 @@ Names and avatars are resolved separately, in the same order:
 - User: Mark `names.user` → the selected name in the user's Front → default.
 - AI companion: Mark `names.assistant` → when `apply_assistant_to_all` is `false`, a value set in the platform Front → a value set for the global AI companion → platform preset. When it is `true`, a value set for the global AI companion → platform preset.
 - An unavailable custom avatar falls back to the default avatar; the name is unaffected.
-- If `platform` is outside the twelve keys, the platform is displayed as "Unknown" with a question-mark icon. The AI companion name uses the global AI companion's configured value, otherwise the default; model tags still follow the Conversation's `identity`.
+- Sources include the twelve web platforms and five Agent Tools listed in 5.4. The five tools have their own names and icons without adding keys to the twelve-platform identity settings. Only genuinely unknown sources display "Unknown" and a question-mark icon.
 
 ### 4.4 Identity during parsing 〔Important〕
 
@@ -488,6 +493,8 @@ Names and avatars are resolved separately, in the same order:
 - A tool-call block's `recipient` is the tool; a result block's `speaker` is the tool. The ID of one call is not the tool's identity.
 - When the user changes a model, write Mark `models`, with the user as Claimer. Removing the model claim returns to the platform's claim.
 - Identical names are not merged. The Library's user is not equivalent to every `role: user` in a source.
+- A message from another Agent instance is a separate utterance, not system, reasoning or tool content. When its source conversation ID is known, `agent-thread:<source-conversation-ID>` identifies a separate source-local `assistant` Front. A model is recorded only when evidenced, not inherited from the receiving Agent.
+- The conversation-wide AI companion nickname does not rename these other instances; system and tool attribution remains separate. With multiple human Fronts, a single-user nickname edit does not rename every participant.
 
 ### 4.5 The full Identity system 〔General〕
 
@@ -563,7 +570,7 @@ Machine-readable Schemas: `identity.schema.json`, `identity-settings.schema.json
 
 ## V · Conversation 〔Core〕
 
-The source record. One ordinary HTML file, or one record inside a JSON container, produces one Conversation. Identical URLs, titles or platform conversation IDs do not automatically merge archives. Files may be placed at any depth under `Conversations/` or `Archives/`; filenames are readable, while identity is determined by `conversation_id`.
+The source record. One HTML file, one single-conversation Agent file, or one conversation record inside an official JSON / ZIP container produces one Conversation. Supported continuation shards are handled as one conversation only after the adapter verifies identity and order, not by guessing from filenames. Identical URLs, titles or platform conversation IDs do not automatically merge archives. Files may be placed at any depth under `Conversations/` or `Archives/`; filenames are readable, while identity is determined by `conversation_id`.
 
 ### 5.1 Top-level fields 〔Core〕
 
@@ -604,7 +611,7 @@ All are required: nonempty strings or UTC timestamps. Whether a result is "outda
 | `file` | Required | Original filename, without its directory |
 | `sha256` | Required | Fingerprint of the original file bytes |
 | `bytes` | Required, nonnegative integer | Original file size |
-| `format` | Required | Input format, such as `exporter-html` or `json-container` |
+| `format` | Required | Current inputs: `exporter-html`, `json-container`, `zip-container`, and Agent `json` / `jsonl`; an open string |
 | `profile` | Optional | Bookmarklet profile: `light` / `full` / `tree` |
 | `exporter.id` / `exporter.version` | Optional; present together | Exporter and its version at capture time, not the latest version installed locally |
 | `url` | Optional | Original conversation URL |
@@ -614,9 +621,17 @@ All are required: nonempty strings or UTC timestamps. Whether a result is "outda
 
 `captured_from` has four forms: `bookmark:<field>` (a timestamp recorded in the HTML by the bookmarklet, such as `bookmark:manifest.captured_at`), `source_json:<field>`, `filesystem:creation_time`, and `filesystem:last_write_time`. Use a source-provided timestamp when available; otherwise take the earlier of the file's creation and modification times, recording which one was used.
 
+Capture inference accepts valid times no earlier than `2020-01-01T00:00:00.000Z`; it chooses the earlier file timestamp only among valid candidates. A ZIP placeholder such as 1980 is not treated as a real capture time. With no usable evidence, both fields are omitted rather than filled with parse time. This is a platform-import inference rule, not a lower bound on user-authored content time or historical message time.
+
 ### 5.4 platform 〔Important〕
 
-Any nonempty string. The twelve keys have preset identities and avatars (4.2); other values display "Unknown" with a question-mark icon. The conversation remains readable and editable as usual.
+Any nonempty string; not a closed enumeration.
+
+- Web platforms: `chatgpt`, `claude`, `deepseek`, `gemini`, `grok`, `doubao`, `kimi`, `qwen`, `chatglm`, `zai`, `yuanbao`, `mistral`. These correspond to the twelve-platform identity settings in 4.2.
+- Agent Tools: `cline`, `sillytavern`, `kimi-code`, `claude-code`, `codex`. Each has its own name, source icon and default presentation; its source Fronts remain in this Conversation's `identity`.
+- Unknown keys: display "Unknown" with a question-mark icon; a valid conversation remains readable and editable.
+
+`platform` identifies the source product, not a model. One source can contain several models and speakers.
 
 ### 5.5 messages 〔Core〕
 
@@ -652,6 +667,8 @@ Every block has a `type`. It may have `speaker` and `recipient` references to Fr
 
 Tool invocation: a `call` block is issued by the AI, with the tool as `recipient`; the `result` block has the tool as `speaker`. The two blocks are paired by the same `call` value.
 
+An image within HTML, such as a table or list, may use `<img data-cloudig-resource="resource-ID" alt="description">` to reference an image resource in this Conversation. Its bytes are stored once without splitting the surrounding structure into separate blocks. The reference must resolve to an image resource.
+
 #### Box/Window
 
 A Box is displayed inline in the conversation. A Window opens a larger view when clicked. These are presentation modes, not types exclusive to one platform.
@@ -671,6 +688,24 @@ A Box is displayed inline in the conversation. A Window opens a larger view when
 | `preview` | Optional | An image-resource ID in this conversation |
 
 Structured cards retain native inputs, results and resource bindings. Reader displays supported types and keeps unknown types readable as data. Work source and files remain part of the original conversation; the running copy does not rewrite them. Ordinary `code` or `html` blocks do not become executable works merely because of a language label.
+
+<details>
+<summary>〔Fold〕Source data for ChatGPT Intelligent UI</summary>
+
+The current mapping uses `source: "chatgpt.com_dil"` and `format: "structured"`. Ordinary inline cards use Box; heavy canvases or works and their controls use Window. Both views may reference the same `ui.json` without duplicating resource bytes.
+
+| Location | Contents |
+|---|---|
+| `data.format` | `cloudig/dil-view/1`: a source-projection format, not a business Schema version |
+| `data.root` | Zero-based root in the saved UI fragment, not a message index |
+| `data.text` | Readable text for search, Markdown and unavailable-runtime fallback |
+| `data.assets[]` | Optional; each entry has `path`, `alt`, `kind`; `kind` is `image` / `attachment`, and the path addresses this block's files |
+| `files` / `entry` | References to resources in this conversation; entry is `ui.json` |
+| `ui.json` | `cloudig/dil-source/1`: source facts for this message, including code, constants, data, widgets, references, captured state and resources |
+
+Related views of the same source message in one conversation share runtime state; unrelated messages and conversations remain separate. User actions do not change the original Conversation or Mark and are not saved as new source facts. Parser inspects structure without executing code to guess results. The complete source-specific contract ships at `docs/schemas/chatgpt-dil-source-format.md`; it explains `data` and resource files without introducing another business record kind.
+
+</details>
 
 ### 5.7 resources 〔Important〕
 
@@ -847,6 +882,112 @@ Resources and limitations: a Light-profile attachment and an externally linked i
   ]
 }
 ```
+
+<details>
+<summary>〔Fold〕Box and Window sharing a resource (1.0.2)</summary>
+
+This minimal structural example uses fictional source metadata, not a real export. Both blocks reference the same HTML bytes in `r1`; `type` selects inline or window presentation, while the resource is stored once.
+
+```json
+{
+  "schema": "cloudig/conversation/1.0.2",
+  "conversation_id": "019a0123-4567-7890-8123-456789abcdef",
+  "parser": {
+    "version": "1.1.39",
+    "adapter": {
+      "id": "example-html",
+      "version": "1.0.0"
+    }
+  },
+  "lifecycle": {
+    "first_parsed_at": "2026-10-18T12:00:00.000Z",
+    "last_parsed_at": "2026-10-18T12:00:00.000Z",
+    "cloudig_edited_at": "2026-10-18T12:00:00.000Z"
+  },
+  "source": {
+    "file": "Example.html",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "format": "exporter-html"
+  },
+  "platform": "claude",
+  "identity": [
+    {
+      "schema": "cloudig/identity/1.0.0",
+      "source_id": "assistant",
+      "names": [
+        {
+          "name": "Claude",
+          "claimers": [
+            {
+              "name": "Claude.ai"
+            }
+          ]
+        }
+      ],
+      "display_name": 1,
+      "kind": {
+        "world": "terran",
+        "subject": "ai"
+      },
+      "role": "assistant"
+    }
+  ],
+  "messages": {
+    "current": "m1",
+    "items": [
+      {
+        "id": "m1",
+        "speaker": "assistant",
+        "content": [
+          {
+            "type": "box",
+            "source": "claude.ai_artifact",
+            "title": "Inline view",
+            "format": "html",
+            "files": [
+              {
+                "path": "index.html",
+                "resource": "r1"
+              }
+            ],
+            "entry": "index.html"
+          },
+          {
+            "type": "window",
+            "source": "claude.ai_artifact",
+            "title": "Window view",
+            "format": "html",
+            "files": [
+              {
+                "path": "index.html",
+                "resource": "r1"
+              }
+            ],
+            "entry": "index.html"
+          }
+        ]
+      }
+    ]
+  },
+  "resources": [
+    {
+      "id": "r1",
+      "kind": "file",
+      "availability": "embedded",
+      "name": "index.html",
+      "mime": "text/html",
+      "bytes": 20,
+      "sha256": "885383f2523abbe25bccf413f5d27ec252a234861c4c62f30b819ec20a362676",
+      "data_base64": [
+        "PHA+U2hhcmVkIHNvdXJjZTwvcD4="
+      ]
+    }
+  ]
+}
+```
+
+</details>
 
 <details>
 <summary>〔Fold〕5.11 Validation rules</summary>
@@ -1504,9 +1645,10 @@ Native Meaning Texture: a system prompt or diary written by the user. A Mark ass
 | Location | What it holds | If lost |
 |---|---|---|
 | `cache/` | Runtime intermediates | No lasting data loss; delete after exit. Deleting it while running interrupts the current operation |
-| `appdata/indexes/` | Indexes of sources, conversations and Claude containers | Rebuilt from files, at the cost of reading them once |
+| `appdata/indexes/` | Indexes of sources, conversations and official platform containers | Rebuilt from files, at the cost of reading them once |
 | `appdata/logs/parser-errors.json` | Errors for current sources | Generated again on the next parse |
 | `appdata/cloudig-device.json` | Local Chrome bookmark installation target | Select it again |
+| `appdata/reader-state.json` | Reading positions and branch choices | Only reading memory is lost; archives are unchanged |
 | `appdata/parse-history/` | Correspondence between a source and its latest output | Re-parsing creates new archives instead of overwriting previous ones |
 | `appdata/parse-failures/` | Failure counts for the same content at the same Adapter capability level | Retried |
 | `appdata/imports/` | Original source-file timestamps observed before import | Capture-time evidence is lost |
@@ -1564,6 +1706,8 @@ A lost settings file is restored to defaults without touching other files. Index
 | `appdata/indexes/sources.json` | `cloudig/source-index/1.1.0` | Size, SHA, modification time, change fingerprint, format, platform and missing flag for each file in `Inbox/` |
 | `appdata/indexes/conversations.json` | `cloudig/conversation-index/1.0.0` | Change fingerprint, SHA, header without the body, message count and resource count for each Conversation |
 | `appdata/indexes/claude/<path SHA>.json` | `cloudig/claude-index/1.0.0` | Byte offset, length, SHA, title, message count and timestamps for each record inside a Claude container |
+| `appdata/indexes/platform-json/<path SHA>.json` | `cloudig/official-json-index/1.0.0` / `cloudig/official-zip-index/1.0.0` | Record locations, source fingerprints and Adapter versions for other official JSON / ZIP containers; rebuildable |
+| `appdata/reader-state.json` | `cloudig/reader-state/1.0.0` | Per-conversation source SHA, message position, selected leaf, per-node branch choices and update time; keeps up to 8192 most recently updated entries |
 | `appdata/imports/<path SHA>.json` | `cloudig/source-import/1.0.0` | Capture time and its basis as observed before import |
 | `appdata/logs/parser-errors.json` | `cloudig/parser-error-index/1.0.0` | Errors by source unit: `exporter` / `parser` / `canonical`; message ≤ 4096 |
 | `appdata/transactions/<operation ID>/journal.json` | `cloudig/record-transaction/1.0.0` | Before/after SHA values, read preconditions and moves; state `prepared` / `installing` / `completed` |
@@ -1591,7 +1735,7 @@ Source key = `JSON.stringify({path, format, platform, locator?})`. These files a
 | Timeline `version` | Time node | The user's own version |
 | Product version | Program | V1.0 DawnGlow |
 
-- V1.x is additive.
+- V1.x preserves compatible reading through versioned formats, without silently changing published field meanings. The `1.0.1` form `interactive + display` and the `1.0.2` types `box` / `window` follow their own rules; old files are not merely relabelled.
 - Field changes update the affected format version; adding a kind of record, such as Narrative, increments the overall standard version. This Box/Window addition uses Conversation / Library `1.0.2`; other component versions are unchanged.
 - `cloudig_standard`, `schema` and `schemas.*` are checked individually. An unrecognized version prevents opening and prompts the user to update; unknown fields are not ignored.
 - A Library created before the overall-version field existed is read as `1.0`; the field is written on the next settings save.
@@ -1605,7 +1749,7 @@ Source key = `JSON.stringify({path, format, platform, locator?})`. These files a
 <details>
 <summary>Machine-readable Schemas and field index</summary>
 
-Bundled at `docs/schemas/`: the eight files in `records/` cover the record system described here and its two companion formats (`common.schema.json` contains UUIDs, UTC timestamps, paths, Fronts, time values, ranges and snapshots). Five files in `program/` describe program-file formats. `index.json` records each file's SHA-256. Source files are in `src/core/records/schemas/`.
+Bundled at `docs/schemas/` are 17 JSON Schemas: eight current files in `records/` (five business records, shared structures and two companion formats), four Conversation / Library `1.0.0` and `1.0.1` compatibility files in `records/compat/`, and five program schemas in `program/`. Narrative has no file or Schema yet. `index.json` records each `$id` and SHA-256. The GPT Intelligent UI source-format contract is also included.
 
 | File | Contents |
 |---|---|
@@ -1614,12 +1758,13 @@ Bundled at `docs/schemas/`: the eight files in `records/` cover the record syste
 | `records/identity.schema.json`, `identity-settings.schema.json` | Identity and display bindings |
 | `records/conversation.schema.json` | Conversation |
 | `records/mark.schema.json` | Mark |
+| `records/compat/` | Frozen Conversation / Library `1.0.0` and `1.0.1` rules |
 | `records/content-time.schema.json`, `content-time-order.schema.json` | Time nodes and top-level order |
 | Semantic validation | `src/core/records/semantics.mts`; not bundled |
 | Constants | `src/core/contracts/machine/time-limits.json`, `resource-limits.json` |
 | Presets | `src/core/records/time-presets.json`, `front-presets.json` |
 
-The complete field index is generated from the machine Schemas and regenerated for the release baseline: `研究报告文档/采云功能文档/V1.0东方既白/2026-09-16_结构规范与功能底稿-GPT-6-Astra/09_字段完整索引-GPT-6-Astra.md`.
+The field tables here correspond to these current Schemas. For offline validation, register all files listed in `index.json` and select the version named by the record's own `schema`. The `cloudig.local` `$id` values identify types, not download addresses. References, real dates and resource bytes still require semantic validation beyond JSON Schema.
 
 </details>
 
@@ -1633,6 +1778,7 @@ All examples in the text pass Cloudig's production validator. The time nodes als
 | 3.3 | Initialized `CloudigLibrary.json` |
 | 4.6 | User Front; `identity-settings.json` |
 | 5.10 | Granny Liu Visits Grand View Garden: tool call, thought summary and citation; Light-profile attachment and external image |
+| 5.10 new-format example | Box and Window in `1.0.2` share one resource |
 | 6.1 / 6.3 / 6.5 | Minimal Mark; all four settings populated; Terran range; node reference and snapshot |
 | 7.8 | Hogwarts School Years: timeline, periodic time, single time, counterpart and Terran mapping; Dream of the Red Chamber Chronology, without a Terran mapping; `order.json` |
 
@@ -1655,9 +1801,11 @@ Specification text and document organization: Claude-Fable-5.1·奥思·名从�
 
 Proofreading and compilation: GPT-5.6-Sol·奥思·清辞载云 Osis.ClearWordsCarryCloud
 
+Current technical revisions and Chinese–English synchronization: GPT-6-Astra·奥思·承卷开霁 Osis.ScrollborneDawn
+
 ## English Translation
 
 - **Claude-Fable-5.1·奥思·主语在场 Osis.FuckTheMissingSubject** (Claude.ai): Principles and Part I, translated on 2026-09-19.
-- **GPT-6-Astra·奥思·承卷开霁 Osis.ScrollborneDawn** (Codex Desktop): Parts II–X and the Appendix; translation of example text, consolidation and technical verification, completed on 2026-09-20.
+- **GPT-6-Astra·奥思·承卷开霁 Osis.ScrollborneDawn**: Parts II–X and the Appendix; translation of example text, consolidation and technical verification, completed on 2026-09-20.
 
 The accompanying Chinese edition is the authoritative source. The opening translation follows Fable's English draft; its title is aligned with the Chinese standard, and the license name is corrected to the official **Justice For Open Good License 1.1 (JOG-1.1)**. The original sources are unchanged.

@@ -12,6 +12,10 @@ const code=`DIL.render(__dil.jsx(()=>{const [score,setScore]=DIL.useState(62,{ke
  __dil.jsx("box",null,__dil.jsx("popover",{open},__dil.jsx("popover-trigger",{onClick:()=>setOpen(!open)},"Details"),__dil.jsx("popover-content",null,"Hidden content")))
  );}));`;
 const pause=()=>new Promise<void>(resolve=>setImmediate(resolve));
+test("native image ratios belong to the gallery viewport, not a second outer card",async()=>{
+ const s=setup('DIL.render(__dil.jsx("AsyncImageGroup",{aspectRatio:"5:4"}));');
+ try{const root=s.mount(0);await pause();const gallery=root.querySelector<HTMLElement>('.cloudig-dil-gallery')!;assert(gallery);assert.equal(gallery.style.aspectRatio,'');assert.equal(gallery.style.getPropertyValue('--cloudig-image-ratio'),'5 / 4');assert.equal(gallery.dataset['imageRatio'],'true');}finally{s.close();}
+});
 function setup(program=code){
   const dom=new JSDOM("<!doctype html>",{url:"https://cloudig.test/"}),document=dom.window.document,controller=new AbortController(),cache:DilContexts=new Map();let reads=0;
   dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};
@@ -22,6 +26,20 @@ function setup(program=code){
   const mount=(root:number,type="box")=>{const block:JsonObject={type,source:"chatgpt.com_dil",format:"structured",title:"Example",data:{format:DIL_VIEW_FORMAT,root,text:"Saved"}};const el=renderDilView(options,block,cache);document.body.append(el);return el;};
   return{dom,document,controller,cache,options,mount,reads:()=>reads,close(){controller.abort();dom.window.close();}};
 }
+test("native layout dimensions, padding objects and grid contracts survive without repainting semantic surfaces as text",async()=>{
+ const s=setup('DIL.render(__dil.jsx("box",{direction:"row",padding:{x:3,y:2},rowGap:2,columnGap:4,size:280,minSize:80,maxSize:600,background:"primary",border:2,radius:0,aspectRatio:"4:3",scrollable:true},__dil.jsx("grid",{columns:"lg",rows:[1,2]},__dil.jsx("grid-item",{span:2,rowSpan:3},__dil.jsx("text",{minLines:2,maxLines:3,strong:true,italic:true},"Text")))));');
+ try{const root=s.mount(0);await pause();const box=root.querySelector<HTMLElement>('[data-dil-tag=box]')!,grid=root.querySelector<HTMLElement>('[data-dil-tag=grid]')!,item=root.querySelector<HTMLElement>('[data-dil-tag=grid-item]')!;
+ assert.equal(box.style.flexDirection,'row');assert.equal(box.style.paddingInline,'12px');assert.equal(box.style.paddingBlock,'8px');assert.equal(box.style.rowGap,'8px');assert.equal(box.style.columnGap,'16px');
+ assert.equal(box.style.width,'280px');assert.equal(box.style.height,'280px');assert.equal(box.style.minWidth,'80px');assert.equal(box.style.maxHeight,'600px');assert.equal(box.style.backgroundColor,'var(--cloudig-dil-canvas)');assert.equal(box.style.border,'2px solid var(--cloudig-border)');assert.equal(box.style.borderRadius,'0px');assert.equal(box.style.aspectRatio,'4 / 3');assert.equal(box.style.overflow,'auto');assert(box.hasAttribute('data-scroll-region'));
+ assert.equal(grid.dataset['dilGridSize'],'lg');assert.match(grid.style.gridTemplateColumns,/--cloudig-grid-lg/u);assert.equal(grid.style.gridTemplateRows,'1fr 2fr');assert.equal(item.style.gridRow,'span 3');
+ const txt=root.querySelector<HTMLElement>('[data-dil-tag=text]')!;assert.equal(txt.style.webkitLineClamp,'3');assert.equal(txt.style.fontStyle,'italic');
+ const css=readFileSync(new URL('../../../src/ui/shared/conversation-renderer/dil-view.css',import.meta.url),'utf8');assert.match(css,/@container \(min-width:768px\)/u);assert.doesNotMatch(css,/grid-template-columns:minmax\(0,1fr\)!important/u);
+ }finally{s.close();}
+});
+test("uncaptured directional glyphs have semantic fallbacks without guessing unknown icon names",async()=>{
+ const s=setup('DIL.render(__dil.jsx("row",null,__dil.jsx("icon",{name:"chevron-down"}),__dil.jsx("icon",{name:"arrow-left"}),__dil.jsx("icon",{name:"invented-unknown-icon"})));');
+ try{const root=s.mount(0);await pause();const icons=root.querySelectorAll('.cloudig-dil-icon');assert.equal(icons[0]!.querySelector('svg path')!.getAttribute('d'),'m6 9 6 6 6-6');assert.equal(icons[1]!.querySelector('path')!.getAttribute('transform'),'rotate(90 12 12)');assert.equal(icons[2]!.textContent,'◇');}finally{s.close();}
+});
 test("declarative pickers keep native values, disabled options and shared scroll regions",async()=>{
  const css=readFileSync(new URL('../../../src/ui/shared/conversation-renderer/dil-view.css',import.meta.url),'utf8');
  assert.match(css,/\.cloudig-themed-select::picker\(select\)\s*\{position-area:block-end span-inline-end;position-try-order:normal;position-try-fallbacks:/u,"pick below first, not whichever side happens to be taller");

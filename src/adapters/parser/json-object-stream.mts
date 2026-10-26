@@ -76,7 +76,18 @@ export async function parseStreamingJson(source: Readable, signal?: AbortSignal,
   };
   const consume = (chunk: string) => {
     let start = 0;
+    const stringBoundary = /["\\]/gu;
     for (let index = 0; index < chunk.length; index++) {
+      // Native scanning skips ordinary string runs (notably embedded Base64)
+      // without a JS iteration per byte. Escapes, token validation and exact
+      // UTF-8 resource offsets still use the same state machine below.
+      if (mode === "string" && !escaped) {
+        stringBoundary.lastIndex = index;
+        const boundary = stringBoundary.exec(chunk), end = boundary?.index ?? chunk.length;
+        byteOffset += Buffer.byteLength(chunk.slice(index, end), "utf8");
+        index = end;
+        if (index === chunk.length) break;
+      }
       const character = chunk[index]!;
       const here = byteOffset, code = chunk.charCodeAt(index);
       byteOffset += code < 0x80 ? 1 : code < 0x800 ? 2 : code >= 0xd800 && code <= 0xdbff ? 4 : code >= 0xdc00 && code <= 0xdfff ? 0 : 3;

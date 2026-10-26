@@ -29,10 +29,10 @@ test("all accepted structured card families have an inert Box representation", (
   }
   assert.equal(project({ input: { sample: true }, native_card: { kind: "unknown" } }).view, undefined);
 });
-test("Visualize preserves original source; heavy runtime starts as Window, simple widget as Box", () => {
+test("Visualize preserves original source; framework-backed widgets remain Box without an independent workspace", () => {
   for (const code of ['<script src="https://cdn.example.test/three.js"></script>', '<script type="module">import x from "x"</script>', '<canvas/><script>requestAnimationFrame(draw)</script>', '<script>new AudioContext()</script>']) {
     const { view, files } = project({ name: "mcp__visualize__show_widget", input: { widget_code: code }, native_card: { kind: "visualize" } });
-    assert.equal(view?.["display"], "window"); assert.equal(view?.["source"], "claude.ai_visualize"); assert.equal(files[0]!.source, code);
+    assert.equal(view?.["display"], "box"); assert.equal(view?.["source"], "claude.ai_visualize"); assert.equal(files[0]!.source, code);
   }
   const code = '<button onclick="count++">Pulse</button><script>let count=0</script>';
   const { view, files } = project({ input: { widget_code: code }, native_card: { kind: "visualize" } });
