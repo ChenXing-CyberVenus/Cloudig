@@ -27,7 +27,7 @@
 html[data-theme="star-night"] .feature-document img.feature-shot-dawn { display: none; }
 html[data-theme="star-night"] .feature-document img.feature-shot-star-night { display: block; }
 .feature-figure figcaption { margin-top: 14px; font-size: 14px; line-height: 1.7; color: var(--standard-muted); }
-.feature-document .feature-zoom { font-size: 14px; padding: 5px 12px; min-height: 32px; margin-top: 8px; }
+.feature-document .feature-zoom { font-size: 14px; line-height: 1.4; padding: 5px 12px; min-height: 32px; margin-top: 8px; width: max-content; height: auto; max-width: 100%; white-space: nowrap; }
 .feature-document .feature-zoom[hidden] { display: none; }
 .feature-enlarged .feature-figure-parts { display: block; overflow: auto; max-height: 72vh; }
 .feature-enlarged .feature-crop { width: max-content; max-width: none; margin-bottom: 14px; }

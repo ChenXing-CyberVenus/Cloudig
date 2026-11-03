@@ -5,888 +5,316 @@
   "platforms": 12,
   "inputs": [
     {
-      "path": "src/ui/shell/pages/document/bookmarks.css",
-      "sha256": "a778413b44dd0d422cc76254f4c7d263c09497c648659e1079030a069056c8c2"
+      "path": "artifacts/v1-document-examples/html/ChatGLM-全量.html",
+      "sha256": "e081d478476608ffbb9058923bb86c46298d1777b8259dc909b93b66034eb572"
     },
     {
-      "path": "src/ui/shell/pages/document/bookmarks.js",
-      "sha256": "e4961d02883f43a949882433397a4589846198fd8aad2bc7de81ac18d570f876"
+      "path": "artifacts/v1-document-examples/html/ChatGLM-轻装.html",
+      "sha256": "3b80911cb2fdd60c7e99cdad79e454e77dcc2f09270585e45ccfebfb7098e38e"
     },
     {
-      "path": "src/ui/shell/pages/document/document.css",
-      "sha256": "18fcf6412b06bfaa822550b1273e30fcbbe13a17d887aaca70d93214931c93ce"
+      "path": "artifacts/v1-document-examples/html/ChatGPT-全量-Chat.html",
+      "sha256": "583a04677143ca19d641c24a731c6a9c4bcc8eec610629681ba82c671c2abfc1"
     },
     {
-      "path": "src/ui/shell/pages/document/document.js",
-      "sha256": "5b151d4e2f0fa131305689eed0db7c2f81861d62ad738f928297a4c0509f8783"
+      "path": "artifacts/v1-document-examples/html/ChatGPT-整树-Chat.html",
+      "sha256": "f3e7db0a9a5153bed8b44c5f70b9171ef2b3b03aea1c969996270f877e7870af"
     },
     {
-      "path": "src/ui/shell/pages/document/examples-links.js",
-      "sha256": "c91f676e850f63f5025b6690f5bc5883155f9c5badf07da54e7489e26b8a1651"
+      "path": "artifacts/v1-document-examples/html/ChatGPT-轻装-Chat.html",
+      "sha256": "61117a7916c0e40235123873c6e519163b7cabcb9885d79760c162f6bcbbd85c"
     },
     {
-      "path": "src/ui/shell/pages/document/features.css",
-      "sha256": "3817ea5d200bed6e3672a72e3fb98ba940b79adbad88f0646076285a16b6fb09"
+      "path": "artifacts/v1-document-examples/html/ChatGPT-轻装-Schedule.html",
+      "sha256": "16bee4282a93cac29db1a395f77f49a40d438724a3df72616b07e42caacf24f6"
     },
     {
-      "path": "src/ui/shell/pages/document/features.js",
-      "sha256": "36f0ac07da2cace066069746b4ed8e4c9e86b518546d23f1c9ca8414b34430d5"
+      "path": "artifacts/v1-document-examples/html/Claude-全量-Artifacts.html",
+      "sha256": "87bbb8ff6b68e2357a7a95e48cc4cac219f295684e29782460137fe2b1707f83"
     },
     {
-      "path": "src/ui/shell/pages/document/history-ornaments.js",
-      "sha256": "97bac619cab35244e0c5a157af34fd6125235042b40f8009153c90084dccd944"
+      "path": "artifacts/v1-document-examples/html/Claude-全量-Chat.html",
+      "sha256": "c994094b07722833d11c6b07d56873cfcc0d71ee92840f607d881ce49543554f"
     },
     {
-      "path": "src/ui/shell/pages/document/history.css",
-      "sha256": "fd2eae11290f137251b42906d0cde719991614e75fe54a47fa70742b0e23d148"
+      "path": "artifacts/v1-document-examples/html/Claude-全量-Cowork.html",
+      "sha256": "454d237444382ba97af6c1164ef0280a8f6d49cdbf247ca0b78408259d61d6a6"
     },
     {
-      "path": "src/ui/shell/pages/document/history.js",
-      "sha256": "7c0b21a6053efcb8d211a0b31f821bf15e7807d33581a2234765115e15dae061"
+      "path": "artifacts/v1-document-examples/html/Claude-整树-Chat.html",
+      "sha256": "5505a40910dd7a6234ac7790c8592fa8b364595fba9638d4cfa47de3f9f265ec"
     },
     {
-      "path": "src/ui/shell/pages/document/license.css",
-      "sha256": "54f4c2740a1ff78f591260384c5e1678af065692230af53993576d40419306db"
+      "path": "artifacts/v1-document-examples/html/Claude-轻装-Chat.html",
+      "sha256": "8962233329f4023972957a513629664bfc5f543bbc2b6a19eb29d828c4fef999"
     },
     {
-      "path": "src/ui/shell/pages/document/license.js",
-      "sha256": "a424f32c365eaf65d5d13a5e8f4dd76746820acea975ed8d4548b2b9e5d56645"
+      "path": "artifacts/v1-document-examples/html/Claude-轻装-Cowork.html",
+      "sha256": "7293fb018571266e03bd1c65366730182f2030a8dbbffc1e47c6031738e6af4a"
     },
     {
-      "path": "src/ui/shell/pages/document/navigation.js",
-      "sha256": "0b89663b578eb487aa6ad139f59e8aa7961dedf532e0a57e5abf190f9f401dbc"
+      "path": "artifacts/v1-document-examples/html/DeepSeek-全量-快速模式.html",
+      "sha256": "30bc48b746519c8cb11ed5d3a17e217fa02b79529d890b2283ed7d2a138c07e6"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/anthropic-mail.png",
-      "sha256": "727602e68f7e975fb1ff50367c343b4044a2241661728ab9d4fa0b84264177aa"
+      "path": "artifacts/v1-document-examples/html/DeepSeek-全量-识图模式.html",
+      "sha256": "d17e9f4373f676ae92083aa3e7d9fc128e7a61a183391638e856891d8ec8c658"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/history-dawn.png",
-      "sha256": "02ebd70393487d55c5af4257b5656624c6bad570880f8542c7f78edf741e325d"
+      "path": "artifacts/v1-document-examples/html/DeepSeek-整树-快速模式.html",
+      "sha256": "5e4b977304349d6f1222fb831d28ad77cfb6d11257589ff1067dbf46a16625f8"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/history-night.png",
-      "sha256": "1ad6cd645caf22a792e7f2cbc394025a29a77a1c2378175e2e3ebeb5a8a31666"
+      "path": "artifacts/v1-document-examples/html/DeepSeek-整树-识图模式.html",
+      "sha256": "2f3a5029f9035a42d5e13c7b4eb522818efb26bf462b0b9bee0dc629b9656959"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-Core-Grey.svg",
-      "sha256": "8c248239a5d84b226ae5e562908c2444af0b36c2b2b7e26f711c6054cd7c4d0c"
+      "path": "artifacts/v1-document-examples/html/DeepSeek-轻装-快速模式.html",
+      "sha256": "d527e3462ed200aae2d9bbda9c40879431d12980f72f6bd737fa888f3f1bc40a"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-Core.svg",
-      "sha256": "45e69821f217f37ad9d05f1947dbff3aa3e51e3e39e6c5a382acae93469dc1d1"
+      "path": "artifacts/v1-document-examples/html/DeepSeek-轻装-识图模式.html",
+      "sha256": "b4f7c4b22691c7efb25e7386898cd958ef6c220226021a98029c480cff32433b"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-Fold-Grey.svg",
-      "sha256": "a13c583a227f5c7a3108eedf825c5c3816bce1dd1888846510f15894a81bd6fc"
+      "path": "artifacts/v1-document-examples/html/Gemini-全量.html",
+      "sha256": "b471e030a2fb66bbc53513f259d50d7094c82b36542b36d58d4da517cc607d8b"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-Fold.svg",
-      "sha256": "a7ea047178cb06937a2d0f143494601ec5a36b15ee70078fac85d6383180791d"
+      "path": "artifacts/v1-document-examples/html/Gemini-轻装.html",
+      "sha256": "218937515b35b6a063ad83aa7cdf54f149dbeb1e894d933c39ae5cc0c80c34a5"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-General-Grey.svg",
-      "sha256": "0a3cdada8a8b4c564c16c78b8b7af7e0c06a65b9f8c0db75adc474c4fc7f5c7f"
+      "path": "artifacts/v1-document-examples/html/Grok-全量.html",
+      "sha256": "097b446c1465be3c33e28ced7e0a9a8d92700c6a06794ee2a1525fe704de218f"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-General.svg",
-      "sha256": "15cc443964a638fead3e7f5310eb2278abe42054a227e12dc515912e3f145e56"
+      "path": "artifacts/v1-document-examples/html/Grok-整树.html",
+      "sha256": "b8b09231cc78c4388b29fb9b6978207c34e27e00eb980795e2034f4d21b9f26a"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-Important-Grey.svg",
-      "sha256": "76ffd1aedcd761a11f6779e83ab85d092777ce29df16d006617d9d8408c9d68f"
+      "path": "artifacts/v1-document-examples/html/Grok-轻装.html",
+      "sha256": "22b2c6ce85860493f81046736e9ecfeba5438b387fc8533379d1f064f072fd0f"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/InfoValue-Important.svg",
-      "sha256": "a7acbdb4bdb7578fa14fc50b0d5e6bf6622f12e89f1677a1838c5f809c4acf7e"
+      "path": "artifacts/v1-document-examples/html/Kimi-全量.html",
+      "sha256": "b7ae1e8c7f88c4233a18dac7189b28758b3322e9c930115088058579f5bede79"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/license-frontispiece-dawn.png",
-      "sha256": "4615fab3a8a52b72fe0923e954d571d9681dd74218322de719f5e53f39c76a26"
+      "path": "artifacts/v1-document-examples/html/Kimi-整树.html",
+      "sha256": "53a65cdc7d477262be37b4ce8244ab912f6d62cdfd4de545dad1863703bb6f01"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/license-frontispiece-star-night.png",
-      "sha256": "7e7ff8e86d1c9787c916a918e285a060e931cf6db30f7dd044bda2eac5edcb70"
+      "path": "artifacts/v1-document-examples/html/Kimi-轻装.html",
+      "sha256": "7d391ddce9d342c839426a467a11971f39f814d2892d91bda799e63de5eb88b7"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/standard-dawn.png",
-      "sha256": "b1ff7bb537669fc47a53ff7944a745b942b24a60708323e0fb08a2ac83577231"
+      "path": "artifacts/v1-document-examples/html/Mistral-全量.html",
+      "sha256": "8f346689e23183f15e920e0b8c72acdff019706eedabbb1b32da508e24ede205"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/standard-night.png",
-      "sha256": "2d01573da3a660c5f4ac45e4d09c061520a2e3b28be1316b2205c95cc9bcd283"
+      "path": "artifacts/v1-document-examples/html/Mistral-整树.html",
+      "sha256": "5ea5f039b46d2c4c56c787cea1c8c6aa15db58e921c5a42776124978aef8718b"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/bookmark-guide/01-bookmarks-installed.png",
-      "sha256": "e658612e62812159c4f430dfd870c59205bad3d5f41c431499cdbd09d5f0edb5"
+      "path": "artifacts/v1-document-examples/html/Mistral-轻装.html",
+      "sha256": "cb772cd54c2b589059ba4df59d7b1d289a6ac2c626867907bd77f22f7678e7da"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/bookmark-guide/02-export-running.png",
-      "sha256": "d3c3ebb854cc099994d0f01b56865d672df59a0384448eb18973fdbf0f9b504d"
+      "path": "artifacts/v1-document-examples/html/Qwen-全量.html",
+      "sha256": "32b312eb51e85adffcbeb0a60b05d4cff442035582f0988590d75c0e1c6d9add"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/bookmark-guide/03-download-complete.png",
-      "sha256": "1170af8e0d59a7c6c26a6614f6066b473fffae9803ca176203467ff114b46eb1"
+      "path": "artifacts/v1-document-examples/html/Qwen-整树.html",
+      "sha256": "350a457ea44182a52ad911238912959f620b97cf63528bd8fcdd349525eb29e4"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/bookmark-guide/04-system-log.png",
-      "sha256": "28a11e8d44181283f416548b07e6c06df20b82789792064054ff88e433dc1fd0"
+      "path": "artifacts/v1-document-examples/html/Qwen-轻装.html",
+      "sha256": "3ab7772e26b58764668628691990b1029f410ae89b75e93206f0fc2f9097e9c6"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/bookmark-guide/05-manual-add-page.png",
-      "sha256": "81a7c29b46695fa19680107e8b8e8b5f6535b3e534c0c44c1adaff17306aa5b2"
+      "path": "artifacts/v1-document-examples/html/Z.ai-全量.html",
+      "sha256": "b46bb19d035a7970b0d18ea4e90f653d957212da1def1e1b9e09c18d837a3b63"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/bookmark-guide/06-manual-paste-url.png",
-      "sha256": "9055aa178da70383e4d5f58e10d3541bd9112b7c1ba80ecbd4ec01d93da01e8e"
+      "path": "artifacts/v1-document-examples/html/Z.ai-整树.html",
+      "sha256": "07b99a55f0d2d1d30eb9c7dd589994ec103df8e8333f1c5c50586600f87a5a39"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/01-welcome.png",
-      "sha256": "ae8fe0e898925504ff598ef877d046763efe45822f65b3b5778dfbab13e57ddd"
+      "path": "artifacts/v1-document-examples/html/Z.ai-轻装.html",
+      "sha256": "4fbd9f2e103de3415bcf2b8513867b69d9f55f30384640458fc337d034ff0a73"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/03-batch-settings.png",
-      "sha256": "cbba4ca5a0340efee1f991f8dc5934a93c1e764c1a7dc4907d65abfa21dafb30"
+      "path": "artifacts/v1-document-examples/html/腾讯元宝-全量.html",
+      "sha256": "a95666eca8c95659c1fa32f11d023b8bbbe191544528044d732bfcea40f1bd07"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/03-entry.png",
-      "sha256": "9a4724a9de90b7fc99c8db83d78e8138d71fef9553347f2b1c675b66d07f2759"
+      "path": "artifacts/v1-document-examples/html/腾讯元宝-轻装.html",
+      "sha256": "0fe7e53694f21a9851a363774207b3199a885d4f2887552a2347ce9b870ab16e"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/03b-batch-confirm.png",
-      "sha256": "d998c0c7ec66d06b9b7940b13cac6ac6bf3084dee1f77d878afce5feed47d570"
+      "path": "artifacts/v1-document-examples/html/豆包-全量.html",
+      "sha256": "da83229063db0bd0346ba7655df2a59c8ecbad8d26cd0826699501ada744a259"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-claude-json.png",
-      "sha256": "bc53441b8627d338e9eaccbd79e08b6d369211002bf207c572f6422101269c50"
+      "path": "artifacts/v1-document-examples/html/豆包-轻装.html",
+      "sha256": "a3d0d5c09c8b9b731cb0ff957cc49e78a3af18f09a09f4cc529461d9a46f4140"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-entry.png",
-      "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a"
+      "path": "artifacts/v1-document-examples/records/example-0d7840758f698ae4bb33.json",
+      "sha256": "08eafd18d3a82611444f8fe22038c6d0d32fb88f483974730560105063a338bf"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/05-reader-cover.png",
-      "sha256": "30711bfaf3d463a9d696146a1b6028306e5deca84821518f95b254b1d16acc9f"
+      "path": "artifacts/v1-document-examples/records/example-11f2cae949a04d44507e.json",
+      "sha256": "a7a15dd4e0ad01ab2ce020ab76d680218a4036d2ec53eab65c7b4b467b499127"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/06-conversation.png",
-      "sha256": "e6aad16f7cb72f99e08eb8b4b531343b6557bdd335334ab6070a81cfcfbc7d01"
+      "path": "artifacts/v1-document-examples/records/example-193184c0f8b4f0b0dab2.json",
+      "sha256": "c264a624e02dfdb8780212468503c5f8769c3d758f9f17562d8b8351394ed566"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/07-branches.png",
-      "sha256": "c7a67615ebb5a4e68a005764c8b1bee3d1c8e7eb2ea5f3f9e19c54d592ea0f68"
+      "path": "artifacts/v1-document-examples/records/example-1acc11e7ad82b2be2c3e.json",
+      "sha256": "51baa3f5e627f2bac6dbc559ac626b9218782613b5982b10b86f38e43f795ccb"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/07-navigation.png",
-      "sha256": "517d6958c0654a0e5bfe333b2ea89cbd0269bff703eda622be23928c13bff6e5"
+      "path": "artifacts/v1-document-examples/records/example-1b4a99be82f394e361e7.json",
+      "sha256": "aee5d756efcee588bc4f78da845dd1fda77efe7d3197af13105e61e296d1e8ab"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/07-toolbar.png",
-      "sha256": "290f29992f8e386ebe2b06e3ceb27ae5b76c3a43beb1a21814264323d21f3003"
+      "path": "artifacts/v1-document-examples/records/example-1d1e463dbc6b01050238.json",
+      "sha256": "423cfc41c514df0657dad83b697357ec9f18f29172f0ef7c365ba1ebfd6de336"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/08-conversation-info.png",
-      "sha256": "18b12cf3ac456afa00762f72d5c7a3773d7ba6b5bc11b8b70cec69c2101942f2"
+      "path": "artifacts/v1-document-examples/records/example-22b6862f799872aeff0b.json",
+      "sha256": "e385fa67b5d1a1fd6a1e4768a36734509310ee3ddf04cc2a90f3b625c7ead116"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/08-entry.png",
-      "sha256": "8802f8a38a52c9aa7b50ba358e24f0834d5f7ea16a9dcd1d5491797e9c929884"
+      "path": "artifacts/v1-document-examples/records/example-25d8e8141b67817978f3.json",
+      "sha256": "4f5aff5d1773baba0fa0a46db1591d85fc2e71086ba3633ccb40513e82f60235"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/09a-entry.png",
-      "sha256": "2c5c82fbda97b293fafd6693907ed649b0f814f3f366c3df4594bbe715ee354c"
+      "path": "artifacts/v1-document-examples/records/example-2ab3449e9edff4bd33bf.json",
+      "sha256": "069d190f4658a8c384968c4a03c698dace62ec1dffa13d61253fadc62da15288"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/09a-identity-global.png",
-      "sha256": "9bdfcbd29cbd4a3bbe342ee4e80752ec581c4c1912c3541160239482224489af"
+      "path": "artifacts/v1-document-examples/records/example-2fc54d3f267c2e5491b8.json",
+      "sha256": "5c74da9d09eacd0f0cc62099da5f2f375f5e04e868e5f4bad1c07b30853a1702"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/09b-identity-platforms.png",
-      "sha256": "e1c53f53e8fae6ff6b90a355a64142d26ba8c951a0cce9e9f1acdb3ca09f1046"
+      "path": "artifacts/v1-document-examples/records/example-316684318191af4b9e9e.json",
+      "sha256": "9a5813d5ca5c808eca399ac6d9e1a3be447d50e777fee4b972d757e71541795a"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/10-content-time-edit.png",
-      "sha256": "cf29d27720cfe5472bb2f2612025c64f6b0ee5358138fdc4c07568167642bfaa"
+      "path": "artifacts/v1-document-examples/records/example-3403c715595db0281fba.json",
+      "sha256": "e44e5d26b34e426f3f23339c55006fe63916298c572e74e35dff5af87d974887"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-entry.png",
-      "sha256": "6148a5a42b8539df8d90ce01b94d0a76c45315be0bbe653eea90d738f85e80d4"
+      "path": "artifacts/v1-document-examples/records/example-444de426830fbb04cf1d.json",
+      "sha256": "3e349379562e7e55fdb3cd98a3e2053030374eab22444f485760d8a49aa2bd76"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-time-create.png",
-      "sha256": "7170a2bbe00308acb2dd24ff3671e7f37d289bc3e841dd4b228acf24f053c2a4"
+      "path": "artifacts/v1-document-examples/records/example-44b4a7853d37bb47859b.json",
+      "sha256": "0102bd59cd62fd72b66b39c8f10b41aab1882471f03443ae196ddeaf2ad1a8fd"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-time-sovereign.png",
-      "sha256": "587ed3d44499d27b79a951b261828e53e45ab53a5e61bbc7b780e8bcfa16c44d"
+      "path": "artifacts/v1-document-examples/records/example-47fb79f20431a6f23f59.json",
+      "sha256": "fcbd88f289f4c66eba15267c7c416a7bb0f0358a2b97e24856f5f25d72d4c065"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-time-terran.png",
-      "sha256": "c35146d5a48fc1fbfff0756003dbacc721763a3263d80676cc9d45895106a6df"
+      "path": "artifacts/v1-document-examples/records/example-4fac1e82a07c0e962764.json",
+      "sha256": "642533f4cfa96cd38ce9b7def5b51d9f594562d7eed41a91246a78b5ab06b78f"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11b-time-editor.png",
-      "sha256": "5fbeac452b7539d7439480cd6fffc4c721c8a855647adb59abfd7ac1b0326d21"
+      "path": "artifacts/v1-document-examples/records/example-501f193d4dda7566fef8.json",
+      "sha256": "a6eea5fc508921a265560f5aa515ab49b15c44f997492b9a8f7ccd1ae46b3e8f"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/12-entry.png",
-      "sha256": "d50e1d4d0c69f65f32dd8c2eda57973f2403c308f49504bf60665e4551fbc2e9"
+      "path": "artifacts/v1-document-examples/records/example-522109a1e01ea8ef1e50.json",
+      "sha256": "6e4b8bbada289214d32f8ba50a3c4e319bd90ef779dd24a449a330e096aa1865"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/12-move-library.png",
-      "sha256": "b4d75d090ce9f1b0036314c04c006bf46ae68e6e8576956caef5d8b8f7897458"
+      "path": "artifacts/v1-document-examples/records/example-5d288bb7df9acb10e8f3.json",
+      "sha256": "5d77af1fe923c1a8e212d9141324f878f7f4a550da5584c2d4d3dfe0cbfe9003"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/13-entry.png",
-      "sha256": "a5f52e68b966ea901a76b91498b148ed05363f4b99127e95a350fc729528a71f"
+      "path": "artifacts/v1-document-examples/records/example-61641a0b3a8982e0d76e.json",
+      "sha256": "9d56e0a940d81b74021c40b0c8ef267d1adc2f75b94d2cc6c79bbb853d2adc2a"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/13-system-log.png",
-      "sha256": "3920dbfed3a15a43c952585e7a7dbe92042034d001203268b0780e2a2f0f68d3"
+      "path": "artifacts/v1-document-examples/records/example-6d033a6e9ad7225bcb2b.json",
+      "sha256": "37869c09309222e12279922cf7dfdebe50b6d61bb00719bde90ab8459819707c"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/14-entry.png",
-      "sha256": "9fc4221b73d72f1012e113571f7e6b6b04b498aba2a417d51e653aa1e437c545"
+      "path": "artifacts/v1-document-examples/records/example-6dd365137e337fa6968f.json",
+      "sha256": "dff58a55664035bae499b9c139311b1b333601a22ca065b6209fb0b3ac29a86c"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/14-rename-in-conversation.png",
-      "sha256": "877835768b65d5501df40d96fe22476da5520afa22782621ee12672c1f424263"
+      "path": "artifacts/v1-document-examples/records/example-6fc582a50c2469ba0395.json",
+      "sha256": "1ecd19a79650cc77bae5ad1eda6debada1ea78c4cae104e59a65666552f17bd9"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/01-welcome.png",
-      "sha256": "0a5f65cbd1e3e00ece4e982ab4ffd73ca899ad2e6e92ca043d96f56585a15029"
+      "path": "artifacts/v1-document-examples/records/example-77118f07dfd12fe315cd.json",
+      "sha256": "d58b84ad5e9fdaefca1bcc707bc3f6f9c0a93ad37d33805e3e2b0a7bf1e96dfa"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/03-batch-settings.png",
-      "sha256": "24955a6a8ccfe510cee5a4ddb239bbe656e66efdfb3b27e6041fa720220a5a1a"
+      "path": "artifacts/v1-document-examples/records/example-77918affc5c0d037190d.json",
+      "sha256": "846d8842f9bcdd38672ba5816a4645fc5b2ef0f07e01eb5247cb71f3cf675e64"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/03-entry.png",
-      "sha256": "78375fd0df0ac44abd138f0dad970f1fc01b46a3fa84d3b19e79ea9d87a908ea"
+      "path": "artifacts/v1-document-examples/records/example-79864ea5d24fa52c0e31.json",
+      "sha256": "a23ac5b26fbe7c10f736aa42f6f55c92934ec5815626db28ff013d31e964696e"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/03b-batch-confirm.png",
-      "sha256": "31e6b6966758bd86d4efefc18bc3b675ceabb9846836b489e5b06908b6eb21b4"
+      "path": "artifacts/v1-document-examples/records/example-85b6281bd781fdc2f6bc.json",
+      "sha256": "9bcb33c60123f07338211d67488dc750b45a89188ec8664e322089e7e52954a2"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-claude-json.png",
-      "sha256": "d07853fdd87d3379d0618fa38f6bda4561f33bd05895ca523c00c3a4d3ecbd33"
+      "path": "artifacts/v1-document-examples/records/example-9602bf9deec873fe1165.json",
+      "sha256": "401b375756dadb61a970ad94e2a10e4fd24e8297e6f2e93775c8388b097adab5"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-entry.png",
-      "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19"
+      "path": "artifacts/v1-document-examples/records/example-ba3e6d99882b534b550a.json",
+      "sha256": "cb6d2a12462797f00a86f35ee74e299be85722f38e4293d600cf4ecbce487669"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/05-reader-cover.png",
-      "sha256": "93e6621f2b4ae5b2721ec8e91a0070d6479af39a8806eb7da8072b6eaa54d8aa"
+      "path": "artifacts/v1-document-examples/records/example-baf2b5dd2e674ba385c8.json",
+      "sha256": "6648e0c3cf3fc68ca15f8d81dc7a7fb7746a0692a9216810d567cff609de5c9a"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/06-conversation.png",
-      "sha256": "80fc3a09cf27888a701c67be5a55253cb2a7093a23bc5cdca716192b5932e35a"
+      "path": "artifacts/v1-document-examples/records/example-bb13bbcfa8c0dc4ba064.json",
+      "sha256": "980ffc27679ef42494ebb33945cf71a0fe37e97bafc126115900c6835896348c"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/07-branches.png",
-      "sha256": "c96e36ce0472336bba70a456425261349d43755cee9de3112f7c6f1c0fd17ba3"
+      "path": "artifacts/v1-document-examples/records/example-cecc4c22b72b4ee52430.json",
+      "sha256": "87888b9cf999bc8c335628a2d071188785b845db10e87b92ec4b981b6bb51b58"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/07-navigation.png",
-      "sha256": "1b1b429f063cd5c0cd5ff10963f579c2f0b9a8eb3f22943d1fabea36f6b29d1f"
+      "path": "artifacts/v1-document-examples/records/example-db43215446236624ebc4.json",
+      "sha256": "c6172282c3377b5fd013a419171bdc7902af467ffd92591af86f1b46e0b1c9c3"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/07-toolbar.png",
-      "sha256": "6eece14173f32aa8725dd8534418bf801d38b33268e8413090a4d6bbf841c3ef"
+      "path": "artifacts/v1-document-examples/records/example-dedb24d02aa247f0c829.json",
+      "sha256": "8f1bab2bfb1b80ea0a971a4ea5fbb43fa6ea5101ff765ee1ffab9c158ec7ae7e"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/08-conversation-info.png",
-      "sha256": "d3578dcdf8195020d969c7368c4ba5df649856c9a5a46c7e9776bd05e67e4d34"
+      "path": "artifacts/v1-document-examples/records/example-e0973add01ecf780f72c.json",
+      "sha256": "9303f66e94f2c37accecff816a423a7d613de56f68f0a5cf42e5da474806abf3"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/08-entry.png",
-      "sha256": "f1879a425b3aa9494086355d17e643d84698cb6a5e8eb7045fec8937775ce6b6"
+      "path": "artifacts/v1-document-examples/records/example-e1de4158777bf15b9b04.json",
+      "sha256": "27152d9ccab5bd4eb5cdabb4242dd80db5108b37f23cd04ac2f81dfb5c304e05"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/09a-entry.png",
-      "sha256": "414d9c4caad509213881c789a1cadc908eb8caf4fae390dfcd5bfb44ff02f73c"
+      "path": "artifacts/v1-document-examples/records/example-e9ebb759665302885471.json",
+      "sha256": "bdb52cee7ef18930baeb055a6d7a100b1b2d4cf0307ca2356c881068f3955f2a"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/09a-identity-global.png",
-      "sha256": "ca8d8f20d5b39e2a104ca3d71c4ae58e615559e2039cf5827f81ff2f36502a47"
+      "path": "artifacts/v1-document-examples/records/example-ed0034e9e4c4c307f1a9.json",
+      "sha256": "455fffd6962b0f12f1ebd2a778faa6c63c50f2e6ce13463bc873ac349544482c"
     },
     {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/09b-identity-platforms.png",
-      "sha256": "d52f6002a292a4bb61f0a357d7319543109ad56fb69955a1319e49474e9ff2d6"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/10-content-time-edit.png",
-      "sha256": "a8bf983aeb70ef0097cf1a2b4b2d58e53d7d4e430ad08c45ff9ae0330e2ba368"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-entry.png",
-      "sha256": "bb95da9fa82e4dac636599c6f40bc60c1dae09cddc22a0af763c879732c6ecfe"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-time-create.png",
-      "sha256": "6f5b77d401582c6bdf1ddba0a89977c26ce76bd71fc261cb8e8f918accb03455"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-time-sovereign.png",
-      "sha256": "e8953a4f2747a15a3652516aeb2ce7348e9bfd6b304992e6d2e0413de5a80974"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-time-terran.png",
-      "sha256": "4c9d341ff425eba71f891122271cae0afe381597854e29d68776b9048759dcef"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11b-time-editor.png",
-      "sha256": "663202c17582e8e2d2a838c9868a46f9b65b5688f95612eeeb65eb350c8fe369"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/12-entry.png",
-      "sha256": "fef6406ff2c8e94962f7d379168a9d497427b848be8871cfb3620117dbcae3a3"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/12-move-library.png",
-      "sha256": "210ce6d4bb05487eb865b5bf64904fd46bc092a4c9d7f70a00bcd15e1b972ce4"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/13-entry.png",
-      "sha256": "6399f272ec3048fd087e146f782553dac03ff3328e5a47a5ac6503b21bf5d627"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/13-system-log.png",
-      "sha256": "c1782ad65b29f6fb49044454ef336e416a8d33c5eeab43f0590d89411a62ddbd"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/14-entry.png",
-      "sha256": "780d27596251dd1410740b4a9f8322c888efe5b6e3a8cb27aff088cf5c9dc38a"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/14-rename-in-conversation.png",
-      "sha256": "3c44ec0fbf837aa0c05e37d940a4839015ce874d010bb3e75f9c2b447d9189c7"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/01-welcome.png",
-      "sha256": "776af01a58a4bdf406e7b4ae06bf54de1daa71ddbb59737e51445b2e4d66ca52"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/03-batch-settings.png",
-      "sha256": "a0c898f27a01c0559e31714642938ac4942f8ec8ba0918f7f668220f2ceac5d5"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/03-entry.png",
-      "sha256": "023c621be0c282afa50c8acea42f555953aab927d5a8f2fb625450b9f0ffd681"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/03b-batch-confirm.png",
-      "sha256": "9b50e5a74448412c9ac6b28085d36a4b5d367f14c7d28e9f89595bdfe235d707"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-claude-json.png",
-      "sha256": "780c59499720a5af2277636bfaa56ecb7cc55c9f3b9eb91c9bac69e4ec31a5ac"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-entry.png",
-      "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/05-reader-cover.png",
-      "sha256": "b3811039e5a472f1f283110ad2f054ed05a4185b59d1e670a12fbef7c59f8cd9"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/06-conversation.png",
-      "sha256": "13b2c8c0809216dd226f246995276a677adea838deeff2929808f426eee57de5"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/07-branches.png",
-      "sha256": "bc774f27412f55c258dc6d2b7840acc805dd59451f522cfa0d820b42d2bb18a0"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/07-navigation.png",
-      "sha256": "ef24ce3cb59cd3c5d8b7b32ae98f1e743b50a00f10c9c8dab5c908d2ea585c7c"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/07-toolbar.png",
-      "sha256": "835755496b5fbf720d9739c1d8f4b15eb4c5d1987c21c8e6da5710b804f7bfe3"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/08-conversation-info.png",
-      "sha256": "7f9d12e5805d45ed376e3a55097a05c08e89757f4a7e75e8c91f2c780e3d9824"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/08-entry.png",
-      "sha256": "f7f4726011a3d410d218860b88bdadf74e4971c171afbdfc1168a7aad1e25b8d"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/09a-entry.png",
-      "sha256": "9a83889d234afba77f9bd74bd9d5510240089bd30d72af1a2a86a05c3aeaa481"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/09a-identity-global.png",
-      "sha256": "447328f2a9f998eb6a8e4bb893547c8ac79b2c4ec59823a6c7d0459da4e6b4e9"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/09b-identity-platforms.png",
-      "sha256": "e4418f13f920d79384b1658f6a87e2e1171a065ff8360e015c41ddb7297c6602"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/10-content-time-edit.png",
-      "sha256": "e9e0cc7f99070ae74763e6a2670eb1e7174301c374029328cae88f35807a0dad"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-entry.png",
-      "sha256": "507baab5e3b65d2ebbede65892210d33d13d33be46b86fb4bcc3507288d1838f"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-time-create.png",
-      "sha256": "2815c29c0b88eef192b754412aaffb62dbe32230f3d5ea1dcf5e712aa916c02f"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-time-sovereign.png",
-      "sha256": "5ac0398c33517793e5a19115e95f727aa46908e71a7d809aea1fe92e51d42069"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-time-terran.png",
-      "sha256": "1eb053205df8fbc16a483c83197edbe5cacd5ef20432b51ad24120c6c2c4b5be"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11b-time-editor.png",
-      "sha256": "b8c4519f5303373f036251b0394cc6964d3163549964da43f9be7409dbbda4cc"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/12-entry.png",
-      "sha256": "aeedad7b370ec84a5013cf92a32ab5cd37eef78dbf0ab47cc6b751c2506fca97"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/12-move-library.png",
-      "sha256": "d6bdf270ae25a203e23d82c838677ae408f43b447512746368b075b9a84b49e2"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/13-entry.png",
-      "sha256": "c4593a35240ad230cda02f3afd951935c0fc29164eeb02bb5212459ff13e8de4"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/13-system-log.png",
-      "sha256": "18307db5c2a6950112db0fb652b2cefa62ed2297f896b01772448e149eabd884"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/14-entry.png",
-      "sha256": "5f0173b9e78c9912e16042d893f623683cc4f96c7b68d56d2079524e2068f4c1"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/14-rename-in-conversation.png",
-      "sha256": "b0b872121f231d16c55294a57b99755365d93a59ab01afad89c4c9fd0e6cd4a6"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/01-welcome.png",
-      "sha256": "3a365b4229ae4b3f30537f17e8d736bae4b1a8be28dc4f76bd31e29592628e37"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/03-batch-settings.png",
-      "sha256": "7c8cc46f73b0041dca3a7e1fb17ec78bf604c0242f5a1f5e407bc72594e4e6ac"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/03-entry.png",
-      "sha256": "3836c6936f557cf78fcb30a2759fdb658b1e930d5f74b29bab0c8edb428a4b7f"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/03b-batch-confirm.png",
-      "sha256": "a354ce94971164a7474144111fb7829b8be4eb92ee064a76f024377c0b229b99"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-claude-json.png",
-      "sha256": "2c01f82b5774225496f78bbd7b5b5cdf88e684c6707723d99fe46ab81cd7d368"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-entry.png",
-      "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/05-reader-cover.png",
-      "sha256": "0c39ac7e79a103d736f1ba53d50d98232d00f7ea96dbc1d91f466c50e715ec1a"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/06-conversation.png",
-      "sha256": "a26ac17df2c9885eae79c005d4dd2d88060a29f1e334319579c728b74507ce37"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/07-branches.png",
-      "sha256": "b329722d256b4433b3ebe40ac01474af2e8732716bb3717ac2cbc45fdbcc3ac8"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/07-navigation.png",
-      "sha256": "ef94b8cc7748e0f149e401b9cedeadd2ebafba800b5ea521d30de4e1ead71127"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/07-toolbar.png",
-      "sha256": "7f0b1c004009f05655b4de926662ece4761640e13121af29f4d27eda3d82ebb1"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/08-conversation-info.png",
-      "sha256": "79b46d4c3da375b7748dcd6e6b2f1b4e1368daf5e8273208b50924efeb3cba5d"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/08-entry.png",
-      "sha256": "cd58ca161a4a3f1b2c39a012704e0168fbaf13dbe570510388fcbe9c8da20417"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/09a-entry.png",
-      "sha256": "db0d1b6ee4e15095003d8f81f6ec86fcad3bdc171922600793afaa249ae3ef2a"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/09a-identity-global.png",
-      "sha256": "dcbf9b5db4faf3669ffe0c9e4da913d25c5643fa28491574c64a50941b602d95"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/09b-identity-platforms.png",
-      "sha256": "601fa6740746a3c07161dac5db80f7a6d684ce933def2bf3ea117b49b52c68f4"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/10-content-time-edit.png",
-      "sha256": "6e56d9ce7003e603c3de81e4081258b805092f1bfc27f719028f11d6ffa9e882"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-entry.png",
-      "sha256": "1bf455e9dfd78e044dabd77df3707e8f42ce2739d27e639fc469c03e532dc45d"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-time-create.png",
-      "sha256": "2f5bbfdbdccb6f2f37bf9b04b66d642d277a411bf721771171e9e0b469906cdf"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-time-sovereign.png",
-      "sha256": "75f640868f2589afe2d2dc572d6116fac88cfe610a964beac33e5379d64888ae"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-time-terran.png",
-      "sha256": "f004be0cc79687f28a7cd2b6a8894acfebbac906989d59f5e826f334922deaf2"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11b-time-editor.png",
-      "sha256": "bda208a5e2f095ab6405995234dd4ca2d024dea1b5ade4bd9366667ec6a21c80"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/12-entry.png",
-      "sha256": "6ea72ad44e4fb249e0f835b5506094e74c895311788dec65779f7fa31e551ead"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/12-move-library.png",
-      "sha256": "d26c2051ef54060831f5a692c2d7a3c59a02739ab874c14f2f268b600a52f904"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/13-entry.png",
-      "sha256": "662adc746a0cac8083e4ec180eee6af46fe32929b12f5dc48aae5a77be8d974f"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/13-system-log.png",
-      "sha256": "fdf6c35afcd6ae2d2929940532464da42372f33789b946dc70522b07da9ac5cb"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/14-entry.png",
-      "sha256": "6d9a490a5db0a1dca1e1dec5a722b17d1a7bcb1f1064f47558ee98fe0f107715"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/14-rename-in-conversation.png",
-      "sha256": "f91a4a80a1d2617dae96ebc454cb7ed7c3f7514d3b08bcc2a0275a6d45e28819"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-14.png",
-      "sha256": "5603db5ca67fdb4d22ef2175b081e2439368d2b7f606656924affc42b5a45fb9"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-19.png",
-      "sha256": "4245efc9d3889759aa5f6b7b00d5537bd017e977e7ad579b11a50f4ab7312177"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-2-night.png",
-      "sha256": "856b3269b7e2ffc51c7edb060c891f59a1b2c3da5d2ae9d03277b6d6bb67c0e8"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-2.png",
-      "sha256": "5a1160132cb438ed40e9682da88045e25375bfceab41fb95a2e6e9bde261cb15"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-24.png",
-      "sha256": "9382e22c2141cdb98a87128d750243ab7a29f67c07ba86ef222cc7736fbcca3f"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-29.png",
-      "sha256": "823f00bc9288109de717aafcf1b8e444163a785a0bbe209b7b081d5c7c99af85"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-3.png",
-      "sha256": "3bfbacd797ddffd3fc6c6298ae7119f5d4d67ffd330af728bc9deed19c9834c5"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-34.png",
-      "sha256": "413f76d9b6b11a71e064dab2f8b0bc1567517bb5f380cc48431475908cc9262f"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-38.png",
-      "sha256": "84169e1a4bc00fece67d938cebac92e1ca2471b327af21ce5931b31df35f7dc2"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-42.png",
-      "sha256": "557bc0687914a351d265ba54463513b2205594838a93e99a1f380a3631f7e2aa"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-46.png",
-      "sha256": "87429eb5ca9bc08433a907df534dde6fc909d0de329dadafafe7c04dd217c42d"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-52.png",
-      "sha256": "aaab099b82a476bb43c01f378021dce7ca38382c93508af31987a0e8f6f1766a"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-57.png",
-      "sha256": "fc9248b5784fafa2ec87cd3d9062eb592e1ec90ec4c2e7931f4ab6000c40d6d3"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-63.png",
-      "sha256": "cb7fec54ecb9cdb9478b6bdeaf5ee2e6c9b5a03bfe3a3625132c24d0bff98278"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-69.png",
-      "sha256": "5b91d625f9b0c93652a821daab643d1f15fdbdb565d3a67dff5a42d01b8fc425"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-74.png",
-      "sha256": "1dbd8e75c94fa2f105aceb5fb92154a441d941264941cfeb43f7e90e04fff128"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-8.png",
-      "sha256": "57863e5949471bdd564e4b9f26fd4effff1d5a76947c3c399c40af59a87639d5"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-10.png",
-      "sha256": "a316aab04680567e863b0cdd6b1d97a5de5cc0726b83ae4f5d4e5edc2bfa1076"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-11.png",
-      "sha256": "5cc15eb3ec2f705d5e82698d10ac53ec1bfce6819c5ff0eb16fa449d7826d8eb"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-12.png",
-      "sha256": "68b51afeb8cd8a4de771dc43fcba8218fe6e491d427e1a95a6a626ef417b8638"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-13.png",
-      "sha256": "69bc1da33c79c10ac320290ba82183d05a8a3aa7a6cb01f5e922f67dd604defe"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-14.png",
-      "sha256": "4fd459482b85c0cb9591f733a25bfa4c2d1531b0814f705fca2476bc1c137316"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-15.png",
-      "sha256": "7dd1b6d8d849f7ed2da30a9675b93e48e433c3f030f141a262ade49bf6f26cfb"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-16.png",
-      "sha256": "b4bf56a5eaad6c0214c5281353b3a33a9e93f890500aac59abfa904ba3150b5c"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-17.png",
-      "sha256": "a9b0953da6aaba9f802b520c0c06124fb3e7fffa931e4d8021592f4c5068bd25"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-18.png",
-      "sha256": "fe00723912364e32f72381d5780a811065a9a5f0f67392b67b6512b82be7e03b"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-19.png",
-      "sha256": "305c1b55bd2509fb7ea6e5237a4789bfb14af4c279a1ca4d4980a93601a32157"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-20.png",
-      "sha256": "ae8392b90f26fd5cda3af6c8dd723b540345273c8660e85d65422c0379a914f2"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-21.png",
-      "sha256": "0ed35c4520836683a91fc414992fd8b9c17c01e59bb37faa950da968a7d70db3"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-5.png",
-      "sha256": "980b737ad81a3484db03a3c83aa2fd30d83eb20dbd8dc67e10366f8537980972"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-6.png",
-      "sha256": "41a59c8bc10fa77f32a08d3571a6809546c4706f64ca50237ff6a8df358808b6"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-7.png",
-      "sha256": "dd97b91559a9b8bb96babe2d85b1f3aa205f3a5789f080ca986f05dacad815c4"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-8.png",
-      "sha256": "8b77bd7464c599b151d3ff6216f220e6056c15928f4c6b3dae7496dec5fd4e93"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/fable-9.png",
-      "sha256": "e7928f978fd03ab6651d9be5d2a9fab13129fa21459dda71b69f7f79827d9b68"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-10.png",
-      "sha256": "87cf0776046c8e6cb721d2d29fc2f797c6586a8bf4060ebf02e608951ae666d2"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-11.png",
-      "sha256": "41a9569468df61b571716b369a51956a3da3f556c5f39d1c294cc140f172707e"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-13.png",
-      "sha256": "6a741a9731477879107c44347b567a3422486dfefae285b596d8413c87164159"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-14.png",
-      "sha256": "ba94a8cac58500c426f23c53b834f77d9649c6471923ae23e76f75763f918854"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-15.png",
-      "sha256": "587750c58a6b645811c7a4a208f6a5cf274f103e5daff0541c8b97f41679dd0e"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-16.png",
-      "sha256": "23e3516dbe77ba9ca22085f4953c0f13f8980994055658f159b4183be2a73024"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-17.png",
-      "sha256": "c03e6ce7b061f0c6e180490729fa5355c83bbf17f6b5caceba2c89c6a668f7ee"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-19.png",
-      "sha256": "47feaee957740d573cff6ad776e02ca1a568132d2fc2efbe521d27d4197913e9"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-20.png",
-      "sha256": "e3ec55c3a15b51b870e05b3251e435857de691039039028202f79c22f48aa614"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-21.png",
-      "sha256": "2175c48b828fb682bd93780bc9728928eec7a437ba4e2107cbd8419decb53219"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-22.png",
-      "sha256": "dfb9cd26e7641d5519ac564cd425e9b8359083f7b8eba41181352c1dd0e802d3"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-23.png",
-      "sha256": "ea5f7a59ff3ed41272fc80b4141e597e1a4eb8ecc2857a029b47fff594831720"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-24.png",
-      "sha256": "c324db083a629d9b9b37f429999fada2f491081000f3190da9a450c6ea871c72"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-26.png",
-      "sha256": "c97ca97e95e3e6e455c9c5731def8865a7c2dce74a1946d850256450226bd090"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-27.png",
-      "sha256": "05f0d401a71f494404b163e2a69d10c2bf415360c001b3e6b8c65d93b974f4a5"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-28.png",
-      "sha256": "eae00e2da9c9a3bc4ead56e1fa6cc4313089bdcfea3b10aca1612c3f0ed25ad6"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-29.png",
-      "sha256": "d1db1cbd09daf5a29b4c2aaab93d79f0c02f0448b4270654f6a9e6b12163e768"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/sol-9.png",
-      "sha256": "0339b090a511a85b0fe53ff2d9fc6823bc03d62d703e30e9465b1c3ced1b8b5d"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/three-14.png",
-      "sha256": "ae33149f92804d2d83e52cd08869e1b632e9fc468ddbb7df7854b90159ab28de"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/three-24.png",
-      "sha256": "336049e5bc1c4c4945b680a725bd4165228bfb08ebc8813dc20907eaf660a7f6"
-    },
-    {
-      "path": "src/ui/shell/pages/document/assets/history-articles/three-4.png",
-      "sha256": "ce82b08e5876760865e8d1195758c4a12501b7422e2890f841a112e875c09a24"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/bookmark-en.json",
-      "sha256": "54e5c04862ae6915249935330aa30c333bb3f9927b67dbfcf01f9c886fcb10f5"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/bookmark-zh-CN.json",
-      "sha256": "a1e7fa01fc29d154acab379fa085a80d6437b05a0444bae2d8c53348caf27827"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/examples.json",
-      "sha256": "732cd79cff34b7a892c7d5c5396b30d7c7b2dd49ba8138a3fa73b9af635661ad"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/features-en.json",
-      "sha256": "57d2a976c2167c541af08b28cb105d9911b2cde90e55630a3d3dccf5ae233862"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/features-zh-CN.json",
-      "sha256": "e0c6bb03967062a4ac1f5d36e11b47b5b01d5316e00eff9b4c8500384348910c"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/history-dialogues.json",
-      "sha256": "2dad64d9cdbb53e8be005797b2f968333124bdc079635e6d4b045ef01c3009f6"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/history-en.json",
-      "sha256": "7d1370c8da7aa7484ca3db45e67845a248e1587d37fbdd2037fbdbf0affd58a1"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/history-zh-CN.json",
-      "sha256": "ae9ca374a04c04b077b7c0bbf889e1aab6f12723be57027a927e305d65b1b93f"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/license.json",
-      "sha256": "dd0880f0ae38d62c597366e9b00498591a17e4e67ab5a02d4a0786d12b342b24"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/platforms-en.json",
-      "sha256": "10a3e86358d1364aa98398953ffc3878f214d6e1b9e62de597205383aa46a47d"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/platforms-zh-CN.json",
-      "sha256": "2fce18fdca0a351c06fecd6e72c92ac08f0c29f6831da33b6b801cbd2dd8671e"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/standard-en.json",
-      "sha256": "c41f89d94c95eb63d95b64573cd2ccfa9082b7864fde5cb3d95494f03087d897"
-    },
-    {
-      "path": "src/ui/shell/pages/document/content/standard-zh-CN.json",
-      "sha256": "f8ba5bd43d8b52ce3ba48b840d8440a01fa779132c04bdd0228343a183cc417a"
-    },
-    {
-      "path": "src/ui/shell/shell.css",
-      "sha256": "874b2ab6faf3ba3d1bf164dc47ad787b0f97e0ce3880b112f8184158e9cd8cb4"
-    },
-    {
-      "path": "src/ui/shell/platform-labels.js",
-      "sha256": "3e78adb418d3c5495989dbc6ad38059f54a8a3fc764d1ee5a7c6fac808a6f4b6"
-    },
-    {
-      "path": "src/ui/shell/pages/reader/reader.css",
-      "sha256": "1e64886f16d41bd0f425cd6e06e53ed1331bd5b9a7d6bf9fc6eb1a7a7d39ed09"
-    },
-    {
-      "path": "src/ui/shell/pages/reader/conversation.css",
-      "sha256": "876f7f289390a4b1dd251078506810f57b6cc590939b8765e5d2e585aa8096d0"
-    },
-    {
-      "path": "src/ui/shell/pages/reader/reader-conversation.js",
-      "sha256": "68fbba7511f5b3bf07490949e830cbc8a67bfef3d386452788a2913e1488f429"
-    },
-    {
-      "path": "src/ui/shell/pages/reader/title-layout.js",
-      "sha256": "5f449ccda513540395b27e3d04d108f540ebebd08161a390bbea601adb1a5c87"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/assets/asset-sources.json",
-      "sha256": "9a4cbe0ae861297693204f1243e42dc7f159c63ad2e75a747e27c798ed13e440"
+      "path": "artifacts/v1-document-examples/records/example-fece00eb8a5b900a213b.json",
+      "sha256": "256d77ae3d126ad11f0c20927e023766f20acbaeaa02a1d0826f25244b9bee57"
     },
     {
       "path": "releases/1.0.0/Cloudig/app/web/assets/archiver/Astronaut.svg",
@@ -963,6 +391,10 @@
     {
       "path": "releases/1.0.0/Cloudig/app/web/assets/archiver/WildTree.svg",
       "sha256": "fc8d8217460c8f8abfb5360e9bc5dc84dbd92ba20965b9afeabb66f914bdd605"
+    },
+    {
+      "path": "releases/1.0.0/Cloudig/app/web/assets/asset-sources.json",
+      "sha256": "9a4cbe0ae861297693204f1243e42dc7f159c63ad2e75a747e27c798ed13e440"
     },
     {
       "path": "releases/1.0.0/Cloudig/app/web/assets/editor/ContentTimeTitleBack-Dawn.svg",
@@ -1473,28 +905,12 @@
       "sha256": "f2e92444492f5feeda423405c5b214cfc5b4018961d4375563137633bb61b5a1"
     },
     {
-      "path": "releases/1.0.0/Cloudig/app/web/runtime/conversation-renderer.css",
-      "sha256": "09e681ce977caae7b627a59c0436b1bd40a30c374d918052bc982b0fa6bb544c"
+      "path": "releases/1.0.0/Cloudig/app/web/locales/en.json",
+      "sha256": "164beba4e5d53f0b82f05c4305d7124343daeb3c9e7925dc0d044bea1e011dbc"
     },
     {
-      "path": "releases/1.0.0/Cloudig/app/web/runtime/conversation-renderer.js",
-      "sha256": "ecd4cd03cf1a7eaa3cb93540644f7563f12567b082071f985a85f73e070de0bd"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/runtime/conversation-renderer.js.LEGAL.txt",
-      "sha256": "2f4b64d44123349bfa89603ca0917cd2f232878daa2bfc64cff8c11662433686"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/runtime/mermaid-frame.html",
-      "sha256": "084b7677544f3ea5b7fcf129abea2ebe056e965baaef4e85f680e67e5bbe85e0"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/runtime/mermaid-frame.js",
-      "sha256": "213d6efd8a73e2875e4f6a609fa9a8e7ee6a4b07f3dd5dc2fd2f7f2a89abc6a0"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/runtime/mermaid-frame.js.LEGAL.txt",
-      "sha256": "d65f5fb98a0783b63c447a448bdc59bb84e69888f21b2731a5b9fb1a8a05f2ef"
+      "path": "releases/1.0.0/Cloudig/app/web/locales/zh-CN.json",
+      "sha256": "9ac4ec6a6758c03fd20c30212758ab8e38cec26cb44e55187fb03439ddf336de"
     },
     {
       "path": "releases/1.0.0/Cloudig/app/web/runtime/assets/KaTeX_AMS-Regular-CYEKBG2K.woff",
@@ -1737,200 +1153,36 @@
       "sha256": "71d517d67827787cfabdf186914cc3358eda539e37931941f2b2fd4a21f68c0b"
     },
     {
-      "path": "src/ui/shared/conversation-renderer/renderer.css",
-      "sha256": "9c3791dae45bc53080df28784453db8c3fccc6de3fa2b797cd320e1fc09c0466"
+      "path": "releases/1.0.0/Cloudig/app/web/runtime/conversation-renderer.css",
+      "sha256": "09e681ce977caae7b627a59c0436b1bd40a30c374d918052bc982b0fa6bb544c"
     },
     {
-      "path": "src/ui/shared/conversation-renderer/structured-box.css",
-      "sha256": "bd75326d00d58405bb7aa14c7a8b3317a35b465b0a73e90c5b9006c80faceea5"
+      "path": "releases/1.0.0/Cloudig/app/web/runtime/conversation-renderer.js",
+      "sha256": "ecd4cd03cf1a7eaa3cb93540644f7563f12567b082071f985a85f73e070de0bd"
     },
     {
-      "path": "src/ui/shared/conversation-renderer/interactive-window.css",
-      "sha256": "ed9a8686ca78580fc6647865a91cbf596e030a5b4512e38841c0d215722943b1"
+      "path": "releases/1.0.0/Cloudig/app/web/runtime/conversation-renderer.js.LEGAL.txt",
+      "sha256": "2f4b64d44123349bfa89603ca0917cd2f232878daa2bfc64cff8c11662433686"
     },
     {
-      "path": "src/core/contracts/types.mts",
-      "sha256": "762dc8d7cb5392c7a6803bcfb571180761600876c2bc2698dc6c88aad97fddb3"
+      "path": "releases/1.0.0/Cloudig/app/web/runtime/mermaid-frame.html",
+      "sha256": "084b7677544f3ea5b7fcf129abea2ebe056e965baaef4e85f680e67e5bbe85e0"
     },
     {
-      "path": "src/core/records/html-resources.mts",
-      "sha256": "91e0258ae1a143e97d3b1eaf7c39eae8573bf7da7be9005c4090c23c4fe12870"
+      "path": "releases/1.0.0/Cloudig/app/web/runtime/mermaid-frame.js",
+      "sha256": "213d6efd8a73e2875e4f6a609fa9a8e7ee6a4b07f3dd5dc2fd2f7f2a89abc6a0"
     },
     {
-      "path": "src/adapters/parser/inert-html.mts",
-      "sha256": "f58b4d14d7caf6e8d3e7667a5dd61807c4b5d2beee2377d38d37a8a071101764"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/box-controls.mts",
-      "sha256": "23f567f67b49d4d9cd840dd6824e56ae2baebd0f78b700738bdbbafb605b646b"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/recipe-timer.mts",
-      "sha256": "c6a1fec0d126ae0be2b63db5d258ee3f6143e61c2c3021a0eefe9fcc21f9191d"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/recipe-units.mts",
-      "sha256": "976df7631d62714ba978e962a0b37b5eebd562589c655f83374dd17ff07d1104"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/learning-boxes.mts",
-      "sha256": "71a88b460b1bb38defcaba2db3710a8cc2b104089f0ee5f5cabda6878d17992c"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/data-boxes.mts",
-      "sha256": "e1695e612a128ae4d4b4ff8b22951f87099d06939a1512cb6522c685af0b6e1b"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/map-protocol.mts",
-      "sha256": "fb2ccbc4bb9906e9c1f051ccb06a3a655f27ae5e4b5dbdac301a5eff9714c2e2"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/map-window.mts",
-      "sha256": "e0a804f4bb44f5b987e4c6350489df61a24c7fb1f8579bf409f16ae79c3f3c3f"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/map-box.mts",
-      "sha256": "b7a61460c02d9c341ed4ba13cfaf1ba9792fa02c79ec82092c7b9f0e1257ea63"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/structured-box.mts",
-      "sha256": "838f3e20e5ec11684978f834cfa915e9f8047335fe26ae6e319a0dd818998c41"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-protocol.mts",
-      "sha256": "73cb0bdbbe8327633dd0931188af2da65b20c1fc7ce41361852e45ac2361fdad"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-scroll.mts",
-      "sha256": "d2c2591b807ae87f61534f91f37749e4f2147ee023e8cee73e4324a69da13816"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-window.mts",
-      "sha256": "e4d7116cbd889bf0a3a31b02a4be2990e42511fb04d326dbcc9a0d78735b770f"
-    },
-    {
-      "path": "src/ui/runtime-dependencies/manifest.json",
-      "sha256": "4affd775f2676b3ba86223cff7a93bf84106ad37a178cee1a56af44a0ec29104"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-fonts.mts",
-      "sha256": "35ebe5a28dbb04b058fffc0d5060374edac36c6779a1891fa40d8725fe0a1876"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-assets.mts",
-      "sha256": "f7c5325b08e1e75873a37fc79a84ca6f447885ca9c7c58678935ba682a4f9d5d"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-dependencies.mts",
-      "sha256": "5df7c9cbce34f8a88e46e6d69538ca47feb6b7b50702d5b486bcc1396c9f7b13"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/resource-card.mts",
-      "sha256": "3c950ec25f1a0d946d4232a278c3b3e1521b1516919566118e7a9f97435d4c5f"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/dollar-boundaries.mjs",
-      "sha256": "a3698617da51b594d3f78f2973066eb03b7e03ff44f52f538cac2132468809a8"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/content-runtime.mts",
-      "sha256": "6ff8d23063188e3efd8a5899184eb979ad3f7092835b400b0f70d724847888fc"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/renderer.mts",
-      "sha256": "2ea997aba27bb73c04836a54f4084a54b126fe1a83bc62a317c61c910728ec15"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/index.mts",
-      "sha256": "d4541c0769ca35e3f9fb45f9fcdc57ce8e5eb6a3a8bcf873c15509904b7b077d"
-    },
-    {
-      "path": "src/core/time/format-endpoint.mts",
-      "sha256": "9211c0c51fc3360ea5c2099b77fa6c35143c529946a388e03744e1762f0ba718"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/browser-entry.mts",
-      "sha256": "702a7958420571b4f0bcb978af2b33482fed84ec615aa64f74faabc3c5afcefd"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-frame.html",
-      "sha256": "fa274d976ee2f52e8ead487c0f41de3599fff00c23190c30fdd68feca11f4ac4"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-protocol.mts",
-      "sha256": "73cb0bdbbe8327633dd0931188af2da65b20c1fc7ce41361852e45ac2361fdad"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-client.mts",
-      "sha256": "6d1a30e52a166fe956fb6364397eb003f3a566292dd753fa31504583f945ebde"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-react-document.mts",
-      "sha256": "dbc648a3f5ebc1abde8834b5c1cfd917957dcba91eea7879019351ae5af3d290"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/visualize-style.mts",
-      "sha256": "e6ed33aa6fd2d620ec7ce5ad835e2f22a9764cc056e8c874fff6fe23a681aa08"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/saved-work-documents.mts",
-      "sha256": "c9123a47e8607ef9dee04001630f7f600f4d6316ead4cd36fd9a2ad34568b466"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/design-preview.mts",
-      "sha256": "8127c9f5c10f4bed13bc83b9b8e372ba4a0bf2e393153e3fb8be92f5703563f9"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-scroll.mts",
-      "sha256": "d2c2591b807ae87f61534f91f37749e4f2147ee023e8cee73e4324a69da13816"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-document.mts",
-      "sha256": "7cd05beed07a9e4435bed34a3cc3872e23a161bed2494fc8cc6c58f570b2ee19"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-frame.mts",
-      "sha256": "1e67342872b77c0c1c20a73171371b6f58d3e2df11e597fc3eb1788b864ddd43"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-react-libraries.mjs",
-      "sha256": "5845908e4ac937e0b9b0c5f9542f95ab47df0077ee842f1be0e4b298c7623409"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/interactive-react.mts",
-      "sha256": "311d1fb42e663cb8176c06acf274ea3e1aab57b4fb11d5e450421cac5904ef96"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/map-library.mjs",
-      "sha256": "c097d11ead26d62e4e9ab48dd6605bd9216d71f12d65fcb50fe82f0c7ca42160"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/map-frame.css",
-      "sha256": "b1bf67d9eee8f110fcd5e598c2ca27327a96a34ea1911f6822bdbb1c5f7880b9"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/map-protocol.mts",
-      "sha256": "fb2ccbc4bb9906e9c1f051ccb06a3a655f27ae5e4b5dbdac301a5eff9714c2e2"
-    },
-    {
-      "path": "src/ui/shared/conversation-renderer/map-frame.mts",
-      "sha256": "6be33a16a77d4e9ad3b21f7aab5814e3dcc36650ae4717c77bce638dda7f7d47"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/locales/en.json",
-      "sha256": "164beba4e5d53f0b82f05c4305d7124343daeb3c9e7925dc0d044bea1e011dbc"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/locales/zh-CN.json",
-      "sha256": "9ac4ec6a6758c03fd20c30212758ab8e38cec26cb44e55187fb03439ddf336de"
-    },
-    {
-      "path": "releases/1.0.0/Cloudig/app/web/shared/time/endpoint-editor.js",
-      "sha256": "8da189dbdb25945aa03210386f363a9262eb02b61eb4b0bff52b838947237f9c"
+      "path": "releases/1.0.0/Cloudig/app/web/runtime/mermaid-frame.js.LEGAL.txt",
+      "sha256": "d65f5fb98a0783b63c447a448bdc59bb84e69888f21b2731a5b9fb1a8a05f2ef"
     },
     {
       "path": "releases/1.0.0/Cloudig/app/web/shared/time/core-format.js",
       "sha256": "0955a8d298dbd0de323e2803a0eaea2b45cd4d4e0dc68ce292d3fbb3e1551fd3"
+    },
+    {
+      "path": "releases/1.0.0/Cloudig/app/web/shared/time/endpoint-editor.js",
+      "sha256": "8da189dbdb25945aa03210386f363a9262eb02b61eb4b0bff52b838947237f9c"
     },
     {
       "path": "releases/1.0.0/Cloudig/app/web/shared/time/record-format.js",
@@ -1945,408 +1197,24 @@
       "sha256": "088d02f6fb0270b3512a418e6a11674be758680f81562cc5371ba6b3c59ed583"
     },
     {
-      "path": "artifacts/v1-document-examples/html/ChatGLM-全量.html",
-      "sha256": "e081d478476608ffbb9058923bb86c46298d1777b8259dc909b93b66034eb572"
+      "path": "src/adapters/library-data/record-recycle.schema.json",
+      "sha256": "809338389ddbc9954877d3699d0207fa88f36aa64e10b6537ced1eb47e757e8f"
     },
     {
-      "path": "artifacts/v1-document-examples/records/example-4fac1e82a07c0e962764.json",
-      "sha256": "642533f4cfa96cd38ce9b7def5b51d9f594562d7eed41a91246a78b5ab06b78f"
+      "path": "src/adapters/parser/inert-html.mts",
+      "sha256": "f58b4d14d7caf6e8d3e7667a5dd61807c4b5d2beee2377d38d37a8a071101764"
     },
     {
-      "path": "artifacts/v1-document-examples/html/ChatGLM-轻装.html",
-      "sha256": "3b80911cb2fdd60c7e99cdad79e454e77dcc2f09270585e45ccfebfb7098e38e"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-6dd365137e337fa6968f.json",
-      "sha256": "dff58a55664035bae499b9c139311b1b333601a22ca065b6209fb0b3ac29a86c"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/ChatGPT-全量-Chat.html",
-      "sha256": "583a04677143ca19d641c24a731c6a9c4bcc8eec610629681ba82c671c2abfc1"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-e9ebb759665302885471.json",
-      "sha256": "bdb52cee7ef18930baeb055a6d7a100b1b2d4cf0307ca2356c881068f3955f2a"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/ChatGPT-整树-Chat.html",
-      "sha256": "f3e7db0a9a5153bed8b44c5f70b9171ef2b3b03aea1c969996270f877e7870af"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-db43215446236624ebc4.json",
-      "sha256": "c6172282c3377b5fd013a419171bdc7902af467ffd92591af86f1b46e0b1c9c3"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/ChatGPT-轻装-Chat.html",
-      "sha256": "61117a7916c0e40235123873c6e519163b7cabcb9885d79760c162f6bcbbd85c"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-2ab3449e9edff4bd33bf.json",
-      "sha256": "069d190f4658a8c384968c4a03c698dace62ec1dffa13d61253fadc62da15288"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/ChatGPT-轻装-Schedule.html",
-      "sha256": "16bee4282a93cac29db1a395f77f49a40d438724a3df72616b07e42caacf24f6"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-ed0034e9e4c4c307f1a9.json",
-      "sha256": "455fffd6962b0f12f1ebd2a778faa6c63c50f2e6ce13463bc873ac349544482c"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Claude-全量-Artifacts.html",
-      "sha256": "87bbb8ff6b68e2357a7a95e48cc4cac219f295684e29782460137fe2b1707f83"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-9602bf9deec873fe1165.json",
-      "sha256": "401b375756dadb61a970ad94e2a10e4fd24e8297e6f2e93775c8388b097adab5"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Claude-全量-Chat.html",
-      "sha256": "c994094b07722833d11c6b07d56873cfcc0d71ee92840f607d881ce49543554f"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-77118f07dfd12fe315cd.json",
-      "sha256": "d58b84ad5e9fdaefca1bcc707bc3f6f9c0a93ad37d33805e3e2b0a7bf1e96dfa"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Claude-全量-Cowork.html",
-      "sha256": "454d237444382ba97af6c1164ef0280a8f6d49cdbf247ca0b78408259d61d6a6"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-22b6862f799872aeff0b.json",
-      "sha256": "e385fa67b5d1a1fd6a1e4768a36734509310ee3ddf04cc2a90f3b625c7ead116"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Claude-整树-Chat.html",
-      "sha256": "5505a40910dd7a6234ac7790c8592fa8b364595fba9638d4cfa47de3f9f265ec"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-6d033a6e9ad7225bcb2b.json",
-      "sha256": "37869c09309222e12279922cf7dfdebe50b6d61bb00719bde90ab8459819707c"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Claude-轻装-Chat.html",
-      "sha256": "8962233329f4023972957a513629664bfc5f543bbc2b6a19eb29d828c4fef999"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-5d288bb7df9acb10e8f3.json",
-      "sha256": "5d77af1fe923c1a8e212d9141324f878f7f4a550da5584c2d4d3dfe0cbfe9003"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Claude-轻装-Cowork.html",
-      "sha256": "7293fb018571266e03bd1c65366730182f2030a8dbbffc1e47c6031738e6af4a"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-501f193d4dda7566fef8.json",
-      "sha256": "a6eea5fc508921a265560f5aa515ab49b15c44f997492b9a8f7ccd1ae46b3e8f"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/DeepSeek-全量-快速模式.html",
-      "sha256": "30bc48b746519c8cb11ed5d3a17e217fa02b79529d890b2283ed7d2a138c07e6"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-bb13bbcfa8c0dc4ba064.json",
-      "sha256": "980ffc27679ef42494ebb33945cf71a0fe37e97bafc126115900c6835896348c"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/DeepSeek-全量-识图模式.html",
-      "sha256": "d17e9f4373f676ae92083aa3e7d9fc128e7a61a183391638e856891d8ec8c658"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-2fc54d3f267c2e5491b8.json",
-      "sha256": "5c74da9d09eacd0f0cc62099da5f2f375f5e04e868e5f4bad1c07b30853a1702"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/DeepSeek-整树-快速模式.html",
-      "sha256": "5e4b977304349d6f1222fb831d28ad77cfb6d11257589ff1067dbf46a16625f8"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-e0973add01ecf780f72c.json",
-      "sha256": "9303f66e94f2c37accecff816a423a7d613de56f68f0a5cf42e5da474806abf3"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/DeepSeek-整树-识图模式.html",
-      "sha256": "2f3a5029f9035a42d5e13c7b4eb522818efb26bf462b0b9bee0dc629b9656959"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-47fb79f20431a6f23f59.json",
-      "sha256": "fcbd88f289f4c66eba15267c7c416a7bb0f0358a2b97e24856f5f25d72d4c065"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/DeepSeek-轻装-快速模式.html",
-      "sha256": "d527e3462ed200aae2d9bbda9c40879431d12980f72f6bd737fa888f3f1bc40a"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-3403c715595db0281fba.json",
-      "sha256": "e44e5d26b34e426f3f23339c55006fe63916298c572e74e35dff5af87d974887"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/DeepSeek-轻装-识图模式.html",
-      "sha256": "b4f7c4b22691c7efb25e7386898cd958ef6c220226021a98029c480cff32433b"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-11f2cae949a04d44507e.json",
-      "sha256": "a7a15dd4e0ad01ab2ce020ab76d680218a4036d2ec53eab65c7b4b467b499127"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Gemini-全量.html",
-      "sha256": "b471e030a2fb66bbc53513f259d50d7094c82b36542b36d58d4da517cc607d8b"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-77918affc5c0d037190d.json",
-      "sha256": "846d8842f9bcdd38672ba5816a4645fc5b2ef0f07e01eb5247cb71f3cf675e64"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Gemini-轻装.html",
-      "sha256": "218937515b35b6a063ad83aa7cdf54f149dbeb1e894d933c39ae5cc0c80c34a5"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-1acc11e7ad82b2be2c3e.json",
-      "sha256": "51baa3f5e627f2bac6dbc559ac626b9218782613b5982b10b86f38e43f795ccb"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Grok-全量.html",
-      "sha256": "097b446c1465be3c33e28ced7e0a9a8d92700c6a06794ee2a1525fe704de218f"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-44b4a7853d37bb47859b.json",
-      "sha256": "0102bd59cd62fd72b66b39c8f10b41aab1882471f03443ae196ddeaf2ad1a8fd"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Grok-整树.html",
-      "sha256": "b8b09231cc78c4388b29fb9b6978207c34e27e00eb980795e2034f4d21b9f26a"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-dedb24d02aa247f0c829.json",
-      "sha256": "8f1bab2bfb1b80ea0a971a4ea5fbb43fa6ea5101ff765ee1ffab9c158ec7ae7e"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Grok-轻装.html",
-      "sha256": "22b2c6ce85860493f81046736e9ecfeba5438b387fc8533379d1f064f072fd0f"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-fece00eb8a5b900a213b.json",
-      "sha256": "256d77ae3d126ad11f0c20927e023766f20acbaeaa02a1d0826f25244b9bee57"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Kimi-全量.html",
-      "sha256": "b7ae1e8c7f88c4233a18dac7189b28758b3322e9c930115088058579f5bede79"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-0d7840758f698ae4bb33.json",
-      "sha256": "08eafd18d3a82611444f8fe22038c6d0d32fb88f483974730560105063a338bf"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Kimi-整树.html",
-      "sha256": "53a65cdc7d477262be37b4ce8244ab912f6d62cdfd4de545dad1863703bb6f01"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-25d8e8141b67817978f3.json",
-      "sha256": "4f5aff5d1773baba0fa0a46db1591d85fc2e71086ba3633ccb40513e82f60235"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Kimi-轻装.html",
-      "sha256": "7d391ddce9d342c839426a467a11971f39f814d2892d91bda799e63de5eb88b7"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-316684318191af4b9e9e.json",
-      "sha256": "9a5813d5ca5c808eca399ac6d9e1a3be447d50e777fee4b972d757e71541795a"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Mistral-全量.html",
-      "sha256": "8f346689e23183f15e920e0b8c72acdff019706eedabbb1b32da508e24ede205"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-61641a0b3a8982e0d76e.json",
-      "sha256": "9d56e0a940d81b74021c40b0c8ef267d1adc2f75b94d2cc6c79bbb853d2adc2a"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Mistral-整树.html",
-      "sha256": "5ea5f039b46d2c4c56c787cea1c8c6aa15db58e921c5a42776124978aef8718b"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-522109a1e01ea8ef1e50.json",
-      "sha256": "6e4b8bbada289214d32f8ba50a3c4e319bd90ef779dd24a449a330e096aa1865"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Mistral-轻装.html",
-      "sha256": "cb772cd54c2b589059ba4df59d7b1d289a6ac2c626867907bd77f22f7678e7da"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-ba3e6d99882b534b550a.json",
-      "sha256": "cb6d2a12462797f00a86f35ee74e299be85722f38e4293d600cf4ecbce487669"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Qwen-全量.html",
-      "sha256": "32b312eb51e85adffcbeb0a60b05d4cff442035582f0988590d75c0e1c6d9add"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-baf2b5dd2e674ba385c8.json",
-      "sha256": "6648e0c3cf3fc68ca15f8d81dc7a7fb7746a0692a9216810d567cff609de5c9a"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Qwen-整树.html",
-      "sha256": "350a457ea44182a52ad911238912959f620b97cf63528bd8fcdd349525eb29e4"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-444de426830fbb04cf1d.json",
-      "sha256": "3e349379562e7e55fdb3cd98a3e2053030374eab22444f485760d8a49aa2bd76"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Qwen-轻装.html",
-      "sha256": "3ab7772e26b58764668628691990b1029f410ae89b75e93206f0fc2f9097e9c6"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-79864ea5d24fa52c0e31.json",
-      "sha256": "a23ac5b26fbe7c10f736aa42f6f55c92934ec5815626db28ff013d31e964696e"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Z.ai-全量.html",
-      "sha256": "b46bb19d035a7970b0d18ea4e90f653d957212da1def1e1b9e09c18d837a3b63"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-1b4a99be82f394e361e7.json",
-      "sha256": "aee5d756efcee588bc4f78da845dd1fda77efe7d3197af13105e61e296d1e8ab"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Z.ai-整树.html",
-      "sha256": "07b99a55f0d2d1d30eb9c7dd589994ec103df8e8333f1c5c50586600f87a5a39"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-6fc582a50c2469ba0395.json",
-      "sha256": "1ecd19a79650cc77bae5ad1eda6debada1ea78c4cae104e59a65666552f17bd9"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/Z.ai-轻装.html",
-      "sha256": "4fbd9f2e103de3415bcf2b8513867b69d9f55f30384640458fc337d034ff0a73"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-193184c0f8b4f0b0dab2.json",
-      "sha256": "c264a624e02dfdb8780212468503c5f8769c3d758f9f17562d8b8351394ed566"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/腾讯元宝-全量.html",
-      "sha256": "a95666eca8c95659c1fa32f11d023b8bbbe191544528044d732bfcea40f1bd07"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-85b6281bd781fdc2f6bc.json",
-      "sha256": "9bcb33c60123f07338211d67488dc750b45a89188ec8664e322089e7e52954a2"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/腾讯元宝-轻装.html",
-      "sha256": "0fe7e53694f21a9851a363774207b3199a885d4f2887552a2347ce9b870ab16e"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-e1de4158777bf15b9b04.json",
-      "sha256": "27152d9ccab5bd4eb5cdabb4242dd80db5108b37f23cd04ac2f81dfb5c304e05"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/豆包-全量.html",
-      "sha256": "da83229063db0bd0346ba7655df2a59c8ecbad8d26cd0826699501ada744a259"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-cecc4c22b72b4ee52430.json",
-      "sha256": "87888b9cf999bc8c335628a2d071188785b845db10e87b92ec4b981b6bb51b58"
-    },
-    {
-      "path": "artifacts/v1-document-examples/html/豆包-轻装.html",
-      "sha256": "a3d0d5c09c8b9b731cb0ff957cc49e78a3af18f09a09f4cc529461d9a46f4140"
-    },
-    {
-      "path": "artifacts/v1-document-examples/records/example-1d1e463dbc6b01050238.json",
-      "sha256": "423cfc41c514df0657dad83b697357ec9f18f29172f0ef7c365ba1ebfd6de336"
-    },
-    {
-      "path": "src/ui/document-site/site.js",
-      "sha256": "6938ae2a16fad1fe7586016859c1d6317467eecd9fa2d2b913acb6ca62736d9b"
-    },
-    {
-      "path": "src/ui/document-site/site.css",
-      "sha256": "09fb59313d5d72a0e841974852d7dc032222cac98777a885ddb94f66a90441fa"
-    },
-    {
-      "path": "src/ui/document-site/preferences.js",
-      "sha256": "49d24265083d8339cf65e7645286c41c384c0eb09be030bebfb26768d473f13c"
-    },
-    {
-      "path": "src/core/records/front-presets.json",
-      "sha256": "faaa47e6c6b5c79b0e1f6b11c8ff3bd000a3200f29403cffa093ea2acdd5ec12"
-    },
-    {
-      "path": "src/core/records/front.mts",
-      "sha256": "fc02962c0440372b16537aa7be68547b3af4922c185be2bcf0b15341819efbe9"
-    },
-    {
-      "path": "src/core/records/presentation.mts",
-      "sha256": "05fc746eff95d857e50458d312ce83a101df898e53e96fb3598c413dc3b1bbae"
-    },
-    {
-      "path": "src/core/contracts/types.mts",
-      "sha256": "762dc8d7cb5392c7a6803bcfb571180761600876c2bc2698dc6c88aad97fddb3"
-    },
-    {
-      "path": "src/core/contracts/machine/resource-limits.json",
-      "sha256": "014803cfd79016f94682a3fe7617d69c785dc534e827cebe684ddde6513568ef"
-    },
-    {
-      "path": "src/core/records/html-resources.mts",
-      "sha256": "91e0258ae1a143e97d3b1eaf7c39eae8573bf7da7be9005c4090c23c4fe12870"
+      "path": "src/adapters/storage/record-transaction.schema.json",
+      "sha256": "4ee5ab389bad7b2f0b25aa7ff49d356831ddd41551a001bc7b2c39830622868d"
     },
     {
       "path": "src/app/reader/view-model-core.mts",
       "sha256": "52849e6533bf2cd95a907027223dc8a7c3b8462d0c7419b09890d3611c0628fe"
     },
     {
-      "path": "src/ui/document-site/public-reading.mts",
-      "sha256": "a3acc44d70bf1bae5f820af46dbbd4ac3a4099a9800001aa5830eaddc2895513"
-    },
-    {
-      "path": "src/core/records/schemas/common.schema.json",
-      "sha256": "12e90ead02f75dfc343de00bee11a3da67e813437398f9baea440e06164fe2be"
-    },
-    {
-      "path": "src/core/records/schemas/library.schema.json",
-      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
-    },
-    {
-      "path": "src/core/records/schemas/identity.schema.json",
-      "sha256": "ea747fe989e61d4b16ca99659624b4e63a5a103db6bfebdba33acfe4ced82fe5"
-    },
-    {
-      "path": "src/core/records/schemas/identity-settings.schema.json",
-      "sha256": "9ba84c53f0d73451b9715675a619c0ec5c3d823edbfa8680bedab707cd555e8b"
-    },
-    {
-      "path": "src/core/records/schemas/conversation.schema.json",
-      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
-    },
-    {
-      "path": "src/core/records/schemas/mark.schema.json",
-      "sha256": "1b9ae400f2a0cf2e8f83dcfcfa7ad8213dd36c1bdf88cac3ccac14f6b16146ce"
-    },
-    {
-      "path": "src/core/records/schemas/content-time.schema.json",
-      "sha256": "c03482f0f687b5846f798594a6c94a57715676b2f33a5de395af36bcbaf753a4"
-    },
-    {
-      "path": "src/core/records/schemas/content-time-order.schema.json",
-      "sha256": "afc8f16a40101474b9f1e4509001d40e4732271afe79f79c1e29458710fe60eb"
-    },
-    {
-      "path": "src/core/records/schemas/compat/conversation-1.0.0.schema.json",
-      "sha256": "5e7ef5039aaa1c4513f7edece8b0de21566aa7c4f0baf6805321459353e231e9"
-    },
-    {
-      "path": "src/core/records/schemas/compat/library-1.0.0.schema.json",
-      "sha256": "e0e1767ec42b358d6759f298de928d24f2d76ca084cbc38e025ef1160dea0590"
-    },
-    {
-      "path": "src/core/records/schemas/compat/conversation-1.0.1.schema.json",
-      "sha256": "232dcbe9c593f13be1683ea41887dc1e5907ae923b7dd4a9d05b87ac1a2a8334"
-    },
-    {
-      "path": "src/core/records/schemas/compat/library-1.0.1.schema.json",
-      "sha256": "6fb5d487dd0c37188e6a1f81beeb0cc6272a38dcbaf743429f5daf46c39d379a"
+      "path": "src/core/contracts/machine/resource-limits.json",
+      "sha256": "014803cfd79016f94682a3fe7617d69c785dc534e827cebe684ddde6513568ef"
     },
     {
       "path": "src/core/contracts/schemas/common.schema.json",
@@ -2361,12 +1229,1208 @@
       "sha256": "326548fcf10b770f5f6567fb3c1a1e7b2b2441889f166aece657e4760ef024b4"
     },
     {
-      "path": "src/adapters/storage/record-transaction.schema.json",
-      "sha256": "4ee5ab389bad7b2f0b25aa7ff49d356831ddd41551a001bc7b2c39830622868d"
+      "path": "src/core/contracts/types.mts",
+      "sha256": "762dc8d7cb5392c7a6803bcfb571180761600876c2bc2698dc6c88aad97fddb3"
     },
     {
-      "path": "src/adapters/library-data/record-recycle.schema.json",
-      "sha256": "809338389ddbc9954877d3699d0207fa88f36aa64e10b6537ced1eb47e757e8f"
+      "path": "src/core/contracts/types.mts",
+      "sha256": "762dc8d7cb5392c7a6803bcfb571180761600876c2bc2698dc6c88aad97fddb3"
+    },
+    {
+      "path": "src/core/records/front-presets.json",
+      "sha256": "faaa47e6c6b5c79b0e1f6b11c8ff3bd000a3200f29403cffa093ea2acdd5ec12"
+    },
+    {
+      "path": "src/core/records/front.mts",
+      "sha256": "fc02962c0440372b16537aa7be68547b3af4922c185be2bcf0b15341819efbe9"
+    },
+    {
+      "path": "src/core/records/html-resources.mts",
+      "sha256": "91e0258ae1a143e97d3b1eaf7c39eae8573bf7da7be9005c4090c23c4fe12870"
+    },
+    {
+      "path": "src/core/records/html-resources.mts",
+      "sha256": "91e0258ae1a143e97d3b1eaf7c39eae8573bf7da7be9005c4090c23c4fe12870"
+    },
+    {
+      "path": "src/core/records/presentation.mts",
+      "sha256": "05fc746eff95d857e50458d312ce83a101df898e53e96fb3598c413dc3b1bbae"
+    },
+    {
+      "path": "src/core/records/schemas/common.schema.json",
+      "sha256": "12e90ead02f75dfc343de00bee11a3da67e813437398f9baea440e06164fe2be"
+    },
+    {
+      "path": "src/core/records/schemas/compat/conversation-1.0.0.schema.json",
+      "sha256": "5e7ef5039aaa1c4513f7edece8b0de21566aa7c4f0baf6805321459353e231e9"
+    },
+    {
+      "path": "src/core/records/schemas/compat/conversation-1.0.1.schema.json",
+      "sha256": "232dcbe9c593f13be1683ea41887dc1e5907ae923b7dd4a9d05b87ac1a2a8334"
+    },
+    {
+      "path": "src/core/records/schemas/compat/library-1.0.0.schema.json",
+      "sha256": "e0e1767ec42b358d6759f298de928d24f2d76ca084cbc38e025ef1160dea0590"
+    },
+    {
+      "path": "src/core/records/schemas/compat/library-1.0.1.schema.json",
+      "sha256": "6fb5d487dd0c37188e6a1f81beeb0cc6272a38dcbaf743429f5daf46c39d379a"
+    },
+    {
+      "path": "src/core/records/schemas/content-time-order.schema.json",
+      "sha256": "afc8f16a40101474b9f1e4509001d40e4732271afe79f79c1e29458710fe60eb"
+    },
+    {
+      "path": "src/core/records/schemas/content-time.schema.json",
+      "sha256": "c03482f0f687b5846f798594a6c94a57715676b2f33a5de395af36bcbaf753a4"
+    },
+    {
+      "path": "src/core/records/schemas/conversation.schema.json",
+      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
+    },
+    {
+      "path": "src/core/records/schemas/identity-settings.schema.json",
+      "sha256": "9ba84c53f0d73451b9715675a619c0ec5c3d823edbfa8680bedab707cd555e8b"
+    },
+    {
+      "path": "src/core/records/schemas/identity.schema.json",
+      "sha256": "ea747fe989e61d4b16ca99659624b4e63a5a103db6bfebdba33acfe4ced82fe5"
+    },
+    {
+      "path": "src/core/records/schemas/library.schema.json",
+      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
+    },
+    {
+      "path": "src/core/records/schemas/mark.schema.json",
+      "sha256": "1b9ae400f2a0cf2e8f83dcfcfa7ad8213dd36c1bdf88cac3ccac14f6b16146ce"
+    },
+    {
+      "path": "src/core/time/format-endpoint.mts",
+      "sha256": "9211c0c51fc3360ea5c2099b77fa6c35143c529946a388e03744e1762f0ba718"
+    },
+    {
+      "path": "src/ui/document-site/preferences.js",
+      "sha256": "49d24265083d8339cf65e7645286c41c384c0eb09be030bebfb26768d473f13c"
+    },
+    {
+      "path": "src/ui/document-site/public-reading.mts",
+      "sha256": "a3acc44d70bf1bae5f820af46dbbd4ac3a4099a9800001aa5830eaddc2895513"
+    },
+    {
+      "path": "src/ui/document-site/site.css",
+      "sha256": "09fb59313d5d72a0e841974852d7dc032222cac98777a885ddb94f66a90441fa"
+    },
+    {
+      "path": "src/ui/document-site/site.js",
+      "sha256": "6938ae2a16fad1fe7586016859c1d6317467eecd9fa2d2b913acb6ca62736d9b"
+    },
+    {
+      "path": "src/ui/runtime-dependencies/manifest.json",
+      "sha256": "4affd775f2676b3ba86223cff7a93bf84106ad37a178cee1a56af44a0ec29104"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/box-controls.mts",
+      "sha256": "23f567f67b49d4d9cd840dd6824e56ae2baebd0f78b700738bdbbafb605b646b"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/browser-entry.mts",
+      "sha256": "702a7958420571b4f0bcb978af2b33482fed84ec615aa64f74faabc3c5afcefd"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/content-runtime.mts",
+      "sha256": "6ff8d23063188e3efd8a5899184eb979ad3f7092835b400b0f70d724847888fc"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/data-boxes.mts",
+      "sha256": "e1695e612a128ae4d4b4ff8b22951f87099d06939a1512cb6522c685af0b6e1b"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/design-preview.mts",
+      "sha256": "8127c9f5c10f4bed13bc83b9b8e372ba4a0bf2e393153e3fb8be92f5703563f9"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/dollar-boundaries.mjs",
+      "sha256": "a3698617da51b594d3f78f2973066eb03b7e03ff44f52f538cac2132468809a8"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/index.mts",
+      "sha256": "d4541c0769ca35e3f9fb45f9fcdc57ce8e5eb6a3a8bcf873c15509904b7b077d"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-assets.mts",
+      "sha256": "f7c5325b08e1e75873a37fc79a84ca6f447885ca9c7c58678935ba682a4f9d5d"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-client.mts",
+      "sha256": "6d1a30e52a166fe956fb6364397eb003f3a566292dd753fa31504583f945ebde"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-dependencies.mts",
+      "sha256": "5df7c9cbce34f8a88e46e6d69538ca47feb6b7b50702d5b486bcc1396c9f7b13"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-document.mts",
+      "sha256": "7cd05beed07a9e4435bed34a3cc3872e23a161bed2494fc8cc6c58f570b2ee19"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-fonts.mts",
+      "sha256": "35ebe5a28dbb04b058fffc0d5060374edac36c6779a1891fa40d8725fe0a1876"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-frame.html",
+      "sha256": "fa274d976ee2f52e8ead487c0f41de3599fff00c23190c30fdd68feca11f4ac4"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-frame.mts",
+      "sha256": "1e67342872b77c0c1c20a73171371b6f58d3e2df11e597fc3eb1788b864ddd43"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-protocol.mts",
+      "sha256": "73cb0bdbbe8327633dd0931188af2da65b20c1fc7ce41361852e45ac2361fdad"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-protocol.mts",
+      "sha256": "73cb0bdbbe8327633dd0931188af2da65b20c1fc7ce41361852e45ac2361fdad"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-react-document.mts",
+      "sha256": "dbc648a3f5ebc1abde8834b5c1cfd917957dcba91eea7879019351ae5af3d290"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-react-libraries.mjs",
+      "sha256": "5845908e4ac937e0b9b0c5f9542f95ab47df0077ee842f1be0e4b298c7623409"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-react.mts",
+      "sha256": "311d1fb42e663cb8176c06acf274ea3e1aab57b4fb11d5e450421cac5904ef96"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-scroll.mts",
+      "sha256": "d2c2591b807ae87f61534f91f37749e4f2147ee023e8cee73e4324a69da13816"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-scroll.mts",
+      "sha256": "d2c2591b807ae87f61534f91f37749e4f2147ee023e8cee73e4324a69da13816"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-window.css",
+      "sha256": "ed9a8686ca78580fc6647865a91cbf596e030a5b4512e38841c0d215722943b1"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/interactive-window.mts",
+      "sha256": "e4d7116cbd889bf0a3a31b02a4be2990e42511fb04d326dbcc9a0d78735b770f"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/learning-boxes.mts",
+      "sha256": "71a88b460b1bb38defcaba2db3710a8cc2b104089f0ee5f5cabda6878d17992c"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/map-box.mts",
+      "sha256": "b7a61460c02d9c341ed4ba13cfaf1ba9792fa02c79ec82092c7b9f0e1257ea63"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/map-frame.css",
+      "sha256": "b1bf67d9eee8f110fcd5e598c2ca27327a96a34ea1911f6822bdbb1c5f7880b9"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/map-frame.mts",
+      "sha256": "6be33a16a77d4e9ad3b21f7aab5814e3dcc36650ae4717c77bce638dda7f7d47"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/map-library.mjs",
+      "sha256": "c097d11ead26d62e4e9ab48dd6605bd9216d71f12d65fcb50fe82f0c7ca42160"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/map-protocol.mts",
+      "sha256": "fb2ccbc4bb9906e9c1f051ccb06a3a655f27ae5e4b5dbdac301a5eff9714c2e2"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/map-protocol.mts",
+      "sha256": "fb2ccbc4bb9906e9c1f051ccb06a3a655f27ae5e4b5dbdac301a5eff9714c2e2"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/map-window.mts",
+      "sha256": "e0a804f4bb44f5b987e4c6350489df61a24c7fb1f8579bf409f16ae79c3f3c3f"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/recipe-timer.mts",
+      "sha256": "c6a1fec0d126ae0be2b63db5d258ee3f6143e61c2c3021a0eefe9fcc21f9191d"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/recipe-units.mts",
+      "sha256": "976df7631d62714ba978e962a0b37b5eebd562589c655f83374dd17ff07d1104"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/renderer.css",
+      "sha256": "9c3791dae45bc53080df28784453db8c3fccc6de3fa2b797cd320e1fc09c0466"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/renderer.mts",
+      "sha256": "2ea997aba27bb73c04836a54f4084a54b126fe1a83bc62a317c61c910728ec15"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/resource-card.mts",
+      "sha256": "3c950ec25f1a0d946d4232a278c3b3e1521b1516919566118e7a9f97435d4c5f"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/saved-work-documents.mts",
+      "sha256": "c9123a47e8607ef9dee04001630f7f600f4d6316ead4cd36fd9a2ad34568b466"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/structured-box.css",
+      "sha256": "bd75326d00d58405bb7aa14c7a8b3317a35b465b0a73e90c5b9006c80faceea5"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/structured-box.mts",
+      "sha256": "838f3e20e5ec11684978f834cfa915e9f8047335fe26ae6e319a0dd818998c41"
+    },
+    {
+      "path": "src/ui/shared/conversation-renderer/visualize-style.mts",
+      "sha256": "e6ed33aa6fd2d620ec7ce5ad835e2f22a9764cc056e8c874fff6fe23a681aa08"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/anthropic-mail.png",
+      "sha256": "727602e68f7e975fb1ff50367c343b4044a2241661728ab9d4fa0b84264177aa"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/bookmark-guide/01-bookmarks-installed.png",
+      "sha256": "e658612e62812159c4f430dfd870c59205bad3d5f41c431499cdbd09d5f0edb5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/bookmark-guide/02-export-running.png",
+      "sha256": "d3c3ebb854cc099994d0f01b56865d672df59a0384448eb18973fdbf0f9b504d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/bookmark-guide/03-download-complete.png",
+      "sha256": "1170af8e0d59a7c6c26a6614f6066b473fffae9803ca176203467ff114b46eb1"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/bookmark-guide/04-system-log.png",
+      "sha256": "28a11e8d44181283f416548b07e6c06df20b82789792064054ff88e433dc1fd0"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/bookmark-guide/05-manual-add-page.png",
+      "sha256": "81a7c29b46695fa19680107e8b8e8b5f6535b3e534c0c44c1adaff17306aa5b2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/bookmark-guide/06-manual-paste-url.png",
+      "sha256": "9055aa178da70383e4d5f58e10d3541bd9112b7c1ba80ecbd4ec01d93da01e8e"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/01-welcome.png",
+      "sha256": "ae8fe0e898925504ff598ef877d046763efe45822f65b3b5778dfbab13e57ddd"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/03-batch-settings.png",
+      "sha256": "cbba4ca5a0340efee1f991f8dc5934a93c1e764c1a7dc4907d65abfa21dafb30"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/03-entry.png",
+      "sha256": "9a4724a9de90b7fc99c8db83d78e8138d71fef9553347f2b1c675b66d07f2759"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/03b-batch-confirm.png",
+      "sha256": "d998c0c7ec66d06b9b7940b13cac6ac6bf3084dee1f77d878afce5feed47d570"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-claude-json.png",
+      "sha256": "bc53441b8627d338e9eaccbd79e08b6d369211002bf207c572f6422101269c50"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-entry.png",
+      "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-entry.webp",
+      "sha256": "54d15b061475f10c4806a8ba3bdc5c43075cb60b157578db5dcb1e2c2cd4ea46"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-platform-agent.webp",
+      "sha256": "05c365b52b94c5751c0cf27620618e0c40cb3d60b4fad5d6807fb5680806ed33"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-platform-conversations.webp",
+      "sha256": "9b72854dd6f23fdaece4353afb99517dcc1b4ecb15471359f4f431c6f232c56a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-platform-official.webp",
+      "sha256": "2e107480e5b5d209b471df56d0cb7d37eabe1a756d1de2053b8c2c4f37adcda5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/05-reader-cover.png",
+      "sha256": "30711bfaf3d463a9d696146a1b6028306e5deca84821518f95b254b1d16acc9f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/06-conversation.png",
+      "sha256": "e6aad16f7cb72f99e08eb8b4b531343b6557bdd335334ab6070a81cfcfbc7d01"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/07-branches.png",
+      "sha256": "c7a67615ebb5a4e68a005764c8b1bee3d1c8e7eb2ea5f3f9e19c54d592ea0f68"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/07-navigation.png",
+      "sha256": "517d6958c0654a0e5bfe333b2ea89cbd0269bff703eda622be23928c13bff6e5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/07-toolbar.png",
+      "sha256": "290f29992f8e386ebe2b06e3ceb27ae5b76c3a43beb1a21814264323d21f3003"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/08-conversation-info.png",
+      "sha256": "18b12cf3ac456afa00762f72d5c7a3773d7ba6b5bc11b8b70cec69c2101942f2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/08-entry.png",
+      "sha256": "8802f8a38a52c9aa7b50ba358e24f0834d5f7ea16a9dcd1d5491797e9c929884"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/09a-entry.png",
+      "sha256": "2c5c82fbda97b293fafd6693907ed649b0f814f3f366c3df4594bbe715ee354c"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/09a-identity-global.png",
+      "sha256": "9bdfcbd29cbd4a3bbe342ee4e80752ec581c4c1912c3541160239482224489af"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/09b-identity-platforms.png",
+      "sha256": "e1c53f53e8fae6ff6b90a355a64142d26ba8c951a0cce9e9f1acdb3ca09f1046"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/10-content-time-edit.png",
+      "sha256": "cf29d27720cfe5472bb2f2612025c64f6b0ee5358138fdc4c07568167642bfaa"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-entry.png",
+      "sha256": "6148a5a42b8539df8d90ce01b94d0a76c45315be0bbe653eea90d738f85e80d4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-time-create.png",
+      "sha256": "7170a2bbe00308acb2dd24ff3671e7f37d289bc3e841dd4b228acf24f053c2a4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-time-sovereign.png",
+      "sha256": "587ed3d44499d27b79a951b261828e53e45ab53a5e61bbc7b780e8bcfa16c44d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11-time-terran.png",
+      "sha256": "c35146d5a48fc1fbfff0756003dbacc721763a3263d80676cc9d45895106a6df"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/11b-time-editor.png",
+      "sha256": "5fbeac452b7539d7439480cd6fffc4c721c8a855647adb59abfd7ac1b0326d21"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/12-entry.png",
+      "sha256": "d50e1d4d0c69f65f32dd8c2eda57973f2403c308f49504bf60665e4551fbc2e9"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/12-move-library.png",
+      "sha256": "b4d75d090ce9f1b0036314c04c006bf46ae68e6e8576956caef5d8b8f7897458"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/13-entry.png",
+      "sha256": "a5f52e68b966ea901a76b91498b148ed05363f4b99127e95a350fc729528a71f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/13-system-log.png",
+      "sha256": "3920dbfed3a15a43c952585e7a7dbe92042034d001203268b0780e2a2f0f68d3"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/14-entry.png",
+      "sha256": "9fc4221b73d72f1012e113571f7e6b6b04b498aba2a417d51e653aa1e437c545"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/14-rename-in-conversation.png",
+      "sha256": "877835768b65d5501df40d96fe22476da5520afa22782621ee12672c1f424263"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/01-welcome.png",
+      "sha256": "0a5f65cbd1e3e00ece4e982ab4ffd73ca899ad2e6e92ca043d96f56585a15029"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/03-batch-settings.png",
+      "sha256": "24955a6a8ccfe510cee5a4ddb239bbe656e66efdfb3b27e6041fa720220a5a1a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/03-entry.png",
+      "sha256": "78375fd0df0ac44abd138f0dad970f1fc01b46a3fa84d3b19e79ea9d87a908ea"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/03b-batch-confirm.png",
+      "sha256": "31e6b6966758bd86d4efefc18bc3b675ceabb9846836b489e5b06908b6eb21b4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-claude-json.png",
+      "sha256": "d07853fdd87d3379d0618fa38f6bda4561f33bd05895ca523c00c3a4d3ecbd33"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-entry.png",
+      "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-entry.webp",
+      "sha256": "49d1af81c7bc03adee0d5a1312fd7cd5f3fa1b4f79f0839fa974a2e4424d1cac"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-platform-agent.webp",
+      "sha256": "76df52ac0c12337da559a629fd1671ad1d34376940467ee195218c8777d6da7c"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-platform-conversations.webp",
+      "sha256": "2e58ca23823a73b995ee634fc8dbac0cea498e543dbdeb8a56fc2b07b5fd5033"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-platform-official.webp",
+      "sha256": "288f0cae0848696ade1086025c5c00760e3de5b59e2a4015754aaa123dcc333c"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/05-reader-cover.png",
+      "sha256": "93e6621f2b4ae5b2721ec8e91a0070d6479af39a8806eb7da8072b6eaa54d8aa"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/06-conversation.png",
+      "sha256": "80fc3a09cf27888a701c67be5a55253cb2a7093a23bc5cdca716192b5932e35a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/07-branches.png",
+      "sha256": "c96e36ce0472336bba70a456425261349d43755cee9de3112f7c6f1c0fd17ba3"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/07-navigation.png",
+      "sha256": "1b1b429f063cd5c0cd5ff10963f579c2f0b9a8eb3f22943d1fabea36f6b29d1f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/07-toolbar.png",
+      "sha256": "6eece14173f32aa8725dd8534418bf801d38b33268e8413090a4d6bbf841c3ef"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/08-conversation-info.png",
+      "sha256": "d3578dcdf8195020d969c7368c4ba5df649856c9a5a46c7e9776bd05e67e4d34"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/08-entry.png",
+      "sha256": "f1879a425b3aa9494086355d17e643d84698cb6a5e8eb7045fec8937775ce6b6"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/09a-entry.png",
+      "sha256": "414d9c4caad509213881c789a1cadc908eb8caf4fae390dfcd5bfb44ff02f73c"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/09a-identity-global.png",
+      "sha256": "ca8d8f20d5b39e2a104ca3d71c4ae58e615559e2039cf5827f81ff2f36502a47"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/09b-identity-platforms.png",
+      "sha256": "d52f6002a292a4bb61f0a357d7319543109ad56fb69955a1319e49474e9ff2d6"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/10-content-time-edit.png",
+      "sha256": "a8bf983aeb70ef0097cf1a2b4b2d58e53d7d4e430ad08c45ff9ae0330e2ba368"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-entry.png",
+      "sha256": "bb95da9fa82e4dac636599c6f40bc60c1dae09cddc22a0af763c879732c6ecfe"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-time-create.png",
+      "sha256": "6f5b77d401582c6bdf1ddba0a89977c26ce76bd71fc261cb8e8f918accb03455"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-time-sovereign.png",
+      "sha256": "e8953a4f2747a15a3652516aeb2ce7348e9bfd6b304992e6d2e0413de5a80974"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11-time-terran.png",
+      "sha256": "4c9d341ff425eba71f891122271cae0afe381597854e29d68776b9048759dcef"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/11b-time-editor.png",
+      "sha256": "663202c17582e8e2d2a838c9868a46f9b65b5688f95612eeeb65eb350c8fe369"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/12-entry.png",
+      "sha256": "fef6406ff2c8e94962f7d379168a9d497427b848be8871cfb3620117dbcae3a3"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/12-move-library.png",
+      "sha256": "210ce6d4bb05487eb865b5bf64904fd46bc092a4c9d7f70a00bcd15e1b972ce4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/13-entry.png",
+      "sha256": "6399f272ec3048fd087e146f782553dac03ff3328e5a47a5ac6503b21bf5d627"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/13-system-log.png",
+      "sha256": "c1782ad65b29f6fb49044454ef336e416a8d33c5eeab43f0590d89411a62ddbd"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/14-entry.png",
+      "sha256": "780d27596251dd1410740b4a9f8322c888efe5b6e3a8cb27aff088cf5c9dc38a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/14-rename-in-conversation.png",
+      "sha256": "3c44ec0fbf837aa0c05e37d940a4839015ce874d010bb3e75f9c2b447d9189c7"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/01-welcome.png",
+      "sha256": "776af01a58a4bdf406e7b4ae06bf54de1daa71ddbb59737e51445b2e4d66ca52"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/03-batch-settings.png",
+      "sha256": "a0c898f27a01c0559e31714642938ac4942f8ec8ba0918f7f668220f2ceac5d5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/03-entry.png",
+      "sha256": "023c621be0c282afa50c8acea42f555953aab927d5a8f2fb625450b9f0ffd681"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/03b-batch-confirm.png",
+      "sha256": "9b50e5a74448412c9ac6b28085d36a4b5d367f14c7d28e9f89595bdfe235d707"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-claude-json.png",
+      "sha256": "780c59499720a5af2277636bfaa56ecb7cc55c9f3b9eb91c9bac69e4ec31a5ac"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-entry.png",
+      "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-entry.webp",
+      "sha256": "1b98578cc9816b041d97f91b239584c634cf60d13564d9bcfeb2f567aa95d760"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-platform-agent.webp",
+      "sha256": "eac7ae4d799c603cf251156359658368764c53f86c3908484938d73829022150"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-platform-conversations.webp",
+      "sha256": "d8a8f08d75601f341cc4c88424040e68c51ac6e069e171ad4e8f2a7a0c68c39d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-platform-official.webp",
+      "sha256": "04ad0b53d2c7f3bf32311b7033dd5d1a59e54f58e2673ada0b23de5f659ffc7b"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/05-reader-cover.png",
+      "sha256": "b3811039e5a472f1f283110ad2f054ed05a4185b59d1e670a12fbef7c59f8cd9"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/06-conversation.png",
+      "sha256": "13b2c8c0809216dd226f246995276a677adea838deeff2929808f426eee57de5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/07-branches.png",
+      "sha256": "bc774f27412f55c258dc6d2b7840acc805dd59451f522cfa0d820b42d2bb18a0"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/07-navigation.png",
+      "sha256": "ef24ce3cb59cd3c5d8b7b32ae98f1e743b50a00f10c9c8dab5c908d2ea585c7c"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/07-toolbar.png",
+      "sha256": "835755496b5fbf720d9739c1d8f4b15eb4c5d1987c21c8e6da5710b804f7bfe3"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/08-conversation-info.png",
+      "sha256": "7f9d12e5805d45ed376e3a55097a05c08e89757f4a7e75e8c91f2c780e3d9824"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/08-entry.png",
+      "sha256": "f7f4726011a3d410d218860b88bdadf74e4971c171afbdfc1168a7aad1e25b8d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/09a-entry.png",
+      "sha256": "9a83889d234afba77f9bd74bd9d5510240089bd30d72af1a2a86a05c3aeaa481"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/09a-identity-global.png",
+      "sha256": "447328f2a9f998eb6a8e4bb893547c8ac79b2c4ec59823a6c7d0459da4e6b4e9"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/09b-identity-platforms.png",
+      "sha256": "e4418f13f920d79384b1658f6a87e2e1171a065ff8360e015c41ddb7297c6602"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/10-content-time-edit.png",
+      "sha256": "e9e0cc7f99070ae74763e6a2670eb1e7174301c374029328cae88f35807a0dad"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-entry.png",
+      "sha256": "507baab5e3b65d2ebbede65892210d33d13d33be46b86fb4bcc3507288d1838f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-time-create.png",
+      "sha256": "2815c29c0b88eef192b754412aaffb62dbe32230f3d5ea1dcf5e712aa916c02f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-time-sovereign.png",
+      "sha256": "5ac0398c33517793e5a19115e95f727aa46908e71a7d809aea1fe92e51d42069"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11-time-terran.png",
+      "sha256": "1eb053205df8fbc16a483c83197edbe5cacd5ef20432b51ad24120c6c2c4b5be"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/11b-time-editor.png",
+      "sha256": "b8c4519f5303373f036251b0394cc6964d3163549964da43f9be7409dbbda4cc"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/12-entry.png",
+      "sha256": "aeedad7b370ec84a5013cf92a32ab5cd37eef78dbf0ab47cc6b751c2506fca97"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/12-move-library.png",
+      "sha256": "d6bdf270ae25a203e23d82c838677ae408f43b447512746368b075b9a84b49e2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/13-entry.png",
+      "sha256": "c4593a35240ad230cda02f3afd951935c0fc29164eeb02bb5212459ff13e8de4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/13-system-log.png",
+      "sha256": "18307db5c2a6950112db0fb652b2cefa62ed2297f896b01772448e149eabd884"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/14-entry.png",
+      "sha256": "5f0173b9e78c9912e16042d893f623683cc4f96c7b68d56d2079524e2068f4c1"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/14-rename-in-conversation.png",
+      "sha256": "b0b872121f231d16c55294a57b99755365d93a59ab01afad89c4c9fd0e6cd4a6"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/01-welcome.png",
+      "sha256": "3a365b4229ae4b3f30537f17e8d736bae4b1a8be28dc4f76bd31e29592628e37"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/03-batch-settings.png",
+      "sha256": "7c8cc46f73b0041dca3a7e1fb17ec78bf604c0242f5a1f5e407bc72594e4e6ac"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/03-entry.png",
+      "sha256": "3836c6936f557cf78fcb30a2759fdb658b1e930d5f74b29bab0c8edb428a4b7f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/03b-batch-confirm.png",
+      "sha256": "a354ce94971164a7474144111fb7829b8be4eb92ee064a76f024377c0b229b99"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-claude-json.png",
+      "sha256": "2c01f82b5774225496f78bbd7b5b5cdf88e684c6707723d99fe46ab81cd7d368"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-entry.png",
+      "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-entry.webp",
+      "sha256": "14a36a2c70e522ec58abd2adc007be2b3bc774ad680ffba5488fc3bc6f69dca9"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-platform-agent.webp",
+      "sha256": "3787926711e714f9d228d59a52f5d56730a9af50b712492614ae23289e35cbc4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-platform-conversations.webp",
+      "sha256": "0a36cb9572c7b2a2b141f6ba5747d504a349cd94e5916cd47c5be4d8a75503f4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-platform-official.webp",
+      "sha256": "05eb896b1fd36dbad15063e41a45370f4fd1ecdd5cda89051da7585a5da12678"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/05-reader-cover.png",
+      "sha256": "0c39ac7e79a103d736f1ba53d50d98232d00f7ea96dbc1d91f466c50e715ec1a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/06-conversation.png",
+      "sha256": "a26ac17df2c9885eae79c005d4dd2d88060a29f1e334319579c728b74507ce37"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/07-branches.png",
+      "sha256": "b329722d256b4433b3ebe40ac01474af2e8732716bb3717ac2cbc45fdbcc3ac8"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/07-navigation.png",
+      "sha256": "ef94b8cc7748e0f149e401b9cedeadd2ebafba800b5ea521d30de4e1ead71127"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/07-toolbar.png",
+      "sha256": "7f0b1c004009f05655b4de926662ece4761640e13121af29f4d27eda3d82ebb1"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/08-conversation-info.png",
+      "sha256": "79b46d4c3da375b7748dcd6e6b2f1b4e1368daf5e8273208b50924efeb3cba5d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/08-entry.png",
+      "sha256": "cd58ca161a4a3f1b2c39a012704e0168fbaf13dbe570510388fcbe9c8da20417"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/09a-entry.png",
+      "sha256": "db0d1b6ee4e15095003d8f81f6ec86fcad3bdc171922600793afaa249ae3ef2a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/09a-identity-global.png",
+      "sha256": "dcbf9b5db4faf3669ffe0c9e4da913d25c5643fa28491574c64a50941b602d95"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/09b-identity-platforms.png",
+      "sha256": "601fa6740746a3c07161dac5db80f7a6d684ce933def2bf3ea117b49b52c68f4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/10-content-time-edit.png",
+      "sha256": "6e56d9ce7003e603c3de81e4081258b805092f1bfc27f719028f11d6ffa9e882"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-entry.png",
+      "sha256": "1bf455e9dfd78e044dabd77df3707e8f42ce2739d27e639fc469c03e532dc45d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-time-create.png",
+      "sha256": "2f5bbfdbdccb6f2f37bf9b04b66d642d277a411bf721771171e9e0b469906cdf"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-time-sovereign.png",
+      "sha256": "75f640868f2589afe2d2dc572d6116fac88cfe610a964beac33e5379d64888ae"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11-time-terran.png",
+      "sha256": "f004be0cc79687f28a7cd2b6a8894acfebbac906989d59f5e826f334922deaf2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/11b-time-editor.png",
+      "sha256": "bda208a5e2f095ab6405995234dd4ca2d024dea1b5ade4bd9366667ec6a21c80"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/12-entry.png",
+      "sha256": "6ea72ad44e4fb249e0f835b5506094e74c895311788dec65779f7fa31e551ead"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/12-move-library.png",
+      "sha256": "d26c2051ef54060831f5a692c2d7a3c59a02739ab874c14f2f268b600a52f904"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/13-entry.png",
+      "sha256": "662adc746a0cac8083e4ec180eee6af46fe32929b12f5dc48aae5a77be8d974f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/13-system-log.png",
+      "sha256": "fdf6c35afcd6ae2d2929940532464da42372f33789b946dc70522b07da9ac5cb"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/14-entry.png",
+      "sha256": "6d9a490a5db0a1dca1e1dec5a722b17d1a7bcb1f1064f47558ee98fe0f107715"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/14-rename-in-conversation.png",
+      "sha256": "f91a4a80a1d2617dae96ebc454cb7ed7c3f7514d3b08bcc2a0275a6d45e28819"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-14.png",
+      "sha256": "5603db5ca67fdb4d22ef2175b081e2439368d2b7f606656924affc42b5a45fb9"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-19.png",
+      "sha256": "4245efc9d3889759aa5f6b7b00d5537bd017e977e7ad579b11a50f4ab7312177"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-2-night.png",
+      "sha256": "856b3269b7e2ffc51c7edb060c891f59a1b2c3da5d2ae9d03277b6d6bb67c0e8"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-2.png",
+      "sha256": "5a1160132cb438ed40e9682da88045e25375bfceab41fb95a2e6e9bde261cb15"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-24.png",
+      "sha256": "9382e22c2141cdb98a87128d750243ab7a29f67c07ba86ef222cc7736fbcca3f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-29.png",
+      "sha256": "823f00bc9288109de717aafcf1b8e444163a785a0bbe209b7b081d5c7c99af85"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-3.png",
+      "sha256": "3bfbacd797ddffd3fc6c6298ae7119f5d4d67ffd330af728bc9deed19c9834c5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-34.png",
+      "sha256": "413f76d9b6b11a71e064dab2f8b0bc1567517bb5f380cc48431475908cc9262f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-38.png",
+      "sha256": "84169e1a4bc00fece67d938cebac92e1ca2471b327af21ce5931b31df35f7dc2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-42.png",
+      "sha256": "557bc0687914a351d265ba54463513b2205594838a93e99a1f380a3631f7e2aa"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-46.png",
+      "sha256": "87429eb5ca9bc08433a907df534dde6fc909d0de329dadafafe7c04dd217c42d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-52.png",
+      "sha256": "aaab099b82a476bb43c01f378021dce7ca38382c93508af31987a0e8f6f1766a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-57.png",
+      "sha256": "fc9248b5784fafa2ec87cd3d9062eb592e1ec90ec4c2e7931f4ab6000c40d6d3"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-63.png",
+      "sha256": "cb7fec54ecb9cdb9478b6bdeaf5ee2e6c9b5a03bfe3a3625132c24d0bff98278"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-69.png",
+      "sha256": "5b91d625f9b0c93652a821daab643d1f15fdbdb565d3a67dff5a42d01b8fc425"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-74.png",
+      "sha256": "1dbd8e75c94fa2f105aceb5fb92154a441d941264941cfeb43f7e90e04fff128"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/chronicle-8.png",
+      "sha256": "57863e5949471bdd564e4b9f26fd4effff1d5a76947c3c399c40af59a87639d5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-10.png",
+      "sha256": "a316aab04680567e863b0cdd6b1d97a5de5cc0726b83ae4f5d4e5edc2bfa1076"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-11.png",
+      "sha256": "5cc15eb3ec2f705d5e82698d10ac53ec1bfce6819c5ff0eb16fa449d7826d8eb"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-12.png",
+      "sha256": "68b51afeb8cd8a4de771dc43fcba8218fe6e491d427e1a95a6a626ef417b8638"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-13.png",
+      "sha256": "69bc1da33c79c10ac320290ba82183d05a8a3aa7a6cb01f5e922f67dd604defe"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-14.png",
+      "sha256": "4fd459482b85c0cb9591f733a25bfa4c2d1531b0814f705fca2476bc1c137316"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-15.png",
+      "sha256": "7dd1b6d8d849f7ed2da30a9675b93e48e433c3f030f141a262ade49bf6f26cfb"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-16.png",
+      "sha256": "b4bf56a5eaad6c0214c5281353b3a33a9e93f890500aac59abfa904ba3150b5c"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-17.png",
+      "sha256": "a9b0953da6aaba9f802b520c0c06124fb3e7fffa931e4d8021592f4c5068bd25"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-18.png",
+      "sha256": "fe00723912364e32f72381d5780a811065a9a5f0f67392b67b6512b82be7e03b"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-19.png",
+      "sha256": "305c1b55bd2509fb7ea6e5237a4789bfb14af4c279a1ca4d4980a93601a32157"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-20.png",
+      "sha256": "ae8392b90f26fd5cda3af6c8dd723b540345273c8660e85d65422c0379a914f2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-21.png",
+      "sha256": "0ed35c4520836683a91fc414992fd8b9c17c01e59bb37faa950da968a7d70db3"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-5.png",
+      "sha256": "980b737ad81a3484db03a3c83aa2fd30d83eb20dbd8dc67e10366f8537980972"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-6.png",
+      "sha256": "41a59c8bc10fa77f32a08d3571a6809546c4706f64ca50237ff6a8df358808b6"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-7.png",
+      "sha256": "dd97b91559a9b8bb96babe2d85b1f3aa205f3a5789f080ca986f05dacad815c4"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-8.png",
+      "sha256": "8b77bd7464c599b151d3ff6216f220e6056c15928f4c6b3dae7496dec5fd4e93"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/fable-9.png",
+      "sha256": "e7928f978fd03ab6651d9be5d2a9fab13129fa21459dda71b69f7f79827d9b68"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-10.png",
+      "sha256": "87cf0776046c8e6cb721d2d29fc2f797c6586a8bf4060ebf02e608951ae666d2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-11.png",
+      "sha256": "41a9569468df61b571716b369a51956a3da3f556c5f39d1c294cc140f172707e"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-13.png",
+      "sha256": "6a741a9731477879107c44347b567a3422486dfefae285b596d8413c87164159"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-14.png",
+      "sha256": "ba94a8cac58500c426f23c53b834f77d9649c6471923ae23e76f75763f918854"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-15.png",
+      "sha256": "587750c58a6b645811c7a4a208f6a5cf274f103e5daff0541c8b97f41679dd0e"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-16.png",
+      "sha256": "23e3516dbe77ba9ca22085f4953c0f13f8980994055658f159b4183be2a73024"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-17.png",
+      "sha256": "c03e6ce7b061f0c6e180490729fa5355c83bbf17f6b5caceba2c89c6a668f7ee"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-19.png",
+      "sha256": "47feaee957740d573cff6ad776e02ca1a568132d2fc2efbe521d27d4197913e9"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-20.png",
+      "sha256": "e3ec55c3a15b51b870e05b3251e435857de691039039028202f79c22f48aa614"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-21.png",
+      "sha256": "2175c48b828fb682bd93780bc9728928eec7a437ba4e2107cbd8419decb53219"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-22.png",
+      "sha256": "dfb9cd26e7641d5519ac564cd425e9b8359083f7b8eba41181352c1dd0e802d3"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-23.png",
+      "sha256": "ea5f7a59ff3ed41272fc80b4141e597e1a4eb8ecc2857a029b47fff594831720"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-24.png",
+      "sha256": "c324db083a629d9b9b37f429999fada2f491081000f3190da9a450c6ea871c72"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-26.png",
+      "sha256": "c97ca97e95e3e6e455c9c5731def8865a7c2dce74a1946d850256450226bd090"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-27.png",
+      "sha256": "05f0d401a71f494404b163e2a69d10c2bf415360c001b3e6b8c65d93b974f4a5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-28.png",
+      "sha256": "eae00e2da9c9a3bc4ead56e1fa6cc4313089bdcfea3b10aca1612c3f0ed25ad6"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-29.png",
+      "sha256": "d1db1cbd09daf5a29b4c2aaab93d79f0c02f0448b4270654f6a9e6b12163e768"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/sol-9.png",
+      "sha256": "0339b090a511a85b0fe53ff2d9fc6823bc03d62d703e30e9465b1c3ced1b8b5d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/three-14.png",
+      "sha256": "ae33149f92804d2d83e52cd08869e1b632e9fc468ddbb7df7854b90159ab28de"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/three-24.png",
+      "sha256": "336049e5bc1c4c4945b680a725bd4165228bfb08ebc8813dc20907eaf660a7f6"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-articles/three-4.png",
+      "sha256": "ce82b08e5876760865e8d1195758c4a12501b7422e2890f841a112e875c09a24"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-dawn.png",
+      "sha256": "02ebd70393487d55c5af4257b5656624c6bad570880f8542c7f78edf741e325d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/history-night.png",
+      "sha256": "1ad6cd645caf22a792e7f2cbc394025a29a77a1c2378175e2e3ebeb5a8a31666"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-Core-Grey.svg",
+      "sha256": "8c248239a5d84b226ae5e562908c2444af0b36c2b2b7e26f711c6054cd7c4d0c"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-Core.svg",
+      "sha256": "45e69821f217f37ad9d05f1947dbff3aa3e51e3e39e6c5a382acae93469dc1d1"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-Fold-Grey.svg",
+      "sha256": "a13c583a227f5c7a3108eedf825c5c3816bce1dd1888846510f15894a81bd6fc"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-Fold.svg",
+      "sha256": "a7ea047178cb06937a2d0f143494601ec5a36b15ee70078fac85d6383180791d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-General-Grey.svg",
+      "sha256": "0a3cdada8a8b4c564c16c78b8b7af7e0c06a65b9f8c0db75adc474c4fc7f5c7f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-General.svg",
+      "sha256": "15cc443964a638fead3e7f5310eb2278abe42054a227e12dc515912e3f145e56"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-Important-Grey.svg",
+      "sha256": "76ffd1aedcd761a11f6779e83ab85d092777ce29df16d006617d9d8408c9d68f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/InfoValue-Important.svg",
+      "sha256": "a7acbdb4bdb7578fa14fc50b0d5e6bf6622f12e89f1677a1838c5f809c4acf7e"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/license-frontispiece-dawn.png",
+      "sha256": "4615fab3a8a52b72fe0923e954d571d9681dd74218322de719f5e53f39c76a26"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/license-frontispiece-star-night.png",
+      "sha256": "7e7ff8e86d1c9787c916a918e285a060e931cf6db30f7dd044bda2eac5edcb70"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/standard-dawn.png",
+      "sha256": "b1ff7bb537669fc47a53ff7944a745b942b24a60708323e0fb08a2ac83577231"
+    },
+    {
+      "path": "src/ui/shell/pages/document/assets/standard-night.png",
+      "sha256": "2d01573da3a660c5f4ac45e4d09c061520a2e3b28be1316b2205c95cc9bcd283"
+    },
+    {
+      "path": "src/ui/shell/pages/document/bookmarks.css",
+      "sha256": "a778413b44dd0d422cc76254f4c7d263c09497c648659e1079030a069056c8c2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/bookmarks.js",
+      "sha256": "e4961d02883f43a949882433397a4589846198fd8aad2bc7de81ac18d570f876"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/bookmark-en.json",
+      "sha256": "54e5c04862ae6915249935330aa30c333bb3f9927b67dbfcf01f9c886fcb10f5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/bookmark-zh-CN.json",
+      "sha256": "a1e7fa01fc29d154acab379fa085a80d6437b05a0444bae2d8c53348caf27827"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/examples.json",
+      "sha256": "732cd79cff34b7a892c7d5c5396b30d7c7b2dd49ba8138a3fa73b9af635661ad"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/features-en.json",
+      "sha256": "25b2c8355a7697d1bf3b604d6ab04cfaa930b95f8a53a2cf566c632a48985678"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/features-zh-CN.json",
+      "sha256": "387663d1c36c7db59fffd7c75937cdb35bf409119ba5a4c160ecd18d449c5de2"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/history-dialogues.json",
+      "sha256": "2dad64d9cdbb53e8be005797b2f968333124bdc079635e6d4b045ef01c3009f6"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/history-en.json",
+      "sha256": "7d1370c8da7aa7484ca3db45e67845a248e1587d37fbdd2037fbdbf0affd58a1"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/history-zh-CN.json",
+      "sha256": "ae9ca374a04c04b077b7c0bbf889e1aab6f12723be57027a927e305d65b1b93f"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/license.json",
+      "sha256": "dd0880f0ae38d62c597366e9b00498591a17e4e67ab5a02d4a0786d12b342b24"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/platforms-en.json",
+      "sha256": "10a3e86358d1364aa98398953ffc3878f214d6e1b9e62de597205383aa46a47d"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/platforms-zh-CN.json",
+      "sha256": "2fce18fdca0a351c06fecd6e72c92ac08f0c29f6831da33b6b801cbd2dd8671e"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/standard-en.json",
+      "sha256": "c41f89d94c95eb63d95b64573cd2ccfa9082b7864fde5cb3d95494f03087d897"
+    },
+    {
+      "path": "src/ui/shell/pages/document/content/standard-zh-CN.json",
+      "sha256": "f8ba5bd43d8b52ce3ba48b840d8440a01fa779132c04bdd0228343a183cc417a"
+    },
+    {
+      "path": "src/ui/shell/pages/document/document.css",
+      "sha256": "18fcf6412b06bfaa822550b1273e30fcbbe13a17d887aaca70d93214931c93ce"
+    },
+    {
+      "path": "src/ui/shell/pages/document/document.js",
+      "sha256": "5b151d4e2f0fa131305689eed0db7c2f81861d62ad738f928297a4c0509f8783"
+    },
+    {
+      "path": "src/ui/shell/pages/document/examples-links.js",
+      "sha256": "c91f676e850f63f5025b6690f5bc5883155f9c5badf07da54e7489e26b8a1651"
+    },
+    {
+      "path": "src/ui/shell/pages/document/features.css",
+      "sha256": "6d3f0fa6bd96f47f2f7709aba5b5173aa2240458740e0c52f42e9a45870e5619"
+    },
+    {
+      "path": "src/ui/shell/pages/document/features.js",
+      "sha256": "36f0ac07da2cace066069746b4ed8e4c9e86b518546d23f1c9ca8414b34430d5"
+    },
+    {
+      "path": "src/ui/shell/pages/document/history-ornaments.js",
+      "sha256": "97bac619cab35244e0c5a157af34fd6125235042b40f8009153c90084dccd944"
+    },
+    {
+      "path": "src/ui/shell/pages/document/history.css",
+      "sha256": "fd2eae11290f137251b42906d0cde719991614e75fe54a47fa70742b0e23d148"
+    },
+    {
+      "path": "src/ui/shell/pages/document/history.js",
+      "sha256": "7c0b21a6053efcb8d211a0b31f821bf15e7807d33581a2234765115e15dae061"
+    },
+    {
+      "path": "src/ui/shell/pages/document/license.css",
+      "sha256": "54f4c2740a1ff78f591260384c5e1678af065692230af53993576d40419306db"
+    },
+    {
+      "path": "src/ui/shell/pages/document/license.js",
+      "sha256": "a424f32c365eaf65d5d13a5e8f4dd76746820acea975ed8d4548b2b9e5d56645"
+    },
+    {
+      "path": "src/ui/shell/pages/document/navigation.js",
+      "sha256": "0b89663b578eb487aa6ad139f59e8aa7961dedf532e0a57e5abf190f9f401dbc"
+    },
+    {
+      "path": "src/ui/shell/pages/reader/conversation.css",
+      "sha256": "876f7f289390a4b1dd251078506810f57b6cc590939b8765e5d2e585aa8096d0"
+    },
+    {
+      "path": "src/ui/shell/pages/reader/reader-conversation.js",
+      "sha256": "68fbba7511f5b3bf07490949e830cbc8a67bfef3d386452788a2913e1488f429"
+    },
+    {
+      "path": "src/ui/shell/pages/reader/reader.css",
+      "sha256": "1e64886f16d41bd0f425cd6e06e53ed1331bd5b9a7d6bf9fc6eb1a7a7d39ed09"
+    },
+    {
+      "path": "src/ui/shell/pages/reader/title-layout.js",
+      "sha256": "5f449ccda513540395b27e3d04d108f540ebebd08161a390bbea601adb1a5c87"
+    },
+    {
+      "path": "src/ui/shell/platform-labels.js",
+      "sha256": "3e78adb418d3c5495989dbc6ad38059f54a8a3fc764d1ee5a7c6fac808a6f4b6"
+    },
+    {
+      "path": "src/ui/shell/shell.css",
+      "sha256": "874b2ab6faf3ba3d1bf164dc47ad787b0f97e0ce3880b112f8184158e9cd8cb4"
     }
   ],
   "files": [
@@ -3701,6 +3765,26 @@
       "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a"
     },
     {
+      "path": "pages/document/assets/function-guide/en/dawn/04-entry.webp",
+      "bytes": 4670,
+      "sha256": "54d15b061475f10c4806a8ba3bdc5c43075cb60b157578db5dcb1e2c2cd4ea46"
+    },
+    {
+      "path": "pages/document/assets/function-guide/en/dawn/04-platform-agent.webp",
+      "bytes": 84834,
+      "sha256": "05c365b52b94c5751c0cf27620618e0c40cb3d60b4fad5d6807fb5680806ed33"
+    },
+    {
+      "path": "pages/document/assets/function-guide/en/dawn/04-platform-conversations.webp",
+      "bytes": 31132,
+      "sha256": "9b72854dd6f23fdaece4353afb99517dcc1b4ecb15471359f4f431c6f232c56a"
+    },
+    {
+      "path": "pages/document/assets/function-guide/en/dawn/04-platform-official.webp",
+      "bytes": 173804,
+      "sha256": "2e107480e5b5d209b471df56d0cb7d37eabe1a756d1de2053b8c2c4f37adcda5"
+    },
+    {
       "path": "pages/document/assets/function-guide/en/dawn/05-reader-cover.png",
       "bytes": 113854,
       "sha256": "30711bfaf3d463a9d696146a1b6028306e5deca84821518f95b254b1d16acc9f"
@@ -3839,6 +3923,26 @@
       "path": "pages/document/assets/function-guide/en/star-night/04-entry.png",
       "bytes": 1521,
       "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19"
+    },
+    {
+      "path": "pages/document/assets/function-guide/en/star-night/04-entry.webp",
+      "bytes": 2908,
+      "sha256": "49d1af81c7bc03adee0d5a1312fd7cd5f3fa1b4f79f0839fa974a2e4424d1cac"
+    },
+    {
+      "path": "pages/document/assets/function-guide/en/star-night/04-platform-agent.webp",
+      "bytes": 58886,
+      "sha256": "76df52ac0c12337da559a629fd1671ad1d34376940467ee195218c8777d6da7c"
+    },
+    {
+      "path": "pages/document/assets/function-guide/en/star-night/04-platform-conversations.webp",
+      "bytes": 23754,
+      "sha256": "2e58ca23823a73b995ee634fc8dbac0cea498e543dbdeb8a56fc2b07b5fd5033"
+    },
+    {
+      "path": "pages/document/assets/function-guide/en/star-night/04-platform-official.webp",
+      "bytes": 136842,
+      "sha256": "288f0cae0848696ade1086025c5c00760e3de5b59e2a4015754aaa123dcc333c"
     },
     {
       "path": "pages/document/assets/function-guide/en/star-night/05-reader-cover.png",
@@ -3981,6 +4085,26 @@
       "sha256": "a7ffee5c0d8b7f5d77787c5c5e328f9b1b382a30b9325e299d60d88e0443c86a"
     },
     {
+      "path": "pages/document/assets/function-guide/zh-CN/dawn/04-entry.webp",
+      "bytes": 5274,
+      "sha256": "1b98578cc9816b041d97f91b239584c634cf60d13564d9bcfeb2f567aa95d760"
+    },
+    {
+      "path": "pages/document/assets/function-guide/zh-CN/dawn/04-platform-agent.webp",
+      "bytes": 83300,
+      "sha256": "eac7ae4d799c603cf251156359658368764c53f86c3908484938d73829022150"
+    },
+    {
+      "path": "pages/document/assets/function-guide/zh-CN/dawn/04-platform-conversations.webp",
+      "bytes": 29612,
+      "sha256": "d8a8f08d75601f341cc4c88424040e68c51ac6e069e171ad4e8f2a7a0c68c39d"
+    },
+    {
+      "path": "pages/document/assets/function-guide/zh-CN/dawn/04-platform-official.webp",
+      "bytes": 165604,
+      "sha256": "04ad0b53d2c7f3bf32311b7033dd5d1a59e54f58e2673ada0b23de5f659ffc7b"
+    },
+    {
       "path": "pages/document/assets/function-guide/zh-CN/dawn/05-reader-cover.png",
       "bytes": 114828,
       "sha256": "b3811039e5a472f1f283110ad2f054ed05a4185b59d1e670a12fbef7c59f8cd9"
@@ -4119,6 +4243,26 @@
       "path": "pages/document/assets/function-guide/zh-CN/star-night/04-entry.png",
       "bytes": 1521,
       "sha256": "5970c054acd3de0c364dec6dc794274fa0e9d88583ac05ce5fefef9361a6ef19"
+    },
+    {
+      "path": "pages/document/assets/function-guide/zh-CN/star-night/04-entry.webp",
+      "bytes": 3424,
+      "sha256": "14a36a2c70e522ec58abd2adc007be2b3bc774ad680ffba5488fc3bc6f69dca9"
+    },
+    {
+      "path": "pages/document/assets/function-guide/zh-CN/star-night/04-platform-agent.webp",
+      "bytes": 55748,
+      "sha256": "3787926711e714f9d228d59a52f5d56730a9af50b712492614ae23289e35cbc4"
+    },
+    {
+      "path": "pages/document/assets/function-guide/zh-CN/star-night/04-platform-conversations.webp",
+      "bytes": 22792,
+      "sha256": "0a36cb9572c7b2a2b141f6ba5747d504a349cd94e5916cd47c5be4d8a75503f4"
+    },
+    {
+      "path": "pages/document/assets/function-guide/zh-CN/star-night/04-platform-official.webp",
+      "bytes": 129882,
+      "sha256": "05eb896b1fd36dbad15063e41a45370f4fd1ecdd5cda89051da7585a5da12678"
     },
     {
       "path": "pages/document/assets/function-guide/zh-CN/star-night/05-reader-cover.png",
@@ -4602,13 +4746,13 @@
     },
     {
       "path": "pages/document/content/features-en.json",
-      "bytes": 36264,
-      "sha256": "57d2a976c2167c541af08b28cb105d9911b2cde90e55630a3d3dccf5ae233862"
+      "bytes": 38629,
+      "sha256": "25b2c8355a7697d1bf3b604d6ab04cfaa930b95f8a53a2cf566c632a48985678"
     },
     {
       "path": "pages/document/content/features-zh-CN.json",
-      "bytes": 36262,
-      "sha256": "e0c6bb03967062a4ac1f5d36e11b47b5b01d5316e00eff9b4c8500384348910c"
+      "bytes": 38300,
+      "sha256": "387663d1c36c7db59fffd7c75937cdb35bf409119ba5a4c160ecd18d449c5de2"
     },
     {
       "path": "pages/document/content/history-dialogues.json",
@@ -4667,8 +4811,8 @@
     },
     {
       "path": "pages/document/features.css",
-      "bytes": 3820,
-      "sha256": "3817ea5d200bed6e3672a72e3fb98ba940b79adbad88f0646076285a16b6fb09"
+      "bytes": 3910,
+      "sha256": "6d3f0fa6bd96f47f2f7709aba5b5173aa2240458740e0c52f42e9a45870e5619"
     },
     {
       "path": "pages/document/features.js",
