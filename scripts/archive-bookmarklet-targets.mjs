@@ -82,14 +82,14 @@ function ready(platform, profile, {
 
 export const archiveBookmarkletTargets = Object.freeze([
   ready("chatgpt", "full", {
-    version: "1.0.73-full",
+    version: "1.0.77-full",
     source: "2026-07-28_ChatGPT会话导出HTML全量书签-1.0.49-full-GPT-5.6-Sol.js",
     min: "2026-07-28_ChatGPT会话导出HTML全量书签单行版-1.0.49-full-GPT-5.6-Sol.min.js",
     platformPayloadSchema: "osis.chatgpt.chat-export/full-v1",
     buildFlags: ["--temml"]
   }),
   ready("chatgpt", "all-branches", {
-    version: "1.0.73-all-branches",
+    version: "1.0.77-all-branches",
     source: "2026-07-28_ChatGPT会话导出HTML整树书签-1.0.49-all-branches-GPT-5.6-Sol.js",
     min: "2026-07-28_ChatGPT会话导出HTML整树书签单行版-1.0.49-all-branches-GPT-5.6-Sol.min.js",
     platformPayloadSchema: "osis.chatgpt.chat-export/all-branches-v1",
@@ -214,14 +214,14 @@ export const archiveBookmarkletTargets = Object.freeze([
     buildFlags: ["--temml", "--katex-runtime"]
   }),
   ready("claude", "full", {
-    version: "1.1.76-full",
+    version: "1.1.78-full",
     source: "2026-07-28_Claude会话导出HTML全量取证书签-1.1.4-full-GPT-5.6-Sol.js",
     min: "2026-07-28_Claude会话导出HTML全量取证书签单行版-1.1.4-full-GPT-5.6-Sol.min.js",
     platformPayloadSchema: "osis.claude.chat-export/full-capture-v1",
     buildFlags: ["--temml-mhchem"]
   }),
   ready("claude", "all-branches", {
-    version: "1.1.76-all-branches",
+    version: "1.1.78-all-branches",
     source: "2026-07-28_Claude会话导出HTML全分支取证书签-1.1.4-all-branches-GPT-5.6-Sol.js",
     min: "2026-07-28_Claude会话导出HTML全分支取证书签单行版-1.1.4-all-branches-GPT-5.6-Sol.min.js",
     platformPayloadSchema: "osis.claude.chat-export/all-branches-v1",

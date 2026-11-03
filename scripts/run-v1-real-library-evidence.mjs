@@ -84,7 +84,7 @@ function parseArgs(args) {
   for (let index = 0; index < args.length; index += 2) {
     const key = args[index];
     const value = args[index + 1];
-    if (!value || !["--sample-root", "--claude-container", "--output"].includes(key)) {
+    if (!value || !["--sample-root", "--claude-container", "--output", "--package-root"].includes(key)) {
       throw new Error("Usage: node scripts/run-v1-real-library-evidence.mjs --sample-root <directory> --claude-container <file> [--output <file>]");
     }
     values.set(key, value);
@@ -93,11 +93,12 @@ function parseArgs(args) {
   return {
     sampleRoot: path.resolve(values.get("--sample-root")),
     claudeContainer: path.resolve(values.get("--claude-container")),
-    output: path.resolve(defaultRoot, values.get("--output") ?? defaultOutput)
+    output: path.resolve(defaultRoot, values.get("--output") ?? defaultOutput),
+    packageRoot: path.resolve(defaultRoot, values.get("--package-root") ?? "artifacts/v1-desktop/app")
   };
 }
 
-async function runJourney(root, sampleRoot, claudeContainer) {
+async function runJourney(root, sampleRoot, claudeContainer, packageRoot) {
   const started = Date.now();
   const child = spawn(process.execPath, ["--test", "tests/v1/journey/real-library.test.mts"], {
     cwd: root,
@@ -105,7 +106,7 @@ async function runJourney(root, sampleRoot, claudeContainer) {
       ...process.env,
       CLOUDIG_REAL_SAMPLE_DIR: sampleRoot,
       CLOUDIG_REAL_CLAUDE_CONTAINER: claudeContainer,
-      CLOUDIG_RECORD_PACKAGE_ROOT: path.join(root, "artifacts/v1-desktop/app"),
+      CLOUDIG_RECORD_PACKAGE_ROOT: packageRoot,
       CLOUDIG_KEEP_REAL_LIBRARY: "0"
     },
     stdio: ["ignore", "pipe", "pipe"],
@@ -125,11 +126,11 @@ async function runJourney(root, sampleRoot, claudeContainer) {
   return { ...extractRealLibraryResult(stdout), duration_ms: Date.now() - started, stdout_sha256: createHash("sha256").update(stdout).digest("hex") };
 }
 
-export async function runRealLibraryEvidence({ root = defaultRoot, sampleRoot, claudeContainer, output }) {
+export async function runRealLibraryEvidence({ root = defaultRoot, sampleRoot, claudeContainer, output, packageRoot = path.join(root, "artifacts/v1-desktop/app") }) {
   const statusBefore = git(root, ["status", "--porcelain", "--untracked-files=all"]);
   if (statusBefore) throw new Error("real Library evidence requires a clean source tree");
   const sourceCommit = git(root, ["rev-parse", "HEAD"]);
-  const packaged = journeyPackageFingerprint(root);
+  const packaged = journeyPackageFingerprint(root, packageRoot);
   const waterlineFile = path.join(root, "src", "adapters", "parser", "contracts", "sample-waterline.json");
   const testFile = path.join(root, "tests", "v1", "journey", "real-library.test.mts");
   const waterline = JSON.parse(await readFile(waterlineFile, "utf8"));
@@ -140,10 +141,10 @@ export async function runRealLibraryEvidence({ root = defaultRoot, sampleRoot, c
     hashStream(testFile)
   ]);
   if (samples.file_count !== waterline.summary.files) throw new Error(`sample count ${samples.file_count} does not match waterline ${waterline.summary.files}`);
-  const execution = await runJourney(root, sampleRoot, claudeContainer);
+  const execution = await runJourney(root, sampleRoot, claudeContainer, packageRoot);
   const statusAfter = git(root, ["status", "--porcelain", "--untracked-files=all"]);
   if (statusAfter) throw new Error("real Library journey changed tracked or unignored source files");
-  if (JSON.stringify(journeyPackageFingerprint(root)) !== JSON.stringify(packaged)) throw new Error("packaged program changed during the real Library journey");
+  if (JSON.stringify(journeyPackageFingerprint(root, packageRoot)) !== JSON.stringify(packaged)) throw new Error("packaged program changed during the real Library journey");
   if (execution.result.package_engine.sha256 !== packaged.engine.sha256) throw new Error("journey used a different packaged Engine");
   if ((await hashStream(testFile)).sha256 !== testHash.sha256 || (await hashStream(waterlineFile)).sha256 !== waterlineHash.sha256) throw new Error("journey inputs changed during verification");
   const stableRun = {

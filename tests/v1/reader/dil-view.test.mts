@@ -176,3 +176,9 @@ test("Window delays source loading until open, shares its source with Box and cl
     s.controller.abort();assert.equal(s.document.querySelectorAll("dialog").length,0);
   }finally{s.close();}
 });
+
+
+test("a declared check-circle uses a semantic vector when no glyph bytes were captured",async()=>{
+ const s=setup('DIL.render(__dil.jsx("text",null,__dil.jsx("icon",{name:"check-circle",inline:true,color:"success"}),"Ready"));');
+ try{const root=s.mount(0);await pause();assert.equal(root.querySelectorAll('.cloudig-dil-icon svg circle').length,1);assert.doesNotMatch(root.textContent??"",/◇/);assert.match(root.textContent??"",/Ready/);}finally{s.close();}
+});

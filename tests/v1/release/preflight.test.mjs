@@ -144,6 +144,7 @@ test("engineering measurements cannot masquerade as clean release benchmark evid
   assert.equal(release.engineering, false); assert.equal(engineering.engineering, true);
   assert.notEqual(engineering.output, release.output);
   assert.equal(parseBenchmarkArgs(["--engineering", "--output", "tmp/measurement.json"]).output, path.resolve("tmp/measurement.json"));
+  assert.equal(parseBenchmarkArgs(["--package-root", "artifacts/v1-desktop/payload"]).packageRoot, path.resolve("artifacts/v1-desktop/payload"));
   assert.throws(() => parseBenchmarkArgs(["--skip-clean"]), /Usage/u);
 });
 

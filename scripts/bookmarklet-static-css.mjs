@@ -6,11 +6,12 @@ export function packBookmarkletCss(source){
   const marker='/*__OSIS_PACK_STATIC_CSS__*/';
   if(!source.includes(marker))return {source,values:[]};
   const fixedText=source.includes('/*__OSIS_PACK_FIXED_TEXT__*/');
-  const ast=parse(source,{ecmaVersion:'latest'}),serialized=new Set();
+  const ast=parse(source,{ecmaVersion:'latest'}),serialized=new Set(),literalCounts=new Map();
   // Function source is observable when exported with .toString(): moving its
   // strings into this invocation's closure would break the standalone copy.
   function findSerialized(n){
     if(!n||typeof n!=='object')return;
+    if(n.type==='Literal'&&typeof n.value==='string')literalCounts.set(n.value,(literalCounts.get(n.value)||0)+1);
     if(n.type==='MemberExpression'&&(n.property?.name||n.property?.value)==='toString'){
       const object=n.object,name=object?.type==='Identifier'?object.name:object?.type==='MemberExpression'?(object.property?.name||object.property?.value):null;
       if(name)serialized.add(name);
@@ -19,7 +20,7 @@ export function packBookmarkletCss(source){
   }
   if(fixedText)findSerialized(ast);
   const names=new Set(['css','taskCss','sourceCss','mermaidCss','osisArchiveMarkdownCss','osisTemmlCss','branchCss','style','basicStyle','stylePropertyNames']);
-  if(source.includes('const osisGptLayout ='))names.add('extras');
+  if(source.includes('const osisGptLayout =')){names.add('extras');if(fixedText)names.add('scheduledCss')}
   if(source.includes('function osisCreateGeminiRichArchive('))for(const name of ['osisGeminiRichCss','panelCss','mathCss'])names.add(name);
   const edits=[],values=[];
   function add(n,v){
@@ -39,7 +40,7 @@ export function packBookmarkletCss(source){
     // GPT opt-in only: immutable build literals, never captured content or code
     // execution. Exclude syntax positions that require a literal rather than an
     // expression; named bootstrap/CSS initializers above remain one intact value.
-    if(fixedText&&n.type==='Literal'&&typeof n.value==='string'&&n.value.length>=24&&!/^H4sI/.test(n.value)
+    if(fixedText&&n.type==='Literal'&&typeof n.value==='string'&&(n.value.length>=16||n.value.length>=6&&literalCounts.get(n.value)>=3)&&!/^H4sI/.test(n.value)
       &&!(key==='key'&&!parent.computed)&&!parent?.type?.startsWith('Import')&&!parent?.type?.startsWith('Export')
       &&!(parent?.type==='ExpressionStatement'&&parent.directive)){
       add(n,n.value);return;

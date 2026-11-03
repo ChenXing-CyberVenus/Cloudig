@@ -26,6 +26,8 @@ const bookmarkBuildMode = reuseAcceptedBookmarks ? "reused-accepted" : includePe
 const productVersion = JSON.parse(await readFile(path.join(repository, 'release/v1-preflight-spec.json'), 'utf8')).product.version;
 assert.match(productVersion, /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u);
 assert.equal((await readFile(path.join(repository, 'src/desktop/Cloudig.Desktop/Cloudig.Desktop.csproj'), 'utf8')).match(/<Version>([^<]+)<\/Version>/u)?.[1], productVersion, 'Desktop/release product versions differ');
+const visibleVersions = [...(await readFile(path.join(repository, 'src/ui/shell/index.html'), 'utf8')).matchAll(/>V(\d+\.\d+\.\d+)</gu)].map(match => match[1]);
+assert.ok(visibleVersions.length && visibleVersions.every(version => version === productVersion), 'Visible welcome/Reader/Archiver versions differ from the packaged product');
 const { bookmarkPublications, bookmarkDocumentText } = await import('./build-bookmark-documents.mjs');
 const { buildPlatformExamples, exampleBuildRoot } = await import('./build-platform-examples.mts');
 await bookmarkPublications(true);

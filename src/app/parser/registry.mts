@@ -116,7 +116,7 @@ export function fallbackPayloadId(platform: string): string | undefined {
   return undefined;
 }
 
-export const PARSER_VERSION = "1.1.51";
+export const PARSER_VERSION = "1.1.52";
 
 export function adapterBundleSnapshot(): Readonly<{
   schema: "cloudig/adapter-bundle/1.0.0";

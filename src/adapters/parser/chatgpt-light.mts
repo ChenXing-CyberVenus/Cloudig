@@ -9,10 +9,11 @@ import { parseFragment, serialize, serializeOuter, type DefaultTreeAdapterTypes 
 import { compactCapturedMath, inertHtmlEvidence } from "./inert-html.mts";
 import { chatGptNative, isChatGptNative } from "./chatgpt-native.mts";
 import { ChatGptIntelligentUi } from "./chatgpt-intelligent.mts";
+import { taskView, ownedTaskView } from "../../core/records/chatgpt-task.mts";
 
 export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
   id: "chatgpt-light-items-v2",
-  version: "3.0.10",
+  version: "3.0.11",
   family: "chatgpt",
   routes: [{
     format: "exporter-html",
@@ -25,7 +26,7 @@ export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
     adapter: "chatgpt-light-items-v2",
     version: "1.3.0",
     action: "reparse_source"
-  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
+  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
 };
 
 function object(value: JsonValue | undefined): JsonObject | undefined {
@@ -148,9 +149,9 @@ class ResourcePool {
   readonly #byKey = new Map<string, string>();
   readonly #sourceById = new Map<string, JsonObject>();
 
-  constructor(rawResources?: JsonValue, interactive = false, intelligent?: JsonObject) {
+  constructor(rawResources?: JsonValue, interactive = false, intelligent?: JsonObject, scheduled: JsonObject = {}) {
     this.interactive = interactive;
-    this.intelligent = intelligent && interactive ? new ChatGptIntelligentUi(intelligent, part => this.addPart(part)) : undefined;
+    this.intelligent = intelligent && interactive ? new ChatGptIntelligentUi(intelligent, part => this.addPart(part), scheduled) : undefined;
     for (const [key, raw] of objectEntries(rawResources)) {
       const id = sourceText(raw["id"]) ?? key;
       if (!id) throw new TypeError("ChatGPT resource has no source id");
@@ -368,6 +369,7 @@ function memorySourceIds(raw: JsonValue | undefined, pool: SourcePool): string[]
 }
 
 type ScheduleState = Readonly<{
+  components: JsonObject;
   tasks: ReadonlyMap<string, JsonObject>;
   listsByMessage: ReadonlyMap<string, readonly JsonObject[]>;
   current?: JsonObject;
@@ -407,7 +409,7 @@ function scheduleState(payload: JsonObject): ScheduleState {
     existing.push(list);
     listsByMessage.set(messageId, existing);
   }
-  return { tasks, listsByMessage, ...(current ? { current } : {}) };
+  return { components: components ?? {}, tasks, listsByMessage, ...(current ? { current } : {}) };
 }
 
 function scheduleTaskTitle(task: JsonObject | undefined, fallback?: JsonObject): string | undefined {
@@ -415,29 +417,10 @@ function scheduleTaskTitle(task: JsonObject | undefined, fallback?: JsonObject):
 }
 
 function scheduleTaskView(task: JsonObject | undefined, fallback?: JsonObject): JsonObject {
-  const title = scheduleTaskTitle(task, fallback);
-  const displaySchedule = sourceText(fallback?.["schedule_label"] ?? task?.["display_schedule"] ?? task?.["schedule"]);
-  const lastRun = timestamp(task?.["last_run_time"]);
-  const nextRun = timestamp(values(task?.["next_run_times"])[0]);
-  const timezone = sourceText(task?.["default_timezone"]);
-  const prompt = sourceText(task?.["prompt"]);
-  const conversationId = sourceText(task?.["conversation_id"]);
-  const all: JsonObject = {
-    ...(task ? { source_task: structuredClone(task) } : {}),
-    ...(title ? { title } : {}),
-    ...(typeof task?.["is_enabled"] === "boolean" ? { enabled: task["is_enabled"] } : {}),
-    ...(displaySchedule ? { schedule: displaySchedule } : {}),
-    ...(lastRun ? { last_run_at: lastRun } : {}),
-    ...(nextRun ? { next_run_at: nextRun } : {}),
-    ...(timezone ? { timezone } : {}),
-    ...(typeof task?.["notifications_enabled"] === "boolean" ? { notifications_enabled: task["notifications_enabled"] } : {}),
-    ...(prompt ? { prompt } : {}),
-    ...(conversationId ? { conversation_url: `https://chatgpt.com/c/${encodeURIComponent(conversationId)}` } : {})
-  };
-  return all;
+  return taskView(task, fallback);
 }
 
-function scheduleListBlocks(item: JsonObject, state: ScheduleState): JsonObject[] {
+function scheduleListBlocks(item: JsonObject, state: ScheduleState, resources: ResourcePool): JsonObject[] {
   if (item["kind"] !== "assistant") return [];
   const messageId = sourceText(item["message_id"] ?? item["node_id"]);
   if (!messageId) return [];
@@ -445,8 +428,9 @@ function scheduleListBlocks(item: JsonObject, state: ScheduleState): JsonObject[
     const tasks = values(list["tasks"]).flatMap((value) => {
       const row = object(value);
       if (!row) return [];
-      const task = state.tasks.get(sourceText(row["id"]) ?? "");
-      const view = scheduleTaskView(task, row);
+      const id = sourceText(row["id"]) ?? "";
+      if (list["inline"] === true && resources.intelligent?.hasTask(messageId, id)) return [];
+      const view = ownedTaskView(state.components, id, row);
       return Object.keys(view).length > 0 ? [view] : [];
     });
     if (tasks.length === 0) return [];
@@ -606,7 +590,7 @@ function projectItem(
     else limitations.push({ code: "chatgpt-unknown-item" });
   }
 
-  result.push(...scheduleListBlocks(item, schedule));
+  result.push(...scheduleListBlocks(item, schedule, resources));
 
   const web = sourceIds(item["sources"], sources, "web");
   const memory = memorySourceIds(item["memory_sources"], sources);
@@ -739,7 +723,7 @@ function chatGptDraft(input: Readonly<{
 }
 
 export async function parseChatGptItems(context: AdapterParseContext, route: ChatGptRoute): Promise<JsonObject> {
-  const resources = new ResourcePool(undefined, !!context.record, context.extensions?.chatgptIntelligentUi);
+  const resources = new ResourcePool(undefined, !!context.record, context.extensions?.chatgptIntelligentUi, object(context.payload["scheduled_components"]) ?? {});
   const sources = new SourcePool();
   const limitations: JsonObject[] = [];
   const items = values(context.payload["items"]);
@@ -855,7 +839,7 @@ export async function parseChatGptTree(context: AdapterParseContext, route: Chat
   if (context.payload["entry_surface"] === "scheduled_task" && Array.isArray(context.payload["items"])) {
     return parseChatGptItems(context, route);
   }
-  const resources = new ResourcePool(context.payload["resources"], !!context.record, context.extensions?.chatgptIntelligentUi);
+  const resources = new ResourcePool(context.payload["resources"], !!context.record, context.extensions?.chatgptIntelligentUi, object(context.payload["scheduled_components"]) ?? {});
   const sources = new SourcePool();
   const limitations: JsonObject[] = [];
   const renderedMermaid = treeRenderedMermaid(context.payload);

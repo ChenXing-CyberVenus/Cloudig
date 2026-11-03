@@ -516,6 +516,16 @@ details[open] > .cloudig-fold-title::before {
 .cloudig-schedule-meta dt { color: var(--cloudig-muted); }
 .cloudig-schedule-meta dd { margin: 0; overflow-wrap: anywhere; }
 .cloudig-schedule-prompt { margin: 0; }
+.cloudig-schedule-task > .cloudig-fold-title { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; }
+.cloudig-task-heading { flex: 1 1 210px; min-width: 0; overflow-wrap: anywhere; }
+.cloudig-task-heading .cloudig-schedule-summary { margin: 4px 0 0; }
+.cloudig-schedule-task > summary > .cloudig-schedule-state { flex: 0 1 auto; font-size: .85em; font-weight: 600; border: 1px solid var(--cloudig-border); border-radius: 6px; padding: 3px 8px; }
+.cloudig-schedule-task[data-task-status="enabled"] > summary > .cloudig-schedule-state { color: var(--cloudig-accent); }
+.cloudig-schedule-task[data-task-status="paused"] > summary > .cloudig-schedule-state { color: var(--cloudig-text); }
+.cloudig-schedule-task > .cloudig-fold-body { display: grid; gap: 10px; padding-top: 10px; }
+.cloudig-schedule-task > .cloudig-fold-body:empty { padding-top: 0; }
+.cloudig-schedule-task:not([open]) > .cloudig-fold-body { display: none; }
+.cloudig-schedule-task .cloudig-schedule-settings { min-width: 0; }
 
 .cloudig-media,
 .cloudig-diagram {

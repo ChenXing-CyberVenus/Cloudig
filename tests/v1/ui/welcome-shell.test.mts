@@ -32,15 +32,23 @@ test("failed Engine connections retain their code and show an actionable message
 
 test("Startup paints the original sun before releasing native Library initialization", async () => {
   const script = await text("startup.js");
-  for (const decodes of [true, false]) {
+  for (const [decodes, cached] of [[true, true], [true, false], [false, true], [false, false]]) {
     const dom = new JSDOM('<img class="sun"><div class="route-transition"><img></div>', { runScripts: "outside-only" });
     const image = dom.window.document.querySelector<HTMLImageElement>(".route-transition img")!;
     const frames: FrameRequestCallback[] = [], messages: any[] = [];
-    image.decode = async () => { if (!decodes) throw new Error("Missing GIF"); };
-    Object.defineProperty(image, "naturalWidth", { value: 232 });
+    // A hidden animated image may never settle decode(). A loaded source must
+    // still hand off visibility, and failed sources must never release Library.
+    image.decode = () => new Promise(() => {});
+    Object.defineProperty(image, "complete", { value: cached });
+    Object.defineProperty(image, "naturalWidth", { value: decodes ? 232 : 0 });
     dom.window.requestAnimationFrame = (callback) => { frames.push(callback); return frames.length; };
     Object.defineProperty(dom.window, "chrome", { value: { webview: { postMessage: (message: unknown) => messages.push(message) } } });
     const completion = dom.window.eval(script);
+    if (!cached) {
+      await new Promise(resolve => setImmediate(resolve));
+      assert.equal(messages.length, 0, "wait for the real image load/error event");
+      image.dispatchEvent(new dom.window.Event(decodes ? "load" : "error"));
+    }
     await new Promise(resolve => setImmediate(resolve));
     if (decodes) {
       assert.equal(messages.length, 1, "decode only hands visibility over from the native GIF");

@@ -6,7 +6,10 @@ param(
 $ErrorActionPreference = 'Stop'
 # GPT-6-Astra · 承卷开霁, 2026-09-22. Freeze one tested payload; never overwrite a signed stage.
 $project = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$source = Join-Path $project 'artifacts/v1-desktop/app'
+$releaseSpec = Get-Content -LiteralPath (Join-Path $project 'release/v1-preflight-spec.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$source = [IO.Path]::GetFullPath((Join-Path $project $releaseSpec.package_root))
+if (-not $source.StartsWith($project + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Release payload escaped project' }
+if (Test-Path -LiteralPath (Join-Path $source 'app/optional-components')) { throw 'Do not publish installed optional components; use the clean build payload' }
 $components = @('Cloudig.exe','app','bookmarks','docs','LICENSE','NOTICE.md')
 $ownedPe = @('Cloudig.exe','app/Cloudig.dll','app/Cloudig.Desktop.Core.dll','app/Cloudig.Bookmarks.dll')
 $provenance = Get-Content -LiteralPath (Join-Path $source 'app/build-provenance.json') -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -36,7 +39,7 @@ if ((Get-Sha (Join-Path $source 'Cloudig.exe')) -ne $evidence.executable.sha256)
 if ((Get-Sha (Join-Path $source 'app/engine/engine.mjs')) -ne $evidence.engine.sha256) { throw 'Engine differs from tested evidence' }
 Push-Location $project
 try {
-    $programCheck = & node --input-type=module -e "import {hashInputs} from './scripts/v1-release-preflight.mjs';const p=hashInputs(process.cwd(),['artifacts/v1-desktop/app/app']);console.log(JSON.stringify({sha:p.aggregate_sha256,files:p.file_count,bytes:p.total_bytes}));"
+    $programCheck = & node --input-type=module -e "import {hashInputs} from './scripts/v1-release-preflight.mjs';const p=hashInputs(process.cwd(),[process.argv[1]]);console.log(JSON.stringify({sha:p.aggregate_sha256,files:p.file_count,bytes:p.total_bytes}));" (Join-Path $releaseSpec.package_root 'app')
     if ($LASTEXITCODE -ne 0) { throw 'Program fingerprint failed' }
 } finally { Pop-Location }
 $program = $programCheck | ConvertFrom-Json

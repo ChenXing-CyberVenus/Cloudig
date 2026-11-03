@@ -1,3 +1,4 @@
+import { renderTaskList } from "./task-card.mts";
 import { containerDisplay } from "../../../core/records/content-container.mts";
 import type { JsonObject, JsonValue } from "../../../core/contracts/types.mts";
 import { isJsonObject } from "../../../core/contracts/types.mts";
@@ -662,45 +663,11 @@ export class ConversationRenderer {
   }
 
   #renderSchedule(host: HTMLElement, input: JsonObject): boolean {
-    const tasks = input["kind"] === "task-list" && Array.isArray(input["tasks"])
-      ? input["tasks"].filter(isJsonObject) : input["kind"] === "scheduled-task" ? [input] : [];
-    if (!tasks.length) return false;
-    const document = host.ownerDocument;
-    const labels = this.#labels.schedule ?? { enabled: "采集时已启用", disabled: "采集时已停用", timezone: "时区", lastRun: "上次执行", nextRun: "下次执行", settings: "原始设置", allTasks: "查看所有任务", conversation: "原会话" };
-    const link = (parent: HTMLElement, url: JsonValue | undefined, label: string, className: string): void => {
-      if (typeof url !== "string") return;
-      try { if (!["http:", "https:"].includes(new URL(url).protocol)) return; } catch { return; }
-      const anchor = element(document, "a", `cloudig-source-link ${className}`, label);
-      anchor.href = url; anchor.dataset["cloudigExternal"] = "true"; anchor.rel = "noopener noreferrer";
-      parent.append(anchor);
-    };
-    for (const task of tasks) {
-      const card = details(document, "cloudig-schedule-task", text(task["title"]) ?? this.#labels.toolActivity, true);
-      const schedule = text(task["schedule"]);
-      if (schedule) card.root.querySelector("summary")!.append(element(document, "small", "cloudig-schedule-summary", schedule));
-      this.#defer(card, () => {
-      if (typeof task["enabled"] === "boolean") card.body.append(element(document, "p", "cloudig-schedule-state", task["enabled"] ? labels.enabled : labels.disabled));
-      const metadata = element(document, "dl", "cloudig-schedule-meta");
-      for (const [field, label] of [["timezone", labels.timezone], ["last_run_at", labels.lastRun], ["next_run_at", labels.nextRun]] as const) {
-        const value = text(task[field]);
-        if (!value) continue;
-        metadata.append(element(document, "dt", undefined, label), element(document, "dd", undefined, field === "timezone" ? value : this.#options.formatTimestamp?.(value) ?? value));
-      }
-      if (typeof task["notifications_enabled"] === "boolean") metadata.append(element(document, "dt", undefined, labels.notifications ?? "通知"), element(document, "dd", undefined, task["notifications_enabled"] ? labels.on ?? "开启" : labels.off ?? "关闭"));
-      if (metadata.childElementCount) card.body.append(metadata);
-      const prompt = text(task["prompt"]);
-      if (prompt) card.body.append(element(document, "h4", "cloudig-schedule-prompt-label", labels.prompt ?? "任务指令"), rich(document, this.#runtime.renderMarkdown(prompt, true), "cloudig-rich cloudig-schedule-prompt", true));
-      link(card.body, task["conversation_url"], labels.conversation, "cloudig-schedule-conversation");
-      if (isJsonObject(task["source_task"])) {
-        const original = details(document, "cloudig-schedule-settings", labels.settings, true);
-        this.#defer(original, () => original.body.append(toolData(document, JSON.stringify(task["source_task"], null, 2))));
-        card.body.append(original.root);
-      }
-      });
-      host.append(card.root);
-    }
-    link(host, input["all_tasks_url"], labels.allTasks, "cloudig-schedule-all");
-    return true;
+    return renderTaskList(host, input, {
+      language: this.#options.language ?? "zh", formatTimestamp: this.#options.formatTimestamp,
+      richText: source => rich(host.ownerDocument, this.#runtime.renderMarkdown(source, true), "cloudig-rich cloudig-schedule-prompt", true),
+      defer: (fold, build) => this.#defer(fold, build)
+    });
   }
 
   #renderReferences(block: JsonObject, value: JsonObject): HTMLElement {
@@ -930,7 +897,7 @@ export class ConversationRenderer {
       const document = this.#root.ownerDocument, language = this.#options.language ?? (document.documentElement.lang.startsWith("en") ? "en" : "zh");
       const lookup = (path: string) => resources.get(String(files.find(f => f["path"] === path)?.["resource"]));
       const source = lookup("ui.json"), stateKey = JSON.stringify([this.#view?.["conversation_id"] ?? this.#view?.["archive"], source?.["sha256"] ?? source?.["id"], "dil"]);
-      return renderDilView({ document, language, theme: this.#theme, themeRoot:this.#root, signal: this.#abort.signal, stateKey,
+      return renderDilView({ document, language, formatTimestamp: this.#options.formatTimestamp, theme: this.#theme, themeRoot:this.#root, signal: this.#abort.signal, stateKey,
         ...(this.#options.workRuntime ? { frameUrl: this.#options.workRuntime.frameUrl, dependenciesUrl: this.#options.workRuntime.dependencies, mapFrameUrl: new URL("map-frame.html", this.#options.workRuntime.frameUrl).href, mapSameOrigin: true } : {}),
         readFile: async (path, signal) => {
           const resource = lookup(path); if (!resource || resource["availability"] !== "embedded" || !this.#options.resolveResource) return;

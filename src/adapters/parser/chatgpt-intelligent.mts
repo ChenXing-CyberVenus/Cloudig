@@ -1,3 +1,4 @@
+import { ownedTaskView } from "../../core/records/chatgpt-task.mts";
 import { workContainer } from "./work-container.mts";
 import { parseFragment, serializeOuter, type DefaultTreeAdapterTypes as Tree } from "parse5";
 import { isJsonObject, type JsonObject, type JsonValue } from "../../core/contracts/types.mts";
@@ -51,8 +52,9 @@ function heavyReference(ref: JsonObject): boolean {
 }
 
 export class ChatGptIntelligentUi {
-  #extension: JsonObject; #write: Write; #cache = new Map<string, JsonObject[]>();
-  constructor(extension: JsonObject, write: Write) { this.#extension = extension; this.#write = write; }
+  #extension: JsonObject; #write: Write; #scheduled: JsonObject; #tasks = new Map<string, Set<string>>(); #cache = new Map<string, JsonObject[]>();
+  constructor(extension: JsonObject, write: Write, scheduled: JsonObject = {}) { this.#extension = extension; this.#write = write; this.#scheduled = scheduled; }
+  hasTask(message: string, id: string): boolean { return this.#tasks.get(message)?.has(id) === true; }
   project(part: JsonObject, owners: readonly string[], findDiagram?: (source: string) => string | undefined): JsonObject[] | undefined {
     const descriptor = obj(part["intelligent_ui"]), id = str(descriptor["record_id"]);
     if (!id) return;
@@ -176,8 +178,19 @@ export class ChatGptIntelligentUi {
       if (!rendered && clean) rendered = this.#write({ type: "img", src: svgUrl(clean), mime_type: "image/svg+xml", name: "diagram.svg" });
       return { type: "diagram", format: "mermaid", source: body, ...(rendered ? { rendered } : {}) };
     };
+    const taskSnapshots: JsonObject = {}, taskIds = new Set<string>();
+    for (const root of program.roots) walkDil(root, node => {
+      if (!isDilJsx(node)) return;
+      const component = node["arguments"][0];
+      if ((component?.name ?? component?.value) !== "DisplayAutomation") return;
+      const props = obj(dilLiteral(node["arguments"][1], constants)), taskId = str(props["automation_id"]);
+      const rows = list(this.#scheduled["lists"]).filter(row => row["message_id"] === id && row["inline"] === true).flatMap(row => list(row["tasks"]));
+      const row = rows.find(row => row["id"] === taskId);
+      if (!taskId || !row) return;
+      taskSnapshots[taskId] = ownedTaskView(this.#scheduled, taskId, row); taskIds.add(taskId);
+    });
     const bundle: JsonObject = { format: DIL_SOURCE_FORMAT, source_message: id, code: source, constants, app_data: obj(dil["appData"]), widgets, references,
-      captured_state: capturedState, resource_paths: resourcePaths, source_links: sourceLinks, snapshots, icons,
+      ...(taskIds.size ? { task_snapshots: taskSnapshots } : {}), captured_state: capturedState, resource_paths: resourcePaths, source_links: sourceLinks, snapshots, icons,
       styles: obj(basic["styles"]), colors: obj(basic["colors"]), media: list(record["media"]),
       original: raw["content"] ?? {}, captured: obj(record["capture"]) };
     const output: JsonObject[] = [];
@@ -207,10 +220,11 @@ export class ChatGptIntelligentUi {
         if (props["url"]) collect(props["url"]);
       }
       for (const i of refs) if (typeof snapshots[String(i)] === "string") addAsset(String(snapshots[String(i)]), str(obj(references[i]?.["data"])["title"]), "image");
-      const text = [dilVisibleText(root, constants), ...refs.map(i => {
+      const rootTaskIds: string[] = []; walkDil(root, n => { if (isDilJsx(n) && (n["arguments"][0]?.name ?? n["arguments"][0]?.value) === "DisplayAutomation") { const id = str(obj(dilLiteral(n["arguments"][1], constants))["automation_id"]); if (taskSnapshots[id]) rootTaskIds.push(id); } });
+      const text = [dilVisibleText(root, constants), ...rootTaskIds.flatMap(id => { const t = obj(taskSnapshots[id]); return [str(t["title"]), str(t["schedule"])]; }), ...refs.map(i => {
         const r = references[i], d = obj(r?.["data"]);
         return r?.["category"] === "writing_block" ? str(d["content"]) : str(r?.["alt"]) || str(d["title"]);
-      })].filter(Boolean).join("\n"), title = text.split("\n")[0] || str(data["title"]) || (type === "window" ? `${str(data["language"]).toUpperCase()} 预览 / Preview`.trim() : "");
+      })].filter(Boolean).join("\n"), title = text.split("\n")[0]?.trim() || str(data["title"]) || (type === "window" ? `${str(data["language"]).toUpperCase()} 预览 / Preview`.trim() : "");
       output.push({ type, source: "chatgpt.com_dil", format: "structured", ...(title ? { title } : {}), data: { format: DIL_VIEW_FORMAT, root: index, text, ...(assets.size ? { assets: [...assets.values()] } : {}) }, files, entry: "ui.json" });
     }
     if (output.some(block => block["type"] === "box" || block["type"] === "window")) {
@@ -218,6 +232,6 @@ export class ChatGptIntelligentUi {
       if (!bundleId) throw new TypeError("Could not preserve the UI definition");
       files.unshift({ path: "ui.json", resource: bundleId });
     }
-    this.#cache.set(id, output); return structuredClone(output);
+    this.#tasks.set(id, taskIds); this.#cache.set(id, output); return structuredClone(output);
   }
 }

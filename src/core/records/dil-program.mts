@@ -101,7 +101,7 @@ export class DilSession {
     if (name === "NaN") return NaN;
     if (["Math", "Array", "Object", "JSON", "String", "Number", "Boolean", "Set", "GenUI"].includes(name)) return { builtin: name };
     // Native resolved components are descriptors, never globally callable objects.
-    if (["AsyncImage", "AsyncImageGroup", "Cite", "MemoryCite", "SuggestAutomation", "Entity", "Link"].includes(name)) return { component: name };
+    if (["AsyncImage", "AsyncImageGroup", "Cite", "MemoryCite", "SuggestAutomation", "DisplayAutomation", "Entity", "Link"].includes(name)) return { component: name };
     throw new TypeError(`Unsupported UI identifier: ${name}`);
   }
   #call(fn: any, args: any[]): any {

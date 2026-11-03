@@ -1,3 +1,5 @@
+import { taskView } from "../../../core/records/chatgpt-task.mts";
+import { renderTaskList } from "./task-card.mts";
 import { isJsonObject, type JsonObject } from "../../../core/contracts/types.mts";
 import { DilSession, DIL_SOURCE_FORMAT, DIL_VIEW_FORMAT, type DilNode } from "../../../core/records/dil-program.mts";
 import { parseRecordJson } from "../../../core/records/json.mts";
@@ -32,17 +34,19 @@ export type DilViewOptions=BoxContext&Readonly<{
   text:(value:JsonObject)=>HTMLElement;
   frameUrl?:string;dependenciesUrl?:string;
   inWindow?:boolean;
+  formatTimestamp?:((value:string)=>string)|undefined;
 }>;
 export const isDilView=(block:JsonObject):boolean=>!!containerDisplay(block)&&obj(block["data"])["format"]===DIL_VIEW_FORMAT;
 let viewInstance=0;
 const findNode=(v:any,key:string):DilNode|undefined=>{if(v?.key===key)return v;for(const c of Array.isArray(v)?v:v?.children??[]){const n=findNode(c,key);if(n)return n;}return;};
-function directionGlyph(document:Document,name:string):SVGElement|undefined{
+function semanticGlyph(document:Document,name:string):SVGElement|undefined{
   // A collapsed native popup may not have captured its glyph. The declared
   // direction still has an exact meaning; use a small neutral fallback, never
   // replace a captured SVG or invent a replacement for an unknown icon name.
-  const match=/^(chevron|arrow)-(up|right|down|left)$/u.exec(name);if(!match)return;
+  const match=/^(chevron|arrow)-(up|right|down|left)$/u.exec(name);if(!match&&name!=="check-circle")return;
   const svg=document.createElementNS("http://www.w3.org/2000/svg","svg"),path=document.createElementNS(svg.namespaceURI,"path");
   svg.setAttribute("viewBox","0 0 24 24");svg.setAttribute("width","1em");svg.setAttribute("height","1em");svg.setAttribute("fill","none");svg.setAttribute("stroke","currentColor");svg.setAttribute("stroke-width","2");svg.setAttribute("stroke-linecap","round");svg.setAttribute("stroke-linejoin","round");
+  if(!match){const circle=document.createElementNS(svg.namespaceURI,"circle");circle.setAttribute("cx","12");circle.setAttribute("cy","12");circle.setAttribute("r","9");path.setAttribute("d","m8 12 3 3 5-6");svg.append(circle,path);return svg;}
   path.setAttribute("d",match[1]==="chevron"?"m6 9 6 6 6-6":"M12 4v16m-7-7 7 7 7-7");path.setAttribute("transform",`rotate(${({down:0,left:90,up:180,right:270} as Record<string,number>)[match[2]!]} 12 12)`);svg.append(path);return svg;
 }
 
@@ -130,10 +134,16 @@ function mountView(options:DilViewOptions,ctx:Context,index:number,parent:HTMLEl
   const widget=(v:DilNode,key:string):HTMLElement|undefined=>{
     const p=v.props;
     if(v.tag==="icon"){
-      const n=placeholder(v,key,h=>{const name=String(p["name"]),path=obj(bundle["icons"])[name];if(typeof path==="string")h.append(options.image(path,name,"current"));else {const glyph=directionGlyph(document,name);if(glyph)h.append(glyph);else h.textContent="◇";}});n.className="cloudig-dil-icon";n.setAttribute("aria-hidden","true");
+      const n=placeholder(v,key,h=>{const name=String(p["name"]),path=obj(bundle["icons"])[name];if(typeof path==="string")h.append(options.image(path,name,"current"));else {const glyph=semanticGlyph(document,name);if(glyph)h.append(glyph);else h.textContent="◇";}});n.className="cloudig-dil-icon";n.setAttribute("aria-hidden","true");
       return n;
     }
     if(v.tag==="chart"||v.tag==="pie-chart")return placeholder(v,key,h=>{const update=()=>{const current=findNode(session.render(index),v.key)??v;h.replaceChildren(chart(options,current));};update();updates.set(key,update);});
+    if(v.tag==="DisplayAutomation")return placeholder(v,key,h=>{
+      const state=obj(obj(obj(obj(bundle["app_data"])["opGenui"])["componentResults"])[String(p["__resolutionId"])])["state"];
+      const id=String(p["automation_id"]??""), saved=obj(obj(bundle["task_snapshots"])[id]);
+      const row=obj(state), task=saved["id"]===id?saved:taskView(row["id"]===id?row:{id});
+      renderTaskList(h,{kind:"task-list",tasks:[task]},{language:options.language,formatTimestamp:options.formatTimestamp,richText:s=>options.text({type:"markdown",text:s})});
+    });
     if(["AsyncImage","AsyncImageGroup","Cite","MemoryCite","SuggestAutomation","Link","Entity"].includes(v.tag)){
       const result=obj(obj(obj(bundle["app_data"])["opGenui"])["componentResults"]),state=obj(obj(result[String(p["__resolutionId"])])["state"]);
       if(v.tag==="SuggestAutomation")return renderSavedDil(document,{type:"box",source:"chatgpt.com_dil",data:{name:"suggest_automation",dil:{initialState:{label:str(state["label"])||String(p["label"]??""),submitted:state["submitted"]===true}}}},options.language)??document.createElement("span");

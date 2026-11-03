@@ -8,6 +8,10 @@ import { hashInputs } from "./v1-release-preflight.mjs";
 if (process.platform !== "win32") throw new Error("Cloudig fixed-EXE visual matrix requires Windows");
 
 const argumentsList = process.argv.slice(2);
+// This harness uses a non-activating, offscreen HWND. Keep its renderer alive
+// for the real GIF/paint handshake; scope the flags to this child, never to
+// normal Cloudig launches or the user's persistent WebView configuration.
+const auditBrowserArguments = [process.env.WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS ?? "", "--disable-background-timer-throttling --disable-renderer-backgrounding --disable-features=CalculateNativeWinOcclusion"].filter(Boolean).join(" ");
 const searchEntryOnly = argumentsList.includes("--search-entry-only");
 const claudeContext = argumentsList.includes("--claude-context");
 const sourceEmpty = argumentsList.includes("--source-empty");
@@ -48,6 +52,9 @@ const realConversation = realConversationIndex >= 0 ? argumentsList[realConversa
 const searchCompanionsIndex = argumentsList.indexOf("--search-companions");
 const searchCompanions = searchCompanionsIndex >= 0 ? JSON.parse(argumentsList[searchCompanionsIndex + 1]) : null;
 const requestedLanguage = languageIndex >= 0 ? argumentsList[languageIndex + 1] : null;
+const taskCountIndex = argumentsList.indexOf("--task-card-count");
+const taskCardCount = taskCountIndex >= 0 ? Number(argumentsList[taskCountIndex + 1]) : 3;
+if (!Number.isSafeInteger(taskCardCount) || taskCardCount < 1) throw new Error("Invalid task card count");
 const requestedTheme = themeIndex >= 0 ? argumentsList[themeIndex + 1] : null;
 const requestedSurface = surfaceIndex >= 0 ? argumentsList[surfaceIndex + 1] : null;
 if (sourcePicker && (!recordUi || requestedSurface !== 'platform-json-entry')) throw new Error('--source-picker requires --record-ui and platform-json-entry');
@@ -648,6 +655,7 @@ function visualQuery(surface, theme, language) {
   if (surface.interaction) query.set("interaction", surface.interaction);
   if (surface.jsonPlatform) query.set("json-platform", surface.jsonPlatform);
   if (surface.jsonGuide) query.set("json-guide", "true");
+  if (surface.interaction === "schedule-cards") query.set("task-card-count", String(taskCardCount));
   if (sourcePicker) query.set("source-picker", "true");
   if (searchEntryOnly) query.set("search-entry-only", "1");
   if (surface.directoryFonts) query.set("directory-fonts", "1");
@@ -692,7 +700,7 @@ function visualQuery(surface, theme, language) {
 async function launch(executablePath, args, errorFile) {
   const child = spawn(executablePath, args, {
     stdio: "ignore", windowsHide: true,
-    env: { ...process.env, DOTNET_BUNDLE_EXTRACT_BASE_DIR: auditExtractRoot }
+    env: { ...process.env, DOTNET_BUNDLE_EXTRACT_BASE_DIR: auditExtractRoot, WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: auditBrowserArguments }
   });
   let timer;
   const exit = new Promise((resolve, reject) => {
@@ -972,7 +980,7 @@ const run = {
   executable: { file: "Cloudig.exe", sha256: executableSha256 },
   engine: { file: "app/engine/engine.mjs", sha256: engineSha256 },
   program: { path: "app", scope: "shipped-core-excluding-on-demand-optional-components", file_count: programFingerprint.file_count, total_bytes: programFingerprint.total_bytes, aggregate_sha256: programFingerprint.aggregate_sha256 },
-  runtime: { self_extraction_entries: extractionEntries, owned_temporary_data_cleaned: true },
+  runtime: { self_extraction_entries: extractionEntries, owned_temporary_data_cleaned: true, audit_browser_arguments: auditBrowserArguments },
   scenarios: rows
 };
 await writeFile(path.join(outputRoot, "visual-audit-matrix.json"), JSON.stringify(run, null, 2) + "\n", "utf8");

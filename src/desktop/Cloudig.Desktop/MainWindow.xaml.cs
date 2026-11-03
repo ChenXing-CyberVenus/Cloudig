@@ -1347,44 +1347,7 @@ public partial class MainWindow : Window
         TraceVisualAudit("archiver-workflow-paint-passed");
     }
 
-    private async Task VerifyScheduleCardsAsync(VisualAuditOptions audit)
-    {
-        // This probe owns the captured task card, not a full long-conversation
-        // scroll benchmark. Stop when its lazy page has mounted at any width.
-        for (var step = 0; step < 160; step++)
-        {
-            var found = await WebView.CoreWebView2.ExecuteScriptAsync("(()=>{if(document.querySelector('.cloudig-schedule')&&document.querySelector('.osis-emoji'))return true;const s=document.querySelector('[data-reader-conversation-scroll]');s.scrollTop+=Math.max(500,s.clientHeight*.8);return false;})()");
-            if (found == "true") break;
-            await Task.Delay(100);
-        }
-        var result = await WebView.CoreWebView2.ExecuteScriptAsync("""
-            (()=>{const panel=document.querySelector('.cloudig-schedule');
-              if(!panel) throw new Error('No captured schedule list');
-              if(panel.tagName!=='SECTION'||panel.querySelector(':scope > summary')) throw new Error('Schedule list has an extra outer fold');
-              const cards=[...panel.querySelectorAll('.cloudig-schedule-task')];
-              const initiallyFolded=cards.every(c=>!c.open);
-              for(const card of cards){card.querySelector(':scope > summary').click();card.dispatchEvent(new Event('toggle'));
-                if(!card.open||!card.querySelector('.cloudig-schedule-prompt')?.textContent.trim()) throw new Error('Task did not open');
-                const settings=card.querySelector('.cloudig-schedule-settings');
-                if(!settings||settings.open) throw new Error('Missing original task');
-                settings.open=true;settings.dispatchEvent(new Event('toggle'));
-                if(!JSON.parse(settings.querySelector('pre').textContent).id) throw new Error('Missing original task data');settings.open=false;
-                card.querySelector(':scope > summary').click();}
-              panel.scrollIntoView({block:'start'});
-              const r=panel.getBoundingClientRect(),owner=document.querySelector('[data-reader-conversation-scroll]').getBoundingClientRect();
-              const emoji=document.querySelector('.osis-emoji');
-              return {tasks:cards.length,initiallyFolded,closedAgain:cards.every(c=>!c.open),fits:r.left>=owner.left&&r.right<=owner.right+1,
-                emojiFont:emoji?getComputedStyle(emoji).fontFamily:null};})()
-            """);
-        using var facts = JsonDocument.Parse(result);
-        var value = facts.RootElement;
-        if (value.GetProperty("tasks").GetInt32() != 3 || !value.GetProperty("initiallyFolded").GetBoolean()
-            || !value.GetProperty("closedAgain").GetBoolean() || !value.GetProperty("fits").GetBoolean()
-            || !(value.GetProperty("emojiFont").GetString() ?? "").Contains("Segoe UI Emoji", StringComparison.Ordinal))
-            throw new InvalidOperationException($"Schedule cards did not retain reading/fold/font behavior: {result}");
-        await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile, ".schedule-cards.json"), result);
-        TraceVisualAudit("reader-schedule-cards-passed");
-    }
+    private Task VerifyScheduleCardsAsync(VisualAuditOptions audit) => VerifyCapturedTaskCardsAsync(audit);
 
     private async Task VerifyNestedProcessAsync(VisualAuditOptions audit)
     {

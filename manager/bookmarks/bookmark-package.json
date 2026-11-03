@@ -1,7 +1,7 @@
 {
   "format": "cloudig/bookmark-package",
   "version": "0.2.0",
-  "bookmark_set_version": "2026.10.25.5",
+  "bookmark_set_version": "2026.11.02.4",
   "default_profile": "light",
   "profiles": [
     "light",
@@ -21,29 +21,29 @@
         {
           "id": "chatgpt:light",
           "profile": "light",
-          "version": "3.7.76-light",
+          "version": "3.7.80-light",
           "artifact": "chatgpt/light.min.js",
-          "sha256": "b77984c7932a403f5044e82219fc14e6f3f10689f31fd4c91303076c680ec373",
-          "bytes": 476246,
-          "characters": 471093
+          "sha256": "e515eac064471a4e91078d9b1d4de28fce858f6b23ae3a276bc46ea1181020a3",
+          "bytes": 474271,
+          "characters": 469664
         },
         {
           "id": "chatgpt:full",
           "profile": "full",
-          "version": "1.0.73-full",
+          "version": "1.0.77-full",
           "artifact": "chatgpt/full.min.js",
-          "sha256": "bdd2d654e82c93a5fb6add50c66b8a4e01566caec5dd3f833bbf0f60c17ed357",
-          "bytes": 484178,
-          "characters": 478821
+          "sha256": "976224690c338aff1d8d3e94e8d18027031a93592ced4b37917826a6c4bd0da2",
+          "bytes": 484439,
+          "characters": 479626
         },
         {
           "id": "chatgpt:all_branches",
           "profile": "all_branches",
-          "version": "1.0.73-all-branches",
+          "version": "1.0.77-all-branches",
           "artifact": "chatgpt/all_branches.min.js",
-          "sha256": "74b8365db8a923fbabc7f9db9cfd46e9669c64db458d7fffc7823c68dc580495",
-          "bytes": 495604,
-          "characters": 489992
+          "sha256": "ba7213a309daef6e1d427efc5989954f90c8473c70a95d8573b68ae7997de185",
+          "bytes": 495504,
+          "characters": 490590
         }
       ]
     },
@@ -56,29 +56,29 @@
         {
           "id": "claude:light",
           "profile": "light",
-          "version": "1.1.76-light",
+          "version": "1.1.78-light",
           "artifact": "claude/light.min.js",
-          "sha256": "e5ab15d840885e8deeb8706a4976d033d08d358101017a672613cae1f8e1b2fa",
-          "bytes": 458218,
-          "characters": 450729
+          "sha256": "7419d60c36e5be8106f54283b9a9febce3d4312d9dc5795d9b490c31eec65ece",
+          "bytes": 458430,
+          "characters": 450941
         },
         {
           "id": "claude:full",
           "profile": "full",
-          "version": "1.1.76-full",
+          "version": "1.1.78-full",
           "artifact": "claude/full.min.js",
-          "sha256": "b6b2ee53be727a45e717c3cf74e18648bacf43205b019d3926a39dc5e1b68c44",
-          "bytes": 461359,
-          "characters": 453862
+          "sha256": "b8491e7eee5e90a7007446445e23c60c7e07e74219a4abca8dac9304f552d219",
+          "bytes": 461575,
+          "characters": 454078
         },
         {
           "id": "claude:all_branches",
           "profile": "all_branches",
-          "version": "1.1.76-all-branches",
+          "version": "1.1.78-all-branches",
           "artifact": "claude/all_branches.min.js",
-          "sha256": "c3fd0d6d7556e28b80f8ee171aa4a2b9e21cbef6b7a8c4c2a4ede1c1eca98486",
-          "bytes": 471891,
-          "characters": 464199
+          "sha256": "cab56966986b18e32dc6cb832a32094fafceca25efc262e26138fff67a4f35db",
+          "bytes": 472107,
+          "characters": 464415
         }
       ]
     },

@@ -210,8 +210,8 @@ export function parseBenchmarkArgs(args) {
   const values = { output: path.resolve(defaultRoot, args.includes("--engineering") ? "artifacts/v1-release/evidence/benchmark-engineering.json" : defaultOutput), engineering: false };
   for (let index = 0; index < args.length; index++) {
     if (args[index] === "--engineering") { values.engineering = true; continue; }
-    if (!args[index + 1] || !["--output", "--sample-root"].includes(args[index])) throw new Error("Usage: node scripts/run-v1-release-benchmark.mjs [--engineering] [--output <file>] [--sample-root <directory>]");
-    values[args[index] === "--output" ? "output" : "sampleRoot"] = path.resolve(args[index + 1]);
+    if (!args[index + 1] || !["--output", "--sample-root", "--package-root"].includes(args[index])) throw new Error("Usage: node scripts/run-v1-release-benchmark.mjs [--engineering] [--output <file>] [--sample-root <directory>]");
+    values[args[index] === "--output" ? "output" : args[index] === "--sample-root" ? "sampleRoot" : "packageRoot"] = path.resolve(args[index + 1]);
     index++;
   }
   return values;
@@ -228,17 +228,16 @@ export function matchingBenchmarkJourney(journey, packaged) {
   return { run_id: journey.run_id, duration_ms: journey.outcome.duration_ms, html_files: journey.result.sample_files, claude_records: journey.result.claude?.records ?? null };
 }
 
-export async function runV1ReleaseBenchmark({ root = defaultRoot, output = path.resolve(defaultRoot, defaultOutput), sampleRoot, engineering = false } = {}) {
+export async function runV1ReleaseBenchmark({ root = defaultRoot, output = path.resolve(defaultRoot, defaultOutput), sampleRoot, engineering = false, packageRoot = path.join(root, "artifacts", "v1-desktop", "app") } = {}) {
   const status = git(root, ["status", "--porcelain", "--untracked-files=all"]);
   if (status && !engineering) throw new Error("release benchmark requires a clean source tree");
   const sourceCommit = git(root, ["rev-parse", "HEAD"]);
-  const packageRoot = path.join(root, "artifacts", "v1-desktop", "app");
   const node = path.join(packageRoot, "app", "runtime", "node", "node.exe");
   const engine = path.join(packageRoot, "app", "engine", "engine.mjs");
   const executable = path.join(packageRoot, "Cloudig.exe");
   const provenance = JSON.parse(await readFile(path.join(packageRoot, "app", "build-provenance.json"), "utf8"));
   if (provenance.source?.working_tree_clean !== true && !engineering) throw new Error("fixed package was not built from a clean source tree");
-  const beforePackage = hashInputs(root, ["artifacts/v1-desktop/app"]);
+  const beforePackage = hashInputs(root, [path.relative(root, packageRoot)]);
   const scopeParent = path.join(root, "tmp");
   await mkdir(scopeParent, { recursive: true });
   const scope = await mkdtemp(path.join(scopeParent, "cloudig-release-benchmark-"));
@@ -261,7 +260,7 @@ export async function runV1ReleaseBenchmark({ root = defaultRoot, output = path.
     }
     const filesystem = await statfs(scope);
     const executableBytes = await readFile(executable);
-    const packageTree = hashInputs(root, ["artifacts/v1-desktop/app"]);
+    const packageTree = hashInputs(root, [path.relative(root, packageRoot)]);
     if (beforePackage.aggregate_sha256 !== packageTree.aggregate_sha256) throw new Error("Fixed package changed during benchmark");
     const runtimeLock = JSON.parse(await readFile(path.join(packageRoot, "app", "runtime-lock.json"), "utf8"));
     const releaseSpec = JSON.parse(await readFile(path.join(root, "release/v1-preflight-spec.json"), "utf8"));

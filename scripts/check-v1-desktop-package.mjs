@@ -12,7 +12,10 @@ import { bookmarkSetVersion } from "./bookmarklet-targets.mjs";
 import { readV1SchemaPackage } from "./build-v1-schema-package.mjs";
 import { assertOfflineShell } from "./v1-release-preflight.mjs";
 
-const root = path.join(process.cwd(), "artifacts", "v1-desktop", "app");
+const args = process.argv.slice(2);
+assert(args.length === 0 || args.length === 2 && args[0] === "--package-root", "Usage: check-v1-desktop-package.mjs [--package-root <directory>]");
+const root = path.resolve(args[1] ?? "artifacts/v1-desktop/app");
+assert(root.startsWith(path.resolve(process.cwd()) + path.sep), "Package must stay in this project");
 const program = path.join(root, "app");
 const productVersion = JSON.parse(await readFile("release/v1-preflight-spec.json", "utf8")).product.version;
 for (const stale of ["engine", "web", "runtime", "runtimes", "app/Cloudig.exe"]) {

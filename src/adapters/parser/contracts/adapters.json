@@ -1,10 +1,10 @@
 {
   "schema": "cloudig/adapter-bundle/1.0.0",
-  "parser": "1.1.51",
+  "parser": "1.1.52",
   "adapters": [
     {
       "id": "chatgpt-light-items-v2",
-      "version": "3.0.10",
+      "version": "3.0.11",
       "family": "chatgpt",
       "routes": [
         {
@@ -80,12 +80,17 @@
           "adapter": "chatgpt-light-items-v2",
           "version": "3.0.9",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-light-items-v2",
+          "version": "3.0.10",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "chatgpt-full-v1",
-      "version": "3.0.10",
+      "version": "3.0.11",
       "family": "chatgpt",
       "routes": [
         {
@@ -161,12 +166,17 @@
           "adapter": "chatgpt-full-v1",
           "version": "3.0.9",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-full-v1",
+          "version": "3.0.10",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "chatgpt-all-branches-v1",
-      "version": "3.0.10",
+      "version": "3.0.11",
       "family": "chatgpt",
       "routes": [
         {
@@ -241,6 +251,11 @@
         {
           "adapter": "chatgpt-all-branches-v1",
           "version": "3.0.9",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-all-branches-v1",
+          "version": "3.0.10",
           "action": "reparse_source"
         }
       ]
