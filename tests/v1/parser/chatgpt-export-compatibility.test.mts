@@ -12,6 +12,8 @@ import { readExporterEnvelope, probeExporterRoute } from "../../../src/adapters/
 import { extractMermaidCardsFromFragment } from "../../../src/adapters/parser/reading-evidence.mts";
 import { embeddedImageDataUrl } from "../../../src/adapters/parser/embedded-data.mts";
 import { normalizeMermaidSource } from "../../../src/adapters/parser/markdown-diagrams.mts";
+import { resolveV1Samples } from "../../../scripts/resolve-v1-samples.mjs";
+import { isSourceSummary, sourceSummaryIsDerived } from "../../../src/adapters/parser/chatgpt-activity.mts";
 
 const rows = (value: JsonValue | undefined): JsonObject[] => Array.isArray(value) ? value.filter(isJsonObject) : [];
 const object = (value: JsonValue | undefined): JsonObject => isJsonObject(value) ? value : {};
@@ -74,8 +76,9 @@ test("latest ChatGPT exports retain exact diagrams, quoted excerpts, tools and s
   const waterline = JSON.parse(await readFile(new URL("../../../src/adapters/parser/contracts/sample-waterline.json", import.meta.url), "utf8"));
   let files = 0, diagrams = 0, snippets = 0, tasks = 0;
   const profiles = new Set<string>();
-  for (const file of (await readdir(sample!)).filter(file => file.endsWith(".html"))) {
-    const filePath = path.join(sample!, file);
+  const selectedSamples = await resolveV1Samples(sample!);
+  for (const selected of selectedSamples) {
+    const filePath = selected.file, file = selected.name;
     if ((await probeExporterRoute(filePath))?.["platform"] !== "chatgpt") continue;
     const envelope = await readExporterEnvelope({ filePath });
     const { manifest, payload, reading, adapter } = envelope;
@@ -86,7 +89,11 @@ test("latest ChatGPT exports retain exact diagrams, quoted excerpts, tools and s
     const blocks = rows(draft["messages"]).flatMap(message => rows(message["content"]));
     const items = rows(payload["items"]).length ? rows(payload["items"]) : Object.values(object(payload["items_by_node"])).flatMap(rows);
     const outputs = new Set(blocks.filter(block => block["type"] === "tool" && block["kind"] === "result").map(block => block["output"]));
-    for (const item of items) if (item["kind"] === "tool" && typeof item["text"] === "string" && item["text"].trim()) assert.ok(outputs.has(item["text"]), "tool text must survive literally");
+    for (const item of items) if (item["kind"] === "tool" && typeof item["text"] === "string" && item["text"].trim()) {
+      if (isSourceSummary(item) && sourceSummaryIsDerived(item)) continue; // Exact source entries are checked below; the list is exporter-generated.
+      if (isSourceSummary(item)) assert.ok(blocks.some(block=>block["type"]==="html"&&JSDOM.fragment(String(block["html"])).textContent?.includes(String(item["text"]))));
+      else assert.ok(outputs.has(item["text"]), "tool text must survive literally");
+    }
     const retained = new Set(rows(draft["sources"]).map(source => source["snippet"]));
     for (const source of items.flatMap(item => [...rows(item["sources"]), ...rows(item["memory_sources"])])) {
       if (typeof source["snippet"] !== "string" || !source["snippet"].trim()) continue;
@@ -108,7 +115,7 @@ test("latest ChatGPT exports retain exact diagrams, quoted excerpts, tools and s
     assert.equal(rows(draft["limitations"]).length, 0);
     files++; profiles.add(profile);
   }
-  assert.equal(files, waterline.routes.filter((r:{platform:string})=>r.platform==="chatgpt").reduce((n:number,r:{samples:number})=>n+r.samples,0));
+  assert.equal(files, selectedSamples.filter(s=>s.platform==="chatgpt").length, "every GPT file in the explicit input scope is checked");
   assert.deepEqual(profiles, new Set(["light", "full", "tree"]));
   // Exact diagrams, excerpts and task settings are compared with each source
   // above. Aggregate coverage follows the live sample set, not an old 4-file snapshot.

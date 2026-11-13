@@ -6,6 +6,9 @@ const object = (v: JsonValue | undefined): JsonObject => v && typeof v === "obje
 const text = (v: JsonValue | undefined): string | undefined => typeof v === "string" && v.length ? v : undefined;
 export type RecordPresentation = Readonly<{
   conversationName: string; platform: string; models: readonly string[];
+  /** Header-only labels: source/Mark declarations survive; a platform fallback
+   * already represented by the platform badge does not need a second badge. */
+  headerModels?: readonly string[];
   userName: string; assistantName: string; userAvatar: string; assistantAvatar: string;
   /** Selected display settings, distinct from source/model fallback names. */
   userDisplayName?: string; assistantDisplayName?: string;
@@ -34,11 +37,15 @@ export function resolveRecordPresentation(input: Readonly<{
   const models = mark && Object.hasOwn(mark, "models")
     ? (mark["models"] as JsonObject[]).length ? (mark["models"] as JsonObject[]).map(f => frontName(f)!) : [frontName(sourceDefault) ?? localDefaultName(builtins.assistant)]
     : [...new Set([...(conversation["models"] ?? []) as string[], ...(conversation["identity"] as JsonObject[]).filter(f => f["role"] === "assistant" && !isAgentInstanceSourceId(text(f["source_id"]))).map(frontName).filter((n): n is string => Boolean(n))])];
+  const declaredModels = new Set(mark && Object.hasOwn(mark, "models")
+    ? (mark["models"] as JsonObject[]).map(frontName)
+    : (conversation["models"] ?? []) as string[]);
+  const headerModels = models.filter(name => name !== frontName(sourceDefault) || declaredModels.has(name));
   const sourceEdit = String(object(conversation["lifecycle"])["cloudig_edited_at"]), markEdit = text(mark?.["edited_at"]);
   const userDisplayName = frontName(user), assistantDisplayName = assistantOrder.map(frontName).find(Boolean);
   return {
     conversationName: text(mark?.["conversation_title"]) ?? text(title["filename"]) ?? text(title["original"]) ?? (input.language === "en" ? "Untitled conversation" : "未命名会话"),
-    platform, models,
+    platform, models, headerModels,
     userName: text(names["user"]) ?? frontName(user) ?? localDefaultName(builtins.user),
     assistantName: text(names["assistant"]) ?? assistantOrder.map(frontName).find(Boolean) ?? localDefaultName(defaults),
     ...(userDisplayName ? { userDisplayName } : {}), ...(assistantDisplayName ? { assistantDisplayName } : {}),

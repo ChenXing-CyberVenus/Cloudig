@@ -1,4 +1,6 @@
 import { renderTaskList } from "./task-card.mts";
+import { hydrateDocumentCitations } from "./document-citations.mts";
+import { hydrateCapturedSvg, updateCapturedSvgTheme } from "./captured-svg.mts";
 import { containerDisplay } from "../../../core/records/content-container.mts";
 import type { JsonObject, JsonValue } from "../../../core/contracts/types.mts";
 import { isJsonObject } from "../../../core/contracts/types.mts";
@@ -124,13 +126,14 @@ function toolData(document: Document, value: string): HTMLElement {
   return node;
 }
 
-function rich(document: Document, html: string, className = "cloudig-rich", generated = false, preserveUserLines = false): HTMLElement {
+function rich(document: Document, html: string, className = "cloudig-rich", generated = false, preserveUserLines = false, theme?: RendererTheme): HTMLElement {
   const node = element(document, "div", className);
   // Bundled KaTeX computes layout values, not a pre-enumerable static stylesheet.
   // Apply only renderer-generated declarations through CSSOM; untrusted inert
   // archive HTML never gets this capability and the shell CSP remains unchanged.
   node.innerHTML = generated ? html.replace(/\sstyle="([^"]*)"/gu, ' data-cloudig-layout="$1"')
     : inertHtmlFragment(html, { preserveEmbeddedImages: true, preserveUserLines }) ?? "";
+  if (!generated) hydrateCapturedSvg(node, theme);
   if (generated) for (const styled of node.querySelectorAll<HTMLElement>("[data-cloudig-layout]")) {
     styled.style.cssText = styled.getAttribute("data-cloudig-layout") ?? "";
     styled.removeAttribute("data-cloudig-layout");
@@ -381,6 +384,7 @@ export class ConversationRenderer {
     if (theme === this.#theme) return;
     this.#theme = theme;
     this.#root.dataset["theme"] = theme;
+    updateCapturedSvgTheme(this.#root, theme);
     // Retain message DOM, disclosure state, playing media and work frames.
     // Only generated graphics need repainting; CSS and work theme relays do
     // not destroy the content underneath the reading anchor.
@@ -483,7 +487,8 @@ export class ConversationRenderer {
         : rich(document, text(value["mathml"]) ?? "", "cloudig-math cloudig-inert-html");
     }
     if (type === "html") {
-      const node = rich(document, text(value["html"]) ?? "", "cloudig-rich cloudig-inert-html", false, preserveLineBreaks);
+      const node = rich(document, text(value["html"]) ?? "", "cloudig-rich cloudig-inert-html", false, preserveLineBreaks, this.#theme);
+      hydrateDocumentCitations(node, this.#abort.signal);
       for (const slot of node.querySelectorAll<HTMLImageElement>(`img[${HTML_IMAGE_RESOURCE}]`)) {
         const resource = resources.get(slot.getAttribute(HTML_IMAGE_RESOURCE) ?? "");
         const host = element(document, "span", "cloudig-inline-resource");
@@ -583,8 +588,17 @@ export class ConversationRenderer {
       const summary = value["type"] === "reasoning_summary";
       const sourceTitle = text(value["title"]);
       const translatedTitle = value["type"] === "status" && this.#options.language !== "en" && sourceTitle ? CLAUDE_CONTEXT_TITLES[sourceTitle] : undefined;
-      const title = translatedTitle ?? sourceTitle ?? (isJsonObject(value["party"]) && value["party"]["role"] === "system" ? this.#labels.systemParty : undefined)
+      const taskTitles: Record<string, string> = { "Gemini task plan": "任务计划", "Gemini task snapshots": "任务快照", "Gemini subtask at capture": "子任务内容（保存时）", "Gemini subtask source": "子任务原始记录", "Gemini task source": "任务原始记录", "Gemini task process": "任务过程" };
+      const taskTitle = this.#options.language !== "en" && sourceTitle ? taskTitles[sourceTitle] : undefined;
+      let title = translatedTitle ?? taskTitle ?? sourceTitle ?? (isJsonObject(value["party"]) && value["party"]["role"] === "system" ? this.#labels.systemParty : undefined)
         ?? (summary ? this.#labels.reasoningSummary : hasBody ? this.#labels.reasoningContent : undefined) ?? this.#labels.reasoning;
+      if (value["type"] === "status" && sourceTitle === "Claude platform flag" && raw) {
+        // Display-only: old records retain their stable context title and body.
+        try {
+          const notice: unknown = JSON.parse(raw);
+          if (isJsonObject(notice) && text(notice["flag"])?.trim()) title += ` · ${text(notice["flag"])!.trim()}`;
+        } catch { /* Older or incomplete notices still show their original text. */ }
+      }
       const duration = number(value["duration"]);
       const titleHasDuration = /^(?:thought|thinking|reasoned)\s+(?:for\s+)?(?:\d+(?:\.\d+)?\s*(?:ms|s|sec(?:onds)?|m|min(?:utes)?|h|hours?)\s*)+$/iu.test(title)
         || /^(?:思考(?:了|用时)?|共用时)\s*(?:\d+(?:\.\d+)?\s*(?:毫秒|秒|分(?:钟)?|小时)\s*)+$/u.test(title);
@@ -648,7 +662,8 @@ export class ConversationRenderer {
     const folded = details(document, `cloudig-process cloudig-tool cloudig-tool-${kind ?? "activity"}`, label, block["collapsed"] === true);
     this.#defer(folded, () => {
       const input = jsonText(value["input"]);
-      if (input) folded.body.append(toolData(document, input));
+      if (input) folded.body.append(kind === "call" && /^python(?:\.|$)/u.test(text(value["name"]) ?? "") && typeof value["input"] === "string"
+        ? this.#renderText({ type: "code", language: "python", code: input }) : toolData(document, input));
       // A captured result may contain several text/resource/reference parts.
       // Keep their sequence, but do not turn real newlines into JSON escapes.
       const output = value["output"];
@@ -1123,6 +1138,13 @@ export class ConversationRenderer {
     }
     if (header.childElementCount > 0) article.append(header);
     const body = element(document, "div", "cloudig-message-content");
+    // Derived navigation over canonical calls in this message only. No stored
+    // presentation protocol, platform-name switch, copied code or execution.
+    const analysisCalls = new Set(blocks.flatMap(block => {
+      const v = isJsonObject(block["value"]) ? block["value"] : {};
+      return v["type"] === "tool" && v["kind"] === "call" && text(v["call"]) && /^python(?:\.|$)/u.test(text(v["name"]) ?? "") ? [String(v["call"])] : [];
+    }));
+    const analysisNodes = new Map<string, HTMLElement[]>();
     let processRun: Array<{ node: HTMLElement; block: JsonObject }> = [];
     const flushProcess = () => {
       if (!processRun.length) return;
@@ -1171,10 +1193,34 @@ export class ConversationRenderer {
       const category = text(block["category"]) ?? "content";
       rendered.dataset["category"] = category;
       if (category !== "content") rendered.id = text(block["anchor"]) ?? `${article.id}-process-${index + 1}`;
+      const call = text(value["call"]);
+      if (value["type"] === "tool" && call && analysisCalls.has(call)) analysisNodes.set(call, [...analysisNodes.get(call) ?? [], rendered]);
       if (["reasoning", "tool", "references"].includes(category) && !rendered.classList.contains("cloudig-schedule")) processRun.push({ node: rendered, block });
       else { flushProcess(); body.append(rendered); }
     }
     flushProcess();
+    if (role === "assistant" && blocks.some(b => b["category"] === "content") && analysisNodes.size) {
+      const actions = element(document, "nav", "cloudig-analysis-actions");
+      actions.setAttribute("aria-label", this.#options.language === "en" ? "Analysis" : "分析");
+      for (const [index, nodes] of [...analysisNodes.values()].entries()) {
+        const button = element(document, "button", "cloudig-analysis-open", `${this.#options.language === "en" ? "View analysis" : "查看分析"}${analysisNodes.size > 1 ? ` ${index + 1}` : ""} · Python`);
+        button.type = "button"; button.setAttribute("aria-controls", nodes.map(node => node.id).join(" "));
+        button.addEventListener("click", () => {
+          for (const node of nodes) {
+            const parents: HTMLElement[] = [];
+            for (let parent: HTMLElement | null = node; parent && parent !== article; parent = parent.parentElement) parents.unshift(parent);
+            for (const parent of parents) if (parent.tagName === "DETAILS") {
+              (parent as HTMLDetailsElement).open = true;
+              parent.dispatchEvent(new document.defaultView!.Event("toggle"));
+            }
+          }
+          const target = nodes[0]!; target.tabIndex = -1; target.focus({ preventScroll: true });
+          target.scrollIntoView?.({ block: "center", behavior: "auto" });
+        });
+        actions.append(button);
+      }
+      body.append(actions);
+    }
     article.append(body);
     return article;
   }

@@ -462,7 +462,7 @@ export function buildConversationPageCore(
       ...(input.resolved.conversationName ? { title: input.resolved.conversationName } : {}),
       ...(conversation["provider"] !== undefined ? { provider: conversation["provider"]! } : {}),
       platform: conversation["platform"]!,
-      models: [...input.resolved.models],
+      models: [...("headerModels" in input.resolved ? input.resolved.headerModels ?? input.resolved.models : input.resolved.models)],
       content_time: structuredClone(input.resolved.contentTime as unknown as JsonObject),
       source_file: source["file"]!,
       ...(source["captured_at"] !== undefined ? { captured_at: structuredClone(source["captured_at"]) } : {}),

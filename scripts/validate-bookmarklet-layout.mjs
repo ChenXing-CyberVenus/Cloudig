@@ -119,7 +119,7 @@ export function validateBookmarkletLayout() {
   // Preserve the cold-page candidate before native/event file ownership repair: 1382 + 6 = 1388.
   assert.equal(
     actualLegacy.length,
-    1726, // 1720 prior files +6 GPT Dot-route candidate freezes before attachment support.
+    1750, // +4 byte-identical Gemini source/min freezes before task presentation correction.
     "legacy JS inventory changed without an explicit layout update"
   );
   for (const path of actualLegacy) validateStatePath(path, "legacy");

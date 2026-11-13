@@ -631,7 +631,8 @@ test("writing documents render rich content and diagram HTML snapshots are not r
   assert.equal(root.querySelectorAll(".cloudig-writing li").length, 2);
   assert.ok(root.querySelector(".cloudig-writing .katex"));
   assert.equal(root.querySelector(".cloudig-writing .cloudig-diagram-zoom"), null);
-  assert.ok(root.querySelector(".cloudig-diagram-display svg rect"));
+  const captured = root.querySelector<HTMLImageElement>(".cloudig-diagram-display img.cloudig-captured-svg");
+  assert.ok(captured); assert.match(decodeURIComponent(captured.src.split(",")[1]!), /<rect width="10" height="10"/u);
   assert.doesNotMatch(root.textContent!, /资源不可用/u);
   renderer.destroy(); dom.window.close();
 });

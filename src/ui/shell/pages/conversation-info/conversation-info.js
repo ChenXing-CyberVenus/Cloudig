@@ -37,7 +37,7 @@ const platformDefinitions = Object.freeze({
 
 const copy = Object.freeze({
   "zh-CN": {
-    titleLabel: "会话名称", addModelLabel: "添加模型", editedAt: "最后编辑时间", firstParsed: "首次解析时间",
+    titleLabel: "会话名称", addModelLabel: "添加型号", modelName: "模型型号", editedAt: "最后编辑时间", firstParsed: "首次解析时间",
     messageTime: "会话消息时间", sourceFile: "原文件", capturedAt: "原文件采集时间", jsonFile: "当前JSON文件",
     details: "解析详情", nameRuleTitle: "文件名与标题相互独立", nameRule: "修改会话名称不会修改JSON文件名；修改JSON文件名也不会修改会话名称。",
     contentTime: "内容时间", clear: "清空", editTimeline: "编辑时间轴", presets: "预设时间",
@@ -56,7 +56,7 @@ const copy = Object.freeze({
     infinitePast: "无限久前", infiniteFuture: "无限久后", now: "现今", parserBasis: "Parser 首次创建", unavailable: "不可得"
   },
   en: {
-    titleLabel: "Conversation Name", addModelLabel: "Add model", editedAt: "Last Cloudig edit", firstParsed: "First parsed",
+    titleLabel: "Conversation Name", addModelLabel: "Add model name", modelName: "Model name", editedAt: "Last Cloudig edit", firstParsed: "First parsed",
     messageTime: "Message range", sourceFile: "Source file", capturedAt: "Source captured", jsonFile: "Current JSON file",
     details: "Parser details", nameRuleTitle: "Filename and title are independent", nameRule: "Changing the conversation name does not rename the JSON file, and renaming the JSON file does not change the conversation name.",
     contentTime: "Content Time", clear: "Clear", editTimeline: "Edit timeline", presets: "Presets",
@@ -103,6 +103,8 @@ function setCopies(root, language) {
   const values = copy[language] ?? copy["zh-CN"];
   for (const node of root.querySelectorAll("[data-conversation-copy]")) node.textContent = values[node.dataset.conversationCopy] ?? node.textContent;
   for (const node of root.querySelectorAll("[data-conversation-copy-placeholder]")) node.placeholder = values[node.dataset.conversationCopyPlaceholder] ?? node.placeholder;
+  root.querySelector("[data-conversation-model-input]").setAttribute("aria-label", values.modelName);
+  root.querySelector("[data-conversation-model-add]").setAttribute("aria-label", values.addModelLabel);
   return values;
 }
 

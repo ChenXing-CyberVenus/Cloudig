@@ -5,6 +5,7 @@ import { appendFile, copyFile, mkdir, mkdtemp, readFile, readdir, rename, rm, ls
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import test from "node:test";
+import { resolveV1Samples } from "../../../scripts/resolve-v1-samples.mjs";
 import { fileCaptureTime } from "../../../src/app/parser/record-source.mts";
 import { commitRecords, readStoredRecord, pendingRecordOperations } from "../../../src/adapters/storage/record-store.mts";
 import { validateRecord } from "../../../src/core/records/index.mts";
@@ -68,9 +69,10 @@ test("the packaged Engine completes the real five-record Library journey without
     const initial = await request("library.preferences.query"); assert.equal(initial.theme, "dawn"); assert.equal(initial.theme_switched, false);
     const bindings = await json(path.join(root, "Identities/identity-settings.json")); assert.equal(Object.keys(bindings.platforms).length, 12);
     assert.equal((await files(root, "ContentTimes")).length, 18, "17 independent nodes plus order");
-    const names = (await readdir(sampleRoot)).filter(n => n.endsWith(".html")).sort(); assert(names.length >= 12);
+    const selectedSamples = await resolveV1Samples(sampleRoot);
+    const names = selectedSamples.map(sample => sample.importName); assert(names.length >= 12);
     const originals = new Map<string, Awaited<ReturnType<typeof hash>>>();
-    for (const name of names) originals.set(name, await importFile(path.join(sampleRoot, name)));
+    for (const sample of selectedSamples) originals.set(sample.file, await importFile(sample.file, sample.importName));
     const officialHash = await importFile(claudeContainer, "conversations.json");
     console.log(`Package journey: imported ${names.length} HTML and the official container`);
     const progress = new Set<number>(); const plan = await request("archiver.parse.plan", { sources: [], one_click: true });
@@ -215,7 +217,7 @@ test("the packaged Engine completes the real five-record Library journey without
     await request("library.recovery.commit", { operation: pending[0]!, action: "rollback" }); assert.deepEqual(await readFile(path.join(root, "CloudigLibrary.json")), restoredBytes);
     await engine.close(); const moved = path.join(scope, "MovedRecords"); await rename(root, moved); root = moved; engine = startRecordEngine({ packageRoot, libraryRoot: root });
     assert.equal((await request("library.startup.recover")).status, "valid"); assert.equal((await list()).total, finalCount); assert.deepEqual(await fingerprints(root, ["Conversations", "Marks", "ContentTimes", "Identities"]), beforeRecovery);
-    for (const [name, original] of originals) assert.deepEqual(await hash(path.join(sampleRoot, name)), original); assert.deepEqual(await hash(claudeContainer), officialHash); assert.deepEqual(await hash(path.join(packageRoot, "app/engine/engine.mjs")), programBefore);
+    for (const [file, original] of originals) assert.deepEqual(await hash(file), original); assert.deepEqual(await hash(claudeContainer), officialHash); assert.deepEqual(await hash(path.join(packageRoot, "app/engine/engine.mjs")), programBefore);
     console.log(JSON.stringify({ sample_files: names.length, execution: "packaged-record-engine", planned: { new: plan.total }, committed: { created: parsed.completed, updated: 2, preserved: 1 }, progress_files: progress.size,
       claude: { records: indexed.records, created: extracted.completed, preserved: copiedClaude.completed, progress_events: indexProgress }, archives: finalCount,
       runtime: { messages: runtimeMessages, graph_views: graphViews, sample_tree_captures: treeCaptures, materialized_resources: materialized }, performance: { html_parse_ms: Math.round(htmlMs), claude_extract_ms: Math.round(claudeMs) },

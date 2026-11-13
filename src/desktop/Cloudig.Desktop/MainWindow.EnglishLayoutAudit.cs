@@ -41,8 +41,12 @@ public partial class MainWindow
                 const r=n.getBoundingClientRect(),c=getComputedStyle(n),range=document.createRange();range.selectNodeContents(n);
                 const t=range.getBoundingClientRect(),left=t.left-r.left,right=r.right-t.right;
                 const x=r.left+r.width/2,y=r.top+r.height/2,hit=n.contains(document.elementFromPoint(x,y));
-                buttons.push({text:n.textContent,width:r.width,padding_left:c.paddingLeft,padding_right:c.paddingRight,left,right,hit});
-                if(left<17||right<17||!hit||r.left<0||r.right>innerWidth)errors.push('Header button spacing/hit: '+n.textContent);
+                // Foreground notices and the expanded narrow bookmark rail
+                // deliberately disable background actions. Verify that state,
+                // rather than demanding a click through the active overlay.
+                const backgroundBlocked=visible(document.querySelector('.cloudig-notice-layer'))||(innerWidth<=1320&&document.querySelector('.archiver-page')?.dataset.bookmarkExpanded==='true');
+                buttons.push({text:n.textContent,width:r.width,padding_left:c.paddingLeft,padding_right:c.paddingRight,left,right,hit,backgroundBlocked});
+                if(left<17||right<17||hit===backgroundBlocked||r.left<0||r.right>innerWidth)errors.push('Header button spacing/hit: '+n.textContent);
               }
               const brand=document.querySelector('.reader-scene-brand'),statement=document.querySelector('.reader-scene-statement');
               if(visible(brand)&&visible(statement)) {

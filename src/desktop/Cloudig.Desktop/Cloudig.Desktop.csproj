@@ -9,7 +9,7 @@
     <LangVersion>latest</LangVersion>
     <AssemblyName>Cloudig</AssemblyName>
     <RootNamespace>Cloudig.Desktop</RootNamespace>
-    <Version>1.0.9</Version>
+    <Version>1.0.10</Version>
     <ApplicationIcon>Assets\Cloudig-Taskbar.ico</ApplicationIcon>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>

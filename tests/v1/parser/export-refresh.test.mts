@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { resolveV1Samples } from "../../../scripts/resolve-v1-samples.mjs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
@@ -75,8 +76,8 @@ test("current source delta keeps Mistral segments, Claude memory tools, ChatGLM 
   const runtime = createOfflineContentRuntime();
   let files = 0, segments = 0, memories = 0, models = 0, matrices = 0;
   try {
-    for (const file of (await readdir(sample!)).filter(f => f.endsWith(".html"))) {
-      const filePath = path.join(sample!, file), platform = (await probeExporterRoute(filePath))?.["platform"];
+    for (const selected of await resolveV1Samples(sample!)) {
+      const file = selected.name, filePath = selected.file, platform = (await probeExporterRoute(filePath))?.["platform"];
       if (!["claude", "chatglm", "mistral", "zai"].includes(String(platform))) continue;
       const envelope = await readExporterEnvelope({ filePath });
       const { manifest, payload, reading, adapter } = envelope;

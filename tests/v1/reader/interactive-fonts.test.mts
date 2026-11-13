@@ -2,22 +2,35 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { verifyWorkFontRequests, workFontCss } from "../../../src/ui/shared/conversation-renderer/interactive-fonts.mts";
+import { workFontCss } from "../../../src/ui/shared/conversation-renderer/interactive-fonts.mts";
+import { prepareInteractiveHtml } from "../../../src/ui/shared/conversation-renderer/interactive-document.mts";
+import { JSDOM } from "jsdom";
+import { clearInteractiveAssets } from "../../../src/ui/shared/conversation-renderer/interactive-assets.mts";
 import { loadInteractiveDependencies } from "../../../src/ui/shared/conversation-renderer/interactive-dependencies.mts";
 import manifest from "../../../src/ui/runtime-dependencies/manifest.json" with { type: "json" };
 
 const request = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Noto+Serif+SC:wght@400;600;900&family=Zhi+Mang+Xing&display=swap';
-test("saved work font declarations require exact style and weight coverage, including variable ranges", () => {
-  verifyWorkFontRequests(request, manifest.fonts);
-  verifyWorkFontRequests(request.replaceAll("&", "&amp;"), manifest.fonts);
-  verifyWorkFontRequests('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900', manifest.fonts);
-  verifyWorkFontRequests('https://fonts.googleapis.com/css?family=DM+Sans:400,500,700', manifest.fonts);
-  assert.throws(() => verifyWorkFontRequests(request.replace("1,500;1,600", "0,500"), manifest.fonts), /Cormorant Garamond normal 500/);
-  assert.throws(() => verifyWorkFontRequests(request.replace("400;600;900", "1000"), manifest.fonts), /Noto Serif SC normal 1000/);
-  assert.throws(() => verifyWorkFontRequests('https://fonts.googleapis.com/css2?family=Unbundled', manifest.fonts), /Unbundled/);
+test("font CSS advertises real faces, leaving nearest weight matching to the browser", () => {
   const css = workFontCss(manifest.fonts);
   assert(css.includes('font-family:"Cormorant Garamond";font-style:italic;font-weight:300 700'));
   assert(css.includes('font-family:"Noto Serif SC";font-style:normal;font-weight:200 900'));
+});
+
+test("requested font ranges and optional missing families never prevent a saved work from opening offline", async () => {
+  const previous = globalThis.fetch; const urls: string[] = []; clearInteractiveAssets();
+  globalThis.fetch = async input => { urls.push(String(input)); return new Response("font"); };
+  const dom = new JSDOM();
+  try {
+    const html = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@1..1000&amp;family=Unbundled"><style>@font-face{font-family:Unused;src:url(https://fonts.gstatic.com/missing.woff2)}body{font-family:"Google Sans Flex",sans-serif}</style><button>Ready</button>';
+    const file = { path: "index.html", mime: "text/html", bytes: new TextEncoder().encode(html).buffer };
+    const dependencies = await loadInteractiveDependencies([file], new AbortController().signal, "https://cloudig.local/runtime/dependencies/");
+    assert.match(dependencies.fontCss, /font-weight:100 1000/); assert.doesNotMatch(dependencies.fontCss, /font-weight:1 1000/);
+    assert(urls.every(url => url.startsWith("https://cloudig.local/")));
+    const output = prepareInteractiveHtml({ protocol: "cloudig/interactive-runtime/1", token: "font-test", source: "generic.example_widget", format: "html", entry: file.path, files: [file, ...dependencies.files], fontCss: dependencies.fontCss, theme: "dawn", language: "en", state: {} }, dom.window.document, () => "blob:owned-font");
+    const result = new JSDOM(output); assert.equal(result.window.document.querySelector("button")?.textContent, "Ready");
+    assert.equal(result.window.document.querySelectorAll('link[href*="fonts.googleapis"]').length, 0);
+    assert(![...result.window.document.querySelectorAll('style')].some(style => style.textContent?.includes('missing.woff2'))); result.window.close();
+  } finally { globalThis.fetch = previous; clearInteractiveAssets(); dom.window.close(); }
 });
 
 test("SFNT variable font axes cover the advertised ranges and licenses remain original", async () => {

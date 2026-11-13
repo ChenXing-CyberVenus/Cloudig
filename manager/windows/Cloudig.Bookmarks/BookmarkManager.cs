@@ -65,7 +65,7 @@ public sealed class BookmarkManager
         {
             try
             {
-                var json = ChromeProfileDiscovery.DecodeUtf8(ChromeProfileDiscovery.ReadAllBytesShared(store.Path));
+                var json = ChromeProfileDiscovery.ReadBookmarkJson(store.Path);
                 var editor = new BookmarkFileEditor(
                     package,
                     requestedProfile: selection.RequestedProfile,
@@ -145,7 +145,7 @@ public sealed class BookmarkManager
     {
         cancellationToken.ThrowIfCancellationRequested();
         var store = ResolveStore(storePath);
-        var json = ChromeProfileDiscovery.DecodeUtf8(ChromeProfileDiscovery.ReadAllBytesShared(store.Path));
+        var json = ChromeProfileDiscovery.ReadBookmarkJson(store.Path);
         var document = BookmarkJson.ParseObject(json);
         ChromeBookmarkChecksums.AssertValid(document);
         return Task.FromResult(DescribeTarget(document, TargetForStore(target, store.Path)));

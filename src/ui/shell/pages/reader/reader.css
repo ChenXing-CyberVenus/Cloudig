@@ -265,6 +265,12 @@
   :root[data-theme="star-night"] [data-page="reader"] .reader-platform-button:not([aria-pressed="true"])::before { border-color: #000000; }
   [data-page="reader"] .reader-platform-button[aria-pressed="true"]::before { border-color: var(--reader-row-selected); }
   [data-page="reader"] .reader-platform-button img { background: transparent; border-radius: 0; display: block; height: 100%; object-fit: contain; width: 100%; }
+  /* Keep each logo's contrast backing; fade the mark, not the whole control. */
+  [data-page="reader"] .reader-platform-button[aria-pressed="false"] img { filter: saturate(.4); opacity: .65; }
+  :root[data-theme="star-night"] [data-page="reader"] .reader-platform-button[aria-pressed="false"] { filter: grayscale(1); }
+  :root[data-theme="star-night"] [data-page="reader"] .reader-platform-button[aria-pressed="false"] img { filter: none; opacity: .45; }
+  [data-page="reader"] .reader-platform-button[aria-pressed="false"]::before,
+  [data-page="reader"] .reader-platform-button[aria-pressed="false"]::after { opacity: .55; }
   [data-page="reader"] .reader-platform-button[data-platform="kimi"] { background: #111111; }
   [data-page="reader"] .reader-platform-button[data-platform="kimi"] img { padding: 0; }
   [data-page="reader"] .reader-platform-button[data-platform="doubao"] { background: #ffffff; padding: 0; }

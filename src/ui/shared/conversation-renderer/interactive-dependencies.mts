@@ -1,7 +1,8 @@
 import manifest from "../../runtime-dependencies/manifest.json" with { type: "json" };
 import optional from "../../runtime-dependencies/optional-components.json" with { type: "json" };
 import type { InteractiveFile, InteractiveFormat } from "./interactive-protocol.mts";
-import { verifyWorkFontRequests, workFontCss, type WorkFont } from "./interactive-fonts.mts";
+import { workFontCss, type WorkFont } from "./interactive-fonts.mts";
+import { capturedDependencyAliases } from "./dependency-aliases.mts";
 import { mapInteractiveAssets, readInteractiveAsset } from "./interactive-assets.mts";
 import { previewKind } from "./file-preview-policy.mts";
 
@@ -10,7 +11,6 @@ export async function loadInteractiveDependencies(files: readonly InteractiveFil
   const components = optional.components.filter(item => item.triggers.some(trigger => sources.includes(trigger)) || item.id==="libmedia-1.3.1"&&format==="document"&&files.some(f=>previewKind(f.path,f.mime)==="video"));
   const fonts = manifest.fonts.filter(font => sources.includes(font.family) || sources.includes(font.family.replaceAll(" ", "+")));
   const allFonts: WorkFont[] = [...fonts, ...components.flatMap<WorkFont>(item => "fonts" in item ? item.fonts ?? [] : [])];
-  verifyWorkFontRequests(sources, allFonts);
   const requests: { file: string; path: string; mime: string; aliases: readonly string[]; label: string; optional?: boolean }[] = [];
   const supplied = new Set(files.flatMap(file => file.aliases ?? []));
   if (format === "react") {
@@ -27,8 +27,8 @@ export async function loadInteractiveDependencies(files: readonly InteractiveFil
     requests.push({ file:"file-preview.js",path:"__cloudig_dependencies__/file-preview.js",mime:"text/javascript",aliases:["cloudig-runtime:file-preview"],label:"File preview" });
     if (files.some(f => /\.pdf$/iu.test(f.path) || f.mime === "application/pdf")) requests.push({ file:"pdf-worker.mjs",path:"__cloudig_dependencies__/pdf-worker.mjs",mime:"text/javascript",aliases:["cloudig-runtime:pdf-worker"],label:"PDF worker" });
   }
-  for (const library of manifest.libraries.filter(item => item.aliases.some(alias => sources.includes(alias)) || "formats" in item && item.formats.includes(format))) {
-    const aliases = library.aliases.filter(alias => !supplied.has(alias));
+  for (const library of manifest.libraries) {
+    const aliases = capturedDependencyAliases(sources, library.aliases).filter(alias => !supplied.has(alias));
     if (!aliases.some(alias => sources.includes(alias)) && !("formats" in library && library.formats.includes(format))) continue;
     requests.push({ file: library.file, path: `__cloudig_dependencies__/${library.file}`, mime: "text/javascript", aliases, label: `${library.package} ${library.version}` });
   }

@@ -10,10 +10,11 @@ import { compactCapturedMath, inertHtmlEvidence } from "./inert-html.mts";
 import { chatGptNative, isChatGptNative } from "./chatgpt-native.mts";
 import { ChatGptIntelligentUi } from "./chatgpt-intelligent.mts";
 import { taskView, ownedTaskView } from "../../core/records/chatgpt-task.mts";
+import { isSourceSummary, prepareChatGptActivities, sourceSummaryIsDerived } from "./chatgpt-activity.mts";
 
 export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
   id: "chatgpt-light-items-v2",
-  version: "3.0.11",
+  version: "3.0.12",
   family: "chatgpt",
   routes: [{
     format: "exporter-html",
@@ -26,7 +27,7 @@ export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
     adapter: "chatgpt-light-items-v2",
     version: "1.3.0",
     action: "reparse_source"
-  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
+  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
 };
 
 function object(value: JsonValue | undefined): JsonObject | undefined {
@@ -563,7 +564,16 @@ function projectItem(
 ): JsonObject[] {
   const kind = sourceText(item["kind"]);
   const result: JsonObject[] = [];
-  if (kind === "thinking") {
+  const summary = isSourceSummary(item);
+  if (summary) {
+    // The canonical references below retain URL/title/excerpt. Preserve any
+    // non-derived text too, without inventing a tool invocation or tool Front.
+    if (!sourceSummaryIsDerived(item)) {
+      const escape = (s: string) => s.replace(/[&<>"']/gu, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+      const body = sourceText(item["text"]);
+      if (body) result.push({ type: "html", html: `<details><summary>${escape(sourceText(item["name"]) ?? "检索来源")}</summary><pre>${escape(body)}</pre></details>` });
+    }
+  } else if (kind === "thinking") {
     result.push(...thoughtBlocks(item));
   } else if (kind === "recap") {
     const recap = recapBlock(item);
@@ -572,6 +582,9 @@ function projectItem(
     result.push({
       type: "tool",
       kind: "call",
+      ...(sourceText(item["analysis_call_id"]) ? { call: item["analysis_call_id"]! } : {}),
+      ...(sourceText(item["reasoning_title"]) || values(item["reasoning_titles"]).some(v => sourceText(v))
+        ? { title: unique([...values(item["reasoning_titles"]), item["reasoning_title"]].flatMap(v => sourceText(v) ? [sourceText(v)!] : [])).join(" · ") } : {}),
       ...(sourceText(item["recipient"]) ? { name: sourceText(item["recipient"])! } : {}),
       ...(sourceText(item["text"]) ? { input: sourceText(item["text"])! } : {})
     });
@@ -581,7 +594,7 @@ function projectItem(
   } else if (kind === "tool") {
     const output = sourceText(item["text"]);
     const name = sourceText(item["name"]);
-    if (output || name) result.push({ type: "tool", kind: "result", ...(name ? { name } : {}), ...(output ? { output } : {}) });
+    if (output || name) result.push({ type: "tool", kind: "result", ...(sourceText(item["analysis_call_id"]) ? { call: item["analysis_call_id"]! } : {}), ...(name ? { name } : {}), ...(output ? { output } : {}) });
   } else if (kind === "user" || kind === "assistant" || kind === "assistant_asset") {
     result.push(...projectParts(item, resources, limitations, mermaid, additionalOwnerIds, reading));
   } else {
@@ -597,10 +610,10 @@ function projectItem(
   const queries = unique(values(item["queries"]).flatMap((value) => sourceText(value) ? [sourceText(value)!] : []));
   if (queries.length > 0) {
     for (const query of queries) result.push({ type: "search", query, ...(web.length > 0 ? { sources: web } : {}) });
-  } else if (kind === "tool" && web.length > 0) {
+  } else if (kind === "tool" && !summary && web.length > 0) {
     result.push({ type: "search", sources: web });
   } else if (web.length > 0) {
-    result.push({ type: "citations", sources: web });
+    result.push({ type: "citations", sources: web, ...(summary ? { label: sourceText(item["name"]) ?? "检索来源" } : {}) });
   }
   if (memory.length > 0) result.push({ type: "citations", sources: memory });
   return result;
@@ -635,7 +648,8 @@ async function groupMessages(
     messages.push({ role: "assistant", ...(name ? { name } : {}), ...(model ? { model } : {}), ...(timestamp ? { timestamp } : {}), content: assistant.content });
     assistant = undefined;
   };
-  for (const [index, raw] of items.entries()) {
+  const prepared = prepareChatGptActivities(items.map(raw => { const item = object(raw); if (!item) throw new TypeError("ChatGPT item sequence contains a non-object entry"); return item; }));
+  for (const [index, raw] of prepared.entries()) {
     const item = object(raw);
     if (!item) throw new TypeError("ChatGPT item sequence contains a non-object entry");
     if (assistant) {
@@ -856,7 +870,7 @@ export async function parseChatGptTree(context: AdapterParseContext, route: Chat
   const messages: JsonObject[] = [];
 
   for (const [index, turn] of turns.entries()) {
-    const items = turn.nodes.flatMap((node) => {
+    const items = prepareChatGptActivities(turn.nodes.flatMap((node) => {
       const rawItems = itemsByNode[node];
       if (rawItems === undefined) return [];
       if (!Array.isArray(rawItems)) throw new TypeError("ChatGPT Tree node items are not an array");
@@ -865,7 +879,7 @@ export async function parseChatGptTree(context: AdapterParseContext, route: Chat
         if (!item) throw new TypeError("ChatGPT Tree node contains a non-object item");
         return item;
       });
-    });
+    }));
     const content: JsonObject[] = [];
     const models: string[] = [];
     const timestamps: string[] = [];

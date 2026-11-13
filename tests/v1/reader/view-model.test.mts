@@ -5,11 +5,33 @@ import test from "node:test";
 import { buildConversationPage, conversationMessagePath, DEFAULT_READER_SESSION } from "../../../src/app/reader/index.mts";
 import { buildConversationPageCore } from "../../../src/app/reader/view-model-core.mts";
 import { projectRecordForReading, resolveRecordPresentation } from "../../../src/core/records/presentation.mts";
+import { platformFront, userModelFront } from "../../../src/core/records/front.mts";
 import { finalizeConversation } from "../../../src/core/contracts/index.mts";
 import type { JsonObject } from "../../../src/core/contracts/types.mts";
 import type { ResolvedArchiveView } from "../../../src/core/library/overlay.mts";
 
 const oneByte = Buffer.from([0]);
+
+test("header omits platform fallback repeats without erasing source or user model declarations", () => {
+  for (const [platform, name] of [["deepseek", "DeepSeek"], ["claude", "Claude"], ["codex", "Codex"]]) {
+    const record: JsonObject = { conversation_id: "id", platform: platform!, title: { filename: "Title" }, source: { file: "source.html" }, lifecycle: { cloudig_edited_at: "2026-11-12T00:00:00Z" },
+      identity: [{ ...platformFront(platform!), source_id: "assistant" }], messages: { items: [{ id: "m1", speaker: "assistant", content: [{ type: "text", text: "Answer" }] }] } };
+    const original = JSON.stringify(record);
+    const present = (conversation = record, mark?: JsonObject) => resolveRecordPresentation({ conversation, ...(mark ? { mark } : {}), language: "en", bindings: {}, identities: new Map(), availableAssets: new Set(), builtins: {
+      user: { name: "User", avatar: "user.svg" }, assistant: { name: "AI", avatar: "ai.svg" }, platforms: {}
+    } });
+    const fallback = present(); assert.deepEqual(fallback.models, [name]); assert.deepEqual(fallback.headerModels, []);
+    const projected = projectRecordForReading(record, fallback);
+    assert.equal(((projected["messages"] as JsonObject[])[0]!["party"] as JsonObject)["name"], name);
+    const page = buildConversationPageCore({ conversation: projected, resolved: fallback, page: { offset: 0, limit: 20 }, navigationPage: { offset: 0, limit: 20 }, branchPage: { offset: 0, limit: 20 } }, projected);
+    assert.deepEqual((page["header"] as JsonObject)["models"], []);
+    assert.deepEqual(present({ ...record, models: ["Specific model"] }).headerModels, ["Specific model"]);
+    assert.deepEqual(present({ ...record, models: [name!] }).headerModels, [name], "an explicit source declaration isn't a synthesized fallback");
+    assert.deepEqual(present(record, { target: "id", models: [userModelFront(name!, "user", "2026-11-12T00:00:00Z")] }).headerModels, [name]);
+    assert.deepEqual(present(record, { target: "id", models: [] }).headerModels, []);
+    assert.equal(JSON.stringify(record), original);
+  }
+});
 
 test("disconnected Claude fragments remain readable and real sibling choices stay local", () => {
   const value: JsonObject = { messages: [

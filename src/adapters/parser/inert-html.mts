@@ -386,7 +386,7 @@ export function inertHtmlFragment(value: string, options: InertHtmlOptions = {})
 
 export function inertStandaloneSvg(value: string): string | undefined {
   const fragment = parseFragment(value);
-  sanitizeChildren(fragment);
+  sanitizeChildren(fragment, { preserveEmbeddedImages: true });
   const svg = fragment.childNodes.find((node): node is Element => isElement(node) && node.tagName === "svg");
   if (!svg) return undefined;
   // Inline HTML provides namespace context implicitly. An image/svg+xml file

@@ -1,4 +1,5 @@
 import { followReaderTheme } from "./reader-theme.mts";
+import { renderTaskList } from "./task-card.mts";
 import { containerDisplay } from "../../../core/records/content-container.mts";
 import type { JsonObject, JsonValue } from "../../../core/contracts/types.mts";
 import { quizBox, recipeBox, stepBox } from "./learning-boxes.mts";
@@ -209,6 +210,11 @@ export function renderStructuredBox(ctx: BoxContext, block: JsonObject): HTMLEle
   const data = obj(block["data"]), input = obj(data["input"]), imageItems = list(data["images"]), images = imageItems.map(i => str(i["path"]));
   let root: HTMLElement;
   switch (block["source"]) {
+    case "gemini.google.com_scheduled_task": {
+      root = el(ctx, "section", "cloudig-box cloudig-box-task");
+      renderTaskList(root, data, { language: ctx.language, richText: source => ctx.richText?.(source) ?? p(ctx, source) });
+      break;
+    }
     case "kimi.com_files":
     case "kimi.com_question":
     case "kimi.com_scheduled_task":

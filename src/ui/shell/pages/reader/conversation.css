@@ -337,10 +337,14 @@
     transform: translateX(5px);
     width: 900px;
   }
-  [data-page="reader"] .reader-message-column .cloudig-conversation-renderer {
+  /* Only the message root stretches the reading axis. Nested work dialogs
+     retain their own grid and viewport allocation when a Box is enlarged. */
+  [data-page="reader"] .reader-message-column > [data-reader-renderer] {
     display: flex;
     flex-direction: column;
     flex: 1;
+  }
+  [data-page="reader"] .reader-message-column .cloudig-conversation-renderer {
     --cloudig-accent: var(--reader-conversation-accent);
     --cloudig-line: var(--reader-toolbar);
     --cloudig-muted: var(--reader-conversation-muted);

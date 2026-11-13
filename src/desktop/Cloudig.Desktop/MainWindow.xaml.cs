@@ -155,7 +155,7 @@ public partial class MainWindow : Window
             await WebView.EnsureCoreWebView2Async(environment);
             _webViewCache.RegisterBrowser(checked((int)WebView.CoreWebView2.BrowserProcessId));
             TraceVisualAudit("webview-core-ready");
-            if (_layout.VisualAudit is { } frameAudit && (frameAudit.Query.Contains("interaction=saved-works", StringComparison.Ordinal) || frameAudit.Query.Contains("intelligent-ui=1", StringComparison.Ordinal)))
+            if (_layout.VisualAudit is { } frameAudit && (frameAudit.Query.Contains("interaction=saved-works", StringComparison.Ordinal) || frameAudit.Query.Contains("intelligent-ui=1", StringComparison.Ordinal) || frameAudit.Query.Contains("gemini-review=1", StringComparison.Ordinal)))
                 WebView.CoreWebView2.FrameCreated += TrackSavedWorkFrame;
             ConfigureWebView();
             ApplyViewportScale();
@@ -329,8 +329,10 @@ public partial class MainWindow : Window
                 else if (audit.Query.Contains("interaction=saved-works", StringComparison.Ordinal)) await VerifySavedWorksAsync(audit);
                 else if (audit.Query.Contains("interaction=saved-map", StringComparison.Ordinal)) await VerifySavedMapAsync(audit);
                 else if (audit.Query.Contains("interaction=schedule-cards", StringComparison.Ordinal)) await VerifyScheduleCardsAsync(audit);
+                else if (audit.Query.Contains("interaction=analysis-links", StringComparison.Ordinal)) await VerifyAnalysisLinksAsync(audit);
                 else if (audit.Query.Contains("interaction=branch-only", StringComparison.Ordinal)) await VerifyReaderBranchRoundtripAsync(audit);
                 else await VerifyReaderResourceScrollAsync(audit);
+                if (audit.Query.Contains("gemini-review=1", StringComparison.Ordinal)) await VerifyGeminiReviewAsync(audit);
                 if (audit.Query.Contains("reading-fixes=1", StringComparison.Ordinal)) await VerifyReadingFixesAsync(audit);
                 if (audit.Query.Contains("reader-seven=1", StringComparison.Ordinal)) await VerifyReaderFinalReviewAsync(audit);
                 if (audit.Query.Contains("intelligent-ui=1", StringComparison.Ordinal)) await VerifyIntelligentUiAsync(audit);
@@ -436,6 +438,8 @@ public partial class MainWindow : Window
             TraceVisualAudit("capture-failed", $"{error.GetType().Name}: {error.Message}");
             try
             {
+                await using (var failedImage = File.Create(Path.ChangeExtension(audit.OutputFile, ".failed.png")))
+                    await WebView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, failedImage);
                 var errorFile = Path.ChangeExtension(audit.OutputFile, ".error.txt");
                 Directory.CreateDirectory(Path.GetDirectoryName(errorFile)!);
                 await File.WriteAllTextAsync(errorFile, $"{error.GetType().Name}: {error.Message}\n", new UTF8Encoding(false));
@@ -628,6 +632,8 @@ public partial class MainWindow : Window
         await using (var capture = File.Create(Path.ChangeExtension(audit.OutputFile, ".toolbar.png")))
             await WebView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, capture);
         var workflowVisible = await WebView.CoreWebView2.ExecuteScriptAsync("Boolean(document.querySelector('[data-highlight-source=\"import-claude\"]')?.getBoundingClientRect().width)");
+        if (audit.Query.Contains("import-guide=true", StringComparison.Ordinal))
+            await CaptureFeatureGuideRegionAsync(audit, "04-entry", "[data-archiver-shell-action=import-claude]", false);
         await Click(workflowVisible == "true" ? "[data-highlight-source=\"import-claude\"]" : "[data-archiver-shell-action=\"import-claude\"]");
         await Check("document.querySelectorAll('[data-json-index] [data-json-platform]').length===11");
         await Check("document.querySelector('.archiver-json-heading h1').textContent===(document.documentElement.lang==='en'?'Import Platform Files':'导入平台文件')");
@@ -640,6 +646,13 @@ public partial class MainWindow : Window
         await Check("(()=>{return [...document.querySelectorAll('[data-json-help]')].every(h=>{const r=h.getBoundingClientRect(),t=document.createRange();t.selectNodeContents(h.parentElement.querySelector('strong'));return r.left>=t.getBoundingClientRect().right&&r.width>=28&&r.height>=28;});})()");
         await using (var capture = File.Create(Path.ChangeExtension(audit.OutputFile, ".entry.png")))
             await WebView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, capture);
+        if (audit.Query.Contains("import-guide=true", StringComparison.Ordinal))
+        {
+            await CaptureFeatureGuideRegionAsync(audit, "04-platform-official", ".archiver-json-heading,[data-json-group=official]", false);
+            await CaptureFeatureGuideRegionAsync(audit, "04-platform-agent", "[data-json-group=agent]");
+            TraceVisualAudit("platform-json-pointer-passed", "documentation capture: both real source groups");
+            return;
+        }
         if (audit.Query.Contains("json-guide=true", StringComparison.Ordinal)) { await VerifyPlatformImportGuideAsync(audit); return; }
         if (audit.Query.Contains("source-picker=true", StringComparison.Ordinal))
         {
@@ -2313,8 +2326,12 @@ public partial class MainWindow : Window
                 reader_search_hint: (() => {
                   const input=document.querySelector('[data-reader-search-input]');if(!input||!input.clientWidth)return null;
                   const s=getComputedStyle(input),context=document.createElement('canvas').getContext('2d');context.font=s.font;
-                  const textWidth=context.measureText(input.placeholder).width,available=input.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight);
-                  return {text:input.placeholder,text_width:textWidth,available_width:available,align:s.textAlign,fits:textWidth<=available+1};
+                  // A native search input can expose its inner editor through
+                  // clientWidth. Use the measured border box and subtract each
+                  // inset once; double subtraction falsely fails narrow views.
+                  const textWidth=context.measureText(input.placeholder).width,available=input.getBoundingClientRect().width-['paddingLeft','paddingRight','borderLeftWidth','borderRightWidth'].reduce((sum,key)=>sum+(parseFloat(s[key])||0),0);
+                  const shape=n=>{const r=n.getBoundingClientRect(),c=getComputedStyle(n);return{tag:n.tagName,width:r.width,client:n.clientWidth,padding:c.padding,box:c.boxSizing,display:c.display,visibility:c.visibility,grid:c.gridTemplateColumns}};
+                  return {text:input.placeholder,text_width:textWidth,available_width:available,align:s.textAlign,fits:textWidth<=available+1,viewport:{width:innerWidth,height:innerHeight},input:shape(input),form:shape(input.parentElement),catalog:shape(input.closest('.reader-catalog')),body:shape(input.closest('.reader-body'))};
                 })(),
                 reader_title_layout: (() => {
                   const content = document.querySelector('.reader-conversation-title-content');

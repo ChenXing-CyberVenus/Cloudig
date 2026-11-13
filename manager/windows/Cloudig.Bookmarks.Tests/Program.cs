@@ -4,6 +4,17 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Cloudig.Bookmarks;
 
+if (args is ["--encryption-only"])
+{
+    await BookmarkEncryptionTests.Run();
+    return;
+}
+if (args is ["--encryption-chrome", var encryptionChrome])
+{
+    await BookmarkEncryptionTests.Run(encryptionChrome);
+    return;
+}
+
 if (args is ["--sync-chrome", var chromePath])
 {
     await BookmarkSyncBrowserProbe.Run(chromePath);

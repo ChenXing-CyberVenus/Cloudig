@@ -93,13 +93,13 @@ test('flag is structural system evidence: arbitrary codes and all additional det
   const helpline = { id: 'helpline-test', phone_number: '988', url: null };
   ai['content'] = [
     { type: 'text', text: 'self_harm_risk and ethics_reminder are words in my answer.' },
-    { type: 'flag', flag: 'self_harm_risk', helpline },
-    { type: 'flag', flag: 'future_flag', extra: { list: ['preserved'], value: false } },
+    { type: 'flag', flag: 'self_harm_risk', helpline, start_timestamp: '2026-11-06T00:00:00Z', stop_timestamp: '2026-11-06T00:00:01Z' },
+    { type: 'flag', flag: 'future_flag', extra: { list: ['preserved', null], value: false } },
     { type: 'text', text: 'Answer continues\non another line.' }
   ];
   const extracted = extractClaudeRecord({ record, source }), blocks = messages(extracted.parsed.draft)[1]!['content'] as JsonObject[];
-  assert.deepEqual(JSON.parse(String(blocks[1]!['text'])), { flag: 'self_harm_risk', helpline });
-  assert.deepEqual(JSON.parse(String(blocks[2]!['text'])), { flag: 'future_flag', extra: { list: ['preserved'], value: false } });
+  assert.deepEqual(JSON.parse(String(blocks[1]!['text'])), (ai['content'] as JsonObject[])[1]);
+  assert.deepEqual(JSON.parse(String(blocks[2]!['text'])), (ai['content'] as JsonObject[])[2]);
   assert.equal(extracted.facts.blockSpeakers?.get(blocks[1]!)?.role, 'system');
   assert.equal(extracted.facts.blockSpeakers?.get(blocks[2]!)?.role, 'system');
   assert.equal(extracted.facts.blockSpeakers?.has(blocks[0]!), false);
@@ -109,6 +109,53 @@ test('flag is structural system evidence: arbitrary codes and all additional det
   const all = buildRecordMarkdown({ conversation: output, resolved, locale: 'en', contentMode: 'with_process' }).parts.join('');
   assert(body.includes('ethics_reminder are words')); assert(!body.includes('helpline-test'));
   assert(all.includes('## System · Claude platform context')); assert(all.includes('helpline-test'));
+});
+
+test('Reader labels open-ended flags, preserves repeated source messages and supports old stored notices', async () => {
+  const record = makeRecord();
+  const notice = { type: 'flag', flag: 'election', helpline: { id: 'example', name: 'Information', url: 'https://example.invalid', text: '<b>Source wording</b>', text_language_tag: 'en' }, start_timestamp: '2026-11-06T00:00:00Z', stop_timestamp: null };
+  record['chat_messages'] = [
+    { uuid: 'u', sender: 'human', content: [{ type: 'text', text: 'User flag: election' }] },
+    { uuid: 'a', sender: 'assistant', parent_message_uuid: 'u', content: [notice, { type: 'text', text: 'Answer one' }] },
+    { uuid: 'b', sender: 'assistant', parent_message_uuid: 'a', content: [notice, { type: 'text', text: 'Answer two' }] }
+  ];
+  const output = assembleConversationRecord({ ...extractClaudeRecord({ record, source }), parserVersion: '1.1.54', timestamp: '2026-11-06T01:00:00Z' });
+  assert.equal(validateRecord('conversation', output).ok, true);
+  const items = (output['messages'] as JsonObject)['items'] as JsonObject[];
+  const flags = items.flatMap(m => m['content'] as JsonObject[]).filter(b => b['title'] === 'Claude platform flag');
+  assert.equal(flags.length, 2);
+  for (const flag of flags) assert.deepEqual(JSON.parse(String(flag['text'])), notice);
+  for (const theme of ['dawn', 'star-night'] as const) for (const language of ['zh', 'en'] as const) {
+    const dom = new JSDOM('<main></main>'), root = dom.window.document.querySelector<HTMLElement>('main')!;
+    const labels: RendererLabels = { reasoning: 'Thinking', toolCall: 'Call', toolResult: 'Result', toolActivity: 'Process', references: 'References', search: 'Search', diagram: 'Diagram', source: 'Source', loadingResource: 'Loading', unavailableResource: 'Unavailable', failedResource: 'Failed', openAttachment: 'Open', externalResource: 'External', systemParty: 'System', toolParty: 'Tool', otherParty: 'Other' };
+    const renderer = createConversationRenderer({ root, labels, theme, language });
+    renderer.render(prepareRecordConversationView({ conversation: output, resolved }).page(request));
+    assert.equal(root.querySelectorAll('.cloudig-message-system').length, 2);
+    assert.equal(root.querySelectorAll('.cloudig-system-avatar img').length, 2);
+    for (const group of root.querySelectorAll<HTMLDetailsElement>('.cloudig-process-group')) {
+      assert.equal(group.open, false); group.open = true; group.dispatchEvent(new dom.window.Event('toggle'));
+    }
+    await new Promise(resolve => setTimeout(resolve, 0));
+    const folds = root.querySelectorAll<HTMLDetailsElement>('.cloudig-platform-context');
+    assert.equal(folds.length, 2);
+    for (const fold of folds) {
+      assert.equal(fold.open, false);
+      assert.equal(fold.querySelector('summary')!.textContent, (language === 'en' ? 'Claude platform flag' : 'Claude 平台标记') + ' · election');
+      fold.open = true; fold.dispatchEvent(new dom.window.Event('toggle'));
+    }
+    await new Promise(resolve => setTimeout(resolve, 0));
+    for (const fold of folds) {
+      assert.deepEqual(JSON.parse(fold.querySelector('.cloudig-text')!.textContent!), notice);
+      assert.equal(fold.querySelector('.cloudig-text')!.childElementCount, 0);
+    }
+    for (const body of ['{"flag":"old_unknown","extra":false}', 'Older non-JSON source text']) {
+      renderer.render({ messages: [{ party: { role: 'user' }, blocks: [{ category: 'reasoning', collapsed: true, value: { type: 'status', title: 'Claude platform flag', text: body, format: 'text' } }] }] });
+      const fold = root.querySelector<HTMLDetailsElement>('.cloudig-platform-context')!;
+      assert.equal(fold.open, false);
+      assert(fold.querySelector('summary')!.textContent!.endsWith(body.startsWith('{') ? ' · old_unknown' : language === 'en' ? 'platform flag' : '平台标记'));
+    }
+    renderer.destroy(); dom.window.close();
+  }
 });
 
 test('real projection separates system nodes from speech bubbles while retaining canonical anchors, branches and process navigation', () => {

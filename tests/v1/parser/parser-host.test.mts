@@ -9,7 +9,7 @@ import test from "node:test";
 
 import { prepareParseBatch, runNewParseBatch, runPreparedParseBatch } from "../../../src/app/parser/batch.mts";
 import { parseExporterHtmlToDraft } from "../../../src/app/parser/host.mts";
-import { adapterBundleSha256, adapterBundleSnapshot, PARSER_VERSION } from "../../../src/app/parser/registry.mts";
+import { adapterBundleSha256, adapterBundleSnapshot, PARSER_VERSION, findSourceAdapter } from "../../../src/app/parser/registry.mts";
 import { extractStaticReadingEvidence } from "../../../src/adapters/parser/reading-evidence.mts";
 import { embeddedBase64DataUrl } from "../../../src/adapters/parser/embedded-data.mts";
 import {
@@ -233,6 +233,15 @@ test("a megabyte data URL is retained across quoted tag boundaries without quadr
   assert.equal(result.fingerprint.sha256, createHash("sha256").update(html).digest("hex"));
 });
 
+test("reading envelopes survive unbalanced descendants without merging messages or accepting a truncated envelope", async () => {
+  const html = '<article data-source-id="m1"><p><span>First<article><p>Nested</p></article><p>Last</article><article data-source-id="m2"><p>Second</p></article>';
+  const result = await extractStaticReadingEvidence(Readable.from(Array.from(html, c => Buffer.from(c))));
+  assert.deepEqual(result.fragments.map(f => f.messageId), ['m1', 'm2']);
+  assert.equal(result.fragments[0]!.html, '<p><span>First<article><p>Nested</p></article><p>Last');
+  assert.equal(result.fragments[1]!.html, '<p>Second</p>');
+  await assert.rejects(extractStaticReadingEvidence(Readable.from(['<article data-source-id="m1"><p>Unfinished</p>'])), /message reading fragment/);
+});
+
 test("div-based Mermaid cards retain their SVG stylesheet across stream chunks", async () => {
   const html = '<style>body{background:red}</style><article data-message-id="one"><div class="osis-mermaid-card"><svg><style>.node{fill:red;clip-path:url(#clip)}</style><text>A</text></svg></div><script>not reading</script></article>';
   const result = await extractStaticReadingEvidence(Readable.from(Array.from(html, c => Buffer.from(c))));
@@ -295,7 +304,7 @@ test("ChatGPT Light manifest and payload become one deterministic semantic Conve
     filePath: filePath(fixture)
   });
   assert.equal(first.adapter.id, "chatgpt-light-items-v2");
-  assert.equal(first.adapter.version, "3.0.10");
+  assert.equal(first.adapter.version, findSourceAdapter({ format: "exporter-html", platform: "chatgpt", payload: "osis.chatgpt.chat-export/light-items-v2" })?.manifest.version);
   assert.deepEqual(first.draft, second.draft);
   assert.deepEqual(first.sourceFingerprint, second.sourceFingerprint);
   assert.ok(progress.some((entry) => entry.phase === "fingerprint" && entry.completed === entry.total));
@@ -341,7 +350,7 @@ test("ChatGPT Full reuses semantic grouping but embeds captured attachment bytes
     await writeFile(source, full, "utf8");
     const parsed = await parseExporterHtmlToDraft({ filePath: source });
     assert.equal(parsed.adapter.id, "chatgpt-full-v1");
-    assert.equal(parsed.adapter.version, "3.0.10");
+    assert.equal(parsed.adapter.version, findSourceAdapter({ format: "exporter-html", platform: "chatgpt", payload: "osis.chatgpt.chat-export/full-v1" })?.manifest.version);
     const conversation = fullConversation(parsed.draft, {
       id: parsed.adapter.id,
       version: parsed.adapter.version

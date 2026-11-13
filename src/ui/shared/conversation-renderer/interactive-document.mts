@@ -32,9 +32,13 @@ export function prepareInteractiveHtml(input: InteractivePackage, document: Docu
     for (const alias of file.aliases ?? []) urls.set(alias, url);
   }
   const lookup = (value: string, filename: string): string | undefined => urls.get(value) ?? urls.get(new URL(value, new URL(filename, base)).href);
-  const localFontSheet = (url: string) => new URL(url.replaceAll("&amp;", "&")).searchParams.getAll("family").flatMap(f => f.split("|")).every(f => input.fontCss?.includes(`font-family:${JSON.stringify(f.split(":", 1)[0])}`));
-  const css = (text: string, filename: string) => text.replace(/@import\s+url\(\s*(["'])(https:\/\/fonts\.googleapis\.com\/[^"']+)\1\s*\)\s*;/gu,
-    (raw, _quote: string, url: string) => localFontSheet(url) ? "" : raw).replace(/url\(\s*(["']?)(.*?)\1\s*\)/gu, (raw, _q: string, value: string) => {
+  // Local faces are installed below. A requested range outside an available
+  // face uses CSS's nearest weight/fallback, not a fatal dependency error.
+  const css = (text: string, filename: string) => text.replace(/@import\s+(?:url\(\s*(["']?)(https:\/\/fonts\.googleapis\.com\/[^\s"')]+)\1\s*\)|(["'])(https:\/\/fonts\.googleapis\.com\/[^"']+)\3)\s*;/gu,
+    "").replace(/@font-face\s*\{[^{}]*\}/giu, rule => {
+      const addresses = [...rule.matchAll(/url\(\s*(["']?)(.*?)\1\s*\)/gu)].map(match => match[2]!);
+      return addresses.some(value => /^https?:/u.test(value) && !lookup(value, filename)) ? "" : rule;
+    }).replace(/url\(\s*(["']?)(.*?)\1\s*\)/gu, (raw, _q: string, value: string) => {
     const target = lookup(value, filename); return target ? `url("${target}")` : raw;
   });
   for (const file of input.files.filter(f => f.mime === "text/css")) {
@@ -84,8 +88,6 @@ export function prepareInteractiveHtml(input: InteractivePackage, document: Docu
       const target = lookup(raw, filename);
       if (target) node.setAttribute(attr, target);
       else if (node.localName === "link" && raw.startsWith("https://fonts.googleapis.com/")) {
-        const families = new URL(raw).searchParams.getAll("family").map(f => f.split(":", 1)[0]!);
-        if (!families.length || families.some(f => !input.fontCss?.includes(`font-family:${JSON.stringify(f)}`))) throw new TypeError(`Font stylesheet is not bundled: ${raw}`);
         node.remove();
       }
       else if (node.localName === "script" || node.localName === "link" && node.getAttribute("rel") === "stylesheet") throw new TypeError(`Dependency is not bundled: ${raw}`);

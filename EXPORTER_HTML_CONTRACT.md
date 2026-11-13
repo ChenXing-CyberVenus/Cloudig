@@ -28,6 +28,14 @@
 
 ## 一、工程边界
 
+### GPT公开分析与来源归属（2026-11-04已验收）
+
+3.7.81-light／1.0.78-full／1.0.78-all-branches增加可选阅读关联，不改变既有payload版本、原始消息树或工具原文：
+
+- `analysis_call_id`：公开Python代码项及其直接子节点`execution_output`共用代码消息ID；最终回答的`analysis_refs`按该分支祖先顺序列出同轮代码ID。关系来自mapping父子与同轮标识，不用`metadata.parent_id`、正文相似或位置猜配。HTML入口只打开已有代码/结果，不执行它们。
+- `presentation: "source_summary"`：assistant携带来源、面向all且没有搜索查询时，保留tool兼容项、全部来源和原记录，显示为“检索来源”，不冒充新的web工具调用。可证明属于同一回答时增加`source_owner_id`；无法证明就独立保留。真正的搜索步骤仍按原工具规则展示。
+- 可选字段不是新增正文，也不是删除/去重指令。解析器忽略它们仍能读原内容；需要还原阅读位置时按消息身份消费，不跨分支关联。详见[实施与证据](docs/2026-11-04_GPT分析入口与检索来源归属-承光织云.md)。
+
 工程链路是：
 
 ```text
@@ -337,6 +345,7 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 
 - 既有`gemini-archive-data`及其schema不替换。`manifest.payload.rich_content`指向惰性JSON脚本`gemini-rich-content-data`，格式`osis.gemini.rich-content/v1`；旧消费者可继续读原载荷，新消费者按该引用合并，不能重复生成同一条消息。
 - `native_turns`保留原生回答窗口的完整记录；`native_window_metadata`保留附加数据区；`pagination`记录页数与完整游标终止事实，可选`retries`记录本次有界恢复次数。`coverage`记录当前DOM回答ID、原生缺失ID与分页/身份综合完整性；消息数相等不能替代它。请求中的会话鉴权字段不写入载荷。
+- 冷页候选2.7.18-light/1.0.14-full：`coverage.missing_dom_response_ids`补反向核对“原生已有、页面尚未加载”的回答；新写`coverage.complete`要求原生分页终止及双向ID覆盖，旧载荷无此字段不能推定反向覆盖。接口完整时在作品捕获前仅补已证明的DOM缺口；`lazy_load.native_expected_responses/missing_response_ids`记录目标与未补齐身份，不以一段高度稳定冒称完整。不更改消息树、原始内容或资源策略。
 - `gemini-archive-data.messages[].model`独立于思维摘要，按精确回答ID取原生`turn[3][21]`；原生缺失才读同条回答详情。`model_provenance`区分`native_conversation.turn[3][21]`与`response_details.model_line`。无证据不拿当前模型选择器补全部历史；阅读层在回答末尾显示该轮模型。
 - `artifacts[]`以`key`、原站`id`、`message_id`归属；`kind`区分document/research/code/quiz/slides/visualize。`source`是原始文本（包括原围栏），`native_record`是原生结构，`updated_at`是原生修订时间。原生revision metadata的类型数值不是人类版本号，不能直接渲染为“版本1/2”。
 - 只读`ListArtifactVersions`返回值保存在`native_artifact_versions`；卡片的`history`含其他实际修订，原文逐版可下载。不会调用上一/下一版本导航、Create或Update来采集，也不将最新版重复引用当成多份历史源码。
@@ -344,9 +353,11 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 - Visualize预览、研究报告内图、媒体和字幕的真实字节放在`resources[]`；`data_url`或文本`text`只保存一次，`data-gemini-media`、`data-gemini-resource`等阅读节点引用其`key`。资源含名称、MIME、大小、可得SHA256与原来源；不能凭节点或文件名就判定已内嵌。
 - Quiz保存完整题库、正确标记、解析、提示；HTML只提供本地练习，不修改原站作答状态。`media_groups`保留原生标题、风格/标签和歌词原文；Full存影音字节，Light仍沿轻装媒体边界，但不丢文本源码、题库和字幕。
 - 普通回答的`messages[].sources`保留原生引用URL、标题、站点、摘要、`capture:native_citation`与`citation_ids`；原始引用组仍在`native_turns`，不把未经验证的数字字段猜成引用序号。文内chip以精确URL关联，来源面板是接口缺失时的回退，不以普通外链计数证明来源完整。
+- 文档引用候选`2.7.16-light / 1.0.12-full`：富载荷新增`document_citations[]`，每项含`message_id`、正文`path`、原生`marker`、原生关联`context`、`sources[]`与`complete`；文档来源含`kind:document`、`title/filename/mime`。完整原生来源记录仍在`native_turns`，不制造URL或把引用上下文冒充文档摘录。阅读层按同消息`data-path-to-node`绑定，`data-citation-path`标记原位分组，可展开全部成员；同名重复引用不按标题去重。原生无编号的空占位不造`[?]`，真实编号仍保留。仅文档标记全部覆盖才免来源面板，其他网页/未知来源继续原路径。Light/Full原文件策略不变；引用记录不承诺附件字节可得。[专项与实证](docs/2026-11-11_Gemini文档引用原位兼容-承光织云.md)。
 - `media[].url`是原地址，`access_url`仅补原站当前账号参数供实际访问；Light明确为需登录的在线入口，不冒充内嵌文件。`artifacts[].preview_capture`现为`native_copy_image`或`isolated_source_render`；后者经用户授权，在临时独立源框中执行完整原作品，生成初始状态预览后销毁，**不是原页当前交互状态截图**。`preview_render`记录`state:source_initial_state`、公共库地址、`draw_calls`与`svg_nodes`。原始source不改，归档HTML不自动运行复杂作品。旧候选`native_same_theme_repaint`不再使用。
 - 研究报告保留正文、原始引用、`sources`中已引用/查阅来源、`research_process`原顺序和内嵌图源码。图与源码在作品自身原位，不追加到无关消息尾部。复杂交互完整运行交采云；完整源码已在HTML，不是等待以后再抓原站链接。
 - 错误继续进入原有`capture_diagnostics`；不存在阅读层错误条。候选实测/最终用户验收见[Gemini专项](docs/2026-10-19_Gemini富内容与Canvas专项研究-承光织云.md)，本文不宣布产品Parser已支持新增载荷。
+- 已验收任务模式`2.7.20-light / 1.0.16-full`沿用上述载荷，新增可选`task_turns`（事件数、父轮、自动续报身份）、`task_children`（子会话ID、完整原生轮及覆盖）、`task_schedules`（同会话排程与保存时状态）及`cloud_documents`。无用户输入的自动续报不造空用户消息，公开事件按顺序原位折叠，子任务当前完整内容与历史快照区分。消息时间保留`timestamp/timestamp_raw/timestamp_scope:turn`和来源，阅读层直接显示日期时刻，轮次语义与时区留在tooltip/元数据，不伪造独立发送/完成时间；Task混合模型字段标“记录模型”，不倒灌当前选择器。数字键扩展92保留完整组件HTML与已知组件数据，Task Canvas回退`artifact[14][0]`原源码；普通Chat旧字段仍优先。云Docs两档均保存实际DOCX至既有`resources`，`cloud_documents.resource`绑定资源键，另留`id/message_ids/url/filename/export_format/native_metadata/version_scope:current_at_export/captured_at/source_provenance`；同文档版本在导出前后核对，不把当前文件冒充历史版本，不含请求凭据。其他Light附件策略不变。[任务模式专项](docs/2026-11-12_Gemini任务模式采集专项与支持方案-承光织云.md)是实现证据，不代表Parser/Reader已接入这些新增字段。
 
 ### 7.4 Grok
 

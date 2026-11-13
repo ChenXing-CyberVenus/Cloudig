@@ -23,7 +23,7 @@ public static class ChromeProfileDiscovery
         var candidates = new HashSet<string>(displayNames.Keys, StringComparer.OrdinalIgnoreCase);
         foreach (var directory in Directory.EnumerateDirectories(root))
         {
-            if (File.Exists(Path.Combine(directory, "Bookmarks")) || File.Exists(Path.Combine(directory, "Bookmarks Account")))
+            if (new[] { "Bookmarks", "AccountBookmarks", "Bookmarks Account", "EncryptedBookmarks2", "EncryptedAccountBookmarks2" }.Any(name => File.Exists(Path.Combine(directory, name))))
             {
                 candidates.Add(Path.GetFileName(directory));
             }
@@ -36,8 +36,8 @@ public static class ChromeProfileDiscovery
             var profilePath = Path.GetFullPath(Path.Combine(root, directoryName));
             if (!profilePath.StartsWith(root, StringComparison.OrdinalIgnoreCase)) continue;
             var stores = new List<BookmarkStore>();
-            AddStore(stores, directoryName, displayNames.GetValueOrDefault(directoryName) ?? directoryName, profilePath, "Bookmarks", "local");
-            AddStore(stores, directoryName, displayNames.GetValueOrDefault(directoryName) ?? directoryName, profilePath, "Bookmarks Account", "account");
+            AddStore(stores, directoryName, displayNames.GetValueOrDefault(directoryName) ?? directoryName, profilePath, "local", ["Bookmarks", "EncryptedBookmarks2"]);
+            AddStore(stores, directoryName, displayNames.GetValueOrDefault(directoryName) ?? directoryName, profilePath, "account", ["AccountBookmarks", "Bookmarks Account", "EncryptedAccountBookmarks2"]);
             if (stores.Count == 0) continue;
             profiles.Add(new ChromeProfile(
                 directoryName,
@@ -70,6 +70,27 @@ public static class ChromeProfileDiscovery
     {
         var offset = bytes.Length >= 3 && bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF ? 3 : 0;
         return new UTF8Encoding(false, true).GetString(bytes, offset, bytes.Length - offset);
+    }
+
+    public static string ReadBookmarkJson(string path)
+    {
+        var bytes = ReadAllBytesShared(path);
+        if (!ChromeBookmarkEncryption.IsEncryptedStore(path)) return DecodeUtf8(bytes);
+        using var cipher = ChromeBookmarkEncryption.Open(path);
+        return DecodeUtf8(cipher.Decrypt(bytes));
+    }
+
+    // A Chrome storage-stage change must not detach the saved folder GUID or
+    // silently select a different profile. Only known names in one profile alias.
+    public static bool SameLogicalStore(string left, string right)
+    {
+        if (string.IsNullOrWhiteSpace(left) || string.IsNullOrWhiteSpace(right)) return false;
+        var a = Path.GetFullPath(left); var b = Path.GetFullPath(right);
+        if (a.Equals(b, StringComparison.OrdinalIgnoreCase)) return true;
+        static string? Kind(string path) => Path.GetFileName(path) switch {
+            "Bookmarks" or "EncryptedBookmarks2" => "local",
+            "AccountBookmarks" or "Bookmarks Account" or "EncryptedAccountBookmarks2" => "account", _ => null };
+        return Kind(a) is { } kind && kind == Kind(b) && string.Equals(Path.GetDirectoryName(a), Path.GetDirectoryName(b), StringComparison.OrdinalIgnoreCase);
     }
 
     private static Dictionary<string, string> ReadDisplayNames(string localState)
@@ -121,10 +142,10 @@ public static class ChromeProfileDiscovery
         string directoryName,
         string displayName,
         string profilePath,
-        string fileName,
-        string kind)
+        string kind,
+        string[] fileNames)
     {
-        var path = Path.Combine(profilePath, fileName);
-        if (File.Exists(path)) stores.Add(new BookmarkStore(directoryName, displayName, kind, path));
+        var path = fileNames.Select(name => Path.Combine(profilePath, name)).FirstOrDefault(File.Exists);
+        if (path is not null) stores.Add(new BookmarkStore(directoryName, displayName, kind, path));
     }
 }

@@ -38,12 +38,12 @@ public sealed class BookmarkTransaction
         using var backupLock = new FileStream(Path.Combine(_backupRoot, ".transaction.lock"),
             FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 1, FileOptions.DeleteOnClose);
 
-        var plans = selected.Select(store => CreatePlan(store, operation, utcNow)).ToArray();
+        var plans = selected.SelectMany(store => CreatePlans(store, operation, utcNow)).ToArray();
         var changed = plans.Where(plan => plan.Mutation.Changed).ToArray();
         if (changed.Length == 0)
         {
             BookmarkBackupRetention.Prune(_backupRoot);
-            return new BookmarkTransactionResult(null, plans.Select(ToResult).ToArray());
+            return new BookmarkTransactionResult(null, plans.Where(plan => !plan.IsCompanion).Select(ToResult).ToArray());
         }
 
         var timestamp = utcNow.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'", System.Globalization.CultureInfo.InvariantCulture);
@@ -98,12 +98,17 @@ public sealed class BookmarkTransaction
                     throw new IOException($"Chrome bookmarks changed after preflight: {plan.Store.ProfileDisplayName}/{plan.Store.Kind}");
                 }
                 written.Add(plan);
-                WriteAtomically(plan.Store.Path, BookmarkJson.Utf8(plan.Mutation.Json));
+                WriteAtomically(plan.Store.Path, plan.ResultBytes);
                 if (!FixedHashEquals(FileSha256(plan.Store.Path), plan.ResultSha256))
                 {
                     throw new IOException($"Chrome bookmark hash verification failed after writing: {plan.Store.ProfileDisplayName}/{plan.Store.Kind}");
                 }
             }
+            // Recheck the complete pair/group: another writer may have changed
+            // the first file while the encrypted companion was being saved.
+            foreach (var plan in changed)
+                if (!FixedHashEquals(FileSha256(plan.Store.Path), plan.ResultSha256))
+                    throw new IOException($"Chrome bookmarks changed before transaction completion: {plan.Store.ProfileDisplayName}/{plan.Store.Kind}");
             File.Delete(Path.Combine(backupDirectory, PendingFileName));
         }
         catch (Exception writeError)
@@ -145,22 +150,54 @@ public sealed class BookmarkTransaction
             throw new InvalidOperationException($"Cloudig bookmark transaction failed; every written store was restored from {backupDirectory}", writeError);
         }
 
-        return new BookmarkTransactionResult(backupDirectory, plans.Select(ToResult).ToArray());
+        return new BookmarkTransactionResult(backupDirectory, plans.Where(plan => !plan.IsCompanion).Select(ToResult).ToArray());
     }
 
-    private Plan CreatePlan(BookmarkStore store, BookmarkOperation operation, DateTime utcNow)
+    private Plan[] CreatePlans(BookmarkStore store, BookmarkOperation operation, DateTime utcNow)
     {
         if (!File.Exists(store.Path)) throw new FileNotFoundException("Chrome bookmark store does not exist.", store.Path);
         var originalBytes = ChromeProfileDiscovery.ReadAllBytesShared(store.Path);
-        var originalJson = ChromeProfileDiscovery.DecodeUtf8(originalBytes);
+        var encryptedPrimary = ChromeBookmarkEncryption.IsEncryptedStore(store.Path);
+        using var primaryCipher = encryptedPrimary ? ChromeBookmarkEncryption.Open(store.Path) : null;
+        var originalJson = ChromeProfileDiscovery.DecodeUtf8(primaryCipher is null ? originalBytes : primaryCipher.Decrypt(originalBytes));
+        var companionPath = ChromeBookmarkEncryption.CompanionPath(store.Path);
+        var encryptedBytes = companionPath is not null && File.Exists(companionPath)
+            ? ChromeProfileDiscovery.ReadAllBytesShared(companionPath) : null;
+        using var encryption = encryptedBytes is not null ? ChromeBookmarkEncryption.Open(store.Path) : null;
+        if (encryptedBytes is not null)
+        {
+            var encryptedJson = ChromeProfileDiscovery.DecodeUtf8(encryption!.Decrypt(encryptedBytes));
+            // Either file may be primary at different rollout stages. Never guess
+            // which divergent tree is newer or discard data from the other one.
+            if (!JsonNode.DeepEquals(BookmarkJson.ParseObject(originalJson), BookmarkJson.ParseObject(encryptedJson)))
+                throw new IOException("Chrome明文与加密书签库内容不一致，未写入。请先正常打开并退出Chrome，使两份库完成同步保存。");
+        }
         var mutation = ChromeBookmarkSync.Apply(originalJson, _editor.Mutate(originalJson, operation, utcNow), utcNow);
-        return new Plan
+        var clearResult = BookmarkJson.Utf8(mutation.Json);
+        var resultBytes = primaryCipher is null ? clearResult : mutation.Changed ? primaryCipher.Encrypt(clearResult) : originalBytes;
+        if (primaryCipher is not null && !primaryCipher.Decrypt(resultBytes).AsSpan().SequenceEqual(mutation.Changed ? clearResult : primaryCipher.Decrypt(originalBytes)))
+            throw new CryptographicException("Chrome加密书签回读校验失败，未写入。");
+        var primary = new Plan
         {
             Store = store,
             Mutation = mutation,
             OriginalSha256 = Sha256(originalBytes),
-            ResultSha256 = Sha256(BookmarkJson.Utf8(mutation.Json))
+            ResultSha256 = Sha256(resultBytes),
+            ResultBytes = resultBytes
         };
+        if (encryptedBytes is null || !mutation.Changed) return [primary];
+        var encryptedResult = encryption!.Encrypt(resultBytes);
+        if (!encryption.Decrypt(encryptedResult).AsSpan().SequenceEqual(resultBytes))
+            throw new CryptographicException("Chrome加密书签回读校验失败，未写入。");
+        return [primary, new Plan
+        {
+            Store = store with { Path = companionPath!, Kind = store.Kind + "-encrypted" },
+            Mutation = mutation with { Added = 0, Updated = 0, Removed = 0 },
+            OriginalSha256 = Sha256(encryptedBytes),
+            ResultSha256 = Sha256(encryptedResult),
+            ResultBytes = encryptedResult,
+            IsCompanion = true
+        }];
     }
 
     private static BookmarkStoreResult ToResult(Plan plan) => new(
@@ -260,6 +297,8 @@ public sealed class BookmarkTransaction
         public required BookmarkMutation Mutation { get; init; }
         public required string OriginalSha256 { get; init; }
         public required string ResultSha256 { get; init; }
+        public required byte[] ResultBytes { get; init; }
+        public bool IsCompanion { get; init; }
         public string? BackupPath { get; set; }
     }
 }

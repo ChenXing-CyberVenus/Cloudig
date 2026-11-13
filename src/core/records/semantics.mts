@@ -4,7 +4,7 @@ import common from "./schemas/common.schema.json" with { type: "json" };
 import type { JsonObject, JsonValue, ValidationIssue } from "../contracts/types.mts";
 import type { RecordKind } from "./schema-registry.mts";
 import { RECORD_TIME_LIMITS, RELATIVE_MAX_TENTHS } from "./limits.mts";
-import { blockHtml, htmlResourceImages } from "./html-resources.mts";
+import { blockHtml, htmlResourceImages, htmlReferenceIds } from "./html-resources.mts";
 
 const uuid = new RegExp(common.$defs.uuid.pattern, "u");
 const object = (value: JsonValue | undefined): JsonObject => value as JsonObject;
@@ -148,6 +148,7 @@ function conversation(value: JsonObject, issues: ValidationIssue[], observed?: R
       if (html !== undefined) for (const image of htmlResourceImages(html)) if (!imageIds.has(image.id))
         issue(issues, `${item.p}/${typeof b["html"] === "string" ? "html" : "text"}`, "Inline image must reference an image resource in this Conversation");
       if (Array.isArray(b["references"])) for (const r of b["references"]) if (!refs.has(String(r))) issue(issues, `${item.p}/references`, "Unknown reference");
+      if (html !== undefined) for (const id of htmlReferenceIds(html)) if (!refs.has(id)) issue(issues, `${item.p}/html`, "Unknown inline reference");
       for (const [j, nested] of array(b["content"]).entries()) stack.push({ b: nested, p: `${item.p}/content/${j}`, speaker: who });
     }
   }

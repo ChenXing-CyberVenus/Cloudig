@@ -236,7 +236,6 @@ export async function extractStaticReadingEvidence(
         const piece = buffer.slice(0, close + "</section>".length);
         captured += piece;
         appendMessage(piece);
-        if (messageCapture) messageCapture.depth -= 1;
         const record = parseCard(captured, currentMessageId, currentMessageVersion);
         if (record) records.push(record);
         buffer = buffer.slice(close + "</section>".length);
@@ -280,7 +279,7 @@ export async function extractStaticReadingEvidence(
           if (name === messageCapture.rootTag && messageCapture.depth === 1) finishMessage();
           else {
             appendMessage(tag);
-            messageCapture.depth = Math.max(1, messageCapture.depth - 1);
+            if (name === messageCapture.rootTag) messageCapture.depth -= 1;
           }
         }
         for (let index = ownerStack.length - 1; index >= 0; index -= 1) {
@@ -325,7 +324,11 @@ export async function extractStaticReadingEvidence(
         };
       } else if (messageCapture) {
         appendMessage(tag);
-        if (!isVoid) messageCapture.depth += 1;
+        // The message envelope is an article. Descendant markup can contain
+        // browser-repaired/optional closures; counting every tag makes one
+        // inline span swallow the rest of the conversation. Track only nested
+        // envelopes, while the HTML parser handles their actual inner layout.
+        if (!isVoid && name === messageCapture.rootTag) messageCapture.depth += 1;
       }
       const classes = new Set((attrs["class"] ?? "").split(/\s+/u).filter(Boolean));
       if (name === "section" && classes.has(CARD_CLASS)) {

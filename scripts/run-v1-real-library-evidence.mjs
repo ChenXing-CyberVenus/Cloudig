@@ -8,6 +8,7 @@ import process from "node:process";
 import { spawn, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { hashInputs } from "./v1-release-preflight.mjs";
+import { resolveV1Samples } from "./resolve-v1-samples.mjs";
 
 const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const defaultOutput = "artifacts/v1-release/evidence/real-library-journey.json";
@@ -65,18 +66,18 @@ export function extractRealLibraryResult(stdout) {
 }
 
 async function sampleFingerprint(sampleRoot) {
-  const names = (await readdir(sampleRoot, { withFileTypes: true }))
-    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".html"))
-    .map((entry) => entry.name)
-    .sort((left, right) => left.localeCompare(right, "zh-CN"));
+  const samples = await resolveV1Samples(sampleRoot);
   const aggregate = createHash("sha256");
   let total = 0;
-  for (const name of names) {
-    const file = await hashStream(path.join(sampleRoot, name));
+  const entries = [];
+  for (const sample of samples) {
+    const name = path.relative(sampleRoot, sample.file).replaceAll("\\", "/");
+    const file = await hashStream(sample.file);
     total += file.bytes;
     aggregate.update(`${name}\0${file.bytes}\0${file.sha256}\n`);
+    entries.push({ path: name, ...file });
   }
-  return { file_count: names.length, total_bytes: total, aggregate_sha256: aggregate.digest("hex") };
+  return { file_count: samples.length, total_bytes: total, aggregate_sha256: aggregate.digest("hex"), entries };
 }
 
 function parseArgs(args) {

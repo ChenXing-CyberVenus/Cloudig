@@ -1,7 +1,9 @@
 import {
   defaultTreeAdapter,
+  html,
   parseFragment,
   serialize,
+  serializeOuter,
   type DefaultTreeAdapterTypes
 } from "parse5";
 
@@ -13,6 +15,9 @@ import { embeddedBase64DataUrl, embeddedImageDataUrl } from "./embedded-data.mts
 import { inertHtmlEvidence, inertHtmlFragment, preserveNestedImage } from "./inert-html.mts";
 import { GeminiRichContent } from "./gemini-rich.mts";
 import { WorkResources } from "./work-resources.mts";
+import { GeminiTasks } from "./gemini-task.mts";
+import { HTML_IMAGE_RESOURCE } from "../../core/records/html-resources.mts";
+import { htmlBlockSegments } from "./html-block-segments.mts";
 
 type Profile = "light" | "full";
 type ReadingImage = Readonly<{ messageId: string; dataUrl: string; alt?: string; width?: number; height?: number }>;
@@ -86,6 +91,7 @@ class GeminiResourcePool {
   readonly #reading = new Map<string, Array<{ value: ReadingImage; used: boolean }>>();
   readonly #ownerImages = new Map<string, Set<string>>();
   readonly #usedImageKeys = new Map<string, Set<string>>();
+  readonly #imageBlocks = new Map<string, JsonObject>();
 
   constructor(payload: JsonObject, reading: readonly ReadingImage[]) {
     for (const raw of values(payload["images"])) {
@@ -219,13 +225,18 @@ class GeminiResourcePool {
     const meta = key ? (kind === "image" ? this.#images.get(key) : this.#files.get(key)) : undefined;
     if (kind === "image" && key) this.#usedImageKeys.get(owner)?.add(key);
     const reading = kind === "image" ? this.#takeReading(owner, meta) : undefined;
+    const imageKey = kind === "image" && key ? `${owner}\u0000${key}` : undefined;
+    const existing = imageKey ? this.#imageBlocks.get(imageKey) : undefined;
+    if (existing) return { ...existing };
     const dataUrl = sourceText(meta?.["data_url"]) ?? reading?.dataUrl;
     const resource = dataUrl
       ? this.#embedded(kind, dataUrl, meta, raw, reading, limitations)
       : this.#metadata(kind, meta, raw);
-    return kind === "image"
-      ? { type: "image", resource, ...(reading?.alt ? { alt: reading.alt } : {}) }
+    const block: JsonObject = kind === "image"
+      ? { type: "image", resource, ...(reading?.alt || sourceText(meta?.["alt"]) ? { alt: reading?.alt ?? meta!["alt"]! } : {}) }
       : { type: "attachment", resource };
+    if (imageKey) this.#imageBlocks.set(imageKey, block);
+    return block;
   }
 
   addRemainingImages(owner: string, limitations: JsonObject[]): JsonObject[] {
@@ -277,6 +288,13 @@ class GeminiSourcePool {
   forLinks(links: readonly string[]): string[] {
     return [...new Set(links.flatMap((url) => this.#byUrl.get(url) ?? []))];
   }
+
+  addDocument(source: JsonObject): string {
+    const id = `s${this.values.length + 1}`;
+    this.values.push({ id, kind: "file", ...(sourceText(source["title"]) ? { title: source["title"]! } : {}),
+      ...(sourceText(source["filename"]) ? { name: source["filename"]! } : {}), ...(sourceText(source["mime"]) ? { text: source["mime"]! } : {}) });
+    return id;
+  }
 }
 
 function hasAttachmentClass(element: Element): boolean {
@@ -304,6 +322,8 @@ function projectBody(
   fallbackText: string | undefined,
   attachments: readonly JsonObject[],
   limitations: JsonObject[],
+  imageAt: (key: string) => JsonObject,
+  attachmentImageKeys: readonly (string | undefined)[],
   rich?: Readonly<{ projector: GeminiRichContent; owner: string }>
 ): Readonly<{ blocks: JsonObject[]; links: readonly string[] }> {
   if (!rawHtml) {
@@ -315,6 +335,18 @@ function projectBody(
   const markers = attachments.map((_, index) => `\uE000CLOUDIG_ATTACHMENT_${index}\uE001`);
   if (markers.some((marker) => rawHtml.includes(marker))) throw new TypeError("Gemini HTML collides with the internal attachment marker");
   const fragment = parseFragment(rawHtml);
+  const placedImageKeys = new Set<string>();
+  const placeImages = (parent: Parent): void => {
+    for (const child of [...parent.childNodes]) if (isElement(child)) {
+      const key = child.tagName === "osis-image" ? child.attrs.find(a => a.name === "data-key")?.value : undefined;
+      if (key) {
+        placedImageKeys.add(key);
+        const block = imageAt(key), replacement = defaultTreeAdapter.createElement("img", html.NS.HTML,
+          [{ name: HTML_IMAGE_RESOURCE, value: String(block["resource"]) }, { name: "alt", value: String(block["alt"] ?? "") }]);
+        defaultTreeAdapter.insertBefore(parent, replacement, child); defaultTreeAdapter.detachNode(child);
+      } else placeImages(child);
+    }
+  };
   const richBlocks: JsonObject[] = [];
   if (rich) {
     const replace = (parent: Parent): void => {
@@ -327,26 +359,27 @@ function projectBody(
       }
     }; replace(fragment);
   }
+  placeImages(fragment);
   const used = { count: 0 };
   replaceAttachmentCards(fragment, markers, attachments, used);
-  const split = serialize(fragment).split(/(\uE000CLOUDIG_(?:ATTACHMENT|GEMINI_RICH)_[0-9]+\uE001)/u);
+  const slots = new Map(markers.map((marker, index) => [marker, attachments[index]!]));
+  richBlocks.forEach((block, index) => slots.set(`\uE000CLOUDIG_GEMINI_RICH_${index}\uE001`, block));
+  const split = htmlBlockSegments(fragment, slots);
   const blocks: JsonObject[] = [];
   const links: string[] = [];
   for (const part of split) {
-    const richMarker = /^\uE000CLOUDIG_GEMINI_RICH_([0-9]+)\uE001$/u.exec(part);
-    if (richMarker) { blocks.push(richBlocks[Number(richMarker[1])]!); continue; }
-    const marker = /^\uE000CLOUDIG_ATTACHMENT_([0-9]+)\uE001$/u.exec(part);
-    if (marker) {
-      const attachment = attachments[Number.parseInt(marker[1]!, 10)];
-      if (attachment) blocks.push(attachment);
-      continue;
-    }
+    if (typeof part !== "string") { blocks.push(part); continue; }
     const evidence = inertHtmlEvidence(part);
     if (evidence.html) blocks.push({ type: "html", html: evidence.html });
     for (const link of evidence.links) if (!links.includes(link)) links.push(link);
   }
-  for (let index = used.count; index < attachments.length; index += 1) blocks.push(attachments[index]!);
-  if (used.count !== attachments.length) {
+  let unplacedAttachments = 0;
+  for (let index = used.count; index < attachments.length; index += 1) {
+    const key = attachmentImageKeys[index];
+    if (key && placedImageKeys.has(key)) continue;
+    blocks.push(attachments[index]!); unplacedAttachments++;
+  }
+  if (unplacedAttachments > 0) {
     limitations.push({ code: "gemini_attachment_alignment", detail: "Gemini attachment metadata and visible attachment cards did not align one-to-one" });
   }
   if (blocks.length === 0 && fallbackText) blocks.push({ type: "text", text: fallbackText });
@@ -374,7 +407,8 @@ function withoutRepresentedThinking(html: string | undefined, represented: reado
       if (!isElement(child)) continue;
       if (child.tagName === "details" && hasClass(child, "thinking")) {
         const body = findBody(child);
-        const match = body ? remaining.indexOf((inertHtmlFragment(serialize(body)) ?? "").trim()) : -1;
+        const innerMatch = body ? remaining.indexOf((inertHtmlFragment(serialize(body)) ?? "").trim()) : -1;
+        const match = innerMatch >= 0 ? innerMatch : remaining.indexOf((inertHtmlFragment(serializeOuter(child)) ?? "").trim());
         if (match >= 0) { remaining.splice(match, 1); defaultTreeAdapter.detachNode(child); continue; }
       }
       visit(child);
@@ -387,8 +421,9 @@ function withoutRepresentedThinking(html: string | undefined, represented: reado
 async function parseGemini(context: AdapterParseContext, profile: Profile, payloadName: string): Promise<JsonObject> {
   const responseTimes = nativeResponseTimes(context.extensions?.geminiRichContent);
   const resources = new GeminiResourcePool(context.payload, context.reading?.images ?? []);
-  const rich = context.record && context.extensions?.geminiRichContent ? new GeminiRichContent(context.extensions.geminiRichContent, new WorkResources(resources.values), (owner, url) => resources.claimRichImage(owner, url)) : undefined;
   const sources = new GeminiSourcePool(context.payload);
+  const rich = context.record && context.extensions?.geminiRichContent ? new GeminiRichContent(context.extensions.geminiRichContent, new WorkResources(resources.values), (owner, url) => resources.claimRichImage(owner, url), source => sources.addDocument(source)) : undefined;
+  const tasks = context.record && context.extensions?.geminiRichContent ? new GeminiTasks(context.extensions.geminiRichContent, context.record) : undefined;
   const limitations: JsonObject[] = [];
   const messages: JsonObject[] = [];
   const rawMessages = values(context.payload["messages"]);
@@ -398,31 +433,35 @@ async function parseGemini(context: AdapterParseContext, profile: Profile, paylo
     const owner = sourceText(message["source_id"]) ?? `gemini-message-${index}`;
     const content: JsonObject[] = [];
     const representedThoughts: string[] = [];
+    const taskProcess = tasks?.process(owner);
     for (const rawThought of values(message["thoughts"])) {
       const thought = object(rawThought);
       if (!thought) throw new TypeError("Gemini public thought is not an object");
       const html = inertHtmlFragment(sourceText(thought["html"]) ?? "");
       if (html) representedThoughts.push(html.trim());
       const title = sourceText(thought["label"]);
-      if (html || title) content.push({
+      if (!taskProcess && (html || title)) content.push({
         type: "reasoning",
         ...(html ? { text: html, format: "html" } : {}),
         ...(title ? { title } : {})
       });
     }
+    if (taskProcess) content.push(taskProcess);
     const attachmentBlocks = values(message["attachments"]).map((value) => {
       const attachment = object(value);
       if (!attachment) throw new TypeError("Gemini attachment occurrence is not an object");
       return resources.addAttachment(attachment, owner, limitations);
     });
-    const body = projectBody(withoutRepresentedThinking(sourceText(message["html"]), representedThoughts), sourceText(message["text"]), attachmentBlocks, limitations, rich ? { projector: rich, owner } : undefined);
+    const body = projectBody(withoutRepresentedThinking(sourceText(message["html"]), representedThoughts), sourceText(message["text"]), attachmentBlocks, limitations,
+      key => resources.addAttachment({ kind: "image", image_key: key }, owner, limitations),
+      values(message["attachments"]).map(value => sourceText(object(value)?.["image_key"])), rich ? { projector: rich, owner } : undefined);
     content.push(...body.blocks);
     if (rich) content.push(...rich.remaining(owner));
     content.push(...resources.addRemainingImages(owner, limitations));
     const citations = sources.forLinks(body.links);
     if (citations.length > 0) content.push({ type: "citations", sources: citations });
     const role = message["role"] === "user" ? "user" : message["role"] === "assistant" ? "assistant" : "other";
-    const time = role === "assistant" ? responseTimes.get(owner) : undefined;
+    const time = timestamp(message["timestamp"]) ?? (role === "assistant" ? responseTimes.get(owner) : undefined);
     const recordParent = index > 0 ? sourceText(object(rawMessages[index - 1])?.["source_id"]) ?? `gemini-message-${index - 1}` : undefined;
     const model = role === "assistant" ? sourceText(message["model"]) : undefined;
     context.record?.message(index, { id: owner, ...(recordParent ? { parent: recordParent } : {}), role, ...(model ? { model } : {}) });
@@ -471,20 +510,20 @@ async function parseGemini(context: AdapterParseContext, profile: Profile, paylo
 
 export const GEMINI_LIGHT_MANIFEST: AdapterManifest = {
   id: "gemini-light-dom-v2",
-  version: "3.0.9",
+  version: "3.0.11",
   family: "gemini",
   routes: [{ format: "exporter-html", platform: "gemini", payload: "osis.gemini.chat-export/light-dom-v2", profile: "light" }],
   target: "cloudig/conversation/1.0.2",
-  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8"].map(version => ({ adapter: "gemini-light-dom-v2", version, action: "reparse_source" as const }))
+  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10"].map(version => ({ adapter: "gemini-light-dom-v2", version, action: "reparse_source" as const }))
 };
 
 export const GEMINI_FULL_MANIFEST: AdapterManifest = {
   id: "gemini-full-v1",
-  version: "3.0.9",
+  version: "3.0.11",
   family: "gemini",
   routes: [{ format: "exporter-html", platform: "gemini", payload: "osis.gemini.chat-export/full-v1", profile: "full" }],
   target: "cloudig/conversation/1.0.2",
-  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8"].map(version => ({ adapter: "gemini-full-v1", version, action: "reparse_source" as const }))
+  update_from: ["1.1.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10"].map(version => ({ adapter: "gemini-full-v1", version, action: "reparse_source" as const }))
 };
 
 export const geminiLightAdapter: SourceAdapter = Object.freeze({

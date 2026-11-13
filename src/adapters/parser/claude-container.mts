@@ -24,7 +24,7 @@ import { claudeRecordSelector, claudeRecordToDraft, claudeMessageIsEmpty } from 
 
 export const CLAUDE_CONTAINER_FORMAT = "anthropic/claude-conversations-export";
 export const CLAUDE_CONTAINER_ADAPTER_ID = "anthropic-claude-export-json";
-export const CLAUDE_CONTAINER_ADAPTER_VERSION = "2.0.8";
+export const CLAUDE_CONTAINER_ADAPTER_VERSION = "2.0.9";
 
 export const claudeContainerAdapter = Object.freeze({
   manifest: {
@@ -38,7 +38,7 @@ export const claudeContainerAdapter = Object.freeze({
       profile: "container"
     }],
     target: "cloudig/conversation/1.0.0",
-    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "2.0.7"].map(version => ({ adapter: CLAUDE_CONTAINER_ADAPTER_ID, version, action: "reparse_source" as const }))
+    update_from: ["1.0.0", "2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "2.0.7", "2.0.8"].map(version => ({ adapter: CLAUDE_CONTAINER_ADAPTER_ID, version, action: "reparse_source" as const }))
   },
   parse(): JsonObject {
     throw new TypeError("Claude account exports require a byte-range index and explicit record selection");

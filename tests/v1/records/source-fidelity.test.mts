@@ -94,7 +94,8 @@ test("Gemini missing images cannot borrow a later image or another message's met
         { source_id: "m1", role: "assistant", html: '<osis-image data-key="later"></osis-image>' }
       ] }, reading: { images: ["m0", "m1"].map(messageId => ({ messageId, dataUrl, alt: "Same preview" })), files: [], mermaid: [], fragments: [] } });
     const resources = new Map((draft["resources"] as JsonObject[]).map(r => [r["id"], r]));
-    const messageImages = (draft["messages"] as JsonObject[]).map(m => (m["content"] as JsonObject[]).filter(b => b["type"] === "image").map(b => resources.get(b["resource"])!));
+    const messageImages = (draft["messages"] as JsonObject[]).map(m => (m["content"] as JsonObject[]).flatMap(b =>
+      b["type"] === "image" ? [resources.get(b["resource"])!] : b["type"] === "html" ? htmlResourceImages(String(b["html"])).map(image => resources.get(image.id)!) : []));
     assert.deepEqual(messageImages.map(images => images.map(r => [r["name"], r["availability"]])), [
       [["missing.png", "missing"], ["now.png", "embedded"]], [["later.png", "embedded"]]
     ], adapter.manifest.id);
@@ -418,8 +419,8 @@ test("all latest source files retain their exact tree parents, known model decla
   const base = path.resolve("tests/private/schema-rebuild"); await mkdir(base, { recursive: true }); const temporary = await mkdtemp(path.join(base, "fidelity-")); let passed = false;
   const platforms = new Set<string>(), profiles = new Set<string>(); let count = 0, trees = 0, scheduledMessages = 0;
   try {
-    for (const file of (await readdir(sample!)).filter(f => f.endsWith(".html"))) {
-      const filePath = path.join(sample!, file), extracted = await extractHtmlRecord({ filePath, temporaryRoot: temporary });
+    for (const { file: filePath, name: file } of await (await import("../../../scripts/resolve-v1-samples.mjs")).resolveV1Samples(sample!)) {
+      const extracted = await extractHtmlRecord({ filePath, temporaryRoot: temporary });
       const c = assembleConversationRecord({ ...extracted, parserVersion: "1.1.0", timestamp });
       const messages = obj(c["messages"])["items"] as JsonObject[], platform = String(c["platform"]), profile = String(obj(c["source"])["profile"]);
       assert.equal(extracted.facts.messages?.length, messages.length, file); platforms.add(platform); profiles.add(profile); count++;

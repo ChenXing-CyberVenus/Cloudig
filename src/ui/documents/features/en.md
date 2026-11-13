@@ -12,8 +12,8 @@ Future versions will offer richer conversation management.
 
 ## The Shortest Possible Guide
 
-1. **Save a conversation with a Cloudig bookmarklet.** Open a conversation on an AI platform and click that platform's Cloudig bookmarklet in Chrome's bookmarks bar. You receive readable HTML. Cloudig also parses Claude's official conversations.json export.
-2. **Import it.** Open Archiver and choose “Import bookmark HTML” or “Import Claude JSON”. Alternatively, open the input folder and put the files there yourself.
+1. **Save a conversation with a Cloudig bookmarklet.** Open a conversation on an AI platform and click that platform's Cloudig bookmarklet in Chrome's bookmarks bar. You receive readable HTML. You can also use supported official platform exports or Agent Tool conversation files (2.2).
+2. **Import it.** Open Archiver and choose “Import Bookmark HTML” or “Import Platform Files”. Alternatively, open the input folder and put the files there yourself.
 3. **Parse.** Click the parse button beside a source file, or use “One-click parse”.
 4. **Read.** Enter Reader, find the conversation and open it.
 5. **Organize as needed.** Create folders, edit titles and identities, assign content times, or export Markdown.
@@ -39,7 +39,7 @@ Future versions will offer richer conversation management.
 
 | What you see | What it is | Folder |
 |---|---|---|
-| Source file | Bookmarklet HTML or Claude's official conversations.json | Inbox |
+| Source file | Bookmarklet HTML, supported official platform exports or Agent Tool conversation files | Inbox |
 | Conversation archive | A Conversation JSON parsed from a source | Conversations |
 | Your changes | Your titles, models, identities and content times | Marks |
 
@@ -75,11 +75,25 @@ The title bar shows the Library's location. “Change folder” moves the comple
 | Action | Result |
 |---|---|
 | Import bookmark HTML | Copies HTML into Inbox, keeping the original; name collisions are resolved without overwriting |
-| Import Claude JSON | Copies conversations.json into Inbox and opens the Claude JSON page (2.5) |
-| Open input folder | Lets you copy HTML and JSON into the folder directly |
+| Import Platform Files | Select a platform, then its files; multiple selection is supported. Cloudig copies them into Inbox and lists them in the parsing area, keeping the originals (2.5) |
+| Open input folder | Lets you copy supported HTML, JSON, JSONL, JSONL.ZST or ZIP files into Inbox directly |
 | Refresh | Rereads actual source and archive state; refresh after adding or removing files in File Explorer |
 
-Each HTML file becomes one independent archive. Each conversation inside conversations.json becomes its own archive.
+The import page has two groups: “Official AI Platform Exports” and “Agent Tool”.
+
+| Source | Files to select |
+|---|---|
+| Claude, DeepSeek | Official conversation records in conversations.json; for DeepSeek, do not select user.json |
+| Qwen | Official chat-export-*.json conversation export |
+| ChatGPT | The emailed export ZIP, or the inner Conversations ZIP from a privacy export; not the outer privacy bundle or Files ZIP |
+| Mistral, Grok | The complete official conversation ZIP |
+| Cline | JSON; API records and ui_messages.json are supported |
+| SillyTavern, Kimi Code, Claude Code | The corresponding tool's chat, wire or session JSONL file |
+| Codex | Rollout JSONL or JSONL.ZST; for paginated sessions, select all shards with their original filenames |
+
+Do not extract ZIPs or select folders. The question mark on each official platform card opens its export instructions.
+
+Each HTML file and each Agent Tool conversation becomes one independent archive. Each conversation inside an official export becomes its own archive. Codex shards belonging to one session are processed together, rather than becoming separate conversations.
 
 ### 2.3 Parsing one file
 
@@ -108,21 +122,21 @@ Before parsing begins, Cloudig lists the files, destination and update mode. Che
 
 *Figure 4: Confirmation before execution, with scope, destination and update mode.*
 
-### 2.5 Claude JSON
+### 2.5 Parsing platform files
 
-Open conversations.json from the parsing area. Cloudig builds an index when the page first opens and lists the conversations inside.
+Open an official platform JSON or ZIP from the parsing area to enter that platform's conversation list. Cloudig builds an index on first opening and lists the conversations inside.
 
 - Search by title. Sort by conversation creation or update time; the default is newest update first.
 - Click rows to select them. Selected rows have a pushpin; multiple selection is supported.
 - Both single parsing and one-click parsing let you choose or create an archive folder. One-click parsing defaults to all unparsed conversations; you do not need to select everything first.
 
-Where conversations.json records a model for an individual message, the archive uses it. Otherwise, the message is shown as Claude.
+Single-conversation Agent Tool files are parsed directly in the parsing area and can also be included in Archiver's one-click parsing (2.4); they do not use the official export conversation list.
 
-As of August 2026, Claude's official export does not include Cowork conversations. Save those from the web page with the Claude bookmarklet; see the [Bookmarklet Guide](cloudig:bookmark).
+Where Claude's conversations.json records a model for an individual message, the archive uses it. Otherwise, the message is shown as Claude. For conversations absent from the official export, use the Claude bookmarklet on the web page; see the [Bookmarklet Guide](cloudig:bookmark).
 
-![Figure 04 · Claude JSON](assets/function-guide/04-claude-json.png)
+![Figure 04 · Platform file import and parsing](assets/function-guide/04-platform-files.png)
 
-*Figure 5: Title search, time sorting, pushpin selection and one-click parsing.*
+*Figure 5: The “Import Platform Files” button, both source groups, and an official export's conversation list (Claude shown here). The list supports title search, time sorting, pushpin selection and one-click parsing.*
 
 ### 2.6 Status and retrying
 

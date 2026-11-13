@@ -26,7 +26,7 @@ export function isAgentInstanceSourceId(sourceId: string | undefined): boolean {
 
 export function findPlatformFront(platform: string): JsonObject | undefined {
   const found = presets.presets.find(p => p.usage === "platform_fallback" && "platform" in p && p.platform === platform);
-  return found ? structuredClone(found.identity) as JsonObject : AGENT_FRONTS[platform] ? structuredClone(AGENT_FRONTS[platform]) : undefined;
+  return found ? structuredClone(found.identity) as JsonObject : Object.hasOwn(AGENT_FRONTS, platform) ? structuredClone(AGENT_FRONTS[platform]) : undefined;
 }
 
 export function platformFront(platform: string): JsonObject {

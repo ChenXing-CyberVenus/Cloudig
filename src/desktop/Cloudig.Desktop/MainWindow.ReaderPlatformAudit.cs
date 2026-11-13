@@ -34,14 +34,15 @@ public partial class MainWindow
             await Wait($$"""
                 (()=>{const expected={{expected}},buttons=[...document.querySelectorAll('[data-reader-platforms] [data-platform]')];return JSON.stringify(buttons.filter(n=>n.getAttribute('aria-pressed')==='true').map(n=>n.dataset.platform).sort())===JSON.stringify((expected.length?expected:buttons.map(n=>n.dataset.platform)).sort())&&document.querySelector('[data-reader-platform-all]').getAttribute('aria-pressed')==={{JsonSerializer.Serialize(platforms.Length==0?"true":"false")}}&&Boolean(document.querySelector('[data-reader-list] .reader-row-open'))==={{(hasRows?"true":"false")}}})()
                 """);
+            await Wait("[...document.querySelectorAll('[data-reader-platforms] [data-platform]')].every(n=>{const b=getComputedStyle(n),i=getComputedStyle(n.querySelector('img'));return n.getAttribute('aria-pressed')==='true'?b.filter==='none'&&i.opacity==='1':document.documentElement.dataset.theme==='star-night'?b.filter.includes('grayscale(1)')&&i.opacity==='0.45':b.filter==='none'&&i.filter.includes('saturate(0.4)')&&i.opacity==='0.65'})");
         }
         if(await Read("document.querySelector('[data-page=reader]').dataset.catalogCollapsed==='true'")=="true")await Click("[data-reader-catalog-toggle=expand]");
         await Check([],true);await Capture("all");
-        await Click(Platform("chatgpt"));await Check(["chatgpt"],true);
+        await Click(Platform("chatgpt"));await Check(["chatgpt"],true);await Capture("single");
         await Click(Platform("claude"));await Check(["chatgpt","claude"],true);await Capture("multiple");
         await Click(Platform("chatgpt"));await Check(["claude"],false);
         await Click(Platform("claude"));await Check([],true);
-        await Click(Platform("codex"));await Check(["codex"],false);
+        await Click(Platform("codex"));await Check(["codex"],false);await Capture("agent");
         await Click(toggle);await Check(["codex"],false);await Capture("collapsed");
         await Click(all);await Check([],true);
         await Wait("document.querySelector('[data-page=reader]').dataset.platformFilterCollapsed==='true'");

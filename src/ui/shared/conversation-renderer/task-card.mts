@@ -37,9 +37,9 @@ export function renderTaskList(host: HTMLElement, input: JsonObject, options: Ta
     const task = readableTask(saved), status = str(task["status"]), card = el("details", "cloudig-schedule-task");
     card.dataset["taskStatus"] = status;
     const summary = el("summary", "cloudig-fold-title"), title = el("span", "cloudig-task-heading");
-    title.append(el("strong", "cloudig-fold-label", str(task["title"]) || label("ChatGPT 任务", "ChatGPT task")));
+    title.append(el("strong", "cloudig-fold-label", str(task["title"]) || label("任务", "Task")));
     if (str(task["schedule"])) title.append(el("small", "cloudig-schedule-summary", str(task["schedule"])));
-    const current = isJsonObject(task["source_evidence"]) && task["source_evidence"]["source"] === "automation_api";
+    const current = isJsonObject(task["source_evidence"]) && ["automation_api", "gemini_task_api"].includes(str(task["source_evidence"]["source"]));
     const state = status === "enabled" ? label("已启用", "Enabled") : status === "paused" ? label("已暂停", "Paused") : status === "completed" ? label("已完成", "Completed") : label("状态未确认", "Status unknown");
     summary.append(title, el("span", "cloudig-schedule-state", (current ? label("采集时：", "At capture: ") : label("记录状态：", "Recorded: ")) + state));
     const body = el("div", "cloudig-fold-body"); card.append(summary, body); host.append(card);
@@ -51,7 +51,7 @@ export function renderTaskList(host: HTMLElement, input: JsonObject, options: Ta
       if (typeof task["notifications_enabled"] === "boolean") meta.append(el("dt","",label("通知","Notifications")),el("dd","",task["notifications_enabled"] ? label("开启","On") : label("关闭","Off")));
       if (meta.childElementCount) body.append(meta);
       if (str(task["prompt"])) body.append(el("h4","cloudig-schedule-prompt-label",label("任务指令","Task instructions")),options.richText(str(task["prompt"])));
-      link(body, task["url"], label("在原平台查看","View on ChatGPT"), "cloudig-task-source");
+      link(body, task["url"], label("在原平台查看","View on original platform"), "cloudig-task-source");
       link(body, task["conversation_url"], label("原会话","Original conversation"), "cloudig-schedule-conversation");
       if (isJsonObject(task["source_task"])) {
         const raw = el("details","cloudig-schedule-settings"), rawSummary = el("summary","cloudig-fold-title",label("原始设置","Original settings")), rawBody = el("div","cloudig-fold-body");

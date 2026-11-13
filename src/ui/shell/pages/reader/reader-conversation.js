@@ -126,7 +126,9 @@ function renderHeader(root, view, row, state, translate) {
   logo.src = platformAsset;
   logo.alt = platformName;
   logo.title = `${platformName} · ${platformId}`;
-  root.querySelector("[data-reader-conversation-platform]").textContent = platformName;
+  const platformTag = root.querySelector("[data-reader-conversation-platform]");
+  platformTag.textContent = platformName;
+  platformTag.title = `${state.language === "en" ? "Source platform: " : "来源平台："}${platformName}`;
   root.querySelector("[data-reader-conversation-title]").textContent = String(header.title ?? row.title ?? row.filename ?? "");
   const models = root.querySelector("[data-reader-conversation-models]");
   models.replaceChildren();
@@ -134,7 +136,7 @@ function renderHeader(root, view, row, state, translate) {
     const tag = document.createElement("span");
     tag.className = "reader-conversation-model-tag";
     tag.textContent = String(model);
-    tag.title = tag.textContent;
+    tag.title = `${state.language === "en" ? "Model name: " : "模型型号："}${tag.textContent}`;
     models.append(tag);
   }
   const language = state.language;

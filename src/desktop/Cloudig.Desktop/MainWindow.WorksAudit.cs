@@ -153,6 +153,7 @@ public partial class MainWindow
             if(audit.Query.Contains("reader-header-review=1",StringComparison.Ordinal)) {
                 var metrics=await Read("(()=>{const rect=n=>n?{x:n.getBoundingClientRect().x,y:n.getBoundingClientRect().y,w:n.getBoundingClientRect().width,h:n.getBoundingClientRect().height}:null;const heads=[...document.querySelectorAll('.cloudig-message-identity:has(.cloudig-avatar)')].slice(0,6).map(n=>({avatar:rect(n.querySelector('.cloudig-avatar')),name:rect(n.querySelector('.cloudig-message-name')),time:rect(n.querySelector('time')),timeText:n.querySelector('time')?.textContent,heading:rect(n)}));const elapsed=[...document.querySelectorAll('.cloudig-process-static')].filter(n=>n.textContent.includes('共用时')).map((n,i)=>{n.dataset.auditElapsed=String(i);const next=n.nextElementSibling;return {text:n.textContent,status:rect(n),next:rect(next),html:next?.outerHTML.slice(0,2000),gap:next?next.getBoundingClientRect().top-n.getBoundingClientRect().bottom:null};});const dots=[...document.querySelectorAll('.cloudig-process,.cloudig-message-content')].slice(0,12).map(n=>({class:n.className,display:getComputedStyle(n,'::before').display,fill:getComputedStyle(n,'::before').backgroundColor,ring:getComputedStyle(n,'::before').borderColor,left:getComputedStyle(n,'::before').left}));return{heads,elapsed,dots};})()");
                 await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".reader-header.json"),metrics);
+                await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".model-labels.json"),await Read("({platform:document.querySelector('[data-reader-conversation-platform]')?.textContent,platformTip:document.querySelector('[data-reader-conversation-platform]')?.title,models:[...document.querySelectorAll('[data-reader-conversation-models] .reader-conversation-model-tag')].map(n=>({text:n.textContent,tip:n.title}))})"));
                 await Point(".cloudig-message-identity:has(.cloudig-avatar)");await Capture("reader-heading");
                 var elapsedCount=int.Parse(await Read("document.querySelectorAll('[data-audit-elapsed]').length"));
                 for(var i=0;i<elapsedCount;i++){await Point($"[data-audit-elapsed='{i}']");await Capture($"elapsed-{i}");}
@@ -162,6 +163,22 @@ public partial class MainWindow
             await Wait(audit.Query.Contains("work-media=1",StringComparison.Ordinal)
                 ? "Boolean(document.querySelector('.cloudig-media-player'))"
                 : "Boolean(document.querySelector('.cloudig-window-entry > button.cloudig-box-button,.cloudig-interactive-box'))");
+            if(audit.Query.Contains("work-graphics=1",StringComparison.Ordinal)) {
+                var graphics=int.Parse(await Read("(()=>{const a=[...document.querySelectorAll('img.cloudig-captured-svg')];a.forEach((n,i)=>n.dataset.auditGraphic=String(i));return a.length})()"));
+                if(graphics==0)throw new InvalidDataException("Real captured SVG is missing");
+                for(var i=0;i<graphics;i++) {
+                    var selector=$"[data-audit-graphic='{i}']";
+                    await Wait($"document.querySelector(\"{selector}\").complete&&document.querySelector(\"{selector}\").naturalWidth>0");
+                    await Point(selector);await Capture($"captured-svg-{i}");
+                    var pixels=await Read($$"""(()=>{const img=document.querySelector({{JsonSerializer.Serialize(selector)}}),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const x=c.getContext('2d');x.drawImage(img,0,0);const d=x.getImageData(0,0,c.width,c.height).data;let painted=0,colored=0;for(let i=0;i<d.length;i+=4)if(d[i+3]>127){painted++;if(Math.max(d[i],d[i+1],d[i+2])-Math.min(d[i],d[i+1],d[i+2])>20)colored++;}return{width:c.width,height:c.height,painted,colored};})()""");
+                    using(var p=JsonDocument.Parse(pixels))if(p.RootElement.GetProperty("colored").GetInt32()<100)throw new InvalidDataException("Source colored SVG became monochrome: "+pixels);
+                    await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,$".svg-{i}-pixels.json"),pixels);
+                }
+                var images=int.Parse(await Read("(()=>{const a=[...document.querySelectorAll('.cloudig-inline-resource > img')];a.forEach((n,i)=>n.dataset.auditInlineImage=String(i));return a.length})()"));
+                if(images==0)throw new InvalidDataException("No source-position image was rendered");
+                for(var i=0;i<images;i++){await Point($"[data-audit-inline-image='{i}']");await Capture($"image-position-{i}");}
+                await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".source-image-positions.json"),await Read("[...document.querySelectorAll('.cloudig-inline-resource > img')].map(n=>({alt:n.alt,width:n.naturalWidth,height:n.naturalHeight,prior:n.parentElement.parentElement.previousElementSibling?.textContent?.slice(-200),following:n.parentElement.parentElement.nextElementSibling?.textContent?.slice(0,200)}))"));
+            }
             if(audit.Query.Contains("work-theme=1",StringComparison.Ordinal)) {
                 await Task.Delay(500);
                 var total=int.Parse(await Read("(()=>{const a=[...document.querySelectorAll('.cloudig-interactive-box')];a.forEach((n,i)=>n.dataset.themeAudit=String(i));return a.length})()"));
@@ -392,6 +409,14 @@ public partial class MainWindow
                     await Wait("document.querySelector('#slide-counter').textContent.includes('2')&&[...document.querySelectorAll('.slide-container')].every(n=>Number(getComputedStyle(n).opacity)===(n.classList.contains('active')?1:0))",frame);
                 }
                 else if (await Read("document.body.innerText.includes('EXISTENT JOURNEY')", frame) == "true") { await Pointer("button:last-of-type", frame); await Wait("document.body.innerText.includes('觉醒')&&document.body.innerText.includes('旅途记录')", frame); }
+                if(audit.Query.Contains("work-graphics=1",StringComparison.Ordinal)&&await Read("Boolean(document.querySelector('input[type=range]'))",frame)=="true") {
+                    await Read("window.__rangeBefore={value:document.querySelector('input[type=range]').value,text:document.body.innerText,svg:document.querySelector('svg')?.outerHTML,chart:window.Chart?JSON.stringify(Chart.getChart(document.querySelector('canvas'))?.data):null}",frame);
+                    var key=await Read("document.querySelector('input[type=range]').value===document.querySelector('input[type=range]').max",frame)=="true"?"Home":"End";
+                    await Pointer("input[type=range]",frame);
+                    foreach(var type in new[]{"keyDown","keyUp"})await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchKeyEvent",JsonSerializer.Serialize(new{type,key,code=key,windowsVirtualKeyCode=key=="Home"?36:35}));
+                    await Wait("document.querySelector('input[type=range]').value!==window.__rangeBefore.value&&(document.body.innerText!==window.__rangeBefore.text||document.querySelector('svg')?.outerHTML!==window.__rangeBefore.svg||(window.Chart?JSON.stringify(Chart.getChart(document.querySelector('canvas'))?.data):null)!==window.__rangeBefore.chart)",frame);
+                    await Capture($"work-{i}-range-updated");
+                }
                 if(await Read("typeof window.loadPyodide==='function'&&Boolean(document.querySelector('#out'))",frame)=="true") {
                     // A source example multiplies a Python string by itself.
                     // Verify the actual interpreter result, not a speculative
@@ -545,6 +570,22 @@ public partial class MainWindow
                 var frame = await CurrentFrame();
                 if (await Read($"document.querySelector('{modal} iframe').src") != src) throw new InvalidDataException("Enlarging a Box restarted it");
                 if (audit.Query.Contains("work-kimi=1", StringComparison.Ordinal)) await CheckKimi(frame, $"inline-{i}");
+                if(audit.Query.Contains("work-graphics=1",StringComparison.Ordinal)&&await Read("Boolean(document.querySelector('label input[type=checkbox]'))",frame)=="true") {
+                    await Wait("document.fonts.status==='loaded'&&Boolean(document.querySelector('label input[type=checkbox]'))",frame);
+                    await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,$".inline-{i+1}-host.json"),await Read($"(()=>{{const d=document.querySelector('{modal}');return [d,...d.children,d.querySelector('iframe')].map(n=>{{const r=n.getBoundingClientRect(),s=getComputedStyle(n);return{{tag:n.tagName,cls:n.className,inline:n.getAttribute('style'),rect:{{x:r.x,y:r.y,w:r.width,h:r.height}},display:s.display,height:s.height,grid:s.gridTemplateRows,align:s.alignItems,position:s.position,flex:s.flex}}}});}})()"));
+                    await Wait($"(()=>{{const f=document.querySelector('{modal} iframe'),b=f.parentElement;return b.clientHeight>0&&Math.abs(f.getBoundingClientRect().height-b.clientHeight)<2;}})()");
+                    var before=await Read("document.querySelector('label input[type=checkbox]').checked",frame);
+                    await Pointer("label:has(input[type=checkbox])",frame);
+                    await Wait("document.querySelector('label input[type=checkbox]').checked!=="+before,frame);
+                    if(await Read("document.querySelectorAll('[role=tab]').length>1",frame)=="true") {
+                        await Pointer("[role=tab]:last-child",frame);
+                        await Wait("document.querySelector('[role=tab]:last-child').getAttribute('aria-selected')==='true'",frame);
+                    }
+                    await Capture($"inline-{i+1}-checked-and-filtered");
+                    await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,$".inline-{i+1}-geometry.json"),await Read("(()=>{const rect=n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n);return{tag:n.tagName,cl:n.className,rect:{x:r.x,y:r.y,w:r.width,h:r.height},scrollHeight:n.scrollHeight,clientHeight:n.clientHeight,scrollTop:n.scrollTop,css:{height:s.height,minHeight:s.minHeight,maxHeight:s.maxHeight,overflow:s.overflow,display:s.display}}};return{viewport:{w:innerWidth,h:innerHeight},nodes:[document.documentElement,document.body,...document.querySelectorAll('app-root,.widget,.checklist,label')].map(rect)}})()",frame));
+                    await Pointer("label:has(input[type=checkbox]):last-child",frame);
+                    await Capture($"inline-{i+1}-last-item");
+                }
                 if (await Read("Boolean(document.querySelector('#clouds'))",frame) == "true") {
                     await Wait("document.querySelectorAll('#sky .ti-cloud').length===5&&[...document.querySelectorAll('#sky .ti-cloud')].every(n=>getComputedStyle(n).maskImage.startsWith('url('))",frame);
                     await Read("(()=>{window.__cloudigIconPixels=null;void(async()=>{const css=getComputedStyle(document.querySelector('#sky .ti-cloud')).maskImage;const image=new Image();image.src=css.slice(4,-1).replace(/^['\"]|['\"]$/g,'');await image.decode();const canvas=document.createElement('canvas');canvas.width=64;canvas.height=64;const c=canvas.getContext('2d');c.drawImage(image,0,0,64,64);const a=c.getImageData(0,0,64,64).data;let clear=0,paint=0;for(let i=3;i<a.length;i+=4){if(a[i]===0)clear++;else paint++;}window.__cloudigIconPixels={clear,paint,pass:clear>100&&paint>20};})().catch(e=>window.__cloudigIconPixels={error:String(e)});return true})()",frame);

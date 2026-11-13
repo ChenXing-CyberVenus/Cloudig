@@ -81,7 +81,7 @@ export const claudeLayoutVariants = Object.freeze([
   claudeVariant(
     "candidate",
     "light",
-    "1.1.78-light",
+    "1.1.79-light",
     "2026-07-28_Claude会话导出HTML轻量书签-1.1.4-light-GPT-5.6-Sol.js",
     "2026-07-28_Claude会话导出HTML轻量书签单行版-1.1.4-light-GPT-5.6-Sol.min.js"
   )

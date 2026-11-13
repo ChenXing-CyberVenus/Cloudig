@@ -1171,29 +1171,29 @@ async function parseClaudeWeb(context: AdapterParseContext, profile: Profile, pa
 
 export const CLAUDE_LIGHT_MANIFEST: AdapterManifest = {
   id: "claude-light-dom-v1",
-  version: "3.0.13",
+  version: "3.0.14",
   family: "claude",
   routes: [{ format: "exporter-html", platform: "claude", payload: "osis.claude.chat-export/light-dom-v1", profile: "light" }],
   target: "cloudig/conversation/1.0.2",
-  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12"].map(version => ({ adapter: "claude-light-dom-v1", version, action: "reparse_source" as const }))
+  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13"].map(version => ({ adapter: "claude-light-dom-v1", version, action: "reparse_source" as const }))
 };
 
 export const CLAUDE_FULL_MANIFEST: AdapterManifest = {
   id: "claude-full-capture-v1",
-  version: "3.0.13",
+  version: "3.0.14",
   family: "claude",
   routes: [{ format: "exporter-html", platform: "claude", payload: "osis.claude.chat-export/full-capture-v1", profile: "full" }],
   target: "cloudig/conversation/1.0.2",
-  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12"].map(version => ({ adapter: "claude-full-capture-v1", version, action: "reparse_source" as const }))
+  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13"].map(version => ({ adapter: "claude-full-capture-v1", version, action: "reparse_source" as const }))
 };
 
 export const CLAUDE_TREE_MANIFEST: AdapterManifest = {
   id: "claude-all-branches-v1",
-  version: "3.0.13",
+  version: "3.0.14",
   family: "claude",
   routes: [{ format: "exporter-html", platform: "claude", payload: "osis.claude.chat-export/all-branches-v1", profile: "tree" }],
   target: "cloudig/conversation/1.0.2",
-  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12"].map(version => ({ adapter: "claude-all-branches-v1", version, action: "reparse_source" as const }))
+  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13"].map(version => ({ adapter: "claude-all-branches-v1", version, action: "reparse_source" as const }))
 };
 
 export const claudeLightAdapter: SourceAdapter = Object.freeze({

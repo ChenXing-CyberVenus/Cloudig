@@ -11,7 +11,7 @@ const markdown = new MarkdownIt({ html: false });
 export const featureFigures = {
   '01-welcome': ['01-welcome'], '02-archiver': [],
   '03-batch-settings': ['03-entry','03-batch-settings'], '03b-batch-confirm': ['03b-batch-confirm'],
-  '04-claude-json': ['04-entry','04-claude-json'], '05-reader-cover': ['05-reader-cover'],
+  '04-platform-files': ['04-entry','04-platform-official','04-platform-agent','04-platform-conversations'], '05-reader-cover': ['05-reader-cover'],
   '06-conversation': ['06-conversation'], '07-reading-controls': ['07-toolbar','07-navigation','07-branches'],
   '08-conversation-info': ['08-entry','08-conversation-info'], '09a-identity-global': ['09a-entry','09a-identity-global'],
   '09b-identity-platforms': ['09b-identity-platforms'], '10-content-time-edit': ['10-content-time-edit'],
@@ -29,7 +29,6 @@ export function compileFeatureDocument(source, language) {
   body.querySelectorAll('hr').forEach(n=>n.remove());
   const captions = {
     '02-archiver': '图 2：区域关系示意（非截图）。书签在左、功能导航在右，中间并列解析区与档案区。',
-    '04-claude-json': '图 5：从来源行进入Claude JSON，使用搜索、时间排序、图钉多选与一键解析。',
     '07-reading-controls': '图 8：工具栏、右侧导航与消息分叉处的按钮，分别展示局部。',
     '08-conversation-info': '图 9：编辑入口，以及标题、模型和时间信息；内容时间控件见图12。',
     '11-time-cover': '图 13：内容时间入口、此地与独立时间列表，以及新建入口的局部。',

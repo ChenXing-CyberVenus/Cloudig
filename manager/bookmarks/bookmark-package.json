@@ -1,7 +1,7 @@
 {
   "format": "cloudig/bookmark-package",
   "version": "0.2.0",
-  "bookmark_set_version": "2026.11.02.4",
+  "bookmark_set_version": "2026.11.12.2",
   "default_profile": "light",
   "profiles": [
     "light",
@@ -21,29 +21,29 @@
         {
           "id": "chatgpt:light",
           "profile": "light",
-          "version": "3.7.80-light",
+          "version": "3.7.81-light",
           "artifact": "chatgpt/light.min.js",
-          "sha256": "e515eac064471a4e91078d9b1d4de28fce858f6b23ae3a276bc46ea1181020a3",
-          "bytes": 474271,
-          "characters": 469664
+          "sha256": "a732adba6e83e9aa2fae76b4299008f568031cd8db0495143b5ed1f18f54975b",
+          "bytes": 472692,
+          "characters": 468245
         },
         {
           "id": "chatgpt:full",
           "profile": "full",
-          "version": "1.0.77-full",
+          "version": "1.0.78-full",
           "artifact": "chatgpt/full.min.js",
-          "sha256": "976224690c338aff1d8d3e94e8d18027031a93592ced4b37917826a6c4bd0da2",
-          "bytes": 484439,
-          "characters": 479626
+          "sha256": "7653078007354ce3a5daf53d723e5d418f1d5656cff005a7d02fd708b7a8accc",
+          "bytes": 482991,
+          "characters": 478342
         },
         {
           "id": "chatgpt:all_branches",
           "profile": "all_branches",
-          "version": "1.0.77-all-branches",
+          "version": "1.0.78-all-branches",
           "artifact": "chatgpt/all_branches.min.js",
-          "sha256": "ba7213a309daef6e1d427efc5989954f90c8473c70a95d8573b68ae7997de185",
-          "bytes": 495504,
-          "characters": 490590
+          "sha256": "3dc43b0ad37249d8d17cc1d7944ab9bf530f8351691c34708301cb34937ad371",
+          "bytes": 493650,
+          "characters": 488900
         }
       ]
     },
@@ -56,29 +56,29 @@
         {
           "id": "claude:light",
           "profile": "light",
-          "version": "1.1.78-light",
+          "version": "1.1.79-light",
           "artifact": "claude/light.min.js",
-          "sha256": "7419d60c36e5be8106f54283b9a9febce3d4312d9dc5795d9b490c31eec65ece",
-          "bytes": 458430,
-          "characters": 450941
+          "sha256": "f3c908b905e65abd1e5a62a878ee7e4be3b8dbb0525d76642bc144b19b7905bd",
+          "bytes": 459273,
+          "characters": 451784
         },
         {
           "id": "claude:full",
           "profile": "full",
-          "version": "1.1.78-full",
+          "version": "1.1.79-full",
           "artifact": "claude/full.min.js",
-          "sha256": "b8491e7eee5e90a7007446445e23c60c7e07e74219a4abca8dac9304f552d219",
-          "bytes": 461575,
-          "characters": 454078
+          "sha256": "af64900818dd8c2030908030a36ba4dd21dbf44ffc9a59b572fb70fbe96a3be5",
+          "bytes": 462418,
+          "characters": 454921
         },
         {
           "id": "claude:all_branches",
           "profile": "all_branches",
-          "version": "1.1.78-all-branches",
+          "version": "1.1.79-all-branches",
           "artifact": "claude/all_branches.min.js",
-          "sha256": "cab56966986b18e32dc6cb832a32094fafceca25efc262e26138fff67a4f35db",
-          "bytes": 472107,
-          "characters": 464415
+          "sha256": "e31402277a4ce7657d9064d91f4349d42a1a66a715fc911d92c564ee77de6e0e",
+          "bytes": 472950,
+          "characters": 465258
         }
       ]
     },
@@ -126,20 +126,20 @@
         {
           "id": "gemini:light",
           "profile": "light",
-          "version": "2.7.15-light",
+          "version": "2.7.20-light",
           "artifact": "gemini/light.min.js",
-          "sha256": "86ec52ce6a70110bdef6d752fc2f79a1db7e85ba83bd4114f9347cb95547fd22",
-          "bytes": 484920,
-          "characters": 478176
+          "sha256": "1075513b87ab0ff66c60dc08a79ed32de63f74ae8d2f56bff3c58943129ed00f",
+          "bytes": 484274,
+          "characters": 478800
         },
         {
           "id": "gemini:full",
           "profile": "full",
-          "version": "1.0.11-full",
+          "version": "1.0.16-full",
           "artifact": "gemini/full.min.js",
-          "sha256": "e0f150f1c5e4d97ea4d873b0a7ba44d0b3d517f322638c237f81791b31a728b5",
-          "bytes": 497381,
-          "characters": 490312
+          "sha256": "71b69c99c5b9277f2e71c58fba75f516d878297a8f185247108f64015f5279fc",
+          "bytes": 497372,
+          "characters": 491515
         }
       ],
       "fallback": {

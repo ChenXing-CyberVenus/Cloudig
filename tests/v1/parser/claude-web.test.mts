@@ -25,14 +25,15 @@ test("Claude HTML flags retain platform identity and raw future fields across al
       const format = `osis.claude.chat-export/${profile === "light" ? "light-dom" : profile === "full" ? "full-capture" : "all-branches"}-v1`;
       const payload = fixturePayload(format), message = (payload["messages"] as JsonObject[])[1]!;
       payload["artifacts"] = []; payload["resources"] = []; message["attachments"] = []; message["media"] = [];
-      message["blocks"] = [{ type: "text", markdown: "Before" }, { type: "flag", raw: { type: "flag", flag: "new_future_flag", extra: { reason: "Source-owned notice" }, start_timestamp: "2026-10-21T00:00:00Z" } }, { type: "text", markdown: "After" }];
+      const rawFlag = { type: "flag", flag: "new_future_flag", extra: { reason: "Source-owned notice", values: [null, false, 3] }, start_timestamp: "2026-10-21T00:00:00Z", stop_timestamp: "2026-10-21T00:00:01Z" };
+      message["blocks"] = [{ type: "text", markdown: "Before" }, { type: "flag", raw: rawFlag }, { type: "text", markdown: "After" }];
       const header = manifest(profile, format); delete header["capture_diagnostics"];
       await writeFile(scope.file, html(header, payload, ""));
       const parsed = await extractHtmlRecord({ filePath: scope.file, temporaryRoot: scope.base });
       const record = assembleConversationRecord({ ...parsed, parserVersion: "1.1.39", timestamp: "2026-10-21T00:00:00.000Z" });
       const blocks = ((record["messages"] as JsonObject)["items"] as JsonObject[])[1]!["content"] as JsonObject[];
       const notice = blocks.find(b => b["title"] === "Claude platform flag")!;
-      assert(notice); assert.match(String(notice["text"]), /new_future_flag/); assert.match(String(notice["text"]), /Source-owned notice/);
+      assert(notice); assert.deepEqual(JSON.parse(String(notice["text"])), rawFlag);
       const identity = (record["identity"] as JsonObject[]).find(f => f["source_id"] === notice["speaker"]);
       assert.equal(identity?.["role"], "system");
       assert.equal(blocks.filter(b => b["title"] === "Claude platform flag").length, 1);

@@ -19,6 +19,7 @@ const parserStatus = argumentsList.includes("--parser-status");
 const indexReopen = argumentsList.includes("--index-reopen");
 const sourcePicker = argumentsList.includes("--source-picker");
 const readerResources = argumentsList.includes("--reader-resources");
+const geminiReview = argumentsList.includes("--gemini-review");
 const readingFixes = argumentsList.includes("--reading-fixes");
 const intelligentUiControls = argumentsList.includes("--intelligent-ui-controls");
 const dilFidelity = argumentsList.includes("--dil-fidelity");
@@ -59,6 +60,7 @@ const requestedTheme = themeIndex >= 0 ? argumentsList[themeIndex + 1] : null;
 const requestedSurface = surfaceIndex >= 0 ? argumentsList[surfaceIndex + 1] : null;
 if (sourcePicker && (!recordUi || requestedSurface !== 'platform-json-entry')) throw new Error('--source-picker requires --record-ui and platform-json-entry');
 if (readerResources && (!realConversation || requestedSurface !== 'reader-conversation')) throw new Error('--reader-resources requires --real-conversation and reader-conversation');
+if (geminiReview && !readerResources) throw new Error('--gemini-review requires --reader-resources');
 if (readingFixes && (!realConversation || requestedSurface !== 'reader-conversation')) throw new Error('--reading-fixes requires an owned canonical Conversation fixture');
 if (minimumLineBoundaries && requestedSurface !== "reader-conversation") throw new Error("Line geometry requires the reader-conversation surface");
 if (searchEntryOnly && !requestedSurface?.startsWith("search-")) throw new Error("--search-entry-only requires a search surface");
@@ -70,7 +72,7 @@ if (galleryIndex >= 0 && (!diagramGallery || realSample || requestedSurface !== 
 const batchIndex = argumentsList.indexOf("--batch-samples");
 const batchSamples = batchIndex >= 0 ? argumentsList[batchIndex + 1] : null;
 if (batchIndex >= 0 && (!batchSamples || realSample || diagramGallery || requestedSurface !== "archiver-parse-batch")) throw new Error("--batch-samples requires the isolated Archiver parse journey");
-if (realConversationIndex >= 0 && (!realConversation || realSample || diagramGallery || batchSamples || !["reader-conversation", "reader-map", "reader-works", "reader-cards", "reader-summaries", "reader-catalog-open", "archiver", "archiver-record-compatibility", "search-reader", "search-archiver"].includes(requestedSurface))) throw new Error("--real-conversation requires one canonical JSON and a supported Reader/Archiver surface");
+if (realConversationIndex >= 0 && (!realConversation || realSample || diagramGallery || batchSamples || !["reader-conversation", "reader-analysis", "reader-map", "reader-works", "reader-cards", "reader-summaries", "reader-catalog-open", "archiver", "archiver-record-compatibility", "search-reader", "search-archiver"].includes(requestedSurface))) throw new Error("--real-conversation requires one canonical JSON and a supported Reader/Archiver surface");
 if (requestedSurface?.startsWith("search-") && (!realConversation || !Array.isArray(searchCompanions) || searchCompanions.length !== 2)) throw new Error("Search journey needs its primary real Tree and two --search-companions");
 if (recordUi && (realSample || diagramGallery || batchSamples || realConversation)) throw new Error("--record-ui owns one synthetic Library through the packaged Engine; do not mix inputs");
 if (requireBranch && !realSample && !realConversation) throw new Error("--require-branch needs an actual HTML or Conversation input");
@@ -82,7 +84,7 @@ if ((claudeSourceIndex >= 0 || officialSourceIndex >= 0) && (!claudeSource || !r
 if (parserStatus && !claudeSource) throw new Error("--parser-status requires a real --claude-source in an owned Library");
 if (indexReopen && (officialSourceIndex < 0 || !claudeSource)) throw new Error("--index-reopen requires a real --official-source ZIP");
 if (parserStatus && (!requestedTheme || !requestedViewport || !requestedLanguage)) throw new Error("--parser-status mutates its fixture: use one explicit theme, viewport and language per owned Library");
-if (realSampleIndex >= 0 && (!realSample || !requestedSurface?.split(",").every(surface => ["reader-conversation", "reader-map", "reader-works", "reader-cards", "reader-nested-process", "reader-schedule", "reader-catalog-open", "reader-row-menu", "reader-title-hover", "archiver-title-hover", "archiver-information", "conversation-info", "archiver-external-refresh", "archiver-batch-delete"].includes(surface)))) {
+if (realSampleIndex >= 0 && (!realSample || !requestedSurface?.split(",").every(surface => ["reader-conversation", "reader-analysis", "reader-map", "reader-works", "reader-cards", "reader-nested-process", "reader-schedule", "reader-catalog-open", "reader-row-menu", "reader-title-hover", "archiver-title-hover", "archiver-information", "conversation-info", "archiver-external-refresh", "archiver-batch-delete"].includes(surface)))) {
   throw new Error("--real-sample requires one HTML file and a supported Reader/Archiver surface");
 }
 if (requestedSurface?.split(",").includes("reader-schedule") && !realSample) throw new Error("reader-schedule needs a real captured task-list HTML");
@@ -141,6 +143,7 @@ const surfaces = [
   { id: "standard-archiver", route: "archiver", fixture: "archiver", phase: "motion-freeze", interaction: "standard-document" },
   { id: "reader-nested-process", route: "conversation", fixture: "real", phase: "motion-freeze", interaction: "nested-process" },
   { id: "reader-schedule", route: "conversation", fixture: "real", phase: "motion-freeze", interaction: "schedule-cards" },
+  { id: "reader-analysis", route: "conversation", fixture: "real", phase: "motion-freeze", interaction: "analysis-links" },
   { id: "reader-map", route: "conversation", fixture: "real", phase: "motion-freeze", interaction: "saved-map" },
   { id: "reader-works", route: "conversation", fixture: "real", phase: "motion-freeze", interaction: "saved-works" },
   { id: "reader-cards", route: "conversation", fixture: "real", phase: "motion-freeze", interaction: "saved-cards" },
@@ -655,6 +658,7 @@ function visualQuery(surface, theme, language) {
   if (surface.interaction) query.set("interaction", surface.interaction);
   if (surface.jsonPlatform) query.set("json-platform", surface.jsonPlatform);
   if (surface.jsonGuide) query.set("json-guide", "true");
+  if (argumentsList.includes("--import-guide")) query.set("import-guide", "true");
   if (surface.interaction === "schedule-cards") query.set("task-card-count", String(taskCardCount));
   if (sourcePicker) query.set("source-picker", "true");
   if (searchEntryOnly) query.set("search-entry-only", "1");
@@ -662,6 +666,7 @@ function visualQuery(surface, theme, language) {
   if (realConversation && !surface.interaction && !minimumLineBoundaries && !readerResources) query.set("interaction", "branch-only");
   if (minimumLineBoundaries) query.set("expected-line-boundaries", String(minimumLineBoundaries));
   if (claudeContext) query.set("claude-context", "1");
+  if (geminiReview) query.set("gemini-review", "1");
   if (readingFixes) query.set("reading-fixes", "1");
   if (argumentsList.includes("--reader-seven")) query.set("reader-seven", "1");
   if (intelligentUi) query.set("intelligent-ui", "1");
@@ -675,6 +680,7 @@ function visualQuery(surface, theme, language) {
   if (argumentsList.includes("--inline-works-only")) query.set("inline-works-only", "1");
   if (argumentsList.includes("--work-downloads")) query.set("work-downloads", "1");
   if (argumentsList.includes("--work-theme")) query.set("work-theme", "1");
+  if (argumentsList.includes("--work-graphics")) query.set("work-graphics", "1");
   if (argumentsList.includes("--work-media")) query.set("work-media", "1");
   if (argumentsList.includes("--work-review")) query.set("work-review", "1");
   if (argumentsList.includes("--work-media-files")) query.set("work-media-files", "1");
@@ -812,6 +818,7 @@ for (const viewport of viewports) {
         if (surface.interaction === "author-contact") assert.match(nativeTrace, /author-contact-native-external-passed/u);
         if (surface.interaction === "update-check") assert.match(nativeTrace, /update-check-pointer-roundtrip-passed/u);
         if (claudeContext) assert.match(nativeTrace, /claude-context-pointer-passed/u);
+        if (geminiReview) assert.match(nativeTrace, /gemini-review-passed/u);
         if (sourceEmpty) assert.match(nativeTrace, /reader-empty-source-passed/u);
         if (claudeSource && (parserStatus || officialSourceIndex < 0)) assert.match(nativeTrace, parserStatus ? /parser-status-pointer-passed/u : /claude-empty-source-pointer-passed/u);
         if (indexReopen) assert.match(nativeTrace, /container-reopen-pointer-passed/u);
@@ -826,7 +833,7 @@ for (const viewport of viewports) {
         // switching. Do not demand an event that their dispatcher never runs.
         // An explicit branch gate remains strict; the normal Reader journey
         // still switches/restores branching inputs as before.
-        const dedicatedContentJourney = ["saved-cards", "saved-works", "saved-map", "schedule-cards"].includes(surface.interaction);
+        const dedicatedContentJourney = ["saved-cards", "saved-works", "saved-map", "schedule-cards", "analysis-links"].includes(surface.interaction);
         if (surface.route === "conversation" && sourceEvidence?.branch_points > 0 && !sourceEmpty && (!dedicatedContentJourney || requireBranch)) assert.match(nativeTrace, /reader-branch-switch-and-restore-passed/u, "A genuinely branching source must switch and restore a real Reader path; a skipped branch probe is not evidence");
         if (surface.interaction === "reader-catalog-open") {
           assert.match(nativeTrace, /reader-catalog-open-passed\s+\{"native_clicks":2,"archiver_roundtrip":true/u);

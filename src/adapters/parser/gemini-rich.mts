@@ -1,5 +1,5 @@
 import { workContainer } from "./work-container.mts";
-import { parse, type DefaultTreeAdapterTypes } from "parse5";
+import { parse, parseFragment, type DefaultTreeAdapterTypes } from "parse5";
 import { isJsonObject, type JsonObject, type JsonValue } from "../../core/contracts/types.mts";
 import { safeVirtualPath, interactiveFileMime } from "./claude-interactive.mts";
 import { WorkResources } from "./work-resources.mts";
@@ -19,12 +19,19 @@ export class GeminiRichContent {
   readonly #artifacts = new Map<string, JsonObject>();
   readonly #resources = new Map<string, JsonObject>();
   readonly #media = new Map<string, JsonObject>();
+  readonly #documents: JsonObject[];
+  readonly #schedules: JsonObject[];
+  readonly #citations: JsonObject[];
+  readonly #reference: ((source: JsonObject) => string) | undefined;
   readonly #used = new Set<string>();
   readonly #resourceIds = new Map<string, string>();
   readonly pool: WorkResources;
   readonly claimImage: (owner: string, dataUrl: string) => void;
-  constructor(payload: JsonObject, pool: WorkResources, claimImage: (owner: string, dataUrl: string) => void) {
+  constructor(payload: JsonObject, pool: WorkResources, claimImage: (owner: string, dataUrl: string) => void, reference?: (source: JsonObject) => string) {
     this.pool = pool; this.claimImage = claimImage;
+    this.#documents = list(payload["cloud_documents"]);
+    this.#schedules = list(payload["task_schedules"]);
+    this.#citations = list(payload["document_citations"]); this.#reference = reference;
     for (const raw of list(payload["resources"])) {
       const key = text(raw["key"]); if (!key || this.#resources.has(key)) throw new TypeError("Gemini rich resource identity is missing or duplicated");
       this.#resources.set(key, raw);
@@ -122,6 +129,45 @@ export class GeminiRichContent {
   }
   node(node: Element, owner: string): JsonObject[] | undefined {
     const attr = (name: string) => node.attrs.find(a => a.name === name)?.value;
+    const classes = (attr("class") ?? "").split(/\s/u);
+    if (classes.includes("gemini-document-citation")) {
+      const path = attr("data-citation-path");
+      const members = path === undefined ? [] : this.#citations.filter(c => c["message_id"] === owner && c["complete"] === true &&
+        (c["path"] === path || String(c["path"]).startsWith(path + ","))).flatMap(c => list(c["sources"]));
+      const memberIndex = node.childNodes.findIndex(n => "attrs" in n && n.attrs.some(a => a.name === "class" && a.value.split(/\s/u).includes("gemini-document-sources")));
+      if (members.length && memberIndex >= 0) {
+        // Some saved inline groups omit their outer closing span. The browser
+        // repairs that span around subsequent prose/citations. Replace only the
+        // known label/member pair, never those following source nodes.
+        const continuation = node.childNodes.slice(memberIndex + 1);
+        const label = text(members[0]!["title"] ?? members[0]!["filename"]) ?? "Document";
+        const html = `<span>${escape(label)}${members.length > 1 ? ` + ${members.length - 1}` : ""}</span><span class="cloudig-document-sources" hidden>${members.map(s => {
+          const id = this.#reference?.(s);
+          return `<span class="cloudig-document-source"${id ? ` data-cloudig-reference="${escape(id)}"` : ""}><strong>${escape(text(s["title"] ?? s["filename"]) ?? "Document")}</strong>${text(s["mime"]) ? `<small>${escape(String(s["mime"]))}</small>` : ""}</span>`;
+        }).join("")}</span>`;
+        node.childNodes = [...parseFragment(html).childNodes, ...continuation];
+        for (const child of node.childNodes) child.parentNode = node;
+      } else {
+        // Older HTML still keeps its visible member list without guessing IDs.
+        const rename = (n: DefaultTreeAdapterTypes.Node): void => { if ("attrs" in n) for (const a of n.attrs) if (a.name === "class") a.value = a.value.replaceAll("gemini-document-sources", "cloudig-document-sources").replaceAll("gemini-document-source", "cloudig-document-source"); if ("childNodes" in n) for (const c of n.childNodes) rename(c); }; rename(node);
+      }
+      const classAttr = node.attrs.find(a => a.name === "class")!; classAttr.value = classAttr.value.replace("gemini-document-citation", "cloudig-document-citation");
+    }
+    // Source time belongs in the message Schema, not a second body label.
+    if (classes.includes("gemini-message-time")) return [];
+    if (classes.includes("gemini-task-schedule")) {
+      const matches = this.#schedules.filter(s => s["message_id"] === owner && !this.#used.has(`schedule:${owner}:${s["id"]}`));
+      if (matches.length) return matches.map(s => this.#schedule(s, owner));
+    }
+    if (classes.includes("gemini-rich-artifact")) {
+      const keys = new Set<string>();
+      const visit = (n: DefaultTreeAdapterTypes.Node): void => {
+        if ("attrs" in n) for (const a of n.attrs) if (a.name === "data-gemini-resource") keys.add(a.value);
+        if ("childNodes" in n) for (const child of n.childNodes) visit(child);
+      }; visit(node);
+      const docs = this.#documents.filter(d => Array.isArray(d["message_ids"]) && d["message_ids"].includes(owner) && keys.has(String(d["resource"])));
+      if (docs.length) return docs.flatMap(d => this.#document(d, owner));
+    }
     if ((attr("class") ?? "").split(/\s/u).includes("gemini-response-model")) return [];
     if ((attr("class") ?? "").split(/\s/u).includes("gemini-music")) {
       const nodes:Element[]=[];const visit=(p:DefaultTreeAdapterTypes.ParentNode)=>{for(const n of p.childNodes)if("tagName" in n){nodes.push(n);visit(n);}};visit(node);
@@ -160,10 +206,26 @@ export class GeminiRichContent {
   }
   remaining(owner: string): JsonObject[] {
     const result: JsonObject[] = [];
+    for (const d of this.#documents) if (Array.isArray(d["message_ids"]) && d["message_ids"].includes(owner)) result.push(...this.#document(d, owner));
+    for (const s of this.#schedules) if (s["message_id"] === owner && !this.#used.has(`schedule:${owner}:${s["id"]}`)) result.push(this.#schedule(s, owner));
     for (const [key, raw] of this.#artifacts) if (raw["message_id"] === owner && !this.#used.has(key)) {
       const block = this.#artifact(raw, owner); if (block) { result.push(block); this.#used.add(key); }
     }
     for (const [key, raw] of this.#media) if (raw["message_id"] === owner && !this.#used.has(key)) { result.push(...this.#mediaBlock(raw, owner)); this.#used.add(key); }
     return result;
+  }
+  #document(raw: JsonObject, owner: string): JsonObject[] {
+    const key = text(raw["resource"]), mark = `document:${owner}:${raw["id"]}`;
+    if (!key || this.#used.has(mark)) return [];
+    const resource = this.#resource(key, owner); this.#used.add(mark);
+    return [{ type: "attachment", resource, ...(text(raw["title"]) ? { text: raw["title"]! } : {}) }];
+  }
+  #schedule(raw: JsonObject, owner: string): JsonObject {
+    this.#used.add(`schedule:${owner}:${raw["id"]}`);
+    const trigger = Array.isArray(raw["trigger"]) ? raw["trigger"].filter(v => typeof v === "string").join(" · ") : text(raw["trigger"]);
+    return { type: "box", source: "gemini.google.com_scheduled_task", format: "structured", ...(text(raw["title"]) ? { title: raw["title"]! } : {}), data: { kind: "scheduled-task",
+      ...(text(raw["title"]) ? { title: raw["title"]! } : {}), ...(trigger ? { schedule: trigger } : {}),
+      ...(text(raw["timezone"]) ? { timezone: raw["timezone"]! } : {}), ...(text(raw["instructions"]) ? { prompt: raw["instructions"]! } : {}),
+      source_task: raw, source_evidence: { source: "gemini_task_api", captured_at: raw["captured_at"] ?? null } } };
   }
 }

@@ -56,7 +56,7 @@ test("English Archiver instructions retain word boundaries across inline transla
     assert.equal(paragraph("workflowAutoLead"), "Automatic: Exit Chrome and choose Light / Full / Tree then select Install All or Install · Light to install only the bookmarklets you need.");
     assert.match(paragraph("workflowManualLead"), /^Manual: Select then create a Chrome bookmark/u);
     assert.equal(paragraph("workflowSaveClaudeBefore"), values.archiver.workflowSaveClaude);
-    assert.equal(paragraph("workflowImportBeforeHtml"), "Place bookmarklet HTML files or platform JSON files in the Inbox folder. Open Inbox");
+    assert.equal(paragraph("workflowImportBeforeHtml"), "Place bookmarklet HTML files or supported JSON, JSONL, JSONL.ZST or ZIP files in the Inbox folder. Do not extract ZIPs. Open Inbox");
     assert.match(paragraph("workflowReadBefore"), /then choose Start Reading$/u);
     assert.match(paragraph("workflowDocsBefore"), /use Cloudig Documentation · Bookmark Guide and Archive Guide\.$/u);
   } finally { dom.window.close(); }
@@ -493,7 +493,7 @@ test("Claude JSON route keeps the Archiver rails, one center card, bounded progr
   const view = page.querySelector("[data-archiver-claude-view]")!;
   const coworkWarning = page.querySelector(".archiver-claude-cowork-warning")!;
   assert.deepEqual(Array.from(coworkWarning.querySelectorAll(":scope > .archiver-claude-cowork-line"), row => row.textContent!.replace(/\s+/gu, "")), [
-    "截止2026-08，", "Claude的官方导出不包含Cowork数据。", "可在Chrome中打开具体cowork对话，", "使用Claude书签下载。"
+    "官方导出补充说明", "若Claude的官方导出未包含所需会话，", "可在Chrome中打开该会话，", "使用Claude书签保存。"
   ]);
   assert.equal(coworkWarning.querySelectorAll("svg circle, svg path").length, 2);
   assert.equal(coworkWarning.querySelectorAll("i").length, 0);

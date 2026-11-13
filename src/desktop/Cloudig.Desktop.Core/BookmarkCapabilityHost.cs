@@ -329,8 +329,8 @@ public sealed class BookmarkCapabilityHost
             .SelectMany(item => item.Stores.OrderBy(store => store.Kind == "account" ? 0 : 1))
             .ToArray();
         var selected = !string.IsNullOrWhiteSpace(preferredStorePath)
-            ? stores.FirstOrDefault(store => SamePath(store.Path, preferredStorePath))
-            : stores.FirstOrDefault(store => SamePath(store.Path, settings.StorePath)) ?? stores.FirstOrDefault();
+            ? stores.FirstOrDefault(store => ChromeProfileDiscovery.SameLogicalStore(store.Path, preferredStorePath))
+            : stores.FirstOrDefault(store => ChromeProfileDiscovery.SameLogicalStore(store.Path, settings.StorePath)) ?? stores.FirstOrDefault();
         if (selected is null)
         {
             try
@@ -340,7 +340,7 @@ public sealed class BookmarkCapabilityHost
             }
             catch (Exception error) { throw Wrap(error); }
         }
-        var sameStore = SamePath(selected.Path, settings.StorePath);
+        var sameStore = ChromeProfileDiscovery.SameLogicalStore(selected.Path, settings.StorePath);
         var target = new BookmarkInstallTarget(
             selected.Path,
             sameStore ? settings.ParentGuid : string.Empty,

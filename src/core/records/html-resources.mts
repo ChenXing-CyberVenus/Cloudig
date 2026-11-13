@@ -3,6 +3,22 @@ import type { JsonObject } from "../contracts/types.mts";
 
 /** Existing HTML content, not a URL scheme or an additional record field. */
 export const HTML_IMAGE_RESOURCE = "data-cloudig-resource";
+/** Inline source labels may point to an existing Conversation reference. The
+ * visible HTML remains readable without this optional association. */
+export const HTML_REFERENCE = "data-cloudig-reference";
+export function htmlReferenceIds(source: string): string[] {
+  if (!/data-cloudig-reference/iu.test(source)) return [];
+  const ids: string[] = [], pending: DefaultTreeAdapterTypes.Node[] = [parseFragment(source)];
+  while (pending.length) {
+    const node = pending.pop()!;
+    if ("attrs" in node) {
+      const id = node.attrs.find(a => a.name === HTML_REFERENCE)?.value;
+      if (id !== undefined) ids.push(id);
+    }
+    if ("childNodes" in node) pending.push(...node.childNodes);
+  }
+  return ids;
+}
 export type HtmlResourceImage = Readonly<{
   id: string; alt: string; title?: string;
   start: number; end: number; attributeStart: number; attributeEnd: number;
