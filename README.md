@@ -1,6 +1,6 @@
 # 采云 Cloudig
 
-[采云文档](https://chenxing-cybervenus.github.io/Cloudig/#standard) · [中文 README](README.zh-CN.md) · [English README](README.en.md)
+[采云文档 / Cloudig Docs](https://chenxing-cybervenus.github.io/Cloudig/#standard) · [中文 README](README.zh-CN.md) · [English README](README.en.md)
 
 ## 下载
 
