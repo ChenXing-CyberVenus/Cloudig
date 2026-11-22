@@ -6,7 +6,7 @@
 
 采云：免费的AI平台对话导出、管理与阅读工具。
 
-**Windows x64：** [下载采云 V1.0.10 东方既白 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.10/Cloudig-1.0.10-Setup.exe) · [查看全部发布版本](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
+**Windows x64：** [下载采云 V1.0.11 东方既白 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.11/Cloudig-1.0.11-Setup.exe) · [查看全部发布版本](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
 不要安装到 `Program Files`，选择有写入权限的目录。采云是完整的便携目录：复制就是备份，移走就是搬家，删除就是卸载。
 
@@ -28,9 +28,9 @@
 
 <p align="center"><em>档案馆 Archiver：导入、解析、管理与导出。</em></p>
 
-**[源码 Source code · Cloudig V1.0.10](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.10)**
+**[源码 Source code · Cloudig V1.0.11](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.11)**
 
-## V1.0.10 核心能力
+## V1.0.11 核心能力
 
 ### 1. 网页书签导出
 
@@ -46,8 +46,8 @@ Archiver 的“导入平台文件”入口按来源选择文件类型：
 
 | 类型 | 已适配来源 |
 |---|---|
-| 官方 JSON | Claude、DeepSeek、Qwen |
-| 官方完整 ZIP | ChatGPT、Mistral、Grok |
+| 官方 JSON | Claude、DeepSeek（旧版导出）、Qwen |
+| 官方完整 ZIP | ChatGPT、DeepSeek、Mistral、Grok |
 | Agent Tool JSON / JSONL | Cline、SillyTavern、Kimi Code、Claude Code、Codex |
 
 ZIP 无需解压，也不要求用户选择导出文件夹。每个平台的具体导入方式以应用内指南为准。

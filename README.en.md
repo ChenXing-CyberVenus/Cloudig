@@ -6,7 +6,7 @@
 
 Cloudig: Free tool to export, organize & read AI conversations from 12 web platforms
 
-**Windows x64:** [Download Cloudig V1.0.10 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.10/Cloudig-1.0.10-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
+**Windows x64:** [Download Cloudig V1.0.11 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.11/Cloudig-1.0.11-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
 Do not install it in `Program Files`; choose a directory with write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall.
 
@@ -24,9 +24,9 @@ Cloudig turns captured HTML, official platform exports, and Agent Tool files int
 <p><strong>Archiver · StarNight</strong></p>
 <img src="docs/assets/readme/Archiver-StarNight.webp" alt="Cloudig Archiver StarNight" width="100%">
 
-**[Source code · Cloudig V1.0.10](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.10)**
+**[Source code · Cloudig V1.0.11](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.11)**
 
-## V1.0.10 highlights
+## V1.0.11 highlights
 
 ### Web bookmark export
 
@@ -42,8 +42,8 @@ Archiver's **Import Platform Files** entry routes each source to its correct inp
 
 | Input | Supported sources |
 |---|---|
-| Official JSON | Claude, DeepSeek, Qwen |
-| Official conversation ZIP | ChatGPT, Mistral, Grok |
+| Official JSON | Claude, DeepSeek (legacy exports), Qwen |
+| Official conversation ZIP | ChatGPT, DeepSeek, Mistral, Grok |
 | Agent Tool JSON / JSONL | Cline, SillyTavern, Kimi Code, Claude Code, Codex |
 
 ZIP files do not need to be extracted. The in-app guide explains the exact input expected by each source.
