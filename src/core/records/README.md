@@ -18,3 +18,5 @@ Run `npm run test:v1:records` and `npm run check:v1:types` for this contract bou
 The old `core/contracts` still contains shared JSON/time-limit utilities and retained pre-reset contracts; it does not define these five current business records. Persistence, the record Engine and desktop now use the completed S0–S5 record chain; see PROJECT_STATE for internal verification evidence and separate release limitations. No new record is to be passed through the old aN/Library-overlay validators or written in both formats.
 
 Meaning authority: [Core](../../../docs/2026-09-08_采云V1现行工程规范-GPT-6-Astra/00_入口与整编路线-GPT-6-Astra.md). Current integration state: [PROJECT_STATE](../../../PROJECT_STATE.md).
+
+Conversation / Library 1.0.3 adds optional `diagram.rendered_themes` (`light` / `dark` image-resource references) alongside required default `rendered`. Only source-provided images are recorded. Earlier 1.0.0–1.0.2 shapes remain frozen under `schemas/compat/`; unsupported formats retain the explicit update-required result. Library declarations advance only on explicit writes, not reads.

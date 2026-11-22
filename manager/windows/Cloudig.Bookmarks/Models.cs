@@ -147,7 +147,8 @@ public sealed record BookmarkStore(
     string ProfileDirectory,
     string ProfileDisplayName,
     string Kind,
-    string Path);
+    string Path,
+    bool AwaitingFirstBookmark = false);
 
 public sealed record ChromeProfile(
     string DirectoryName,

@@ -612,11 +612,25 @@ export function mountArchiver(options) {
   const bookmarkParentSelect = root.querySelector("[data-bookmark-target-parent]");
   const bookmarkFolderName = root.querySelector("[data-bookmark-target-name]");
   const bookmarkPlaceFirst = root.querySelector("[data-bookmark-target-first]");
+  const bookmarkMethodClosed = bookmarkTargetPanel.querySelector('input[value="closed"]');
+  let bookmarkFormTarget;
+  let bookmarkStorePreviewed = false;
+  const installScope = platform => {
+    const label = platform ? platformLabel(platform, root.lang) : (root.lang === "en" ? "All platforms" : "全部平台");
+    return `${label} · ${profileName(profile, root.lang)}`;
+  };
+  function cancelBookmarkSettings() {
+    if (root.dataset.bookmarkBusy === "true") return;
+    bookmarkTargetPanel.hidden = true;
+    if (bookmarkStorePreviewed) runBookmarkAction(() => options.queryBookmarks?.(profile)).catch(() => undefined);
+    root.querySelector("[data-bookmark-target-settings]")?.focus();
+  }
 
-  const syncBookmarkTargetForm = () => {
-    const target = bookmarkModel?.target;
+  const syncBookmarkTargetForm = (model = bookmarkModel) => {
+    const target = model?.target;
+    bookmarkFormTarget = target;
     bookmarkStoreSelect.replaceChildren();
-    for (const store of bookmarkModel?.stores ?? []) {
+    for (const store of model?.stores ?? []) {
       const option = document.createElement("option");
       option.value = store.capability;
       option.textContent = store.label;
@@ -634,9 +648,11 @@ export function mountArchiver(options) {
     }
     bookmarkFolderName.value = target?.folder_name ?? "采云 Cloudig";
     bookmarkPlaceFirst.checked = target?.place_first !== false;
+    bookmarkFolderName.disabled = !target;
+    bookmarkPlaceFirst.disabled = !target;
     bookmarkStoreSelect.disabled = bookmarkStoreSelect.options.length === 0;
     bookmarkParentSelect.disabled = bookmarkParentSelect.options.length === 0;
-    root.querySelector("[data-bookmark-target-save]").disabled = !target;
+    root.querySelector("[data-bookmark-target-save]").disabled = root.dataset.bookmarkBusy === "true";
   };
 
   const runBookmarkAction = async (action) => {
@@ -842,6 +858,9 @@ export function mountArchiver(options) {
     const installAll = root.querySelector("[data-bookmark-install-all]");
     installAll.textContent = `${root.lang === "en" ? "Install All" : "全装"}·${profileName(profile, root.lang)}`;
     installAll.disabled = !bookmarkModel?.target || root.dataset.bookmarkBusy === "true";
+    const accountBookmarks = bookmarkModel?.stores?.some(store => store.selected && store.kind === "account");
+    root.querySelector("[data-bookmark-pin-tip]").hidden = !(bookmarkModel?.browser_state === "open" &&
+      !accountBookmarks && bookmarkModel.require_chrome_closed === false && bookmarkModel.target?.place_first && !bookmarkModel.target.exists);
     const browserMessage = root.querySelector("[data-bookmark-browser-message]");
     browserMessage.dataset.state = bookmarkModel?.browser_state ?? "unknown";
     browserMessage.textContent = bookmarkModel?.browser_state === "loading"
@@ -849,7 +868,9 @@ export function mountArchiver(options) {
       : bookmarkModel?.browser_state === "closed"
       ? (root.lang === "en" ? "✓ Chrome is closed — ready" : "✓ Chrome已退出，可以安装")
       : bookmarkModel?.browser_state === "open"
-        ? (root.lang === "en" ? "ⓘ Exit Chrome before installing" : "ⓘ 安装前请退出Chrome")
+        ? (bookmarkModel.require_chrome_closed !== false || accountBookmarks
+          ? (root.lang === "en" ? "Exit Chrome to install" : "请退出 Chrome 后安装")
+          : (root.lang === "en" ? "Local bookmarks can be installed and updated" : "本地书签可直接安装和更新"))
         : (root.lang === "en" ? "ⓘ Chrome state could not be verified" : "ⓘ 无法确认Chrome状态");
     const targetPath = root.querySelector("[data-bookmark-target-path]");
     targetPath.textContent = bookmarkModel?.target?.display_path ?? (bookmarkModel?.browser_state === "loading"
@@ -932,7 +953,7 @@ export function mountArchiver(options) {
     bookmarkExpand.setAttribute("aria-expanded", String(bookmarkExpanded));
     bookmarkExpand.setAttribute("aria-label", bookmarkExpanded ? (root.lang === "en" ? "Collapse bookmark rail" : "收起书签栏") : (root.lang === "en" ? "Expand bookmark rail" : "展开书签栏"));
     // A list refresh must not replace the open settings draft or its in-flight creator.
-    if (!bookmarkTargetPanel.hidden) syncBookmarkTargetForm();
+    if (!bookmarkTargetPanel.hidden) root.querySelector("[data-bookmark-target-save]").disabled = root.dataset.bookmarkBusy === "true";
     updateSelectionCopy();
   };
 
@@ -1087,15 +1108,15 @@ export function mountArchiver(options) {
       return;
     }
     if (event.target.closest("[data-bookmark-install-all]")) {
-      runBookmarkAction(() => options.onBookmarkInstall?.(profile, platformDefinitions.map(([platform]) => platform))).catch(() => undefined);
+      runBookmarkAction(() => options.onBookmarkInstall?.(profile, platformDefinitions.map(([platform]) => platform), bookmarkModel?.target?.store, installScope())).catch(() => undefined);
       return;
     }
     const bookmarkOperation = event.target.closest("[data-bookmark-operation]");
     if (bookmarkOperation) {
       const platform = bookmarkOperation.dataset.bookmarkPlatform;
       runBookmarkAction(() => bookmarkOperation.dataset.bookmarkOperation === "remove"
-        ? options.onBookmarkRemove?.(profile, [platform])
-        : options.onBookmarkInstall?.(profile, [platform])).catch(() => undefined);
+        ? options.onBookmarkRemove?.(profile, [platform], bookmarkModel?.target?.store, installScope(platform))
+        : options.onBookmarkInstall?.(profile, [platform], bookmarkModel?.target?.store, installScope(platform))).catch(() => undefined);
       return;
     }
     const bookmarkCopy = event.target.closest("[data-bookmark-copy]");
@@ -1104,23 +1125,28 @@ export function mountArchiver(options) {
       return;
     }
     if (event.target.closest("[data-bookmark-target-settings]")) {
+      if (root.dataset.bookmarkBusy === "true") return;
+      bookmarkStorePreviewed = false;
       syncBookmarkTargetForm();
+      bookmarkTargetPanel.querySelector(`input[value="${bookmarkModel?.require_chrome_closed === false ? "auto" : "closed"}"]`).checked = true;
       bookmarkTargetPanel.hidden = false;
       bookmarkStoreSelect.focus();
       return;
     }
     if (event.target.closest("[data-bookmark-target-close], [data-bookmark-target-cancel]")) {
-      bookmarkTargetPanel.hidden = true;
-      root.querySelector("[data-bookmark-target-settings]")?.focus();
+      cancelBookmarkSettings();
       return;
     }
     if (event.target.closest("[data-bookmark-target-save]")) {
-      const targetDraft = {
+      const target = bookmarkFormTarget;
+      const changedLocation = target && (bookmarkStorePreviewed || bookmarkParentSelect.value !== target.parent ||
+        bookmarkFolderName.value !== target.folder_name || bookmarkPlaceFirst.checked !== target.place_first);
+      const targetDraft = { require_chrome_closed: bookmarkMethodClosed.checked, ...(changedLocation ? {
         store: bookmarkStoreSelect.value,
         parent: bookmarkParentSelect.value,
         folder_name: bookmarkFolderName.value,
         place_first: bookmarkPlaceFirst.checked
-      };
+      } : {}) };
       runBookmarkAction(async () => {
         const next = await options.onBookmarkTargetSave?.(profile, targetDraft);
         bookmarkTargetPanel.hidden = true;
@@ -1272,7 +1298,11 @@ export function mountArchiver(options) {
   }, { signal: controller.signal });
   bookmarkStoreSelect.addEventListener("change", () => {
     const selectedStore = bookmarkStoreSelect.value;
-    runBookmarkAction(() => options.queryBookmarkTarget?.(profile, selectedStore)).catch(() => undefined);
+    bookmarkStorePreviewed = true;
+    runBookmarkAction(async () => {
+      const next = await options.queryBookmarkTarget?.(profile, selectedStore);
+      if (next) syncBookmarkTargetForm(next);
+    }).catch(() => undefined);
   }, { signal: controller.signal });
   root.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && activeFilterPopover) {
@@ -1285,8 +1315,7 @@ export function mountArchiver(options) {
       return;
     }
     if (event.key === "Escape" && !bookmarkTargetPanel.hidden) {
-      bookmarkTargetPanel.hidden = true;
-      root.querySelector("[data-bookmark-target-settings]")?.focus();
+      cancelBookmarkSettings();
       return;
     }
     if (!bookmarkExpanded) return;

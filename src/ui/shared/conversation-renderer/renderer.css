@@ -580,6 +580,7 @@ details[open] > .cloudig-fold-title::before {
   padding: 16px;
 }
 .cloudig-diagram-display[data-renderer="local"] { background: var(--cloudig-diagram-local-canvas); }
+.cloudig-diagram-display[data-native-theme="dark"] { background: var(--cloudig-panel); }
   .cloudig-diagram-display > .cloudig-resource-image { margin-inline: auto; }
   .cloudig-inline-resource > .cloudig-resource-image { display: inline-block; vertical-align: middle; }
   .cloudig-source-brand { display:block; color:var(--cloudig-muted); margin-top:3px; font-size:13px; }
@@ -627,6 +628,14 @@ details[open] > .cloudig-fold-title::before {
   transition: box-shadow .15s, border-color .15s, transform .15s;
 }
 .cloudig-conversation-renderer[data-theme="star-night"] { --cloudig-file-surface: #343039; }
+.cloudig-file-details { width: min(100%, 540px); }
+.cloudig-file-details > summary { width: 100%; box-sizing: border-box; list-style: none; cursor: pointer; }
+.cloudig-file-details > summary::-webkit-details-marker { display: none; }
+.cloudig-file-details > summary:focus-visible { outline: 2px solid var(--cloudig-accent); outline-offset: 3px; }
+.cloudig-file-info-badge { display: inline-flex; align-items: center; gap: .35em; color: var(--cloudig-muted); font: 500 14px/1.4 var(--cloudig-font-ui,sans-serif); }
+.cloudig-file-details[open] .cloudig-file-info-badge { color: var(--cloudig-accent); }
+.cloudig-file-details > .cloudig-file-explanation { margin: 6px 0 0; padding: 7px 12px; border-inline-start: 2px solid var(--cloudig-accent); color: var(--cloudig-text); font: 400 14px/1.55 var(--cloudig-font-ui,sans-serif); }
+@container (max-width: 420px) { .cloudig-file-info-badge { grid-column: 2 / -1; } }
 .cloudig-attachment:hover { border-color: var(--cloudig-accent); box-shadow: 0 4px 10px #17101826; transform: translateY(-1px); }
 .cloudig-file-info { min-width: 0; display: grid; gap: 5px; align-content: center; }
 .cloudig-attachment-name { font-size: 16px; font-weight: 700; line-height: 1.45; overflow-wrap: anywhere; }

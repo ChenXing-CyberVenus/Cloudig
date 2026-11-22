@@ -12,6 +12,77 @@ using Cloudig.Desktop.Core;
 // the fixed Debug DLLs after its diagnostic has already reached the caller.
 AppDomain.CurrentDomain.UnhandledException += (_, failure) => { Console.Error.WriteLine(failure.ExceptionObject); Environment.Exit(1); };
 
+if (args is ["--verify-foreground-pin" or "--verify-pin-restart" or "--pin-restart-worker", var packageRoot, var fixtureRoot])
+{
+    Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));Trace.AutoFlush=true;
+    var fixture=Path.GetFullPath(fixtureRoot);
+    if(Path.GetDirectoryName(fixture)!=Path.GetFullPath("tests/private/live-product-bookmarks") || !Guid.TryParseExact(Path.GetFileName(fixture),"N",out _))throw new ArgumentException("Expected an isolated Cloudig fixture");
+    var user=Path.Combine(fixture,"User Data");
+    var file=Path.Combine(user,"Default","Bookmarks");
+    if(args[0]=="--verify-foreground-pin" && !Directory.Exists(fixture)){
+        Directory.CreateDirectory(Path.GetDirectoryName(file)!);
+        File.WriteAllText(Path.Combine(user,"Local State"),"""{"profile":{"last_used":"Default","info_cache":{"Default":{"name":"QA"}}}}""");
+        File.WriteAllText(file,EmptyChromeBookmarks());
+        var setup=new BookmarkCapabilityHost(Path.Combine(packageRoot,"bookmark-package.json"),Path.Combine(packageRoot,"artifacts"),
+            Path.Combine(fixture,"backups"),Path.Combine(fixture,"device.json"),user,browserState:()=>BookmarkBrowserState.Closed);
+        await setup.InstallAsync("light",["chatgpt"]);
+        var doc=JsonNode.Parse(File.ReadAllText(file))!.AsObject();
+        doc["roots"]!["bookmark_bar"]!["children"]!.AsArray().Insert(0,new JsonObject{
+            ["type"]="url",["id"]="1000",["guid"]=Guid.NewGuid().ToString("D"),["date_added"]="0",["name"]="Keep this bookmark",["url"]="https://example.org/"});
+        var sums=ChromeBookmarkChecksums.Compute(doc);doc["checksum"]=sums.Md5;doc["checksum_sha256"]=sums.Sha256;File.WriteAllText(file,doc.ToJsonString());
+    }
+    JsonArray Bar()=>JsonNode.Parse(File.ReadAllText(file))!["roots"]!["bookmark_bar"]!["children"]!.AsArray();
+    var before=Bar();
+    if(before.Count!=2 || !before.Any(n=>(string?)n?["name"]=="Keep this bookmark") || !before.Any(n=>(string?)n?["name"]=="采云 Cloudig"))throw new InvalidDataException("Unexpected placement fixture");
+    var host=new BookmarkCapabilityHost(Path.Combine(packageRoot,"bookmark-package.json"),Path.Combine(packageRoot,"artifacts"),Path.Combine(fixture,"backups"),Path.Combine(fixture,"device.json"),user,browserState:()=>BookmarkBrowserState.Open);
+    var chrome=new[]{Environment.SpecialFolder.ProgramFiles,Environment.SpecialFolder.ProgramFilesX86,Environment.SpecialFolder.LocalApplicationData}
+        .Select(dir=>Path.Combine(Environment.GetFolderPath(dir),"Google","Chrome","Application","chrome.exe")).First(File.Exists);
+    var start=new ProcessStartInfo(chrome){UseShellExecute=false,WindowStyle=ProcessWindowStyle.Minimized};
+    foreach(var arg in new[]{"--start-minimized","--no-first-run","--no-default-browser-check","--hide-crash-restore-bubble","--disable-extensions","--disable-sync","--disable-background-networking","--user-data-dir="+user,"about:blank"})start.ArgumentList.Add(arg);
+    if(args[0]=="--verify-pin-restart"){
+        QuietTestDesktop.Run(Environment.CurrentDirectory,Path.GetFullPath(packageRoot),fixture,workerMode:"--pin-restart-worker");
+        Console.WriteLine(File.ReadAllText(Path.Combine(fixture,"pin-reopen.txt")));return;
+    }
+    if(args[0]=="--pin-restart-worker"){
+        QuietTestDesktop.RequirePrivate();
+        using var privateBrowser=QuietTestDesktop.Start(start);
+        await Task.Delay(3500);
+        var state=await host.InstallAsync("light",["chatgpt"]);
+        var current=Bar();
+        if(state.PlacementPending || state.Added!=0 || state.Updated!=0 || (string?)current[0]?["name"]!="采云 Cloudig" ||
+            !before.Select(n=>(string?)n?["guid"]).SequenceEqual(current.Select(n=>(string?)n?["guid"])))throw new IOException("Restart changed or duplicated a pinned folder");
+        File.WriteAllText(Path.Combine(fixture,"pin-reopen.txt"),"PASS occupied bar after real Chrome restart, same folder GUID, original neighboring GUID and no-op install.");return;
+    }
+    if((string?)before[0]?["name"]!="Keep this bookmark")throw new InvalidDataException("Expected a pending move in the foreground fixture");
+    await host.SaveInstallMethodAsync("light",false);
+    using var owner=Process.Start(start)!;
+    await Task.Delay(2500);
+    if(owner.HasExited)throw new IOException("Expected a fresh isolated Chrome process");
+    using var timeLimit=new Timer(_=>{try{LiveProductBookmarks.CloseFixtureWindows(owner);}catch(InvalidOperationException){}},null,TimeSpan.FromSeconds(15),Timeout.InfiniteTimeSpan);
+    BookmarkShellMutation result;
+    try{result=await host.InstallAsync("light",["chatgpt"]);}
+    finally{if(!owner.HasExited){owner.CloseMainWindow();if(!owner.WaitForExit(800))owner.Kill();}}
+    var after=Bar();
+    if(result.PlacementPending|| (string?)after[0]?["guid"]!=(string?)before[1]?["guid"] || (string?)after[1]?["guid"]!=(string?)before[0]?["guid"])throw new IOException("Foreground pin not verified");
+    const string verified="PASS native foreground drop, same folder and neighboring GUID after Chrome wrote its own order.";
+    File.WriteAllText(Path.Combine(fixture,"pin-foreground.txt"),verified);
+    Console.WriteLine(verified);return;
+}
+if (args is ["--live-product-bookmarks" or "--live-create-bookmarks", var livePackageRoot])
+{
+    var work = Path.GetFullPath(Path.Combine("tests/private/live-product-bookmarks",Guid.NewGuid().ToString("N")));
+    QuietTestDesktop.Run(Environment.CurrentDirectory,Path.GetFullPath(livePackageRoot),work,workerMode:args[0]=="--live-create-bookmarks"?"--live-create-worker":"--live-product-worker");
+    LiveProductBookmarks.RetireFixture(work);
+    return;
+}
+if (args is ["--live-product-worker" or "--live-create-worker", var package, var workRoot])
+{
+    QuietTestDesktop.RequirePrivate();
+    using var log = new StreamWriter(Path.Combine(workRoot,"acceptance.txt")) { AutoFlush=true };
+    try { if(args[0]=="--live-create-worker")await LiveProductBookmarks.Create(package,workRoot,log);else await LiveProductBookmarks.Run(package,workRoot,EmptyChromeBookmarks(),log); }
+    catch(Exception e) { log.WriteLine(e); Environment.ExitCode=1; }
+    return;
+}
 if (args.Length == 5 && args[0] == "--official-import-check") { await OfficialImportChecks.RunAsync(args[1], args[2], args[3], args[4]); return; }
 
 if (args.Length == 1 && args[0] == "--update-check-test") { await ReleaseUpdateChecks.RunAsync(); return; }
@@ -555,7 +626,52 @@ try
         Path.Combine(scope, "Device", "open-cloudig-device.json"),
         chromeRoot,
         browserState: () => BookmarkBrowserState.Open);
-    await RejectBookmarkAsync(() => openBookmarkHost.InstallAsync("light", ["chatgpt"]), "CLOUDIG_CHROME_OPEN", "open Chrome fail closed");
+    await RejectBookmarkAsync(() => openBookmarkHost.RemoveAsync("light", ["chatgpt"]), "CLOUDIG_CHROME_OPEN", "open Chrome removal requires closed browser");
+    var methodFile=Path.Combine(scope,"Device","method-only.json");
+    var methodStore=new CloudigDeviceSettingsStore(methodFile);
+    var chromeState=BookmarkBrowserState.Open;
+    var methodBackups=Path.Combine(scope,"MethodBackups");
+    bool reopenDuringBackup=false;
+    BookmarkBrowserState BrowserForMethodTest() => reopenDuringBackup && Directory.Exists(methodBackups) &&
+        Directory.EnumerateFiles(methodBackups,"pending-transaction.txt",SearchOption.AllDirectories).Any() ? BookmarkBrowserState.Open : chromeState;
+    var methodHost=new BookmarkCapabilityHost(bookmarkManifest,bookmarkArtifacts,methodBackups,methodStore,chromeRoot,browserState:BrowserForMethodTest);
+    Require((await methodHost.QueryAsync("full")).RequireChromeClosed,"first use requires Chrome to exit");
+    await methodStore.SaveAsync(BookmarkDeviceSettings.Default);
+    var legacyDocument=JsonNode.Parse(await File.ReadAllTextAsync(methodFile))!;
+    var legacyInstall=legacyDocument["bookmark_install"]!.AsObject();
+    legacyInstall.Remove("allow_live_install");
+    await File.WriteAllTextAsync(methodFile,legacyDocument.ToJsonString());
+    Require(!(await methodStore.LoadAsync()).AllowLiveInstall,"settings without an install method require Chrome to exit");
+    foreach(var oldValue in new[]{false,true}){
+        legacyInstall["require_chrome_closed"]=oldValue;
+        await File.WriteAllTextAsync(methodFile,legacyDocument.ToJsonString());
+        Require(!(await methodStore.LoadAsync()).AllowLiveInstall,"a legacy implicit value never grants live installation");
+    }
+    await methodHost.SaveInstallMethodAsync("full",false);
+    Require((await new CloudigDeviceSettingsStore(methodFile).LoadAsync()).AllowLiveInstall,"explicit live opt-in survives reopening");
+    var methodView=await methodHost.SaveInstallMethodAsync("full",true);
+    Require(await methodStore.LoadAsync()==BookmarkDeviceSettings.Default,"return to conservative installation preserves placement and ownership");
+    var beforeWait=await File.ReadAllBytesAsync(chromeBookmarks);
+    var targetStore=methodView.Target!.Store;
+    await RejectBookmarkAsync(()=>methodHost.InstallAsync("full",["claude"],storeCapability:targetStore),"CLOUDIG_CHROME_OPEN","closed-only blocks selected install");
+    var whileWaiting = await File.ReadAllBytesAsync(chromeBookmarks);
+    Require(beforeWait.SequenceEqual(whileWaiting) && !Directory.Exists(Path.Combine(scope,"MethodBackups")),"waiting makes no backup and writes no bookmarks");
+    chromeState=BookmarkBrowserState.Closed;
+    reopenDuringBackup=true;
+    await RejectBookmarkAsync(()=>methodHost.InstallAsync("full",["claude"],storeCapability:targetStore),"CLOUDIG_CHROME_OPEN","Chrome reopened during backup");
+    var afterReopen=await File.ReadAllBytesAsync(chromeBookmarks);
+    Require(beforeWait.SequenceEqual(afterReopen)&&!Directory.EnumerateDirectories(methodBackups).Any(),"reopening before commit preserves the store and retires the unused backup");
+    reopenDuringBackup=false;
+    // A newly discovered account store would now be the default for this
+    // profile. Continuing must still write the originally selected local store.
+    var accountFile=Path.Combine(Path.GetDirectoryName(chromeBookmarks)!, "AccountBookmarks");
+    var accountSample=EmptyChromeBookmarks();
+    await File.WriteAllTextAsync(accountFile,accountSample);
+    var continued=await methodHost.InstallAsync("full",["claude"],storeCapability:targetStore);
+    Require(continued.Summary.RequireChromeClosed && continued.Summary.Platforms.Single(p=>p.Id=="claude").Status=="current" && continued.Summary.Platforms.Single(p=>p.Id=="chatgpt").Status=="missing","continue retains exact selected profile and platform");
+    Require(await File.ReadAllTextAsync(accountFile)==accountSample,"continuation never switches to a newly discovered store");
+    await RejectBookmarkAsync(()=>openBookmarkHost.InstallAsync("light",["chatgpt"]),"CLOUDIG_CHROME_OPEN","open account store stays outside local UI installation");
+    Require(await File.ReadAllTextAsync(accountFile)==accountSample,"open account bookmark store untouched");
     var moveSource = Path.Combine(scope, "MoveSource");
     var moveTarget = Path.Combine(scope, "MoveTarget");
     CreateMoveLibrary(moveSource, "rename payload");

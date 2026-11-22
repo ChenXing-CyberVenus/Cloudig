@@ -23,7 +23,7 @@ public sealed class BookmarkTransaction
     public BookmarkTransactionResult Execute(
         IEnumerable<BookmarkStore> stores,
         BookmarkOperation operation,
-        DateTime utcNow)
+        DateTime utcNow, Action? verifyWriteAllowed = null)
     {
         var selected = stores
             .Where(store => store is not null)
@@ -35,8 +35,7 @@ public sealed class BookmarkTransaction
         Directory.CreateDirectory(_backupRoot);
         // Prevent one installer from retiring another active transaction's
         // rollback. The lock disappears on close, including process failure.
-        using var backupLock = new FileStream(Path.Combine(_backupRoot, ".transaction.lock"),
-            FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 1, FileOptions.DeleteOnClose);
+        using var backupLock = BookmarkBackupRetention.Lock(_backupRoot);
 
         var plans = selected.SelectMany(store => CreatePlans(store, operation, utcNow)).ToArray();
         var changed = plans.Where(plan => plan.Mutation.Changed).ToArray();
@@ -68,6 +67,7 @@ public sealed class BookmarkTransaction
             // code, which only retires exact completed manifest/file sets.
             WriteNewFile(Path.Combine(backupDirectory, PendingFileName), BookmarkJson.Utf8(
                 "Cloudig bookmark transaction is unfinished. Keep this complete backup until recovery is resolved.\n"));
+            verifyWriteAllowed?.Invoke();
             backupVerified = true;
         }
         finally
@@ -150,6 +150,10 @@ public sealed class BookmarkTransaction
             throw new InvalidOperationException($"Cloudig bookmark transaction failed; every written store was restored from {backupDirectory}", writeError);
         }
 
+        // This successful transaction materialized native GUID receipts into
+        // the Chrome metadata, or removed those nodes. Retire the projection
+        // while the same transaction lock still prevents a parallel install.
+        if(_editor is BookmarkFileEditor productEditor)productEditor.NativeMetadataCommitted();
         return new BookmarkTransactionResult(backupDirectory, plans.Where(plan => !plan.IsCompanion).Select(ToResult).ToArray());
     }
 

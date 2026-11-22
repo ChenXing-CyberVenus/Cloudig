@@ -11,6 +11,7 @@ export function referencedResources(blocks: readonly JsonObject[]): Set<string> 
       if (typeof block[field] === 'string') used.add(block[field]);
     }
     const html = blockHtml(block);
+    if (isJsonObject(block['rendered_themes'])) for (const id of Object.values(block['rendered_themes'])) if (typeof id === 'string') used.add(id);
     if (html !== undefined) for (const image of htmlResourceImages(html)) used.add(image.id);
     for (const field of ['content', 'files']) if (Array.isArray(block[field])) pending.push(...block[field].filter(isJsonObject));
   }

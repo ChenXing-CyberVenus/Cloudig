@@ -6,6 +6,8 @@ import identitySettings from "./schemas/identity-settings.schema.json" with { ty
 import conversation from "./schemas/conversation.schema.json" with { type: "json" };
 import conversation100 from "./schemas/compat/conversation-1.0.0.schema.json" with { type: "json" };
 import conversation101 from "./schemas/compat/conversation-1.0.1.schema.json" with { type: "json" };
+import conversation102 from "./schemas/compat/conversation-1.0.2.schema.json" with { type: "json" };
+import library102 from "./schemas/compat/library-1.0.2.schema.json" with { type: "json" };
 import library100 from "./schemas/compat/library-1.0.0.schema.json" with { type: "json" };
 import library101 from "./schemas/compat/library-1.0.1.schema.json" with { type: "json" };
 import mark from "./schemas/mark.schema.json" with { type: "json" };
@@ -21,7 +23,7 @@ export const CLOUDIG_STANDARD = library.properties.cloudig_standard.const;
 export const CONVERSATION_SCHEMA = conversation.properties.schema.const;
 export const LEGACY_CONVERSATION_SCHEMA = conversation100.properties.schema.const;
 export const LIBRARY_SCHEMA = library.properties.schema.const;
-const compatibilitySchemas = { conversation: [conversation100, conversation101], library: [library100, library101] };
+const compatibilitySchemas = { conversation: [conversation100, conversation101, conversation102], library: [library100, library101, library102] };
 const schemasFor = (kind: RecordKind) => [recordSchemas[kind], ...(kind === "conversation" || kind === "library" ? compatibilitySchemas[kind] : [])];
 const declaredSchema = (value: unknown): unknown => value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject)["schema"] : undefined;
 const schemaFor = (kind: RecordKind, value: unknown) => schemasFor(kind).find(schema => schema.properties.schema.const === declaredSchema(value));

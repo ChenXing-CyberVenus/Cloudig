@@ -25,6 +25,8 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
     private readonly BookmarkPackage _package;
     private readonly BookmarkProfileSelection _selection;
     private readonly BookmarkInstallTarget _target;
+    private readonly string? _backupRoot;
+    private Dictionary<string,JsonObject> _receipts = [];
     private readonly HashSet<string> _packagePlatformIds;
     private readonly HashSet<string> _packageVariantIds;
     private readonly HashSet<string> _selectedPlatformIds;
@@ -35,8 +37,9 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
         string preferredFolderName = "采云 Cloudig",
         IEnumerable<string>? selectedBookmarkIds = null,
         string? requestedProfile = null,
-        BookmarkInstallTarget? target = null)
+        BookmarkInstallTarget? target = null, string? backupRoot = null)
     {
+        _backupRoot = backupRoot;
         _package = package ?? throw new ArgumentNullException(nameof(package));
         _selection = package.Resolve(requestedProfile);
         if (string.IsNullOrWhiteSpace(preferredFolderName)) throw new ArgumentException("Cloudig bookmark folder name is required.", nameof(preferredFolderName));
@@ -73,6 +76,7 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
         var document = BookmarkJson.ParseObject(originalJson);
         ValidateDocument(document);
         ChromeBookmarkChecksums.AssertValid(document);
+        NativeBookmarkOwnership.Load(_backupRoot,_target)?.Project(document["roots"]!.AsObject());
         var counters = new Counters();
         string managedFolderGuid;
         var changed = operation is BookmarkOperation.InstallOrRepair
@@ -96,13 +100,17 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
             managedFolderGuid);
     }
 
+    internal void NativeMetadataCommitted() => NativeBookmarkOwnership.Retire(_backupRoot,_target);
+
     public BookmarkInspection Inspect(string json)
     {
         var document = BookmarkJson.ParseObject(json);
         ValidateDocument(document);
         ChromeBookmarkChecksums.AssertValid(document);
         var roots = BookmarkJson.RequiredObject(document, "roots");
+        NativeBookmarkOwnership.Load(_backupRoot,_target)?.Project(roots);
         var folder = LocateTargetFolder(roots, allowUnownedContainer: false);
+        ReadReceipts(folder);
         var managed = folder is null
             ? Array.Empty<JsonObject>()
             : DirectChildren(folder).Where(IsOwnedBookmark).ToArray();
@@ -128,7 +136,8 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
                     string.Empty);
             }
             var meta = BookmarkJson.RequiredObject(node, "meta_info");
-            var installedVersion = MetaValue(meta, VersionTag, LegacyVersionTag) ?? string.Empty;
+            var receipt = VerifiedReceipt(node);
+            var installedVersion = receipt?.Version ?? MetaValue(meta, VersionTag, LegacyVersionTag) ?? string.Empty;
             var installedProfile = InstalledProfile(meta);
             var status = installedProfile != expected.EffectiveProfile
                 ? "different_profile"
@@ -136,7 +145,7 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
                     ? "newer"
                 : EquivalentBookmarkUrl(BookmarkJson.RequiredString(node, "url"), definition.Url)
                   && installedVersion == definition.Version
-                  && MetaValue(meta, HashTag, LegacyHashTag) == definition.Sha256
+                  && (receipt is not null || MetaValue(meta, HashTag, LegacyHashTag) == definition.Sha256)
                     ? "current"
                     : "outdated";
             return new BookmarkEntryInspection(
@@ -175,6 +184,7 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
         var nextId = FindMaximumId(allNodes) + 1;
         var parent = ResolveTargetParent(roots);
         var folder = LocateTargetFolder(roots, allowUnownedContainer: true);
+        ReadReceipts(folder);
         var adoptingUnownedFolder = folder is not null && !FolderBelongsToInstallation(folder);
         if (folder is null)
         {
@@ -260,14 +270,15 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
             var meta = GetOrCreateMeta(node);
             // A frozen bundle may update an automatic label without downgrading
             // newer installed code or displaying the bundle's older version.
-            var installedVersion = MetaValue(meta, VersionTag, LegacyVersionTag) ?? string.Empty;
+            var receipt = VerifiedReceipt(node);
+            var installedVersion = receipt?.Version ?? MetaValue(meta, VersionTag, LegacyVersionTag) ?? string.Empty;
             var keepNewer = InstalledProfile(meta) == expected.EffectiveProfile
                 && BookmarkChangelog.IsNewerVersion(installedVersion, definition.Version);
             if (keepNewer) expectedTitle = BookmarkDisplayName.Format(definition.Label, expected.EffectiveProfile, installedVersion);
             var nodeChanged = !keepNewer && !EquivalentBookmarkUrl(BookmarkJson.RequiredString(node, "url"), definition.Url)
                 && SetIfDifferent(node, "url", definition.Url);
             var currentTitle = BookmarkJson.RequiredString(node, "name");
-            var previousDefaultTitle = BookmarkJson.OptionalString(meta, DefaultTitleTag);
+            var previousDefaultTitle = receipt?.DefaultTitle ?? BookmarkJson.OptionalString(meta, DefaultTitleTag);
             if ((previousDefaultTitle is not null && currentTitle == previousDefaultTitle)
                 || (previousDefaultTitle is null && (currentTitle == expectedTitle || IsKnownPreviousDefaultTitle(currentTitle, definition))))
             {
@@ -355,15 +366,21 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
 
     private JsonObject? LocateTargetFolder(JsonObject roots, bool allowUnownedContainer)
     {
-        if (!string.IsNullOrWhiteSpace(_target.ManagedFolderGuid))
+        var ownedGuid = string.IsNullOrWhiteSpace(_target.ManagedFolderGuid) ? NativeBookmarkOwnership.Load(_backupRoot,_target)?.Folder : _target.ManagedFolderGuid;
+        if (!string.IsNullOrWhiteSpace(ownedGuid))
         {
             var exact = EnumerateAllNodes(roots).FirstOrDefault(node =>
                 BookmarkJson.RequiredString(node, "type") == "folder"
-                && FolderGuid(node).Equals(_target.ManagedFolderGuid, StringComparison.OrdinalIgnoreCase));
+                && FolderGuid(node).Equals(ownedGuid, StringComparison.OrdinalIgnoreCase));
             if (exact is not null)
             {
                 if (!allowUnownedContainer && !FolderBelongsToInstallation(exact)) return null;
                 return exact;
+            }
+            var recorded=NativeBookmarkOwnership.Load(_backupRoot,_target)?.Folder;
+            if(!string.IsNullOrEmpty(recorded) && recorded!=ownedGuid){
+                var replacement=EnumerateAllNodes(roots).FirstOrDefault(n=>BookmarkJson.RequiredString(n,"type")=="folder" && FolderGuid(n)==recorded && FolderBelongsToInstallation(n));
+                if(replacement!=null)return replacement;
             }
             if (!allowUnownedContainer) return null;
         }
@@ -387,6 +404,45 @@ public sealed class BookmarkFileEditor : IBookmarkMutator
         if (folder["meta_info"] is not JsonObject meta || !IsManagedFolder(folder)) return false;
         if (string.IsNullOrWhiteSpace(_target.InstallationId)) return true;
         return BookmarkJson.OptionalString(meta, InstallationTag) == _target.InstallationId;
+    }
+
+    private void ReadReceipts(JsonObject? folder) =>
+        _receipts = folder is null ? [] : LiveUpdate.Receipts(_backupRoot, FolderGuid(folder));
+
+    private (string Version,string? DefaultTitle)? VerifiedReceipt(JsonObject node)
+    {
+        if (!_receipts.TryGetValue(FolderGuid(node), out var row) || (string?)row["slot"] != ManagedVariantId(node)) return null;
+        var url = BookmarkJson.RequiredString(node,"url");
+        if (!url.StartsWith("javascript:",StringComparison.OrdinalIgnoreCase)) return null;
+        if (row["version"] is not null && LiveUpdate.Hash(url) == (string?)row["new_hash"])
+            return ((string)row["version"]!, (bool?)row["auto"] == true ? (string?)row["new_title"] : null);
+        if (row["old_version"] is not null && (LiveUpdate.Hash(url)==(string?)row["old_hash"]
+            || row["old_url"] is not null && LiveUpdate.Equivalent(url,(string)row["old_url"]!)))
+            return ((string)row["old_version"]!, (bool?)row["auto"] == true ? (string?)row["old_title"] : null);
+        return null;
+    }
+
+    internal LiveBookmarkSnapshot SelectLiveFolder(JsonObject roots)
+    {
+        NativeBookmarkOwnership.Load(_backupRoot,_target)?.Project(roots);
+        var folder = LocateTargetFolder(roots, allowUnownedContainer: false)
+            ?? throw new InvalidDataException("Close Chrome to install the selected bookmark folder.");
+        ReadReceipts(folder);
+        var children = DirectChildren(folder).ToArray();
+        var items = new List<LiveBookmark>();
+        for (int index=0; index<children.Length; index++)
+        {
+            var node=children[index];
+            if (!IsOwnedBookmark(node)) continue;
+            var meta=BookmarkJson.RequiredObject(node,"meta_info");
+            var receipt=VerifiedReceipt(node);
+            items.Add(new(BookmarkJson.RequiredString(node,"id"),FolderGuid(node),index,ManagedVariantId(node),
+                BookmarkJson.RequiredString(node,"name"),BookmarkJson.RequiredString(node,"url"),
+                receipt?.DefaultTitle ?? (string?)meta[DefaultTitleTag],receipt?.Version ?? MetaValue(meta,VersionTag,LegacyVersionTag)));
+        }
+        if (items.Select(n=>n.Slot).Distinct().Count()!=items.Count || items.Select(n=>n.Guid).Distinct().Count()!=items.Count)
+            throw new InvalidDataException("Ambiguous managed bookmark identity.");
+        return new(BookmarkJson.RequiredString(folder,"id"), FolderGuid(folder), items);
     }
 
     private bool IsOwnedBookmark(JsonObject node)

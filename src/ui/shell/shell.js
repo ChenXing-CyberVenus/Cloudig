@@ -1547,18 +1547,20 @@ async function moveCurrentLibrary() {
 function bookmarkError(error) {
   const english = state.language === "en";
   const values = english ? {
-    CLOUDIG_CHROME_OPEN: "Exit every Google Chrome window before installing, updating or removing bookmarklets.",
+    CLOUDIG_CHROME_OPEN: "Close Chrome to remove bookmarks, move a folder to another parent or change account bookmarks.",
     CLOUDIG_CHROME_STATE_UNKNOWN: "Cloudig could not verify that Chrome is closed, so no bookmark file was changed.",
     CLOUDIG_CHROME_PROFILE_MISSING: "No Chrome bookmark profile is available. Open Chrome once, then refresh.",
+    CLOUDIG_BOOKMARK_EMPTY_PROFILE: "This Chrome profile has no saved bookmarks yet. Save one bookmark in Chrome and exit before trying again, or select “Allow installation with Chrome open” in bookmark settings.",
     CLOUDIG_BOOKMARK_SETTINGS_INVALID: "Cloudig bookmark settings are unavailable or use an unsupported version.",
     CLOUDIG_BOOKMARK_SETTINGS_SAVE_FAILED: "Chrome bookmarks were updated, but Cloudig could not finish saving the installation settings. Retry the same operation to complete them.",
     CLOUDIG_BOOKMARK_RECOVERY_REQUIRED: "The bookmark operation failed and some files could not be restored automatically. Keep the current bookmarks and the backups in appdata/BookmarkBackups; inspect the unfinished backup before making further changes.",
     CLOUDIG_BOOKMARK_DATA_INVALID: "Chrome bookmark data failed validation. No bookmark file was changed.",
     CLOUDIG_BOOKMARK_PACKAGE_MISSING: "The packaged Cloudig bookmarklets are missing or incomplete."
   } : {
-    CLOUDIG_CHROME_OPEN: "请先退出全部 Google Chrome 窗口，再安装、更新或卸载书签。",
+    CLOUDIG_CHROME_OPEN: "移除书签、更换上级目录或修改账号书签时，请先退出 Chrome。",
     CLOUDIG_CHROME_STATE_UNKNOWN: "采云无法确认 Chrome 已退出，因此没有改动任何书签文件。",
     CLOUDIG_CHROME_PROFILE_MISSING: "没有找到可用的 Chrome 书签配置。请先打开一次 Chrome，再刷新。",
+    CLOUDIG_BOOKMARK_EMPTY_PROFILE: "这个 Chrome 配置还没有书签文件。可以先在 Chrome 中保存一枚书签，退出后再安装，也可以在书签设置中选择“允许在 Chrome 运行时安装”。",
     CLOUDIG_BOOKMARK_SETTINGS_INVALID: "采云书签设置不可用，或来自不支持的版本。",
     CLOUDIG_BOOKMARK_SETTINGS_SAVE_FAILED: "Chrome 书签已更新，但采云未能保存完整安装记录。请重试刚才的操作，以补全记录。",
     CLOUDIG_BOOKMARK_RECOVERY_REQUIRED: "书签操作失败，部分文件未能自动恢复。请保留当前书签和 appdata/BookmarkBackups 内的备份；检查未完成备份后再操作，不要继续覆盖。",
@@ -1646,19 +1648,60 @@ async function bookmarkCopy(profile, platform) {
   );
 }
 
-async function bookmarkMutation(command, profile, platforms) {
+function waitForChromeExit(installed, scope, retried) {
+  const english = state.language === "en";
+  const dialog = document.createElement("dialog");
+  dialog.className = "cloudig-dialog bookmark-retry-dialog";
+  dialog.setAttribute("aria-labelledby", "bookmark-retry-title");
+  const heading = document.createElement("h2");
+  heading.id = "bookmark-retry-title";
+  heading.textContent = retried ? (english ? "Chrome is still running" : "Chrome 仍在运行") : (english ? "Exit Chrome to continue" : "请先退出 Chrome");
+  const message = document.createElement("p");
+  message.textContent = english ? "Fully exit Chrome, including any background processes, then continue." : "请完全退出 Chrome（包括后台进程），再点继续。";
+  const selection = document.createElement("p");
+  selection.textContent = scope;
+  const footer = document.createElement("footer");
+  const cancel = document.createElement("button");
+  cancel.type = "button";
+  cancel.className = "cloudig-button cloudig-button-outline";
+  cancel.textContent = translated("reader.cancel", english ? "Cancel" : "取消");
+  const retry = document.createElement("button");
+  retry.type = "button";
+  retry.className = "cloudig-button cloudig-button-filled";
+  retry.textContent = installed ? (english ? "Continue installation" : "继续安装") : (english ? "Continue removal" : "继续卸载");
+  cancel.onclick = () => dialog.close();
+  retry.onclick = () => dialog.close("continue");
+  footer.append(cancel, retry);
+  dialog.append(heading, selection, message, footer);
+  overlayRoot.append(dialog);
+  return new Promise(resolve => {
+    dialog.addEventListener("close", () => { dialog.remove(); resolve(dialog.returnValue === "continue"); }, {once:true});
+    dialog.showModal();
+    retry.focus();
+  });
+}
+
+async function bookmarkMutation(command, profile, platforms, store, scope) {
   const installed = command.endsWith("install");
-  const dismissPending = showForegroundNotice(
-    state.language === "en" ? "Applying bookmark change…" : "正在处理书签…",
-    state.language === "en" ? "Checking Chrome and the selected bookmark folder." : "正在核对Chrome当前状态及所选书签目录。", 0);
+  const payload = {profile, platforms: [...platforms], ...(store ? {store} : {})};
   let result;
-  try { result = await request(command, { profile, platforms }); }
-  finally { dismissPending(); }
+  let retried = false;
+  for (;;) {
+    const dismissPending = showForegroundNotice(
+      state.language === "en" ? "Applying bookmark change…" : "正在处理书签…", scope, 0);
+    try { result = await request(command, payload); break; }
+    catch (error) { if (error?.code !== "CLOUDIG_CHROME_OPEN") throw error; }
+    finally { dismissPending(); }
+    if (!(await waitForChromeExit(installed, scope, retried))) return;
+    retried = true;
+  }
   showForegroundNotice(
     installed
       ? translated("archiver.bookmarkInstalled", state.language === "en" ? "Bookmarklets installed" : "书签安装完成")
       : translated("archiver.bookmarkRemoved", state.language === "en" ? "Bookmarklets removed" : "书签卸载完成"),
-    state.language === "en"
+    result.placement_pending
+      ? (state.language === "en" ? "Your bookmarks are installed. The folder is not first yet. To retry, keep the bookmark manager in front during installation." : "书签已装好，文件夹尚未置顶。再次安装时，请让 Chrome 书签管理窗口保持在前台。")
+      : state.language === "en"
       ? `${result.added} added · ${result.updated} updated · ${result.removed} removed\n${result.summary?.target?.display_path ?? ""}`
       : `新增 ${result.added} · 更新 ${result.updated} · 移除 ${result.removed}\n${result.summary?.target?.display_path ?? ""}`,
     9000
@@ -2856,8 +2899,8 @@ async function mountArchiverPage() {
     queryBookmarkTarget: bookmarkTargetQuery,
     onBookmarkTargetSave: bookmarkTargetSave,
     onBookmarkCopy: bookmarkCopy,
-    onBookmarkInstall: (profile, platforms) => bookmarkMutation("shell.bookmarks.install", profile, platforms),
-    onBookmarkRemove: (profile, platforms) => bookmarkMutation("shell.bookmarks.remove", profile, platforms),
+    onBookmarkInstall: (...args) => bookmarkMutation("shell.bookmarks.install", ...args),
+    onBookmarkRemove: (...args) => bookmarkMutation("shell.bookmarks.remove", ...args),
     onBookmarkError: (error) => showActionError(bookmarkError(error)),
     onParse: performArchiverParse,
     onCreateParseDirectory: createParseDirectory,

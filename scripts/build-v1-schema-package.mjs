@@ -5,7 +5,7 @@ import path from "node:path";
 
 export const V1_SCHEMA_FILES = Object.freeze([
   ...["common", "library", "identity", "identity-settings", "conversation", "mark", "content-time", "content-time-order"].map(name => [`src/core/records/schemas/${name}.schema.json`, `records/${name}.schema.json`]),
-  ...["1.0.0", "1.0.1"].flatMap(version => ["conversation", "library"].map(name => [`src/core/records/schemas/compat/${name}-${version}.schema.json`, `records/compat/${name}-${version}.schema.json`])),
+  ...["1.0.0", "1.0.1", "1.0.2"].flatMap(version => ["conversation", "library"].map(name => [`src/core/records/schemas/compat/${name}-${version}.schema.json`, `records/compat/${name}-${version}.schema.json`])),
   ...["common", "container-record", "system-log"].map(name => [`src/core/contracts/schemas/${name}.schema.json`, `program/${name}.schema.json`]),
   ["src/adapters/storage/record-transaction.schema.json", "program/record-transaction.schema.json"],
   ["src/adapters/library-data/record-recycle.schema.json", "program/record-recycle.schema.json"]

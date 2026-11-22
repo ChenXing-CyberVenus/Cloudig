@@ -1,5 +1,7 @@
 # 书签导出 HTML 契约与厂商适配指南
 
+ChatGPT Work Site（候选 `2026.11.20.6`）：可选的 `script#chatgpt-site-data[type="application/json"]` 包含 `projects[]` 和 `messages[]`。按 `message_id / project_id` 关联原位卡；`deployment_id` 只有同一轮的原站记录能唯一对应时才填写。项目的 `version_at_capture` 和 `preview` 是采集时的版本号和画面，不证明旧回复当时的外观。可选 `document` 是 data URL，`document_bytes` 是部署 HTML 原始字节数，两者不表示源码包或所有外部依赖。没有文件字节不能从预览图、链接或登录壳构造正文。普通会话及旧导出可完全没有这个数据块。
+
 > 本文件是 Parser / Reader 所需的机器级技术合同。第一次了解书签输出时，先读核心层 [`bookmarklets/HTML_ARCHIVE_SCHEMA.md`](bookmarklets/HTML_ARCHIVE_SCHEMA.md)；制作或修复书签先读重要层 [`bookmarklets/ENGINEERING_GUIDE.md`](bookmarklets/ENGINEERING_GUIDE.md)；十二站现行差异以 [`bookmarklets/platforms/README.md`](bookmarklets/platforms/README.md) 为维护入口。本文中按日期累积的平台段落只作技术兼容说明，版本事实不得覆盖机器注册表和平台现行档案。
 
 本文件是 AI Chat Archive 的稳定技术交接入口，供三类维护者共同使用：维护网页导出书签的奥思、把导出 HTML 解析为统一 JSON 的奥思，以及实现统一 Reader 的奥思。
@@ -27,6 +29,8 @@
 - [十一、工程入口](#十一工程入口)
 
 ## 一、工程边界
+
+2026.11.18.2 兼容增量：豆包 `doubao-rich-content.cloud_artifacts[].native_sheets[]` 可保存 `id/name/pos/native_snapshot`，表示原件未返回时按同一工作簿与子表ID实取的快照；阅读层 `data-osis-native-sheet` 关联原站静态视图。它不证明 XLSX/PPTX 字节已取得；附件是否可离线仍由对应资源的实际状态和字节决定。Qwen Tree 只有服务端历史确获时才能标 `capture.full_tree_structure_validated=true`，DOM抢救的当前序列保留但不宣称全树。旧档不依赖这些可选信息。
 
 ### GPT公开分析与来源归属（2026-11-04已验收）
 
@@ -239,6 +243,8 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 - Parser 可把双视图拆成结构化 Mermaid 源码和静态展示层，但必须同时保留来源顺序、原始源码与快照身份，不能只留下当前可见面板。
 
 ### 5.3 图片与附件
+
+- ChatGPT Work Full/Tree 的 `retrieval_route: "space-page-file"` 表示确实取得原生文件字节。消息附件保留 `message_id` 及已有的 `sandbox_path`；可用时另带 `space_file_id`、`space_page_id` 与 `space_block_id`。完整作品页链接本身不是文件卡或历史版本证明。Parser 不需要联网核实、补配或改写历史文件；Light 策略不变。
 
 - 轻量（Light）中真正离线的图片应是 `data:image/webp` 缩略图，并与 manifest 的 embedded 计数、厂商资源记录和对应消息一致。全量（Full）成功取得资源时应保存原始图片字节与真实 MIME，不强制转为 WebP，也不得把已经保存原字节的资源误记为 metadata-only。
 - 现行轻量（Light）只限制最长边与单图压缩结果，不限制一份 HTML 中全部图片的累计字节数。达到旧版 8 MiB 阈值不得再成为省略后续图片的理由；因此多图会话的成品可能明显变大。
@@ -488,6 +494,8 @@ return ADAPTERS[payloadSchema].parse({ document, manifest, payload });
 
 ### 7.12 Claude
 
+- `1.1.81`候选的原生 Mermaid 资源可带 `mermaid:{theme:"light"|"dark",source,group_key,provenance:"native-page-render"}`。同一消息、同一源码/出现位置的两个原站主题SVG共享`group_key`（原job key），各有独立resource key；不由导出器重新绘图或反色。默认阅读仍用捕获时主题，备用主题`display_eligible:false`表示不重复插入阅读正文，不表示资源不可用。Full/Tree沿用`data_url`/`data_ref`字节池；Light默认图继续由`dom_resource_key`引用HTML，备用图直接保留`resources[].data_url`。Parser应保全两份字节及关系，不能把备用图当失败或额外正文图片；旧无`mermaid`字段的HTML不变。`capture.dom_enrichment.native_mermaid`的`graphs/current/paired`只报告本次证据，不伪造缺失主题。主题补采恢复原auto/light/dark设置与滚动位置，局部失败保留原图/源码、只记诊断。
+
 - Full/Tree `1.1.60`起可选内嵌字节池：`resource_data`是`短ID -> 完整data URL`字典；`resources[].data_ref`、`artifacts[].file_data_ref/svg_data_ref`分别替代原`data_url/file_data_url/svg_data_url`。只共用完全相同的数据字符串，不合并resource key、消息、分支、候选、下载名或失败记录，不转码。旧直接字段仍须可读；若直接字段与ref同时存在须一致，悬空、非data或冲突引用不得静默当作未下载。外层阅读HTML的`img[data-osis-data-src]`与`a[download][data-osis-data-href]`指向同一字典，本地脚本原位恢复后照常显示/下载，绝不联网。Parser惰性解引用，不执行HTML脚本；本轮不改payload富HTML、raw API/HTTP/DOM证据、工具参数和源码。Light保持原格式。无JS环境不能仅凭空src判为图片丢失，应读取字典；优化失败时保留原直接嵌入形式继续导出。
 
 - 文档型Artifact候选使用`native_card.kind=docs/slides/design/design-system`，另有`source_url/source_provenance/revision/files/file_paths`。`files[]`保存实际成功写入/发布所证明的文件名、源码及原路径；Docs的XML/Markdown也在此，不能只查旧`artifacts[]`就断言缺失。`1.1.62`起阅读层只保留名称、文件下载和折叠源码，不再绘制这几类文档型预览，原Artifact地址只留机器元数据、不生成跳转入口，按同消息精确URL关联；成组文件不再重复显示，但既有按档机器记录仍保留。不是Claude编辑器或独立Artifact后续远端版本的完整镜像。
@@ -636,9 +644,15 @@ canonical JSON 不默认重复保存逐字段 locator、evidence、coverage、�
 
 ### Claude Chat 压缩状态（2026-10-16，1.1.70起；1.1.72已验收）
 
-三轨可选的 `messages[].page_status` 只补充原站明确公开的状态证据：`type: "compaction"`、`state: "done"`、`subject: "conversation"`、`label`、`message_id`、`after_message_id` 与 `provenance: "page-state.compactionHorizonUuid"`。消息原ID、父链和空content/blocks保留；不是新增助手正文、伪造工具调用或暴露内部压缩摘要。阅读层在原节点的分支位置显示一次“已压缩对话”，紧随对应父回复。仅此已证实状态豁免缺正文的DOM扫描；未知空节点及真实富内容仍按原逻辑补取。Cowork既有状态与文件/工具顺序不变；不要求读取旧档案时迁移。
+三轨可选的 `messages[].page_status` 只补充原站明确公开的状态证据：`type: "compaction"`、`state: "done"`、`subject: "conversation"`、`label`、`message_id`、`after_message_id` 与 `provenance: "page-state.compactionHorizonUuid"`。消息原ID、父链和空content/blocks保留；不是新增助手正文、伪造工具调用或暴露内部压缩摘要。旧形态紧随API父回复；1.1.80起，若原站明确给出不同的同支展示边界，可另有 `before_message_id`、`api_parent_message_id` 及 `placement_provenance: "page-state.compactionDividerBefore"`：前两展示锚点只决定阅读位置，不重写原始父边、消息数组或Tree可见路径。冷页独立状态行与加载后合并行使用同一证据。仅此已证实状态豁免缺正文的DOM扫描；未知空节点及真实富内容仍按原逻辑补取。Cowork既有状态与文件/工具顺序不变；旧HTML无需迁移。
 
 1.1.71补充：压缩节点进入历史分页时，按当前分支身份加载必要的原生历史段并重读状态，不依赖此前滚动/导出形成的暖缓存；取得证据后停止，不能以无证据的空节点猜状态。既有`capture.dom_enrichment`增加`compaction_history_loads`和`compaction_states`，分别表示本次主动加载历史段次数与确认状态数；不是滚动次数或新错误框架。
+
+### ChatGPT 子代理及资料库文件（2026-11-20候选）
+
+同一厂商 payload 可另含 `subagent_cards`（Chat 或 Work，候选 3.7.89-light / 1.0.86-full / 1.0.86-all-branches）。每条以 `thread_id` 标识子线程，`displayName/status/icon_data` 属于原站目录；`turns[].id/status/items` 属于该子线程接口。完成事件的 `events[].raw.id` 与子轮 ID 对应，`node_id/parent` 分别标识父会话节点与消息，`turn` 是父轮标识。一个子线程可以多次回复；目录状态不等于其中每个子轮的状态。阅读层按 `items[].kind="subagent_activity"`（Tree 为 `items_by_node`）原位打开离线详情；保留无接收者的父轮等待，不冒认子代理正文。没有这组字段的旧 HTML 照常读取。此字段独立于下述 Intelligent UI 扩展。
+
+Work 文件的 `library_file_id` 是资料库文件身份，与消息 ID、执行器路径分别保存；`retrieval_route: "library-file-content"` 只表示确实从资料库取得原件，不表示在线链接已等同离线原件。Full/Tree 的 `embedded_size` 为实际字节；Tree 用 `resource_id` 关联内嵌数据。Light 的非图文件沿用元数据策略。消息中引用旧文件并不等于再次发送附件。没有这些可选字段的旧 HTML 不需要迁移。
 
 ### ChatGPT Intelligent UI 扩展（2026-10-15候选）
 

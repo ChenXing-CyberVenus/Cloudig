@@ -13,7 +13,7 @@ public static class ChromeProfileDiscovery
         "Chrome",
         "User Data");
 
-    public static IReadOnlyList<ChromeProfile> Discover(string userDataDirectory)
+    public static IReadOnlyList<ChromeProfile> Discover(string userDataDirectory, bool includeEmpty = false)
     {
         if (string.IsNullOrWhiteSpace(userDataDirectory) || !Directory.Exists(userDataDirectory)) return Array.Empty<ChromeProfile>();
         var root = Path.GetFullPath(userDataDirectory).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
@@ -38,6 +38,8 @@ public static class ChromeProfileDiscovery
             var stores = new List<BookmarkStore>();
             AddStore(stores, directoryName, displayNames.GetValueOrDefault(directoryName) ?? directoryName, profilePath, "local", ["Bookmarks", "EncryptedBookmarks2"]);
             AddStore(stores, directoryName, displayNames.GetValueOrDefault(directoryName) ?? directoryName, profilePath, "account", ["AccountBookmarks", "Bookmarks Account", "EncryptedAccountBookmarks2"]);
+            if (stores.Count == 0 && includeEmpty && displayNames.ContainsKey(directoryName) && File.Exists(Path.Combine(profilePath,"Preferences")))
+                stores.Add(new(directoryName, displayNames[directoryName], "local", Path.Combine(profilePath,"Bookmarks"), true));
             if (stores.Count == 0) continue;
             profiles.Add(new ChromeProfile(
                 directoryName,
@@ -78,6 +80,23 @@ public static class ChromeProfileDiscovery
         if (!ChromeBookmarkEncryption.IsEncryptedStore(path)) return DecodeUtf8(bytes);
         using var cipher = ChromeBookmarkEncryption.Open(path);
         return DecodeUtf8(cipher.Decrypt(bytes));
+    }
+
+    internal static string ReadBookmarkJson(BookmarkStore store)
+    {
+        if (!store.AwaitingFirstBookmark || File.Exists(store.Path)) return ReadBookmarkJson(store.Path);
+        var encrypted=ChromeBookmarkEncryption.CompanionPath(store.Path);
+        if(encrypted!=null && File.Exists(encrypted))return ReadBookmarkJson(encrypted);
+        // These are Chromium's permanent local folders. This view is never
+        // written to the profile: the first real write comes from Chrome's UI.
+        static JsonObject Folder(string id,string guid,string name)=>new(){["id"]=id,["guid"]=guid,["name"]=name,["type"]="folder",["children"]=new JsonArray()};
+        var doc=new JsonObject{["version"]=1,["roots"]=new JsonObject{
+            ["bookmark_bar"]=Folder("1","0bc5d13f-2cba-5d74-951f-3f233fe6c908","Bookmarks bar"),
+            ["other"]=Folder("2","82b081ec-3dd3-529c-8475-ab6c344590dd","Other bookmarks"),
+            ["synced"]=Folder("3","4cf2e351-0e85-532b-bb37-df045d8f8d0f","Mobile bookmarks")}};
+        var sums=ChromeBookmarkChecksums.Compute(doc);
+        doc["checksum"]=sums.Md5;doc["checksum_sha256"]=sums.Sha256;
+        return doc.ToJsonString();
     }
 
     // A Chrome storage-stage change must not detach the saved folder GUID or

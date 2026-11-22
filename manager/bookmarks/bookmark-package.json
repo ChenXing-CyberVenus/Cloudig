@@ -1,7 +1,7 @@
 {
   "format": "cloudig/bookmark-package",
   "version": "0.2.0",
-  "bookmark_set_version": "2026.11.12.2",
+  "bookmark_set_version": "2026.11.21.6",
   "default_profile": "light",
   "profiles": [
     "light",
@@ -21,29 +21,29 @@
         {
           "id": "chatgpt:light",
           "profile": "light",
-          "version": "3.7.81-light",
+          "version": "3.7.91-light",
           "artifact": "chatgpt/light.min.js",
-          "sha256": "a732adba6e83e9aa2fae76b4299008f568031cd8db0495143b5ed1f18f54975b",
-          "bytes": 472692,
-          "characters": 468245
+          "sha256": "a806a3183a1798ba4ab15bbfcc018f868a3de10d18d8e987f67d005bbf0f6506",
+          "bytes": 481882,
+          "characters": 477261
         },
         {
           "id": "chatgpt:full",
           "profile": "full",
-          "version": "1.0.78-full",
+          "version": "1.0.89-full",
           "artifact": "chatgpt/full.min.js",
-          "sha256": "7653078007354ce3a5daf53d723e5d418f1d5656cff005a7d02fd708b7a8accc",
-          "bytes": 482991,
-          "characters": 478342
+          "sha256": "3f4980fc3f04d1a2f1852994aeb2b0659866783ad976da3c6ac0d7f0912a952c",
+          "bytes": 482271,
+          "characters": 477244
         },
         {
           "id": "chatgpt:all_branches",
           "profile": "all_branches",
-          "version": "1.0.78-all-branches",
+          "version": "1.0.89-all-branches",
           "artifact": "chatgpt/all_branches.min.js",
-          "sha256": "3dc43b0ad37249d8d17cc1d7944ab9bf530f8351691c34708301cb34937ad371",
-          "bytes": 493650,
-          "characters": 488900
+          "sha256": "703c102b1d92016d5fbd3d819cab80fedb85e1cb0b9074d7c8d125e408f178a5",
+          "bytes": 492630,
+          "characters": 487482
         }
       ]
     },
@@ -56,29 +56,29 @@
         {
           "id": "claude:light",
           "profile": "light",
-          "version": "1.1.79-light",
+          "version": "1.1.84-light",
           "artifact": "claude/light.min.js",
-          "sha256": "f3c908b905e65abd1e5a62a878ee7e4be3b8dbb0525d76642bc144b19b7905bd",
-          "bytes": 459273,
-          "characters": 451784
+          "sha256": "9d08459b31e1078c31cc14212661eb7d4d803e840b1ae83970bb00548c6731ca",
+          "bytes": 467765,
+          "characters": 460116
         },
         {
           "id": "claude:full",
           "profile": "full",
-          "version": "1.1.79-full",
+          "version": "1.1.84-full",
           "artifact": "claude/full.min.js",
-          "sha256": "af64900818dd8c2030908030a36ba4dd21dbf44ffc9a59b572fb70fbe96a3be5",
-          "bytes": 462418,
-          "characters": 454921
+          "sha256": "6ddeef739a8fc455767fdeff4656107960028cfc5f4468a4a8c3fc67c44e56b1",
+          "bytes": 470612,
+          "characters": 462955
         },
         {
           "id": "claude:all_branches",
           "profile": "all_branches",
-          "version": "1.1.79-all-branches",
+          "version": "1.1.84-all-branches",
           "artifact": "claude/all_branches.min.js",
-          "sha256": "e31402277a4ce7657d9064d91f4349d42a1a66a715fc911d92c564ee77de6e0e",
-          "bytes": 472950,
-          "characters": 465258
+          "sha256": "c640b1dfbc39acfe067689b6660cd72c5171008b7f9079b82d55960d00794985",
+          "bytes": 481192,
+          "characters": 473340
         }
       ]
     },
@@ -155,29 +155,29 @@
         {
           "id": "grok:light",
           "profile": "light",
-          "version": "2.8.19-light",
+          "version": "2.8.22-light",
           "artifact": "grok/light.min.js",
-          "sha256": "5c13ed51f2a77a4c7d2c144614de6056cb61f3e035ca2ebb2ac823aa5590262a",
-          "bytes": 315997,
-          "characters": 310032
+          "sha256": "7df1c6ac80e7859af9fbad4f8dd529baf4b6e567a5915c28093ff73f335c7ee0",
+          "bytes": 318016,
+          "characters": 312002
         },
         {
           "id": "grok:full",
           "profile": "full",
-          "version": "1.0.17-full",
+          "version": "1.0.22-full",
           "artifact": "grok/full.min.js",
-          "sha256": "167b8c634bcf0fb3838946ad02f1162a7867d221bd83640b48bc4e458136a9f9",
-          "bytes": 322088,
-          "characters": 316093
+          "sha256": "e123c157878afff7975bf8e83697bc1852748b97ec7dac91a8ce62c1ae654cc0",
+          "bytes": 325671,
+          "characters": 319627
         },
         {
           "id": "grok:all_branches",
           "profile": "all_branches",
-          "version": "1.0.19-all-branches",
+          "version": "1.0.24-all-branches",
           "artifact": "grok/all_branches.min.js",
-          "sha256": "1abcd2f7cee2b753d358feee166ba9a4faa4ebed114742c1eb51ee64e1069a45",
-          "bytes": 332395,
-          "characters": 326145
+          "sha256": "1b05856970b92018a9bef00d74a407444e35fe04d58610ccf0b81fdb94cadd26",
+          "bytes": 335971,
+          "characters": 329672
         }
       ]
     },
@@ -190,20 +190,20 @@
         {
           "id": "doubao:light",
           "profile": "light",
-          "version": "3.6.3-light",
+          "version": "3.6.8-light",
           "artifact": "doubao/light.min.js",
-          "sha256": "e926214d1709cd4559540f2bf5f66a95ee41f45b98d518e274c8a48df68f29d9",
-          "bytes": 319612,
-          "characters": 314104
+          "sha256": "73373c3bfb019d6d6274601a05496eccd977b15c6e124eaa1dad6d90bbb265d8",
+          "bytes": 329694,
+          "characters": 324070
         },
         {
           "id": "doubao:full",
           "profile": "full",
-          "version": "1.1.3-full",
+          "version": "1.1.8-full",
           "artifact": "doubao/full.min.js",
-          "sha256": "3d6bf2b0c99f2876f8b65c346767b082088f741282d3d6378f7d9994f08297f5",
-          "bytes": 323622,
-          "characters": 317950
+          "sha256": "1522887bdabb9d53ffa0158b23268b35c71d8ce32f159ef44a0a41533a9d3f5d",
+          "bytes": 334357,
+          "characters": 328569
         }
       ],
       "fallback": {
@@ -219,29 +219,29 @@
         {
           "id": "kimi:light",
           "profile": "light",
-          "version": "2.10.3-light",
+          "version": "2.10.8-light",
           "artifact": "kimi/light.min.js",
-          "sha256": "051a0f326e13529218de40827d8013610ff0dafc0838a0a72da08117f1ecd599",
-          "bytes": 289692,
-          "characters": 284237
+          "sha256": "e2470ca5c5a9fed1023b56013fc7848353bdbc85093e920278db6154a1287707",
+          "bytes": 298196,
+          "characters": 292642
         },
         {
           "id": "kimi:full",
           "profile": "full",
-          "version": "1.1.2-full",
+          "version": "1.1.7-full",
           "artifact": "kimi/full.min.js",
-          "sha256": "2722057646f33c22ec164f6961c10d14fe67f374c92f35adda4e04f2ce342ef2",
-          "bytes": 297088,
-          "characters": 291087
+          "sha256": "97f16504fc5b89cf38a5308e237597477ed4743a68341569018118c062b007ae",
+          "bytes": 305732,
+          "characters": 299628
         },
         {
           "id": "kimi:all_branches",
           "profile": "all_branches",
-          "version": "1.1.2-all-branches",
+          "version": "1.1.7-all-branches",
           "artifact": "kimi/all_branches.min.js",
-          "sha256": "181c9765a4a1a532959e2ffb45532225a4d08110387a617452a33b2e1f8e8b92",
-          "bytes": 308906,
-          "characters": 302691
+          "sha256": "4bb713020975ab4e0d42c1675f6a290d5143a20c60b44889178e113defc78ec6",
+          "bytes": 317191,
+          "characters": 310881
         }
       ]
     },
@@ -254,29 +254,29 @@
         {
           "id": "qwen:light",
           "profile": "light",
-          "version": "2.6.16-light",
+          "version": "2.6.19-light",
           "artifact": "qwen/light.min.js",
-          "sha256": "1811160775a617d2f0212fc224754af77aa7bb4b7e5df796eb8964f5fd495bee",
-          "bytes": 262116,
-          "characters": 257638
+          "sha256": "6b193a0c6a5d88abe2c2b438be8faf7b834e1cc8a291e77d9a4f2977029c279e",
+          "bytes": 265034,
+          "characters": 260462
         },
         {
           "id": "qwen:full",
           "profile": "full",
-          "version": "1.0.13-full",
+          "version": "1.0.17-full",
           "artifact": "qwen/full.min.js",
-          "sha256": "370c23df3b6c4b5534cc70faca10937c6ead1ae9bc204a9a4d083e2c9aaff00c",
-          "bytes": 264838,
-          "characters": 260302
+          "sha256": "362e9e097af46e56fd3f050fa594481b133a1ea9b2303538cab5b143194dd79a",
+          "bytes": 267760,
+          "characters": 263130
         },
         {
           "id": "qwen:all_branches",
           "profile": "all_branches",
-          "version": "1.0.13-all-branches",
+          "version": "1.0.17-all-branches",
           "artifact": "qwen/all_branches.min.js",
-          "sha256": "3dfa968d2b65204a25aa34ce78e350eee9e6a46745fd2bec17aab90b24e721d6",
-          "bytes": 280431,
-          "characters": 275456
+          "sha256": "9b65b72844000bdd29958ad9144c18d9bf0ff0082642f48605ede6558535bc46",
+          "bytes": 283611,
+          "characters": 278500
         }
       ]
     },
@@ -289,20 +289,20 @@
         {
           "id": "chatglm:light",
           "profile": "light",
-          "version": "2.5.12-light",
+          "version": "2.5.14-light",
           "artifact": "chatglm/light.min.js",
-          "sha256": "96a237502654d6fbce6f3f968c55573de1dc9aa4843bfcd1853cf3e12295a58e",
-          "bytes": 232352,
-          "characters": 227705
+          "sha256": "03deeb45fee7921d783cf96ea48491c3ac23a84c43fe3b487203effb02f0e1e7",
+          "bytes": 236858,
+          "characters": 232104
         },
         {
           "id": "chatglm:full",
           "profile": "full",
-          "version": "1.0.8-full",
+          "version": "1.0.10-full",
           "artifact": "chatglm/full.min.js",
-          "sha256": "76d2c90d2e773a943e7dfb5f4e2ce4baed6f1fd57a672114620fed9a74a6729b",
-          "bytes": 233095,
-          "characters": 228420
+          "sha256": "22d615c406206a0a63841c4ed6eede355ba85103f564f6fd6ac1fef03f2b052b",
+          "bytes": 237601,
+          "characters": 232819
         }
       ],
       "fallback": {
@@ -353,20 +353,20 @@
         {
           "id": "yuanbao:light",
           "profile": "light",
-          "version": "2.10.12-light",
+          "version": "2.10.14-light",
           "artifact": "yuanbao/light.min.js",
-          "sha256": "d8083fe7ee32ae52dedd4b9eaa2ab186bde8e7016657ba604561e1dc872d907e",
-          "bytes": 252733,
-          "characters": 247009
+          "sha256": "73bffabb8570f26615ed006e6c1aa8853b5a6d2b4707a713b07fbeabaed6b558",
+          "bytes": 253613,
+          "characters": 247849
         },
         {
           "id": "yuanbao:full",
           "profile": "full",
-          "version": "1.0.11-full",
+          "version": "1.0.13-full",
           "artifact": "yuanbao/full.min.js",
-          "sha256": "15aa2c18712100944b531a843d723b2c95d709ce5f1405003c7782877d44a52d",
-          "bytes": 255905,
-          "characters": 250111
+          "sha256": "07d3f553afcbbcf67de1a1a7393487cfd966d0525b2a9f618eb5742b5f18be3b",
+          "bytes": 256785,
+          "characters": 250951
         }
       ],
       "fallback": {
@@ -382,29 +382,29 @@
         {
           "id": "mistral:light",
           "profile": "light",
-          "version": "2.5.16-light",
+          "version": "2.5.18-light",
           "artifact": "mistral/light.min.js",
-          "sha256": "d69399271aaebee19925e1307a2b9675cd38206ddfa5bc29defbecea3bd756db",
-          "bytes": 380164,
-          "characters": 374425
+          "sha256": "bb40427c5d28ffe7da80ba6eb3e315cf13d7c57ecc8417f3eb5d8a07bf257f25",
+          "bytes": 382050,
+          "characters": 376311
         },
         {
           "id": "mistral:full",
           "profile": "full",
-          "version": "1.0.12-full",
+          "version": "1.0.14-full",
           "artifact": "mistral/full.min.js",
-          "sha256": "7b1c3ac6cda4169c392b098484b7f7b2aa66d5a67817618ae771f14eb1a63865",
-          "bytes": 384611,
-          "characters": 379060
+          "sha256": "f1be2f3ae184f843359ec1fdbd0d9bcab0e672baae4194f6c7bc3d48ac6de531",
+          "bytes": 386497,
+          "characters": 380946
         },
         {
           "id": "mistral:all_branches",
           "profile": "all_branches",
-          "version": "1.0.12-all-branches",
+          "version": "1.0.14-all-branches",
           "artifact": "mistral/all_branches.min.js",
-          "sha256": "ed0266681cdeacb0cb80ad9541d0ae6c3a17cce65bbbce48b871a385a2816105",
-          "bytes": 397215,
-          "characters": 391221
+          "sha256": "61846ad8016a801f4696a99968ca38e4cb35166fa7cc4197c4e84b4349f6244f",
+          "bytes": 399101,
+          "characters": 393107
         }
       ]
     }

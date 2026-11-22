@@ -175,6 +175,11 @@
   :root[data-theme="star-night"] [data-page="archiver"] .archiver-bookmark-target-body select,
   :root[data-theme="star-night"] [data-page="archiver"] .archiver-bookmark-target-body input:not([type="checkbox"]) { background: rgb(96 96 96 / 72%); border-color: rgb(126 94 255 / 44%); }
   [data-page="archiver"] .archiver-bookmark-place-first { align-items: center; display: flex !important; gap: 8px !important; }
+  [data-page="archiver"] .archiver-bookmark-method { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 6px; }
+  [data-page="archiver"] .archiver-bookmark-method legend { padding: 0 0 5px; font-size: 12px; font-weight: 700; }
+  [data-page="archiver"] .archiver-bookmark-method .cloudig-choice { font-size: 14px; font-weight: 400; }
+  [data-page="archiver"] .archiver-bookmark-method .cloudig-choice > span { align-items: center; }
+  [data-page="archiver"] [data-bookmark-pin-tip] { margin-inline: 6px; font-size: 12px; line-height: 1.4; }
   [data-page="archiver"] .archiver-bookmark-target-popover > footer { border-top: 1px solid rgb(142 33 31 / 18%); display: flex; gap: 8px; justify-content: flex-end; min-height: 48px; padding: 8px 12px; }
   :root[data-theme="star-night"] [data-page="archiver"] .archiver-bookmark-target-popover > footer { border-top-color: rgb(255 169 46 / 18%); }
   [data-page="archiver"] .archiver-bookmark-expand { display: none; }

@@ -40,7 +40,7 @@ test("1.0.0 remains strict and readable, not silently redefined to accept new bl
   assert.equal(JSON.stringify(old), before);
   const v = sample(windowBlock()); v["schema"] = "cloudig/conversation/1.0.0";
   assert.equal(validateRecord("conversation", v).ok, false);
-  v["schema"] = "cloudig/conversation/1.0.3";
+  v["schema"] = "cloudig/conversation/99.0.0";
   const invalid = validateRecord("conversation", v); assert(!invalid.ok);
   assert.equal(invalid.issues[0]!.code, "CLOUDIG_RECORD_SCHEMA_UNSUPPORTED");
   assert.match(invalid.issues[0]!.message, /请更新采云/u);
@@ -59,9 +59,9 @@ test("Window file references and entry paths stay within their own declared reso
   ]) { const b = windowBlock(); change(b); assert.equal(validateRecord("conversation", sample(b)).ok, false); }
 });
 
-test("all three supported versions have correct stream/header validation", () => {
+test("all supported versions have correct stream/header validation", () => {
   const legacy = sample({ ...windowBlock(), type: "interactive", display: "window" }); legacy["schema"] = "cloudig/conversation/1.0.1";
-  for (const v of [fixture(), legacy, sample(windowBlock())]) {
+  for (const v of [fixture(), legacy, {...sample(windowBlock()),schema:"cloudig/conversation/1.0.2"}, sample(windowBlock())]) {
     const header = structuredClone(v);
     for (const k of ["messages", "resources", "references", "limitations"]) delete header[k];
     assert.equal(validateConversationHeader(header), true);
@@ -75,7 +75,7 @@ test("all three supported versions have correct stream/header validation", () =>
 test("new Library declares only affected patch versions while legacy declarations remain readable", () => {
   const fresh = createLibraryMetadata({ timestamp: "2026-09-24T00:00:00Z" });
   assert.equal(fresh["schema"], LIBRARY_SCHEMA);
-  assert.deepEqual(fresh["schemas"], { library: "1.0.2", conversation: "1.0.2", identity: "1.0.0", mark: "1.0.0", content_time: "1.0.0" });
+  assert.deepEqual(fresh["schemas"], { library: "1.0.3", conversation: "1.0.3", identity: "1.0.0", mark: "1.0.0", content_time: "1.0.0" });
   assert.equal(fresh["cloudig_standard"], "1.0");
   assert.equal(validateRecord("library", fresh).ok, true);
   const old = JSON.parse(readFileSync(new URL("./fixtures/01-1.json", import.meta.url), "utf8"));

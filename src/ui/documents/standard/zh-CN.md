@@ -216,16 +216,16 @@ Cloudig/
 | 声明 | 值 |
 |---|---|
 | `cloudig_standard` | `1.0` |
-| `schemas.library` | `1.0.2` |
+| `schemas.library` | `1.0.3` |
 | `schemas.identity` | `1.0.0` |
 | `schemas.content_time` | `1.0.0` |
-| `schemas.conversation` | `1.0.2` |
+| `schemas.conversation` | `1.0.3` |
 | `schemas.mark` | `1.0.0` |
 
 叙事无版本项。
 
 - V1.x 保留既有格式的读取能力；已发布格式的字段含义不被静默改写。字段结构变化通过新的格式版本声明，旧规则保留。
-- 字段变化需更新对应格式版本。本次 Box／Window 补充为 `1.0.2`，采云标准仍为 `1.0`；格式版本不随产品或书签版本自动变化。
+- 字段变化需更新对应格式版本。Box／Window 始于 `1.0.2`，本次主题原图补充为 `1.0.3`，采云标准仍为 `1.0`；格式版本不随产品或书签版本自动变化。
 - 程序遇到不认识的版本，拒开并提示更新；不忽略未知字段。
 
 ### 2.3 不变量
@@ -305,7 +305,7 @@ Cloudig/
 | 字段 | 值 / 默认 | 意义 |
 |---|---|---|
 | `cloudig_standard` | `1.0` | 采云标准总版本 |
-| `schema` | 固定 `cloudig/library/1.0.2` | 格式；兼容读取 `1.0.0` / `1.0.1` |
+| `schema` | 固定 `cloudig/library/1.0.3` | 格式；兼容读取 `1.0.0` / `1.0.1` / `1.0.2` |
 | `schemas` | 五项，见 2.2 | 各类格式版本 |
 | `edited_at` | UTC | 最后一次写此文件 |
 | `settings.language` | `zh-CN` / `en`；默认 `zh-CN` | 界面语言。不翻译正文与自定名字 |
@@ -354,12 +354,12 @@ Cloudig/
 ```json library
 {
   "cloudig_standard": "1.0",
-  "schema": "cloudig/library/1.0.2",
+  "schema": "cloudig/library/1.0.3",
   "schemas": {
-    "library": "1.0.2",
+    "library": "1.0.3",
     "identity": "1.0.0",
     "content_time": "1.0.0",
-    "conversation": "1.0.2",
+    "conversation": "1.0.3",
     "mark": "1.0.0"
   },
   "edited_at": "2026-09-16T12:00:00Z",
@@ -563,7 +563,7 @@ V1.0 实现呈现与显示绑定。以下出自原稿，V2.0 展开，本版不�
 
 | 字段 | 条件 | 类型 | 意义 |
 |---|---|---|---|
-| `schema` | 必填 | 固定 `cloudig/conversation/1.0.2` | 格式；兼容读取 `1.0.0` / `1.0.1` |
+| `schema` | 必填 | 固定 `cloudig/conversation/1.0.3` | 格式；兼容读取 `1.0.0` / `1.0.1` / `1.0.2` |
 | `conversation_id` | 必填 | UUID v7 | 对话的身份 |
 | `parser` | 必填 | 对象 | 生成它的解析器与 Adapter，见 5.2 |
 | `lifecycle` | 必填 | 对象 | 三个程序写入时间，见 5.2 |
@@ -648,13 +648,19 @@ V1.0 实现呈现与显示绑定。以下出自原稿，V2.0 展开，本版不�
 | `search` | `query`、`references`、`status`、`duration` | 检索；`references` 为引用 ID 数组 |
 | `citations` | `references` 必填；`label` | 引用列表 |
 | `tool` | `kind` 必填：`call` / `result` / `activity`；`call`、`title`、`status`、`success`、`duration`、`input`、`output`、`input_resource`、`output_resource` | 工具。`input` / `output` 任意 JSON |
-| `diagram` | `format` 必填；`source`、`rendered`、`html` 至少一项 | 图表，如 `mermaid` |
+| `diagram` | `format` 必填；`source`、`rendered`、`html` 至少一项；`rendered_themes` 可选 | 图表，如 `mermaid` |
 | `box` / `window` | `source`、`format` 必填；其余见下表 | 直接内容类型，始于 `1.0.2` |
 | `unknown` | `kind` 必填；`text`、`resource`、`html` 至少一项 | 未识别的内容，不做空壳 |
 
 工具调用：`call` 块由 AI 发出，`recipient` 是工具；`result` 块的 `speaker` 是工具；两块用同一个 `call` 配对。
 
 表格、列表等 HTML 内的图片可用 `<img data-cloudig-resource="资源ID" alt="说明">` 引用本篇图片资源。图片字节仍只存一份，原结构不必为插图拆成多个块；引用必须存在，且指向图片资源。
+
+#### 图表主题原图（1.0.3）
+
+`rendered` 是默认原图的资源 ID。可选 `rendered_themes` 是非空对象，只有 `light` 和 `dark` 两个可选项，值也是本篇图片资源 ID；使用它时必须同时写 `rendered`。例如：`"rendered": "r1", "rendered_themes": { "light": "r1", "dark": "r2" }`。
+
+只有来源确实提供的主题原图才写入；适用于各平台、各种图表格式，不要求可交互。破晓选 `light`，星夜选 `dark`；缺少对应主题时回退 `rendered`，不反色或重画。两份原图各保存一次，备用图不重复插入正文；Markdown 导出默认图，并附上其他主题原图链接。旧单图记录仍按原规则读取。
 
 #### Box／Window
 
@@ -723,7 +729,7 @@ AI 在原站说"出错了"是正文；采云与导出器自己的诊断进系统
 
 - 标题：标记 `conversation_title` → `title.filename` → `title.original` → 未命名。
 - 思考与工具默认折叠；只有"思考了几秒"没有正文的不做可展开面板。
-- 特殊呈现的值：`reasoning*.format` 为 `markdown` 按 Markdown、`html` 按清洗后的富文本，其他按文本；`image.purpose` 为 `attachment-thumbnail` 紧凑缩略、`search-result` 挂原链接；`diagram.format` 为 `mermaid` 本地渲染，优先 `rendered`，其次 `html`，再 `source`；工具名 `schedule` 配合 `input.kind` 生成任务卡。其余值按普通文字。
+- 特殊呈现的值：`reasoning*.format` 为 `markdown` 按 Markdown、`html` 按清洗后的富文本，其他按文本；`image.purpose` 为 `attachment-thumbnail` 紧凑缩略、`search-result` 挂原链接；`diagram.format` 为 `mermaid` 本地渲染，优先当前主题的 `rendered_themes`，其次 `rendered`、`html`，再 `source`；工具名 `schedule` 配合 `input.kind` 生成任务卡。其余值按普通文字。
 
 ### 5.10 示例 〔核心〕
 
@@ -1711,18 +1717,18 @@ yearBand(first,last) = [S(first,1,1,0,0,0) - H, S(last,12,31,23,59,59) + H]
 | 产品版本 | 程序 | V1.0 东方既白 |
 
 - V1.x 通过版本化格式保留兼容读取，不让已发布字段悄悄换义。`1.0.1` 的 `interactive + display` 与 `1.0.2` 的 `box` / `window` 分别按各自规则解释；不是把旧文件直接改标签。
-- 分项字段变化更新对应格式版本；新增一类记录（如叙事）升总版本。Box／Window 本次使用 Conversation / Library `1.0.2`，其余分项不变。
+- 分项字段变化更新对应格式版本；新增一类记录（如叙事）升总版本。主题原图补充使用 Conversation / Library `1.0.3`，其余分项不变。
 - `cloudig_standard`、`schema`、`schemas.*` 逐项核对。程序遇到不认识的版本，拒开并提示更新；不忽略未知字段。
 - 建库早于总版本字段的库：按 `1.0` 读，下次保存设置时写出。
 - 新程序读旧文件以实际读取与回归为证。
-- 当前同时读取 Conversation / Library `1.0.0`、`1.0.1` 与 `1.0.2`。旧 `interactive + display` 按冻结的 `1.0.1` 规则读取，不读取即改写；新写直接使用 `box` / `window`。不支持的新格式会明确提示更新程序，并保留原文件。
+- 当前同时读取 Conversation / Library `1.0.0`、`1.0.1`、`1.0.2` 与 `1.0.3`。旧 `interactive + display` 按冻结的 `1.0.1` 规则读取，不读取即改写；新写直接使用 `box` / `window`。不支持的新格式会明确提示更新程序，并保留原文件。
 
 ## 附录 〔折叠〕
 
 <details>
 <summary>机器 Schema 与字段索引</summary>
 
-随包 `docs/schemas/` 共 17 份 JSON Schema：`records/` 八份现行规则（五类业务记录、共用结构及两份附属格式），`records/compat/` 四份 Conversation / Library 的 `1.0.0`、`1.0.1` 兼容规则，`program/` 五份程序规则。Narrative 尚无文件或 Schema。`index.json` 记录每份 `$id` 与 SHA-256；另附 GPT 智能 UI 的来源格式说明。
+随包 `docs/schemas/` 共 19 份 JSON Schema：`records/` 八份现行规则（五类业务记录、共用结构及两份附属格式），`records/compat/` 六份 Conversation / Library 的 `1.0.0`、`1.0.1`、`1.0.2` 兼容规则，`program/` 五份程序规则。Narrative 尚无文件或 Schema。`index.json` 记录每份 `$id` 与 SHA-256；另附 GPT 智能 UI 的来源格式说明。
 
 | 文件 | 内容 |
 |---|---|

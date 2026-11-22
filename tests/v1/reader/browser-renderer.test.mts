@@ -35,6 +35,25 @@ const labels: RendererLabels = {
   otherParty: "其他"
 };
 
+test("native diagram themes keep exact assets, source tab and zoom through asynchronous switches", async () => {
+  const dom=new JSDOM('<main></main>'),root=dom.window.document.querySelector<HTMLElement>('main')!;
+  const pending=new Map<string,(v:{url:string})=>void>(),reads:string[]=[];
+  const renderer=createConversationRenderer({root,labels,theme:'dawn',resolveResource:async r=>{const id=String(r['id']);reads.push(id);return new Promise(resolve=>pending.set(id,resolve));}});
+  try {
+    renderer.render({messages:[{party:{role:'assistant'},blocks:[{category:'content',value:{type:'diagram',format:'mermaid',source:'graph LR; A-->B',rendered:'l',rendered_themes:{light:'l',dark:'d'}},resources:['l','d'].map(id=>({id,availability:'embedded'}))}]}]});
+    renderer.setTheme('star-night');
+    pending.get('d')!({url:'data:image/svg+xml,<svg id="dark"/>'});await new Promise(r=>setTimeout(r,0));
+    const display=root.querySelector<HTMLElement>('.cloudig-diagram-display')!, img=display.querySelector('img')!;
+    assert.match(img.src,/dark/u);img.style.width='700px';
+    root.querySelector<HTMLButtonElement>('[data-diagram-view="source"]')!.click();
+    pending.get('l')!({url:'data:image/svg+xml,<svg id="light"/>'});await new Promise(r=>setTimeout(r,0));
+    assert.match(display.querySelector<HTMLImageElement>('img')!.src,/dark/u,'stale first request cannot replace dark');
+    renderer.setTheme('dawn');await new Promise(r=>setTimeout(r,0));
+    assert.equal(display.hidden,true);assert.match(display.querySelector<HTMLImageElement>('img')!.src,/light/u);assert.equal(display.querySelector<HTMLImageElement>('img')!.style.width,'700px');
+    renderer.setTheme('star-night');await new Promise(r=>setTimeout(r,0));assert.equal(display.querySelector('img'),img);assert.deepEqual(reads,['l','d']);
+  } finally { renderer.destroy();dom.window.close(); }
+});
+
 test("source-owned inline icon geometry and missing map photos do not become oversized or broken images", async () => {
   const dom=new JSDOM("<main></main>"),root=dom.window.document.querySelector<HTMLElement>("main")!;let reads=0;
   const renderer=createConversationRenderer({root,labels,theme:"dawn",resolveResource:async()=>{reads++;return{url:"data:image/png;base64,AA=="}}});
@@ -580,6 +599,31 @@ test("generated Markdown tables use the same local scrolling and retain column a
   assert.equal(t.parentElement!.previousElementSibling!.textContent, "Before");
   assert.equal(t.parentElement!.nextElementSibling!.textContent, "After");
   renderer.destroy(); dom.window.close();
+});
+
+test("attachment disclosure uses export provenance only after checking saved content and original web links", () => {
+  const dom = new JSDOM("<main></main>");
+  const root = dom.window.document.querySelector<HTMLElement>("main")!;
+  let opened = "";
+  const renderer = createConversationRenderer({root, labels, theme: "star-night", language: "en", onOpenExternal: url => {opened=url;}});
+  const show = (header:JsonObject, resource:JsonObject) => renderer.render({header, messages:[{party:{role:"user"},blocks:[
+    {category:"content",value:{type:"attachment",resource:"f"},resources:[{id:"f",kind:"file",name:"notes.pdf",...resource}]}
+  ]}]});
+  show({bookmark_profile:"light",has_tree_bookmark:false},{availability:"metadata_only"});
+  assert.match(root.querySelector(".cloudig-file-explanation")!.textContent,/Full bookmark/);
+  assert.equal(root.querySelector("details")?.open,false);
+  root.querySelector("summary")!.click();
+  assert.equal(root.querySelector("details")?.open,true);
+  show({}, {availability:"metadata_only",url:"https://example.org/file"});
+  root.querySelector<HTMLButtonElement>(".cloudig-attachment-open")!.click();
+  assert.equal(opened,"https://example.org/file");
+  show({}, {availability:"metadata_only",url:"javascript:void(0)"});
+  assert.equal(root.querySelector(".cloudig-attachment-open"),null);
+  assert.doesNotMatch(root.querySelector(".cloudig-file-explanation")!.textContent,/bookmark/i);
+  show({bookmark_profile:"light"},{availability:"embedded"});
+  assert.ok(root.querySelector(".cloudig-resource-save"));
+  assert.equal(root.querySelector(".cloudig-file-explanation"),null);
+  renderer.destroy();
 });
 
 test("Light metadata-only attachments and images show their known names, not a missing-resource warning", async () => {

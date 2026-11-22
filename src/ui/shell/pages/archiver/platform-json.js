@@ -25,7 +25,7 @@ export function mountPlatformJsonIndex({ root, state, onImport, onClose }) {
     const header = document.createElement('header'); header.className = 'archiver-json-heading';
     const intro = document.createElement('div'); intro.className = 'archiver-json-intro';
     const title = document.createElement('h1'); title.textContent = en() ? 'Import Platform Files' : '导入平台文件';
-    const caption = document.createElement('p'); caption.textContent = en() ? 'Claude, DeepSeek and Qwen: JSON. ChatGPT, Mistral and Grok: conversation ZIP exports. Do not extract ZIPs or select folders.' : 'Claude、DeepSeek、Qwen选JSON；ChatGPT、Mistral、Grok选完整会话ZIP。无需解压，不选择文件夹。';
+    const caption = document.createElement('p'); caption.textContent = en() ? 'Claude and Qwen: JSON. ChatGPT, DeepSeek, Mistral and Grok: complete ZIP. DeepSeek also accepts legacy JSON.' : 'Claude、Qwen 选 JSON。ChatGPT、DeepSeek、Mistral、Grok 选完整 ZIP，无需解压。DeepSeek 也支持旧版 JSON。';
     intro.append(title, caption); header.append(intro); header.insertAdjacentHTML('beforeend', importDeskArt);
     const body = document.createElement('div'); body.className = 'archiver-json-groups'; body.dataset.scrollRegion = '';
     for (const [group, label] of [['official', en() ? 'Official AI Platform Exports' : 'AI平台官方导出文件'], ['agent', 'Agent Tool']]) {
@@ -38,9 +38,10 @@ export function mountPlatformJsonIndex({ root, state, onImport, onClose }) {
         const icon = document.createElement('img'); icon.src = `/assets/platforms/${definition.icon}`; icon.alt = '';
         const words = document.createElement('span'), name = document.createElement('strong'), action = document.createElement('small'), arrow = document.createElement('span');
         words.className = 'archiver-json-card-copy'; name.textContent = definition.name;
-        const guide = platformJsonImportGuides[definition.id], inputKind = guide?.input ?? 'json', zipped = inputKind === 'zip';
+        const guide = platformJsonImportGuides[definition.id], inputKind = guide?.input ?? 'json', zipped = inputKind.startsWith('zip');
+        const format = inputKind === 'zip-json' ? 'ZIP / JSON' : inputKind.toUpperCase();
         action.className = 'archiver-json-card-action';
-         action.textContent = definition.available ? (en() ? `Choose ${inputKind === 'jsonl' ? 'JSONL' : zipped ? 'ZIP' : 'JSON'} · Multi-select` : `选择${inputKind === 'jsonl' ? 'JSONL' : zipped ? 'ZIP' : 'JSON'} · 可多选`) : definition.deferred ? (en() ? 'New export pending · Preview' : '等待新导出 · 界面预览') : (en() ? 'Preview only · Import unavailable' : '仅界面预览 · 暂不导入');
+         action.textContent = definition.available ? (en() ? `Choose ${format} · Multi-select` : `选择${format} · 可多选`) : definition.deferred ? (en() ? 'New export pending · Preview' : '等待新导出 · 界面预览') : (en() ? 'Preview only · Import unavailable' : '仅界面预览 · 暂不导入');
         arrow.className = 'archiver-json-card-arrow'; arrow.textContent = '›'; arrow.setAttribute('aria-hidden', 'true');
         words.append(name, action);
         if (definition.available && guide) {

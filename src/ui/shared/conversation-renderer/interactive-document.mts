@@ -6,7 +6,7 @@ import { prepareDesignPreview } from "./design-preview.mts";
 import { INTERACTIVE_LIMITS, type InteractivePackage } from "./interactive-protocol.mts";
 import { interactiveScrollFallback } from "./interactive-scroll.mts";
 import { installWorkLocalFiles } from "./interactive-local-files.mts";
-import { isBinaryPreview, isMediaPreview, previewTarget } from "./file-preview-policy.mts";
+import { isBinaryPreview, isMediaPreview, previewImageMime, previewTarget } from "./file-preview-policy.mts";
 
 /** Native Canvas sources may wrap the entire document in one Markdown fence.
  * Strip only that transport wrapper in the running copy; source/download bytes
@@ -28,7 +28,8 @@ export function prepareInteractiveHtml(input: InteractivePackage, document: Docu
   const urls = new Map<string, string>(), base = "https://cloudig-file.invalid/";
   for (const file of input.files) {
     if (urls.has(new URL(file.path, base).href)) throw new TypeError(`Duplicate work path: ${file.path}`);
-    const url = createUrl(file.bytes, file.mime); urls.set(new URL(file.path, base).href, url);
+    const mime = input.preview && file.path === input.entry ? previewImageMime(file) ?? file.mime : file.mime;
+    const url = createUrl(file.bytes, mime); urls.set(new URL(file.path, base).href, url);
     for (const alias of file.aliases ?? []) urls.set(alias, url);
   }
   const lookup = (value: string, filename: string): string | undefined => urls.get(value) ?? urls.get(new URL(value, new URL(filename, base)).href);
@@ -46,7 +47,7 @@ export function prepareInteractiveHtml(input: InteractivePackage, document: Docu
     for (const alias of file.aliases ?? []) urls.set(alias, url);
   }
   const preview = previewTarget(input);
-  const original = isBinaryPreview(preview) || isMediaPreview(preview) || preview?.mime.startsWith("image/") ? "" : new TextDecoder("utf-8", { fatal: true }).decode(entry.bytes);
+  const original = isBinaryPreview(preview) || isMediaPreview(preview) || previewImageMime(preview) || preview?.mime.startsWith("image/") ? "" : new TextDecoder("utf-8", { fatal: true }).decode(entry.bytes);
   const project = input.format === "react" && !!input.data?.["project"];
   const parser = new document.defaultView!.DOMParser(), parsed = parser.parseFromString(input.format === "react" ? project ? interactiveProjectDocument(input.files.filter(f => !f.path.startsWith("__cloudig_")).map(f => ({ path:f.path, url:lookup(f.path,"index.html")!, ...(/\.[cm]?[jt]sx?$|\.json$/iu.test(f.path) ? {source:new TextDecoder("utf-8",{fatal:true}).decode(f.bytes)} : {}) })), entry.path, input.language === "en") : interactiveReactDocument(original, entry.path) : savedWorkDocument(input, document, input.format === "html" || input.format === "svg" ? unwrapWorkDocument(original) : original), "text/html");
   // Independent HTML has the browser's light canvas unless its author opts

@@ -581,17 +581,34 @@ export class ConversationRenderer {
     const category = text(block["category"]);
     if (category === "reasoning") {
       const raw = text(value["text"]), format = text(value["format"]);
-      const nestedBlocks = Array.isArray(block["blocks"]) ? block["blocks"].filter(isJsonObject) : [];
+      const children = Array.isArray(block["blocks"]) ? block["blocks"].filter(isJsonObject) : [];
+      const icon = children.find(child => isJsonObject(child["value"]) && child["value"]["purpose"] === "agent_icon");
+      const nestedBlocks = icon ? children.filter(child => child !== icon) : children;
+      const addIcon = (heading: HTMLElement): void => {
+        if (!icon || !isJsonObject(icon["value"])) return;
+        const asset = resourceMap(icon).get(String(icon["value"]["resource"]));
+        if (!asset) return;
+        const host = element(document,"span","cloudig-agent-icon"); host.setAttribute("aria-hidden","true");
+        heading.prepend(host);
+        void this.#resolvedImage(host,asset,"image","",this.#generation);
+      };
       const hasBody = nestedBlocks.length > 0 || Boolean(raw && (format !== "html"
         ? raw.replace(/[\s\u200b\ufeff]/gu, "")
         : raw.replace(/<[^>]*>|&(?:nbsp|#160|#xa0);|[\s\u200b\ufeff]/giu, "") || /<(?:img|svg|math)\b/iu.test(raw)));
       const summary = value["type"] === "reasoning_summary";
       const sourceTitle = text(value["title"]);
+      const subagent = value["type"] === "status" && sourceTitle?.match(/^Subagent · ([^·]+?)(?: · (.+))?$/u);
       const translatedTitle = value["type"] === "status" && this.#options.language !== "en" && sourceTitle ? CLAUDE_CONTEXT_TITLES[sourceTitle] : undefined;
       const taskTitles: Record<string, string> = { "Gemini task plan": "任务计划", "Gemini task snapshots": "任务快照", "Gemini subtask at capture": "子任务内容（保存时）", "Gemini subtask source": "子任务原始记录", "Gemini task source": "任务原始记录", "Gemini task process": "任务过程" };
       const taskTitle = this.#options.language !== "en" && sourceTitle ? taskTitles[sourceTitle] : undefined;
       let title = translatedTitle ?? taskTitle ?? sourceTitle ?? (isJsonObject(value["party"]) && value["party"]["role"] === "system" ? this.#labels.systemParty : undefined)
         ?? (summary ? this.#labels.reasoningSummary : hasBody ? this.#labels.reasoningContent : undefined) ?? this.#labels.reasoning;
+      if (subagent) {
+        const zh = this.#options.language !== "en";
+        const actions: Record<string, string> = { started: "开始工作", completed: "已完成", interacted: "继续工作", wait: "等待", interrupted: "已中断", failed: "失败", activity: "活动" };
+        const action = subagent[1]!;
+        title = [subagent[2] || (zh ? "子代理" : "Subagent"), zh ? actions[action] ?? action : action].join(" · ");
+      }
       if (value["type"] === "status" && sourceTitle === "Claude platform flag" && raw) {
         // Display-only: old records retain their stable context title and body.
         try {
@@ -608,9 +625,11 @@ export class ConversationRenderer {
       if (!hasBody) {
         const status = element(document, "div", "cloudig-process cloudig-reasoning cloudig-process-static");
         status.append(element(document, "span", "cloudig-process-label", label));
+        addIcon(status.querySelector("span")!);
         return status;
       }
       const folded = details(document, `cloudig-process cloudig-reasoning${summary ? " cloudig-reasoning-summary" : ""}`, label, block["collapsed"] === true);
+      addIcon(folded.root.querySelector<HTMLElement>(".cloudig-fold-label")!);
       const platformContext = isClaudeContext(value);
       if (platformContext) folded.root.classList.add("cloudig-platform-context");
       this.#defer(folded, () => {
@@ -750,12 +769,39 @@ export class ConversationRenderer {
       }
       // Read-only example hosts deliberately supply no save capability.
       actions.append(this.#resourceSaveButton(id, name));card.append(actions);
-    } else if (text(resource?.["url"])) {
-      const button = element(document, "button", "cloudig-attachment-open");
-      button.title = this.#labels.externalResource; button.setAttribute("aria-label", `${this.#labels.externalResource} · ${name}`); button.append(resourceActionIcon(document, "open"));
-      button.type = "button";
-      button.addEventListener("click", () => this.#options.onOpenExternal?.(String(resource!["url"])));
-      card.append(button);
+    } else {
+      const english = this.#options.language === "en";
+      const url = text(resource?.["url"]);
+      const link = url && URL.canParse(url) ? new URL(url) : undefined;
+      if (link && ["http:", "https:"].includes(link.protocol) && !link.username && !link.password && this.#options.onOpenExternal) {
+        const action = english ? "Open original link" : "打开原链接";
+        const actions = element(document, "div", "cloudig-file-actions");
+        const button = element(document, "button", "cloudig-attachment-open", action);
+        button.type = "button";
+        button.setAttribute("aria-label", `${action} · ${name}`);
+        button.addEventListener("click", () => this.#options.onOpenExternal?.(link.href));
+        actions.append(button); card.append(actions);
+        return card;
+      }
+      const header = this.#view?.["header"];
+      const profile = isJsonObject(header) ? header["bookmark_profile"] : undefined;
+      let hint = english ? "The export lists this file but contains no copy to open." : "这份档案只记录了文件信息，没有可打开的文件。";
+      if (profile === "light" && isJsonObject(header)) {
+        const modes = header["has_tree_bookmark"] ? (english ? "Full or Tree" : "全量或整树") : (english ? "Full" : "全量");
+        hint = english ? `The Light bookmark saved the file information. To include the file, save the conversation again with the ${modes} bookmark.`
+          : `轻装书签只保存了文件信息。如需文件，请用${modes}书签重新保存对话。`;
+      } else if (resource?.["availability"] === "missing") {
+        hint = english ? "The file was unavailable when this conversation was saved. Try opening the original conversation to retrieve it." : "保存对话时未取得这个文件，可以回原对话查看。";
+      }
+      const disclosure = element(document, "details", "cloudig-file-details");
+      const summary = element(document, "summary", "cloudig-attachment");
+      const badge = element(document, "span", "cloudig-file-info-badge");
+      const icon = element(document, "span", "", "ⓘ");
+      icon.setAttribute("aria-hidden", "true");
+      badge.append(icon, english ? "File info only" : "仅有文件信息");
+      summary.append(...Array.from(card.childNodes), badge);
+      disclosure.append(summary, element(document, "p", "cloudig-file-explanation", hint));
+      return disclosure;
     }
     return card;
   }
@@ -835,7 +881,46 @@ export class ConversationRenderer {
     // fails, keep the source/diagnostic state instead of silently replacing the
     // platform's picture with a newly generated Mermaid chart.  Local Mermaid
     // is only a fallback when the source had no captured rendering at all.
-    if (rendered) void this.#resolvedImage(display, rendered, "diagram", this.#labels.diagram, generation);
+    if (rendered && isJsonObject(value["rendered_themes"])) {
+      const themes = value["rendered_themes"], resources = resourceMap(block);
+      const native = new Map<string, Promise<Node[]>>();
+      const paintNative = async (): Promise<void> => {
+        const revision = ++paint, theme = this.#theme === "star-night" ? "dark" : "light";
+        const selected = resources.get(String(themes[theme])) ?? rendered;
+        const selectedTheme = resources.has(String(themes[theme])) ? theme
+          : Object.entries(themes).find(([, id]) => id === renderedId)?.[0] ?? "default";
+        const key = String(selected["id"]);
+        let pending = native.get(key);
+        if (!pending) {
+          pending = (async () => {
+            const staging = element(document, "div");
+            await this.#resolvedImage(staging, selected, "diagram", this.#labels.diagram, generation);
+            const img = staging.querySelector("img");
+            if (img) {
+              img.loading = "eager";
+              if (isJsonObject(selected["dimensions"])) for (const field of ["width", "height"] as const)
+                if (typeof selected["dimensions"][field] === "number") img.setAttribute(field, String(selected["dimensions"][field]));
+              if (img.decode) await img.decode().catch(() => undefined);
+            }
+            return [...staging.childNodes];
+          })();
+          native.set(key, pending);
+        }
+        const nodes = await pending;
+        if (generation !== this.#generation || revision !== paint || this.#abort.signal.aborted) return;
+        // Retain source-tab state, zoom and the last visible image while a new
+        // theme resolves. A slower previous request must not repaint over it.
+        const previous = display.querySelector<HTMLElement>("img");
+        const image = nodes.find(n => n.nodeName === "IMG") as HTMLElement | undefined;
+        if (previous && image && previous !== image) image.style.cssText = previous.style.cssText;
+        display.replaceChildren(...nodes);
+        display.dataset["nativeTheme"] = selectedTheme;
+        display.dataset["nativeResource"] = key;
+      };
+      void paintNative();
+      this.#themeUpdates.add(() => { void paintNative(); });
+    }
+    else if (rendered) void this.#resolvedImage(display, rendered, "diagram", this.#labels.diagram, generation);
     else void renderSource();
     if (!rendered && !text(value["html"]) && format === "mermaid") this.#themeUpdates.add(() => { void renderSource(); });
     if (sourcePanel) {

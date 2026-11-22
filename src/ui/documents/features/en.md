@@ -83,7 +83,8 @@ The import page has two groups: “Official AI Platform Exports” and “Agent 
 
 | Source | Files to select |
 |---|---|
-| Claude, DeepSeek | Official conversation records in conversations.json; for DeepSeek, do not select user.json |
+| Claude | Official conversations.json |
+| DeepSeek | The complete ZIP as downloaded, or conversations.json from an older export |
 | Qwen | Official chat-export-*.json conversation export |
 | ChatGPT | The emailed export ZIP, or the inner Conversations ZIP from a privacy export; not the outer privacy bundle or Files ZIP |
 | Mistral, Grok | The complete official conversation ZIP |

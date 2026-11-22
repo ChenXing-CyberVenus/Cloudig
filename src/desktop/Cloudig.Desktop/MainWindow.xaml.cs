@@ -25,6 +25,7 @@ public partial class MainWindow : Window
     private ReleaseUpdateClient _releaseUpdates = new();
     private readonly CloudigDeviceSettingsStore _deviceSettings;
     private readonly BookmarkCapabilityHost _bookmarks;
+    private BookmarkBrowserState _bookmarkAuditState = BookmarkBrowserState.Open;
     private readonly ConcurrentDictionary<string, PortableMovePreview> _libraryMovePlans = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, CancellationTokenSource> _webRequests = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, byte> _pickerTokens = new(StringComparer.Ordinal);
@@ -67,9 +68,10 @@ public partial class MainWindow : Window
         InitializeComponent();
         _layout = layout;
         _prepareStorage = prepareStorage;
-        _deviceSettings = new CloudigDeviceSettingsStore(layout.BookmarkSettingsFile);
         var bookmarkAuditRoot = layout.VisualAudit is { } bookmarkAudit && bookmarkAudit.Query.Contains("interaction=bookmark-install", StringComparison.Ordinal)
             ? PrepareBookmarkAuditProfile(Path.Combine(layout.DeviceRoot, Path.GetFileNameWithoutExtension(bookmarkAudit.OutputFile))) : null;
+        _deviceSettings = new CloudigDeviceSettingsStore(bookmarkAuditRoot is null ? layout.BookmarkSettingsFile
+            : Path.Combine(Path.GetDirectoryName(bookmarkAuditRoot)!, "bookmark-settings.json"));
         _bookmarks = new BookmarkCapabilityHost(
             layout.BookmarkManifest,
             layout.BookmarkArtifactRoot,
@@ -77,7 +79,7 @@ public partial class MainWindow : Window
             _deviceSettings,
             userDataDirectory: bookmarkAuditRoot,
             changelogPath: layout.BookmarkChangelog,
-            browserState: bookmarkAuditRoot is null ? null : () => BookmarkBrowserState.Closed);
+            browserState: bookmarkAuditRoot is null ? null : () => _bookmarkAuditState);
         PlaceWindow();
         SourceInitialized += AttachWindowBounds;
         Loaded += OnLoaded;
@@ -333,6 +335,7 @@ public partial class MainWindow : Window
                 else if (audit.Query.Contains("interaction=branch-only", StringComparison.Ordinal)) await VerifyReaderBranchRoundtripAsync(audit);
                 else await VerifyReaderResourceScrollAsync(audit);
                 if (audit.Query.Contains("gemini-review=1", StringComparison.Ordinal)) await VerifyGeminiReviewAsync(audit);
+                if (audit.Query.Contains("native-diagrams=1", StringComparison.Ordinal)) await VerifyNativeDiagramsAsync(audit);
                 if (audit.Query.Contains("reading-fixes=1", StringComparison.Ordinal)) await VerifyReadingFixesAsync(audit);
                 if (audit.Query.Contains("reader-seven=1", StringComparison.Ordinal)) await VerifyReaderFinalReviewAsync(audit);
                 if (audit.Query.Contains("intelligent-ui=1", StringComparison.Ordinal)) await VerifyIntelligentUiAsync(audit);
@@ -656,9 +659,9 @@ public partial class MainWindow : Window
         if (audit.Query.Contains("json-guide=true", StringComparison.Ordinal)) { await VerifyPlatformImportGuideAsync(audit); return; }
         if (audit.Query.Contains("source-picker=true", StringComparison.Ordinal))
         {
-            foreach (var sourcePlatform in new[] { "chatgpt", "claude" })
+            foreach (var sourcePlatform in new[] { "chatgpt", "deepseek", "claude" })
             {
-                var title = sourcePlatform == "chatgpt" ? "选择完整官方 ZIP，无需解压 / Select official ZIP exports" : "选择平台 JSON / Import Platform JSON";
+                var title = sourcePlatform == "chatgpt" ? "选择完整官方 ZIP，无需解压 / Select official ZIP exports" : sourcePlatform == "deepseek" ? "选择 DeepSeek ZIP 或旧版 JSON / Select a DeepSeek ZIP or legacy JSON" : "选择平台 JSON / Import Platform JSON";
                 var owner = new System.Windows.Interop.WindowInteropHelper(this).Handle;
                 var shown = NativeSourcePickerAudit.ObserveAndCancelAsync(owner, title);
                 await Task.WhenAll(Click($"[data-json-platform=\"{sourcePlatform}\"]"), shown);
@@ -1851,6 +1854,26 @@ public partial class MainWindow : Window
     private async Task VerifyBookmarkInstallAsync(VisualAuditOptions audit)
     {
         var results = new List<JsonElement>();
+        async Task WaitFor(string condition)
+        {
+            for (int i=0;i<150;i++) {
+                if(await WebView.CoreWebView2.ExecuteScriptAsync(condition)=="true")return;
+                await Task.Delay(75);
+            }
+            throw new InvalidOperationException("Bookmark UI did not reach "+condition);
+        }
+        async Task Click(string selector)
+        {
+            var raw=await WebView.CoreWebView2.ExecuteScriptAsync($$"""
+                (()=>{const el=document.querySelector({{JsonSerializer.Serialize(selector)}});if(!el||el.disabled)return null;
+                  el.scrollIntoView({block:'nearest'});const r=el.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;
+                  return el.contains(document.elementFromPoint(x,y))?{x,y}:null;})()
+                """);
+            using var point=JsonDocument.Parse(raw);
+            if(point.RootElement.ValueKind!=JsonValueKind.Object)throw new InvalidOperationException("Bookmark control is covered: "+selector);
+            foreach(var type in new[]{"mousePressed","mouseReleased"})
+                await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent",JsonSerializer.Serialize(new{type,x=point.RootElement.GetProperty("x").GetDouble(),y=point.RootElement.GetProperty("y").GetDouble(),button="left",clickCount=1}));
+        }
         if (audit.Width <= 1320)
         {
             var raw = await WebView.CoreWebView2.ExecuteScriptAsync("(()=>{const r=document.querySelector('[data-archiver-bookmark-expand]').getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2};})()");
@@ -1859,8 +1882,23 @@ public partial class MainWindow : Window
                 await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent", JsonSerializer.Serialize(new { type, x = toggle.RootElement.GetProperty("x").GetDouble(), y = toggle.RootElement.GetProperty("y").GetDouble(), button = "left", clickCount = 1 }));
             await Task.Delay(250);
         }
+        await WaitFor("!document.querySelector('[data-bookmark-install-all]').disabled && document.querySelector('[data-bookmark-pin-tip]').hidden");
+        await Click("[data-bookmark-target-settings]");
+        await WaitFor("document.querySelector('.archiver-bookmark-method input[value=closed]').checked");
+        await Click(".archiver-bookmark-method input[value=auto] + span");
+        await Click("[data-bookmark-target-save]");
+        await WaitFor("!document.querySelector('[data-bookmark-pin-tip]').hidden && !document.querySelector('.archiver-page').dataset.bookmarkBusy");
+        await WaitFor("!document.querySelector('.cloudig-notice-layer')");
+        await Click("[data-bookmark-target-settings]");
+        await WaitFor("document.querySelector('.archiver-bookmark-method input[value=auto]').checked");
+        await Click(".archiver-bookmark-method input[value=closed] + span");
+        await Click("[data-bookmark-target-save]");
+        await WaitFor("document.querySelector('[data-bookmark-target-popover]').hidden && !document.querySelector('.archiver-page').dataset.bookmarkBusy");
+        if ((await _deviceSettings.LoadAsync()).AllowLiveInstall)
+            throw new InvalidOperationException("Bookmark install method was not persisted before the retry audit");
         foreach (var selector in new[] { "[data-bookmark-platform='chatgpt'][data-bookmark-operation='install']", "[data-bookmark-install-all]" })
         {
+            _bookmarkAuditState=BookmarkBrowserState.Open;
             var position = await WebView.CoreWebView2.ExecuteScriptAsync($$"""
                 (()=>{ document.querySelectorAll('.cloudig-notice-layer').forEach(n=>n.remove());
                   const b=document.querySelector({{JsonSerializer.Serialize(selector)}}); if(!b||b.disabled) return {hit:false, reason:'Installation button unavailable',buttons:[...document.querySelectorAll('.archiver-bookmark-install')].map(b=>({platform:b.dataset.bookmarkPlatform,operation:b.dataset.bookmarkOperation,disabled:b.disabled})),error:document.querySelector('.archiver-bookmark-status')?.textContent};
@@ -1874,6 +1912,22 @@ public partial class MainWindow : Window
             var y = point.RootElement.GetProperty("y").GetDouble();
             foreach (var type in new[] { "mousePressed", "mouseReleased" })
                 await WebView.CoreWebView2.CallDevToolsProtocolMethodAsync("Input.dispatchMouseEvent", JsonSerializer.Serialize(new { type, x, y, button = "left", clickCount = 1 }));
+            const string waiting="dialog.bookmark-retry-dialog[open]";
+            await WaitFor($"!!document.querySelector('{waiting} footer button:last-child')");
+            if (results.Count==0)
+            {
+                await Click(waiting+" footer button:last-child");
+                await WaitFor("['Chrome 仍在运行','Chrome is still running'].includes(document.querySelector('.bookmark-retry-dialog h2')?.textContent)");
+                await WaitFor("[...document.querySelectorAll('.bookmark-retry-dialog footer button')].every(b=>{const r=document.createRange();r.selectNodeContents(b);return r.getClientRects().length===1 && r.getBoundingClientRect().width+16<=b.clientWidth;})");
+                await using(var screenshot=File.Create(Path.ChangeExtension(audit.OutputFile,".wait-chrome.png")))
+                    await WebView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png,screenshot);
+                await Click(waiting+" footer button:first-child");
+                await WaitFor("!document.querySelector('dialog[open]') && !document.querySelector('.archiver-page').dataset.bookmarkBusy");
+                await Click(selector);
+                await WaitFor($"!!document.querySelector('{waiting}')");
+            }
+            _bookmarkAuditState=BookmarkBrowserState.Closed;
+            await Click(waiting+" footer button:last-child");
             JsonElement outcome = default;
             for (var attempt = 0; attempt < 100; attempt++)
             {
@@ -1908,6 +1962,7 @@ public partial class MainWindow : Window
                 || choices.RootElement.GetProperty("scroll").GetBoolean())
                 throw new InvalidOperationException($"Bookmark target chooser lost later folders: {targets}");
         TraceVisualAudit("bookmark-complete-target-list-passed", targets);
+        await WaitFor("document.querySelector('.archiver-bookmark-method input[value=closed]').checked");
         await using (var preview = File.Create(Path.ChangeExtension(audit.OutputFile, ".bookmark-targets.png")))
             await WebView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, preview);
         foreach (var type in new[] { "keyDown", "keyUp" })
@@ -3180,14 +3235,22 @@ public partial class MainWindow : Window
             }
             else if (request.Command == "shell.bookmarks.target.save")
             {
-                ExactProperties(payload, "folder_name", "parent", "place_first", "profile", "store");
-                result = BookmarkJson(await _bookmarks.SaveTargetAsync(
-                    RequiredString(payload, "profile"),
-                    RequiredString(payload, "store"),
-                    RequiredString(payload, "parent"),
-                    RequiredString(payload, "folder_name"),
-                    RequiredBoolean(payload, "place_first"),
-                    cancellation.Token));
+                if (payload.TryGetProperty("store", out _))
+                {
+                    bool hasMethod = payload.TryGetProperty("require_chrome_closed", out _);
+                    if (hasMethod) ExactProperties(payload, "folder_name", "parent", "place_first", "profile", "require_chrome_closed", "store");
+                    else ExactProperties(payload, "folder_name", "parent", "place_first", "profile", "store");
+                    result = BookmarkJson(await _bookmarks.SaveTargetAsync(
+                        RequiredString(payload, "profile"), RequiredString(payload, "store"), RequiredString(payload, "parent"),
+                        RequiredString(payload, "folder_name"), RequiredBoolean(payload, "place_first"), cancellation.Token,
+                        hasMethod ? RequiredBoolean(payload, "require_chrome_closed") : null));
+                }
+                else
+                {
+                    ExactProperties(payload, "profile", "require_chrome_closed");
+                    result = BookmarkJson(await _bookmarks.SaveInstallMethodAsync(
+                        RequiredString(payload, "profile"), RequiredBoolean(payload, "require_chrome_closed"), cancellation.Token));
+                }
             }
             else if (request.Command == "shell.bookmarks.copy")
             {
@@ -3201,11 +3264,13 @@ public partial class MainWindow : Window
             }
             else if (request.Command is "shell.bookmarks.install" or "shell.bookmarks.remove")
             {
-                ExactProperties(payload, "platforms", "profile");
+                var store = payload.TryGetProperty("store", out _) ? RequiredString(payload, "store") : null;
+                if (store is null) ExactProperties(payload, "platforms", "profile");
+                else ExactProperties(payload, "platforms", "profile", "store");
                 var platforms = RequiredStringArray(payload, "platforms");
                 var mutation = request.Command.EndsWith("install", StringComparison.Ordinal)
-                    ? await _bookmarks.InstallAsync(RequiredString(payload, "profile"), platforms, cancellation.Token)
-                    : await _bookmarks.RemoveAsync(RequiredString(payload, "profile"), platforms, cancellation.Token);
+                    ? await _bookmarks.InstallAsync(RequiredString(payload, "profile"), platforms, cancellation.Token, store)
+                    : await _bookmarks.RemoveAsync(RequiredString(payload, "profile"), platforms, cancellation.Token, store);
                 result = BookmarkJson(mutation);
             }
             else
@@ -3290,6 +3355,7 @@ public partial class MainWindow : Window
         if (kind != "platform_json" && properties.Length != 1) throw new InvalidDataException("Unexpected source platform selection.");
         if (kind == "platform_json" && platform is not ("claude" or "deepseek" or "grok" or "qwen" or "mistral" or "chatgpt" or "cline" or "sillytavern" or "kimi-code" or "claude-code" or "codex")) throw new InvalidDataException("Unsupported platform file source.");
         var zippedExport = kind == "platform_json" && platform is "grok" or "mistral" or "chatgpt";
+        var deepSeekExport = kind == "platform_json" && platform == "deepseek";
         var agentJsonl = kind == "platform_json" && platform is "sillytavern" or "kimi-code" or "claude-code" or "codex";
         var dialog = new OpenFileDialog
         {
@@ -3297,8 +3363,8 @@ public partial class MainWindow : Window
             CheckPathExists = true,
             Multiselect = true,
             RestoreDirectory = true,
-            Title = zippedExport ? "选择完整官方 ZIP，无需解压 / Select official ZIP exports" : agentJsonl ? "选择 Agent Tool JSONL / Import Agent Tool JSONL" : kind is "claude_json" or "platform_json" ? "选择平台 JSON / Import Platform JSON" : "选择采云书签 HTML",
-            Filter = zippedExport ? "Official export ZIP (*.zip)|*.zip" : agentJsonl ? "Agent Tool JSONL (*.jsonl;*.jsonl.zst)|*.jsonl;*.jsonl.zst" : kind is "claude_json" or "platform_json" ? "Platform JSON (*.json)|*.json" : "采云书签 HTML (*.html)|*.html"
+            Title = deepSeekExport ? "选择 DeepSeek ZIP 或旧版 JSON / Select a DeepSeek ZIP or legacy JSON" : zippedExport ? "选择完整官方 ZIP，无需解压 / Select official ZIP exports" : agentJsonl ? "选择 Agent Tool JSONL / Import Agent Tool JSONL" : kind is "claude_json" or "platform_json" ? "选择平台 JSON / Import Platform JSON" : "选择采云书签 HTML",
+            Filter = deepSeekExport ? "DeepSeek ZIP / JSON (*.zip;*.json)|*.zip;*.json" : zippedExport ? "Official export ZIP (*.zip)|*.zip" : agentJsonl ? "Agent Tool JSONL (*.jsonl;*.jsonl.zst)|*.jsonl;*.jsonl.zst" : kind is "claude_json" or "platform_json" ? "Platform JSON (*.json)|*.json" : "采云书签 HTML (*.html)|*.html"
         };
         if (kind is not ("html" or "claude_json" or "platform_json")) throw new InvalidDataException("Source picker kind is invalid.");
         TraceVisualAudit("source-picker-request", JsonSerializer.Serialize(new { kind, platform, title = dialog.Title, filter = dialog.Filter }));
@@ -3325,7 +3391,7 @@ public partial class MainWindow : Window
                     }))));
                 _pickerTokens.TryAdd(picker, 0);
                 staged.Add(result);
-                if (kind == "platform_json" && platform is "grok" or "mistral" or "chatgpt")
+                if (zippedExport || deepSeekExport)
                 {
                     var companions = await _engine.SendAsync("source.assets.plan", JsonSerializer.SerializeToElement(new { picker }), cancellationToken);
                     if (companions.GetProperty("platform").GetString() != platform) throw new InvalidDataException("文件与所选平台不符，请从对应平台入口导入。 / The selected file belongs to a different platform.");

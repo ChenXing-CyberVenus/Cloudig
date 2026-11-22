@@ -14,6 +14,7 @@ import { readRecordCatalog } from "../../../src/adapters/library-data/record-cat
 import { readStoredRecord, withRecordSnapshot } from "../../../src/adapters/storage/record-store.mts";
 import { frontName, SourceFronts, userModelFront } from "../../../src/core/records/front.mts";
 import { validateRecord, encodeRecord } from "../../../src/core/records/index.mts";
+import { CONVERSATION_SCHEMA, LIBRARY_SCHEMA } from "../../../src/core/records/schema-registry.mts";
 import { prepareRecordConversationView } from "../../../src/app/reader/view-model.mts";
 import { buildRecordMarkdown } from "../../../src/app/export/markdown.mts";
 import type { JsonObject } from "../../../src/core/contracts/types.mts";
@@ -89,9 +90,9 @@ test("new-format parse updates the Library declaration atomically while ordinary
   const messages = input.extracted.parsed.draft["messages"] as JsonObject[];
   (messages[0]!["content"] as JsonObject[]).push({ type: "interactive", display: "box", source: "claude.ai_quiz_display_v0", format: "structured", data: { input: { title: "Quiz", questions: [] } } });
   const saved = await saveExtractedRecord(root, input);
-  assert.equal(saved.conversation["schema"], "cloudig/conversation/1.0.2");
+  assert.equal(saved.conversation["schema"], CONVERSATION_SCHEMA);
   const current = JSON.parse(await readFile(path.join(root, "CloudigLibrary.json"), "utf8"));
-  assert.equal(current.schema, "cloudig/library/1.0.2"); assert.equal(current.schemas.conversation, "1.0.2");
+  assert.equal(current.schema, LIBRARY_SCHEMA); assert.equal(current.schemas.conversation, CONVERSATION_SCHEMA.split('/').at(-1));
   assert.deepEqual(current.settings, old.settings);
   const read = await readConversationRecord(root, String(saved.conversation["conversation_id"]), builtins);
   const page = prepareRecordConversationView(read).page(request);

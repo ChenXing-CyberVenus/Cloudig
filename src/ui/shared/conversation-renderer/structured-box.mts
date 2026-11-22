@@ -210,6 +210,16 @@ export function renderStructuredBox(ctx: BoxContext, block: JsonObject): HTMLEle
   const data = obj(block["data"]), input = obj(data["input"]), imageItems = list(data["images"]), images = imageItems.map(i => str(i["path"]));
   let root: HTMLElement;
   switch (block["source"]) {
+    case "chatgpt.com_site": {
+      root = el(ctx, "section", "cloudig-box cloudig-site-card");
+      const title = str(block["title"]);
+      root.append(heading(ctx, title));
+      const preview = list(block["files"]).find(f => f["path"] === "preview");
+      if (preview) root.append(ctx.image("preview", title));
+      const url = str(data["url"]);
+      if (url) root.append(link(ctx, tr(ctx, "打开原站", "Open site"), url));
+      break;
+    }
     case "gemini.google.com_scheduled_task": {
       root = el(ctx, "section", "cloudig-box cloudig-box-task");
       renderTaskList(root, data, { language: ctx.language, richText: source => ctx.richText?.(source) ?? p(ctx, source) });

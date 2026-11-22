@@ -48,8 +48,9 @@ public sealed record BookmarkShellSummary(
     string ChangelogError,
     BookmarkTargetView? Target,
     IReadOnlyList<BookmarkStoreView> Stores,
-    IReadOnlyList<BookmarkPlatformView> Platforms);
-public sealed record BookmarkShellMutation(int Added, int Updated, int Removed, BookmarkShellSummary Summary);
+    IReadOnlyList<BookmarkPlatformView> Platforms,
+    bool RequireChromeClosed = true);
+public sealed record BookmarkShellMutation(int Added, int Updated, int Removed, BookmarkShellSummary Summary,bool PlacementPending=false);
 
 public sealed class BookmarkCapabilityHost
 {
@@ -114,20 +115,36 @@ public sealed class BookmarkCapabilityHost
         finally { _gate.Release(); }
     }
 
+    public async Task<BookmarkShellSummary> SaveInstallMethodAsync(string profile, bool requireChromeClosed, CancellationToken cancellationToken = default)
+    {
+        var normalizedProfile = NormalizeProfile(profile);
+        await _gate.WaitAsync(cancellationToken);
+        try
+        {
+            var current = await LoadSettingsAsync(cancellationToken);
+            var allowLiveInstall = !requireChromeClosed;
+            if (current.AllowLiveInstall != allowLiveInstall)
+                await _settings.SaveAsync(current with { AllowLiveInstall = allowLiveInstall }, cancellationToken);
+            return await QueryCoreAsync(normalizedProfile, cancellationToken);
+        }
+        finally { _gate.Release(); }
+    }
+
     public async Task<BookmarkShellSummary> SaveTargetAsync(
         string profile,
         string storeCapability,
         string parentCapability,
         string folderName,
         bool placeFirst,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        bool? requireChromeClosed = null)
     {
         await _gate.WaitAsync(cancellationToken);
         try
         {
+            var current = await LoadSettingsAsync(cancellationToken);
             var storePath = Resolve(_stores, storeCapability, "CLOUDIG_BOOKMARK_STORE_STALE", "Chrome profile selection is stale.");
             var parentGuid = Resolve(_folders, parentCapability, "CLOUDIG_BOOKMARK_FOLDER_STALE", "Chrome bookmark folder selection is stale.");
-            var current = await LoadSettingsAsync(cancellationToken);
             var sameStore = SamePath(current.StorePath, storePath);
             var next = current with
             {
@@ -137,7 +154,8 @@ public sealed class BookmarkCapabilityHost
                 PlaceFirst = placeFirst,
                 InstallationId = string.IsNullOrEmpty(current.InstallationId) ? _sessionInstallationId : current.InstallationId,
                 ManagedFolderGuid = sameStore ? current.ManagedFolderGuid : string.Empty,
-                PlacementPending = true
+                PlacementPending = true,
+                AllowLiveInstall = requireChromeClosed.HasValue ? !requireChromeClosed.Value : current.AllowLiveInstall
             };
             await _settings.SaveAsync(next, cancellationToken);
             return await QueryCoreAsync(NormalizeProfile(profile), cancellationToken);
@@ -160,39 +178,50 @@ public sealed class BookmarkCapabilityHost
     public Task<BookmarkShellMutation> InstallAsync(
         string profile,
         IEnumerable<string> platforms,
-        CancellationToken cancellationToken = default) =>
-        MutateAsync(BookmarkOperation.InstallOrRepair, profile, platforms, cancellationToken);
+        CancellationToken cancellationToken = default, string? storeCapability = null) =>
+        MutateAsync(BookmarkOperation.InstallOrRepair, profile, platforms, cancellationToken, storeCapability);
 
     public Task<BookmarkShellMutation> RemoveAsync(
         string profile,
         IEnumerable<string> platforms,
-        CancellationToken cancellationToken = default) =>
-        MutateAsync(BookmarkOperation.Remove, profile, platforms, cancellationToken);
+        CancellationToken cancellationToken = default, string? storeCapability = null) =>
+        MutateAsync(BookmarkOperation.Remove, profile, platforms, cancellationToken, storeCapability);
 
     private async Task<BookmarkShellMutation> MutateAsync(
         BookmarkOperation operation,
         string profile,
         IEnumerable<string> platforms,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken, string? storeCapability)
     {
         await _gate.WaitAsync(cancellationToken);
         try
         {
-            RequireClosedBrowser();
+            var browser = SafeBrowserState();
+            var settings = await LoadSettingsAsync(cancellationToken);
+            if (!settings.AllowLiveInstall) RequireClosedBrowser(browser);
+            if (browser != BookmarkBrowserState.Closed &&
+                (browser != BookmarkBrowserState.Open || operation != BookmarkOperation.InstallOrRepair)) RequireClosedBrowser(browser);
             var normalizedProfile = NormalizeProfile(profile);
             var selectedPlatforms = platforms.Select(NormalizePlatform).Distinct(StringComparer.Ordinal).ToArray();
             if (selectedPlatforms.Length is < 1 or > 12)
             {
                 throw new BookmarkCapabilityException("CLOUDIG_BOOKMARK_SELECTION_INVALID", "Select between one and twelve bookmark platforms.");
             }
-            var snapshot = await PrepareAsync(normalizedProfile, cancellationToken);
+            var storePath = storeCapability is null ? null : Resolve(_stores, storeCapability, "CLOUDIG_BOOKMARK_STORE_STALE", "Chrome profile selection is stale.");
+            var snapshot = await PrepareAsync(normalizedProfile, cancellationToken, storePath, settings);
             if (snapshot.SelectedStore is null || snapshot.Target is null)
             {
+                if (browser == BookmarkBrowserState.Closed && storePath != null &&
+                    ChromeProfileDiscovery.Discover(_userDataDirectory, includeEmpty: true).SelectMany(profile => profile.Stores)
+                        .Any(store => store.AwaitingFirstBookmark && ChromeProfileDiscovery.SameLogicalStore(store.Path, storePath)))
+                    throw new BookmarkCapabilityException("CLOUDIG_BOOKMARK_EMPTY_PROFILE", "The selected profile has no saved bookmark store yet.");
                 throw new BookmarkCapabilityException("CLOUDIG_CHROME_PROFILE_MISSING", "No writable Chrome bookmark profile is available.");
             }
             // Chrome must never receive an installation ID that only lives in
             // this process. Persist its target first so a later settings failure
             // or restart can recognize the already-written folder on retry.
+            if (browser == BookmarkBrowserState.Open && snapshot.SelectedStore.Kind != "local")
+                throw new BookmarkCapabilityException("CLOUDIG_CHROME_OPEN","Close Chrome to change account bookmarks.");
             var prepared = snapshot.Settings with
             {
                 StorePath = snapshot.SelectedStore.Path,
@@ -204,15 +233,24 @@ public sealed class BookmarkCapabilityHost
                 PlacementPending = snapshot.Target.PlacementPending
             };
             if (prepared != snapshot.Settings) await _settings.SaveAsync(prepared, cancellationToken);
-            var result = await _manager.ExecuteAsync(
-                [snapshot.SelectedStore.Path],
-                operation,
-                normalizedProfile,
-                selectedPlatforms,
-                snapshot.Target,
-                requireChromeClosed: false,
-                cancellationToken: cancellationToken);
-            var managedFolderGuid = result.Stores.Single().Mutation.ManagedFolderGuid;
+            int added, updated, removed;
+            string managedFolderGuid;
+            bool placementPending = false;
+            if (browser == BookmarkBrowserState.Open)
+            {
+                var live = await _manager.UpdateOpenChromeAsync(snapshot.Target, normalizedProfile, selectedPlatforms, cancellationToken);
+                (added,updated,managedFolderGuid,placementPending) = live;
+                removed = 0;
+            }
+            else
+            {
+                RequireClosedBrowser(SafeBrowserState());
+                var result = await _manager.ExecuteAsync([snapshot.SelectedStore.Path], operation, normalizedProfile, selectedPlatforms,
+                    snapshot.Target, requireChromeClosed: false, cancellationToken: cancellationToken,
+                    verifyWriteAllowed: () => RequireClosedBrowser(SafeBrowserState()));
+                (added,updated,removed) = (result.AddedCount,result.UpdatedCount,result.RemovedCount);
+                managedFolderGuid = result.Stores.Single().Mutation.ManagedFolderGuid;
+            }
             var saved = prepared with
             {
                 ManagedFolderGuid = managedFolderGuid,
@@ -227,11 +265,7 @@ public sealed class BookmarkCapabilityHost
                 throw new BookmarkCapabilityException("CLOUDIG_BOOKMARK_SETTINGS_SAVE_FAILED",
                     "Chrome bookmarks were updated, but Cloudig could not finish saving the installation settings. Retry the same operation to complete them.", error);
             }
-            return new BookmarkShellMutation(
-                result.AddedCount,
-                result.UpdatedCount,
-                result.RemovedCount,
-                await QueryCoreAsync(normalizedProfile, cancellationToken));
+            return new BookmarkShellMutation(added, updated, removed, await QueryCoreAsync(normalizedProfile,cancellationToken), placementPending);
         }
         catch (BookmarkCapabilityException) { throw; }
         catch (Exception error) { throw Wrap(error); }
@@ -313,16 +347,16 @@ public sealed class BookmarkCapabilityHost
                 snapshot.Summary.BookmarkChangelogError,
                 targetView,
                 storeViews,
-                platforms);
+                platforms, !snapshot.Settings.AllowLiveInstall);
         }
         catch (BookmarkCapabilityException) { throw; }
         catch (Exception error) { throw Wrap(error); }
     }
 
-    private async Task<Prepared> PrepareAsync(string profile, CancellationToken cancellationToken, string? preferredStorePath = null)
+    private async Task<Prepared> PrepareAsync(string profile, CancellationToken cancellationToken, string? preferredStorePath = null, BookmarkDeviceSettings? settings = null)
     {
-        var settings = await LoadSettingsAsync(cancellationToken);
-        var discoveredProfiles = ChromeProfileDiscovery.Discover(_userDataDirectory);
+        settings ??= await LoadSettingsAsync(cancellationToken);
+        var discoveredProfiles = ChromeProfileDiscovery.Discover(_userDataDirectory,includeEmpty:SafeBrowserState()==BookmarkBrowserState.Open);
         var stores = discoveredProfiles
             .OrderByDescending(item => item.IsLastUsed)
             .ThenBy(item => item.DirectoryName.Equals("Default", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
@@ -364,9 +398,8 @@ public sealed class BookmarkCapabilityHost
         }
     }
 
-    private void RequireClosedBrowser()
+    private static void RequireClosedBrowser(BookmarkBrowserState state)
     {
-        var state = SafeBrowserState();
         if (state == BookmarkBrowserState.Open)
         {
             throw new BookmarkCapabilityException("CLOUDIG_CHROME_OPEN", "Close every Google Chrome window before changing bookmarks.");
@@ -391,6 +424,7 @@ public sealed class BookmarkCapabilityHost
 
     private static BookmarkCapabilityException Wrap(Exception error) => error switch
     {
+        BookmarkRelocationRequiresClosedChromeException => new("CLOUDIG_CHROME_OPEN", FirstLine(error), error),
         AggregateException => new("CLOUDIG_BOOKMARK_RECOVERY_REQUIRED", FirstLine(error), error),
         UnauthorizedAccessException => new("CLOUDIG_BOOKMARK_ACCESS_DENIED", "Chrome bookmark files are not writable.", error),
         FileNotFoundException => new("CLOUDIG_BOOKMARK_PACKAGE_MISSING", "Cloudig bookmark package or Chrome bookmark file is missing.", error),

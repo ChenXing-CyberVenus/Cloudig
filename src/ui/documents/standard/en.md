@@ -222,16 +222,16 @@ A fixed combination of the six kinds of format, declared in `CloudigLibrary.json
 | Declaration | Value |
 |---|---|
 | `cloudig_standard` | `1.0` |
-| `schemas.library` | `1.0.2` |
+| `schemas.library` | `1.0.3` |
 | `schemas.identity` | `1.0.0` |
 | `schemas.content_time` | `1.0.0` |
-| `schemas.conversation` | `1.0.2` |
+| `schemas.conversation` | `1.0.3` |
 | `schemas.mark` | `1.0.0` |
 
 Narrative has no version entry.
 
 - V1.x retains support for existing record formats; published field meanings are not silently rewritten. Structural changes receive a new format version, with the earlier rules retained.
-- Field changes require a new version of the affected format. This Box/Window addition uses `1.0.2`, while Cloudig Standard remains `1.0`; format versions do not automatically follow product or bookmarklet versions.
+- Field changes require a new version of the affected format. Box/Window was introduced in `1.0.2`; the themed-rendering addition uses `1.0.3`, while Cloudig Standard remains `1.0`; format versions do not automatically follow product or bookmarklet versions.
 - When the program encounters an unrecognized version, it refuses to open the file and asks the user to update. It does not ignore unknown fields.
 
 ### 2.3 Invariants
@@ -313,7 +313,7 @@ All fields are required.
 | Field | Value / default | Meaning |
 |---|---|---|
 | `cloudig_standard` | `1.0` | Overall version of the Cloudig Standard |
-| `schema` | Fixed: `cloudig/library/1.0.2` | Format; `1.0.0` / `1.0.1` remain readable |
+| `schema` | Fixed: `cloudig/library/1.0.3` | Format; `1.0.0` / `1.0.1` / `1.0.2` remain readable |
 | `schemas` | Five entries; see 2.2 | Version of each record format |
 | `edited_at` | UTC | Last write to this file |
 | `settings.language` | `zh-CN` / `en`; default `zh-CN` | Interface language. Does not translate content or custom names |
@@ -362,12 +362,12 @@ The complete file after initialization:
 ```json library
 {
   "cloudig_standard": "1.0",
-  "schema": "cloudig/library/1.0.2",
+  "schema": "cloudig/library/1.0.3",
   "schemas": {
-    "library": "1.0.2",
+    "library": "1.0.3",
     "identity": "1.0.0",
     "content_time": "1.0.0",
-    "conversation": "1.0.2",
+    "conversation": "1.0.3",
     "mark": "1.0.0"
   },
   "edited_at": "2026-09-16T12:00:00Z",
@@ -576,7 +576,7 @@ The source record. One HTML file, one single-conversation Agent file, or one con
 
 | Field | Condition | Type | Meaning |
 |---|---|---|---|
-| `schema` | Required | Fixed: `cloudig/conversation/1.0.2` | Format; `1.0.0` / `1.0.1` remain readable |
+| `schema` | Required | Fixed: `cloudig/conversation/1.0.3` | Format; `1.0.0` / `1.0.1` / `1.0.2` remain readable |
 | `conversation_id` | Required | UUID v7 | Identity of the Conversation |
 | `parser` | Required | Object | The Parser and Adapter that generated it; see 5.2 |
 | `lifecycle` | Required | Object | Three program-write timestamps; see 5.2 |
@@ -661,13 +661,19 @@ Every block has a `type`. It may have `speaker` and `recipient` references to Fr
 | `search` | `query`, `references`, `status`, `duration` | Search; `references` is an array of reference IDs |
 | `citations` | `references` required; `label` | List of references |
 | `tool` | `kind` required: `call` / `result` / `activity`; `call`, `title`, `status`, `success`, `duration`, `input`, `output`, `input_resource`, `output_resource` | Tool. `input` / `output` may contain arbitrary JSON |
-| `diagram` | `format` required; at least one of `source`, `rendered`, `html` | Diagram, such as `mermaid` |
+| `diagram` | `format` required; at least one of `source`, `rendered`, `html`; optional `rendered_themes` | Diagram, such as `mermaid` |
 | `box` / `window` | `source` and `format` required; remaining fields below | Direct content types, introduced in `1.0.2` |
 | `unknown` | `kind` required; at least one of `text`, `resource`, `html` | Unrecognized content; not an empty placeholder |
 
 Tool invocation: a `call` block is issued by the AI, with the tool as `recipient`; the `result` block has the tool as `speaker`. The two blocks are paired by the same `call` value.
 
 An image within HTML, such as a table or list, may use `<img data-cloudig-resource="resource-ID" alt="description">` to reference an image resource in this Conversation. Its bytes are stored once without splitting the surrounding structure into separate blocks. The reference must resolve to an image resource.
+
+#### Native diagram themes (1.0.3)
+
+`rendered` identifies the default image resource. Optional `rendered_themes` is a nonempty object with optional `light` and `dark` entries, each referencing an image resource in this Conversation; it requires `rendered`. Example: `"rendered": "r1", "rendered_themes": { "light": "r1", "dark": "r2" }`.
+
+Only theme images actually supplied by the source are recorded. This works across platforms and diagram formats, whether interactive or static. Dawn selects `light`; StarNight selects `dark`. A missing theme falls back to `rendered`, without inversion or redrawing. Each image is stored once; the alternate is not an additional body image. Markdown export includes the default image and links to the other theme images. Earlier single-image records retain their existing behavior.
 
 #### Box/Window
 
@@ -736,7 +742,7 @@ An AI saying "an error occurred" on the original platform is conversation conten
 
 - Title: Mark `conversation_title` → `title.filename` → `title.original` → Untitled.
 - Thoughts and tools are collapsed by default. A bare "thought for a few seconds" status with no body is not an expandable panel.
-- Values with special presentation: `reasoning*.format` equal to `markdown` uses Markdown; `html` uses sanitized rich text; other values use text. `image.purpose` equal to `attachment-thumbnail` uses a compact thumbnail; `search-result` links to the original URL. For `diagram.format` equal to `mermaid`, rendering is local, with `rendered` preferred over `html`, then `source`. The tool name `schedule`, together with `input.kind`, produces a task card. Other values are treated as ordinary text.
+- Values with special presentation: `reasoning*.format` equal to `markdown` uses Markdown; `html` uses sanitized rich text; other values use text. `image.purpose` equal to `attachment-thumbnail` uses a compact thumbnail; `search-result` links to the original URL. For `diagram.format` equal to `mermaid`, prefer the current `rendered_themes` image, then `rendered`, then `html`; render `source` locally only when no captured rendering exists. The tool name `schedule`, together with `input.kind`, produces a task card. Other values are treated as ordinary text.
 
 ### 5.10 Examples 〔Core〕
 
@@ -1736,11 +1742,11 @@ Source key = `JSON.stringify({path, format, platform, locator?})`. These files a
 | Product version | Program | V1.0 DawnGlow |
 
 - V1.x preserves compatible reading through versioned formats, without silently changing published field meanings. The `1.0.1` form `interactive + display` and the `1.0.2` types `box` / `window` follow their own rules; old files are not merely relabelled.
-- Field changes update the affected format version; adding a kind of record, such as Narrative, increments the overall standard version. This Box/Window addition uses Conversation / Library `1.0.2`; other component versions are unchanged.
+- Field changes update the affected format version; adding a kind of record, such as Narrative, increments the overall standard version. The themed-rendering addition uses Conversation / Library `1.0.3`; other component versions are unchanged.
 - `cloudig_standard`, `schema` and `schemas.*` are checked individually. An unrecognized version prevents opening and prompts the user to update; unknown fields are not ignored.
 - A Library created before the overall-version field existed is read as `1.0`; the field is written on the next settings save.
 - New-program compatibility with old files must be demonstrated by actual reads and regression tests.
-- Conversation / Library `1.0.0`, `1.0.1` and `1.0.2` are readable. Legacy `interactive + display` follows the frozen `1.0.1` contract without rewriting files on read; new containers use `box` / `window` directly. Unsupported newer formats produce an explicit update prompt and leave the original file intact.
+- Conversation / Library `1.0.0`, `1.0.1`, `1.0.2` and `1.0.3` are readable. Legacy `interactive + display` follows the frozen `1.0.1` contract without rewriting files on read; new containers use `box` / `window` directly. Unsupported newer formats produce an explicit update prompt and leave the original file intact.
 
 <a id="appendix"></a>
 
@@ -1749,7 +1755,7 @@ Source key = `JSON.stringify({path, format, platform, locator?})`. These files a
 <details>
 <summary>Machine-readable Schemas and field index</summary>
 
-Bundled at `docs/schemas/` are 17 JSON Schemas: eight current files in `records/` (five business records, shared structures and two companion formats), four Conversation / Library `1.0.0` and `1.0.1` compatibility files in `records/compat/`, and five program schemas in `program/`. Narrative has no file or Schema yet. `index.json` records each `$id` and SHA-256. The GPT Intelligent UI source-format contract is also included.
+Bundled at `docs/schemas/` are 19 JSON Schemas: eight current files in `records/` (five business records, shared structures and two companion formats), six Conversation / Library `1.0.0`, `1.0.1` and `1.0.2` compatibility files in `records/compat/`, and five program schemas in `program/`. Narrative has no file or Schema yet. `index.json` records each `$id` and SHA-256. The GPT Intelligent UI source-format contract is also included.
 
 | File | Contents |
 |---|---|
@@ -1758,7 +1764,7 @@ Bundled at `docs/schemas/` are 17 JSON Schemas: eight current files in `records/
 | `records/identity.schema.json`, `identity-settings.schema.json` | Identity and display bindings |
 | `records/conversation.schema.json` | Conversation |
 | `records/mark.schema.json` | Mark |
-| `records/compat/` | Frozen Conversation / Library `1.0.0` and `1.0.1` rules |
+| `records/compat/` | Frozen Conversation / Library `1.0.0`, `1.0.1` and `1.0.2` rules |
 | `records/content-time.schema.json`, `content-time-order.schema.json` | Time nodes and top-level order |
 | Semantic validation | `src/core/records/semantics.mts`; not bundled |
 | Constants | `src/core/contracts/machine/time-limits.json`, `resource-limits.json` |

@@ -14,6 +14,37 @@ import type { JsonObject } from '../../../src/core/contracts/types.mts';
 import { uuidV7 } from '../../../src/core/records/ids.mts';
 const base = path.resolve('tests/private/schema-rebuild'), timestamp = '2026-09-28T14:00:00Z';
 const sha = (b: Buffer) => createHash('sha256').update(b).digest('hex');
+test('DeepSeek v3 reads the declared sessions and binds attachments to their exact message and session',()=>temporary(async root=>{
+  const data=Buffer.from([137,80,78,71,13,10,26,10,0]);
+  const file=(name:string, value:unknown)=>({name,data:JSON.stringify(value)});
+  const session={id:'alpha',title:'Original title', current_message_id:2,messages:[
+    {id:10,parent_id:null,role:'USER',fragments:[{type:'FILE',files:[
+      {file_name:'same.png',export_path:'chat_sessions/alpha_files/1.png'},
+      {file_name:'same.png',export_path:'chat_sessions/beta_files/2.png'},
+      {file_name:'missing.pdf',export_path:null}]}]},
+    {id:3,parent_id:10,role:'ASSISTANT',fragments:[{type:'THINK',content:'thinking',elapsed_secs:2.25},{type:'RESPONSE',content:'same'}]},
+    {id:2,parent_id:10,role:'ASSISTANT',status:'TIMEOUT',fragments:[{type:'TEMPLATE_RESPONSE',content:'same'},{type:'CONTENT_RISK',content:'Platform notice'}]}]};
+  const entries=[file('manifest.json',{export_format_version:3}), file('chat_session_index.json',[{id:'beta'},{id:'alpha'}]),
+    file('chat_sessions/alpha.json',session),file('chat_sessions/beta.json',{id:'beta',messages:[]}),
+    {name:'chat_sessions/alpha_files/1.png',data},{name:'chat_sessions/beta_files/2.png',data}, file('user.json',{name:'Account data'})];
+  const relative='Inbox/renamed.zip',p=path.join(root,relative);
+  await writeFile(p,fixtureZip(entries));
+  const {index}=await indexRecordOfficialContainer(root,relative);
+  assert.equal(index.records.length,2);assert.equal(index.records[1]!['title'],'Original title');assert.equal(index.records[1]!['fork_points'],1);
+  const projected=await extractIndexedOfficialRecord(root,index,String(index.records[1]!['selector']));
+  const c=assembleConversationRecord({...projected,parserVersion:'1.1.58',timestamp});
+  const messages=c['messages'] as JsonObject,items=messages['items'] as JsonObject[],resources=c['resources'] as JsonObject[];
+  assert.deepEqual(items.map(m=>[m['id'],m['parent']]),[['10',undefined],['3','10'],['2','10']]);
+  assert.equal(messages['current'],'2');assert.equal(resources[0]!['sha256'],sha(data));
+  assert.deepEqual(resources.map(r=>r['availability']),['embedded','metadata_only','metadata_only']);
+  assert.equal((items[1]!['content'] as JsonObject[])[0]!['duration'],2.25);
+  const notice=(items[2]!['content'] as JsonObject[])[1]!;
+  assert.equal((items[2]!['content'] as JsonObject[])[2]!['text'],'TIMEOUT');
+  assert.equal((c['identity'] as JsonObject[]).find(f=>f['source_id']===notice['speaker'])?.['role'],'system');
+  assert.equal((await indexRecordOfficialContainer(root,relative)).reused,true);
+  await writeFile(p,fixtureZip(entries.filter(e=>e.name!=='chat_sessions/beta.json')));await assert.rejects(inspectOfficialZip(p),/index/);
+  await writeFile(p,fixtureZip([file('manifest.json',{export_format_version:4}),...entries.slice(1)]));await assert.rejects(inspectOfficialZip(p),/version/);
+}));
 async function temporary(run: (root: string) => Promise<void>) {
   await mkdir(base,{recursive:true});const root=await mkdtemp(path.join(base,'official-zip-'));let passed=false;
   try { await createRecordLibrary(root,{timestamp,anchor:{date:'2026-09-28',offset:'Z'}});await run(root);passed=true; }

@@ -2953,20 +2953,20 @@
         "width": 1836,
         "height": 1052
       },
-      "ui_sha256": "610c70d3a1e55935b630b0a74118454c8dd049b056ecaa5ae76c0f129acebaa3",
-      "sha256": "04ad0b53d2c7f3bf32311b7033dd5d1a59e54f58e2673ada0b23de5f659ffc7b",
-      "executable_sha256": "b17805339315de4eaa56459acaebf47f12d5d108533e39e1232a71f64151947c",
+      "ui_sha256": "08125b7515ebba8f0c51bfcd408dc00e0aa208912389337b934916fcee372b70",
+      "sha256": "641d8de004eea90bd117fcb398fa6aa5f7c79d925a04575e08f979df16488576",
+      "executable_sha256": "efd55c012619c9e70b9ac43fa5a0e5d7e5668262012f58d477963e2264b38f5f",
       "file": "zh-CN/dawn/04-platform-official.webp",
-      "native_crop_sha256": "92fe706b99b9c3bb3206b1cbf259076018e230bc6c4ddd2a91f2b4a230ffc7ae",
-      "capture": "artifacts/v1-visual-audit/v1010-platform-crops-zh-dawn-20261103/guide/04-platform-official.json",
-      "source_frame": "artifacts/v1-visual-audit/v1010-platform-crops-zh-dawn-20261103/guide/04-platform-official.png",
+      "native_crop_sha256": "f80f7cc791ca5380d4a32d9bf4382c76e3e92000ff433664c145d3736deff6f6",
+      "capture": "artifacts/v1-visual-audit/deepseek-doc-zh-CN-dawn-20261118/guide/04-platform-official.json",
+      "source_frame": "artifacts/v1-visual-audit/deepseek-doc-zh-CN-dawn-20261118/guide/04-platform-official.png",
       "compression": {
         "format": "webp",
         "lossless": true,
         "exact_transparent_rgb": true,
-        "rgba_sha256": "8691c52c3cb0fa4a619ce39264b86e117092c876d9402d7298e6554729519ec0",
-        "png_bytes": 443777,
-        "webp_bytes": 165604,
+        "rgba_sha256": "7b5f2d7a0ae34813de3706b8f44a860075979ef705476c38c77caf62b13d9dd7",
+        "png_bytes": 454024,
+        "webp_bytes": 249484,
         "dimensions_unchanged": true
       }
     },
@@ -3063,20 +3063,20 @@
         "width": 1836,
         "height": 1052
       },
-      "ui_sha256": "610c70d3a1e55935b630b0a74118454c8dd049b056ecaa5ae76c0f129acebaa3",
-      "sha256": "05eb896b1fd36dbad15063e41a45370f4fd1ecdd5cda89051da7585a5da12678",
-      "executable_sha256": "b17805339315de4eaa56459acaebf47f12d5d108533e39e1232a71f64151947c",
+      "ui_sha256": "08125b7515ebba8f0c51bfcd408dc00e0aa208912389337b934916fcee372b70",
+      "sha256": "37bf23592ce2ffed15fd24721f8cd11fda1cfb440c869844f41120a453ab5f46",
+      "executable_sha256": "efd55c012619c9e70b9ac43fa5a0e5d7e5668262012f58d477963e2264b38f5f",
       "file": "zh-CN/star-night/04-platform-official.webp",
-      "native_crop_sha256": "f9be3fd6de2278db1c2fcae9360e15f362c724c2a7f6a1a9bf164e1a3e3645a0",
-      "capture": "artifacts/v1-visual-audit/v1010-platform-crops-zh-night-20261103/guide/04-platform-official.json",
-      "source_frame": "artifacts/v1-visual-audit/v1010-platform-crops-zh-night-20261103/guide/04-platform-official.png",
+      "native_crop_sha256": "48a09cd04ebfa74f400955bdfa3dc51ae4b56f0efea766ebae667f4ad0872b55",
+      "capture": "artifacts/v1-visual-audit/deepseek-doc-zh-CN-star-night-20261118/guide/04-platform-official.json",
+      "source_frame": "artifacts/v1-visual-audit/deepseek-doc-zh-CN-star-night-20261118/guide/04-platform-official.png",
       "compression": {
         "format": "webp",
         "lossless": true,
         "exact_transparent_rgb": true,
-        "rgba_sha256": "d5e9e8ddd053719c7ce3f171231512721d90a03ae0ac76380fe828a7acd7edd2",
-        "png_bytes": 406328,
-        "webp_bytes": 129882,
+        "rgba_sha256": "5df0befa10956cf4cfe6107e066770c424a5c8804fe96167e3a5a7c61422708a",
+        "png_bytes": 414777,
+        "webp_bytes": 227040,
         "dimensions_unchanged": true
       }
     },
@@ -3173,20 +3173,20 @@
         "width": 1836,
         "height": 1117
       },
-      "ui_sha256": "610c70d3a1e55935b630b0a74118454c8dd049b056ecaa5ae76c0f129acebaa3",
-      "sha256": "2e107480e5b5d209b471df56d0cb7d37eabe1a756d1de2053b8c2c4f37adcda5",
-      "executable_sha256": "b17805339315de4eaa56459acaebf47f12d5d108533e39e1232a71f64151947c",
+      "ui_sha256": "08125b7515ebba8f0c51bfcd408dc00e0aa208912389337b934916fcee372b70",
+      "sha256": "646a3da718f95d3704b4e8526d823bcc5a84211ea7a4ea555ea2ec641080579e",
+      "executable_sha256": "efd55c012619c9e70b9ac43fa5a0e5d7e5668262012f58d477963e2264b38f5f",
       "file": "en/dawn/04-platform-official.webp",
-      "native_crop_sha256": "24266549611e369a267b779224b4d7f5c3a4e07a2259c8925f566d6621da3875",
-      "capture": "artifacts/v1-visual-audit/v1010-platform-crops-en-dawn-20261103/guide/04-platform-official.json",
-      "source_frame": "artifacts/v1-visual-audit/v1010-platform-crops-en-dawn-20261103/guide/04-platform-official.png",
+      "native_crop_sha256": "e0b83d01b7fd4f66e96da665bb8f1d011f2fc7aafd378bb19013b2edf44ce35d",
+      "capture": "artifacts/v1-visual-audit/deepseek-doc-en-dawn-20261118/guide/04-platform-official.json",
+      "source_frame": "artifacts/v1-visual-audit/deepseek-doc-en-dawn-20261118/guide/04-platform-official.png",
       "compression": {
         "format": "webp",
         "lossless": true,
         "exact_transparent_rgb": true,
-        "rgba_sha256": "051fffb7325469eb2e4a6e3a87593c10ce5a6c90bacec4cd056bd44d7c5aa605",
-        "png_bytes": 478103,
-        "webp_bytes": 173804,
+        "rgba_sha256": "298782b7ec3a7428381f01a811dd970fa5752ac5e2507c04aa8ad296ff9e6e2d",
+        "png_bytes": 483351,
+        "webp_bytes": 266712,
         "dimensions_unchanged": true
       }
     },
@@ -3283,20 +3283,20 @@
         "width": 1836,
         "height": 1117
       },
-      "ui_sha256": "610c70d3a1e55935b630b0a74118454c8dd049b056ecaa5ae76c0f129acebaa3",
-      "sha256": "288f0cae0848696ade1086025c5c00760e3de5b59e2a4015754aaa123dcc333c",
-      "executable_sha256": "b17805339315de4eaa56459acaebf47f12d5d108533e39e1232a71f64151947c",
+      "ui_sha256": "08125b7515ebba8f0c51bfcd408dc00e0aa208912389337b934916fcee372b70",
+      "sha256": "239519f30dd726a23b60e4c4521ec4506ac86ff0ce1b5413604090dd5ba5fa57",
+      "executable_sha256": "efd55c012619c9e70b9ac43fa5a0e5d7e5668262012f58d477963e2264b38f5f",
       "file": "en/star-night/04-platform-official.webp",
-      "native_crop_sha256": "16eed51be3b4baa67a8badac31855693f9864e6f16c6e6b01aaee7be3cd39390",
-      "capture": "artifacts/v1-visual-audit/v1010-platform-crops-en-night-20261103/guide/04-platform-official.json",
-      "source_frame": "artifacts/v1-visual-audit/v1010-platform-crops-en-night-20261103/guide/04-platform-official.png",
+      "native_crop_sha256": "eaf3c0f74ca7aa9201e186132635495dbee8fc9d6f9439570f7eeb1ebfd7df7a",
+      "capture": "artifacts/v1-visual-audit/deepseek-doc-en-star-night-20261118/guide/04-platform-official.json",
+      "source_frame": "artifacts/v1-visual-audit/deepseek-doc-en-star-night-20261118/guide/04-platform-official.png",
       "compression": {
         "format": "webp",
         "lossless": true,
         "exact_transparent_rgb": true,
-        "rgba_sha256": "cc4b5200c9be98cbf1d59531da962c750310f1ee5ffc17801b953e19df7eda37",
-        "png_bytes": 440890,
-        "webp_bytes": 136842,
+        "rgba_sha256": "5a8b805977c49c22fb3e8bef485e90c6666a87ef6bbc8d6ba62c2deba48eccf4",
+        "png_bytes": 447135,
+        "webp_bytes": 240668,
         "dimensions_unchanged": true
       }
     },
@@ -3425,6 +3425,17 @@
       ],
       "legacy_ui_sha256_retained": true,
       "screenshot_versions": "1.0.10 engineering capture for chooser; unchanged 1.0.9 conversation list, with exact per-file source hashes"
+    },
+    {
+      "date": "2026-11-18",
+      "purpose": "DeepSeek ZIP / legacy JSON import chooser",
+      "files": [
+        "zh-CN/dawn/04-platform-official.webp",
+        "zh-CN/star-night/04-platform-official.webp",
+        "en/dawn/04-platform-official.webp",
+        "en/star-night/04-platform-official.webp"
+      ],
+      "legacy_ui_sha256_retained": true
     }
   ]
 }

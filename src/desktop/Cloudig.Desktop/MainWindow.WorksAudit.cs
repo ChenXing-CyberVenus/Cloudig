@@ -150,6 +150,66 @@ public partial class MainWindow
                     if(page==63)throw new InvalidDataException("Work audit did not finish loading the source message range");
                 }
             }
+            if (audit.Query.Contains("file-info=1", StringComparison.Ordinal))
+            {
+                const string summary = ".cloudig-file-details > summary";
+                await Pointer(summary);
+                await Wait("!!document.querySelector('.cloudig-file-details[open] .cloudig-file-explanation')?.innerText");
+                await Capture("file-info");
+                var result = await Read("""
+                    ({hint:document.querySelector('.cloudig-file-details[open] p').innerText,
+                      info:document.querySelectorAll('.cloudig-file-details').length,
+                      save:document.querySelectorAll('.cloudig-attachment .cloudig-resource-save').length})
+                    """);
+                await Pointer(summary);
+                await Wait("!document.querySelector('.cloudig-file-details[open]')");
+                await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".deliveries.json"),result);
+                TraceVisualAudit("reader-saved-works-pointer-passed",result);
+                return;
+            }
+            if (audit.Query.Contains("work-deliveries=1", StringComparison.Ordinal))
+            {
+                var facts = await Read("""
+                    (() => {
+                      const files=[...document.querySelectorAll('.cloudig-attachment')];
+                      const visited=new Set();
+                      for(const card of files){
+                        const button=card.querySelector('.cloudig-resource-preview');
+                        const ext=card.querySelector('.cloudig-attachment-name')?.textContent.split('.').at(-1).toLowerCase();
+                        if(button && ext && !visited.has(ext)){visited.add(ext);button.dataset.deliveryPreview=ext;}
+                      }
+                      const agent=[...document.querySelectorAll('.cloudig-reasoning>summary')].find(s=>/completed|已完成/i.test(s.textContent));
+                      if(agent)agent.dataset.deliveryAgent="true";
+                      return {files:files.length,save:files.filter(c=>c.querySelector('.cloudig-resource-save')).length,
+                        preview:files.filter(c=>c.querySelector('.cloudig-resource-preview')).length,types:[...visited],
+                        sites:document.querySelectorAll('.cloudig-site-card').length,agent:!!agent};
+                    })()
+                    """);
+                using var receipt=JsonDocument.Parse(facts);var value=receipt.RootElement;
+                if(value.GetProperty("files").GetInt32()!=24 || value.GetProperty("preview").GetInt32()!=value.GetProperty("save").GetInt32()
+                    || value.GetProperty("sites").GetInt32()>1 || !value.GetProperty("agent").GetBoolean())throw new InvalidDataException("Work delivery view: "+facts);
+                var agentSelector="[data-delivery-agent]";
+                if(await Read("document.querySelector('[data-delivery-agent]').parentElement.open")=="true")await Pointer(agentSelector);
+                await Pointer(agentSelector);
+                await Wait("document.querySelector('[data-delivery-agent]').parentElement.open && document.querySelector('[data-delivery-agent]').parentElement.innerText.length > document.querySelector('[data-delivery-agent]').innerText.length+12");
+                await Capture("subagent");
+                if(value.GetProperty("sites").GetInt32()>0) {
+                    await Point(".cloudig-site-card a");await Wait("document.querySelector('.cloudig-site-card img')?.naturalWidth>0");
+                    await Capture("site-preview");
+                }
+                foreach(var ext in value.GetProperty("types").EnumerateArray()) {
+                    var kind=ext.GetString();await Pointer($"[data-delivery-preview='{kind}']");
+                    await Wait($"Boolean(document.querySelector('{modal}[data-state=ready] iframe'))");
+                    var f=await CurrentFrame();
+                    if(kind is "docx" or "pdf" or "pptx" or "xlsx")await Wait("document.querySelector('#cloudig-file-preview')?.dataset.previewReady==='true'",f);
+                    if(kind is "svg" or "png" or "jpeg" or "jpg" or "webp" or "gif")await Wait("document.querySelector('main img')?.naturalWidth>0",f);
+                    if(kind=="ipynb")await Wait("document.querySelectorAll('.notebook-cell').length>1 && !!document.querySelector('.notebook-cell img,.notebook-cell svg')",f);
+                    await Capture("preview-"+kind);await Close(f);
+                }
+                await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".deliveries.json"),facts);
+                TraceVisualAudit("reader-saved-works-pointer-passed","Work deliveries, agent, site and owned previews: "+facts);
+                return;
+            }
             if(audit.Query.Contains("reader-header-review=1",StringComparison.Ordinal)) {
                 var metrics=await Read("(()=>{const rect=n=>n?{x:n.getBoundingClientRect().x,y:n.getBoundingClientRect().y,w:n.getBoundingClientRect().width,h:n.getBoundingClientRect().height}:null;const heads=[...document.querySelectorAll('.cloudig-message-identity:has(.cloudig-avatar)')].slice(0,6).map(n=>({avatar:rect(n.querySelector('.cloudig-avatar')),name:rect(n.querySelector('.cloudig-message-name')),time:rect(n.querySelector('time')),timeText:n.querySelector('time')?.textContent,heading:rect(n)}));const elapsed=[...document.querySelectorAll('.cloudig-process-static')].filter(n=>n.textContent.includes('共用时')).map((n,i)=>{n.dataset.auditElapsed=String(i);const next=n.nextElementSibling;return {text:n.textContent,status:rect(n),next:rect(next),html:next?.outerHTML.slice(0,2000),gap:next?next.getBoundingClientRect().top-n.getBoundingClientRect().bottom:null};});const dots=[...document.querySelectorAll('.cloudig-process,.cloudig-message-content')].slice(0,12).map(n=>({class:n.className,display:getComputedStyle(n,'::before').display,fill:getComputedStyle(n,'::before').backgroundColor,ring:getComputedStyle(n,'::before').borderColor,left:getComputedStyle(n,'::before').left}));return{heads,elapsed,dots};})()");
                 await File.WriteAllTextAsync(Path.ChangeExtension(audit.OutputFile,".reader-header.json"),metrics);

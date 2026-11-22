@@ -36,17 +36,41 @@ internal static class Program
     {
         var sourceDirectory = Path.GetFullPath(AppContext.BaseDirectory);
         var package = BookmarkTestDirectoryLoader.Load(sourceDirectory);
-        var dataRoot = BookmarkTestStoragePolicy.ResolveDataRoot(sourceDirectory, arguments) ?? SelectDataDirectory();
+        var options=arguments.ToList();
+        var undo=options.Remove("--restore-last-live");
+        var userData=ChromeProfileDiscovery.DefaultUserDataDirectory;
+        int profileOption=options.IndexOf("--chrome-user-data-dir");
+        if(profileOption>=0){
+            if(profileOption+1>=options.Count||!Path.IsPathFullyQualified(options[profileOption+1]))throw new ArgumentException("Chrome 数据目录必须是完整的本机路径。");
+            userData=Path.GetFullPath(options[profileOption+1]);options.RemoveRange(profileOption,2);
+        }
+        var dataRoot = BookmarkTestStoragePolicy.ResolveDataRoot(sourceDirectory, options) ?? SelectDataDirectory();
         if (dataRoot is null) return;
         var backupRoot = Path.Combine(dataRoot, "Device", "BookmarkTestInstaller", "Backups");
-        if (ChromeProfileDiscovery.IsChromeRunning())
-        {
-            throw new InvalidOperationException("请先完整退出 Google Chrome（包括后台驻留进程），再重新运行安装器。安装器不会强制结束浏览器。");
-        }
-
-        var profiles = ChromeProfileDiscovery.Discover(ChromeProfileDiscovery.DefaultUserDataDirectory);
+        var profiles = ChromeProfileDiscovery.Discover(userData);
         var store = SelectLocalStore(profiles)
                     ?? throw new InvalidOperationException("没有选择 Chrome 本地书签库，未进行任何修改。");
+        using var guard=new Mutex(false,@"Local\Cloudig.BookmarkTestInstaller.v2");
+        bool acquired;
+        try{acquired=guard.WaitOne(0);}catch(AbandonedMutexException){acquired=true;}
+        if(!acquired)throw new IOException("已有测试书签安装正在进行，不重复启动。");
+        try{
+        if(ChromeProfileDiscovery.IsChromeRunning()||undo){
+            (int Count,string? Backup) live;
+            // Leave the native dialog's STA before binding UI Automation. All
+            // its COM objects live and finish together on one non-UI MTA worker.
+            try{live=Task.Run(()=>LiveUpdate.Execute(package,store,backupRoot,LiveChromeEditor.Executable(),undo)).GetAwaiter().GetResult();}
+            catch(Exception e){
+                // Keep a local recovery diagnosis even if the native message box is dismissed.
+                var device=Path.GetDirectoryName(backupRoot)!;Directory.CreateDirectory(device);
+                var log=Path.Combine(device,"last-live-error.txt");File.WriteAllText(log,DateTimeOffset.Now.ToString("O")+"\n"+e);
+                throw new IOException("在线更新未完成，本机诊断："+log,e);
+            }
+            NativeDialog.Show(live.Count==0?"书签已是目标版本，未写入、未新增备份。":
+                $"已在原位置{(undo?"还原":"更新")} {live.Count} 枚测试书签；Chrome 已保存并通过完整脚本回读。原有对话未刷新。\n\n回滚备份：{live.Backup}",
+                "安装当前书签测试",NativeDialog.Ok|NativeDialog.IconInformation);
+            return;
+        }
         var answer = NativeDialog.Show(
             $"即将把当前目录中的 {package.Bookmarks.Count} 个单行书签安装或更新到：\n\n"
             + $"Chrome 配置：{store.ProfileDisplayName}（{store.ProfileDirectory}）\n"
@@ -57,10 +81,16 @@ internal static class Program
         if (answer != NativeDialog.ResultOk) return;
         if (ChromeProfileDiscovery.IsChromeRunning())
         {
-            throw new InvalidOperationException("确认期间 Chrome 已重新启动。请完整退出 Chrome 后再试，未进行任何修改。");
+            throw new InvalidOperationException("确认期间 Chrome 已打开，本次没有直接写库。再点一次即可走在线更新。");
         }
 
-        var editor = new BookmarkTestFileEditor(package, FolderName);
+        Dictionary<string,string>? previousTitles=null;
+        if(Directory.Exists(Path.Combine(backupRoot,"Live"))){
+            // A live edit goes through Chrome and cannot update its private meta_info.
+            // Recover just proven automatic names; keep the existing first-install path.
+            try{previousTitles=LiveUpdate.LastDefaults(backupRoot,LiveBookmarkSnapshot.Read(store));}catch(InvalidDataException){}
+        }
+        var editor = new BookmarkTestFileEditor(package, FolderName,previousTitles);
         var transaction = new BookmarkTransaction(editor, backupRoot);
         var result = transaction.Execute([store], BookmarkOperation.InstallOrRepair, DateTime.UtcNow);
         var detail = result.ChangedStoreCount == 0
@@ -71,6 +101,7 @@ internal static class Program
             detail,
             "安装当前书签测试",
             NativeDialog.Ok | NativeDialog.IconInformation);
+        }finally{guard.ReleaseMutex();}
     }
 
     private static string? SelectDataDirectory()

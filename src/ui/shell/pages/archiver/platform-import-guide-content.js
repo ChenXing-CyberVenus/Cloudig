@@ -5,7 +5,8 @@ export const platformImportGuides = Object.freeze([
   { id: 'deepseek', name: 'DeepSeek', website: 'https://chat.deepseek.com/', methods: [{ steps: [
     step('点击设置→数据管理→导出所有历史会话', 'Click Settings → Data Management → Export all chat history', 1),
     step('点击下载按钮。', 'Click Download.', 2),
-    step('解压ZIP文件', 'Extract the ZIP file', 3),
+    step('在采云选择下载的完整 ZIP，或将它复制进 Inbox，无需解压。', 'In Cloudig, choose the downloaded ZIP or copy it into Inbox. Leave the archive intact.'),
+    step('仅旧版导出：解压 ZIP 文件。', 'Legacy exports only: extract the ZIP file.', 3),
     step('在采云导入解压后的conversations.json，或将此文件复制入Cloudig\\Inbox\\', 'Import the extracted conversations.json into Cloudig, or copy it into Cloudig\\Inbox\\', 4)
   ] }] },
   { id: 'qwen', name: 'Qwen', website: 'https://chat.qwen.ai/', methods: [{ steps: [

@@ -14,10 +14,11 @@ async function temporary(run: (root: string, script: string) => Promise<void>) {
   await mkdir(base, { recursive: true }); const root = await mkdtemp(path.join(base, "production-main-")), directory = path.join(root, "app/engine"); let passed = false;
   try {
     await mkdir(directory, { recursive: true });
-    const main = await build({ entryPoints: [path.resolve("src/engine/main.mts")], outfile: path.join(directory, "engine.mjs"), bundle: true, format: "esm", platform: "node", target: "node24", metafile: true });
+    const banner = {js: 'import { createRequire as cloudigCreateRequire } from "node:module"; const require = cloudigCreateRequire(import.meta.url);'};
+    const main = await build({ entryPoints: [path.resolve("src/engine/main.mts")], outfile: path.join(directory, "engine.mjs"), bundle: true, format: "esm", banner, platform: "node", target: "node24", metafile: true });
     const inputPaths = Object.keys(main.metafile!.inputs); for (const old of ["library", "archiver", "identity", "reader", "time", "system-log"]) assert(!inputPaths.includes(`src/engine/${old}-commands.mts`), `production main must not instantiate old ${old} commands`);
     for (const old of ["src/adapters/runtime/legacy-conversation-views.mts", "src/adapters/runtime/index.mts", "src/adapters/storage/recovery-point.mts", "src/adapters/reader/conversation-file.mts"]) assert(!inputPaths.includes(old), `record Engine must not bundle old AuthorityPair runtime: ${old}`);
-    await build({ entryPoints: [path.resolve("src/app/parser/record-worker-entry.mts")], outfile: path.join(directory, "record-parser-worker.mjs"), bundle: true, format: "esm", platform: "node", target: "node24" });
+    await build({ entryPoints: [path.resolve("src/app/parser/record-worker-entry.mts")], outfile: path.join(directory, "record-parser-worker.mjs"), bundle: true, format: "esm", banner, platform: "node", target: "node24" });
     await run(root, path.join(directory, "engine.mjs")); passed = true;
   } finally { if (passed) { assert.equal(path.dirname(await realpath(root)), await realpath(base)); assert(!(await lstat(root)).isSymbolicLink()); await rm(root, { recursive: true }); } else console.error(`Retained production Engine: ${root}`); }
 }

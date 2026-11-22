@@ -17,10 +17,12 @@ public sealed class BookmarkTestFileEditor : IBookmarkMutator
     private readonly BookmarkPackage _package;
     private readonly string _folderName;
     private readonly HashSet<string> _packageIds;
+    private readonly IReadOnlyDictionary<string,string>? _previousLiveTitles;
 
-    public BookmarkTestFileEditor(BookmarkPackage package, string folderName = "书签测试")
+    public BookmarkTestFileEditor(BookmarkPackage package, string folderName = "书签测试",IReadOnlyDictionary<string,string>? previousLiveTitles=null)
     {
         _package = package ?? throw new ArgumentNullException(nameof(package));
+        _previousLiveTitles=previousLiveTitles;
         _folderName = string.IsNullOrWhiteSpace(folderName)
             ? throw new ArgumentException("书签测试文件夹名称不能为空。", nameof(folderName))
             : folderName;
@@ -159,7 +161,7 @@ public sealed class BookmarkTestFileEditor : IBookmarkMutator
             var previousDefault = BookmarkJson.OptionalString(meta, DefaultTitleTag);
             var currentTitle = BookmarkJson.RequiredString(node, "name");
             var oldAutomaticTitle = $"{definition.Label} · {BookmarkJson.OptionalString(meta, VersionTag) ?? definition.Version}";
-            if (currentTitle == previousDefault
+            if (currentTitle == previousDefault || (_previousLiveTitles?.TryGetValue(BookmarkJson.RequiredString(node,"guid"),out var liveTitle)==true && currentTitle==liveTitle)
                 || (previousDefault is null && (currentTitle == oldAutomaticTitle || currentTitle == definition.TitleZh)))
             {
                 nodeChanged |= SetIfDifferent(node, "name", definition.TitleZh);

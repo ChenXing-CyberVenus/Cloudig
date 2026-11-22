@@ -93,7 +93,8 @@
 
 | 来源 | 选择的文件 |
 |---|---|
-| Claude、DeepSeek | 官方会话记录 conversations.json；DeepSeek 不选 user.json |
+| Claude | 官方会话记录 conversations.json |
+| DeepSeek | 新版选完整 ZIP，无需解压。旧版选 conversations.json |
 | Qwen | 官方会话导出 chat-export-*.json |
 | ChatGPT | 邮件导出的 ZIP，或隐私导出中的内层 Conversations ZIP；不选隐私总包或 Files 包 |
 | Mistral、Grok | 官方导出的完整会话 ZIP |

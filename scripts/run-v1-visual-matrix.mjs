@@ -667,6 +667,7 @@ function visualQuery(surface, theme, language) {
   if (minimumLineBoundaries) query.set("expected-line-boundaries", String(minimumLineBoundaries));
   if (claudeContext) query.set("claude-context", "1");
   if (geminiReview) query.set("gemini-review", "1");
+  if (argumentsList.includes("--native-diagrams")) query.set("native-diagrams", "1");
   if (readingFixes) query.set("reading-fixes", "1");
   if (argumentsList.includes("--reader-seven")) query.set("reader-seven", "1");
   if (intelligentUi) query.set("intelligent-ui", "1");
@@ -682,6 +683,8 @@ function visualQuery(surface, theme, language) {
   if (argumentsList.includes("--work-theme")) query.set("work-theme", "1");
   if (argumentsList.includes("--work-graphics")) query.set("work-graphics", "1");
   if (argumentsList.includes("--work-media")) query.set("work-media", "1");
+  if (argumentsList.includes("--work-deliveries")) query.set("work-deliveries", "1");
+  if (argumentsList.includes("--file-info")) query.set("file-info", "1");
   if (argumentsList.includes("--work-review")) query.set("work-review", "1");
   if (argumentsList.includes("--work-media-files")) query.set("work-media-files", "1");
   if (argumentsList.includes("--work-kimi")) query.set("work-kimi", "1");
@@ -819,6 +822,7 @@ for (const viewport of viewports) {
         if (surface.interaction === "update-check") assert.match(nativeTrace, /update-check-pointer-roundtrip-passed/u);
         if (claudeContext) assert.match(nativeTrace, /claude-context-pointer-passed/u);
         if (geminiReview) assert.match(nativeTrace, /gemini-review-passed/u);
+        if (argumentsList.includes("--native-diagrams")) assert.match(nativeTrace, /native-diagrams-passed/u);
         if (sourceEmpty) assert.match(nativeTrace, /reader-empty-source-passed/u);
         if (claudeSource && (parserStatus || officialSourceIndex < 0)) assert.match(nativeTrace, parserStatus ? /parser-status-pointer-passed/u : /claude-empty-source-pointer-passed/u);
         if (indexReopen) assert.match(nativeTrace, /container-reopen-pointer-passed/u);

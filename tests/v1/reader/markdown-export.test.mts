@@ -5,6 +5,16 @@ import test from "node:test";
 import { buildConversationMarkdown } from "../../../src/app/export/index.mts";
 import type { JsonObject } from "../../../src/core/contracts/types.mts";
 
+test('themed diagram export retains the default image and links the alternate once',async()=>{
+  const conversation=JSON.parse(await readFile(new URL('../contracts/fixtures/conversation-full.json',import.meta.url),'utf8')) as JsonObject;
+  (conversation['messages'] as JsonObject[])[1]!['content']=[{type:'diagram',format:'mermaid',source:'graph LR; A-->B',rendered:'native-light',rendered_themes:{light:'native-light',dark:'native-dark'}}];
+  conversation['resources']=['native-light','native-dark'].map(id=>({id,kind:'diagram',availability:'embedded',mime:'image/svg+xml',bytes:6,data_base64:['PHN2Zy8+']}));
+  const result=buildConversationMarkdown({conversation,selectedLeaf:'m2',locale:'en',resolved:{archive:'a2',platform:'claude',archiveLayer:'none',models:[],userName:'User',assistantName:'AI',userAvatar:'',assistantAvatar:'',contentTime:{state:'unavailable'}}});
+  const parts=result.parts.filter(p=>typeof p!=='string');
+  assert.equal(parts.filter(p=>p.resource==='native-light').length,1);
+  assert.equal(parts.filter(p=>p.resource==='native-dark').length,1);
+});
+
 test('saved DIL Markdown exposes the label and saved time, not callback source', async () => {
   const conversation = JSON.parse(await readFile(new URL('../contracts/fixtures/conversation-full.json', import.meta.url), 'utf8')) as JsonObject;
   const messages = conversation['messages'] as JsonObject[];

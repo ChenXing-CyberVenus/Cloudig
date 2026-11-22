@@ -10,7 +10,7 @@ import { isJsonObject } from '../../core/contracts/types.mts';
 import { writeOwnedStagingFile, fingerprintFile } from '../storage/stream.mts';
 
 export const OFFICIAL_ZIP_LIMITS = Object.freeze({ entries: 100000, pathBytes: 4096, memberBytes: 4 * 1024 ** 3, metadataBytes: 16 * 1024 ** 2 });
-export type OfficialZipPlatform = 'grok' | 'mistral' | 'chatgpt';
+export type OfficialZipPlatform = 'grok' | 'mistral' | 'chatgpt' | 'deepseek';
 export type ZipLayout = Readonly<{ platform: OfficialZipPlatform; jsonEntries: readonly string[]; resourceBytes: number }>;
 export type ZipWorkspace = Readonly<{ sourceStamp: string; files: Readonly<Record<string, string>> }>;
 export const zipSourceStamp = async (file: string): Promise<string> => {
@@ -66,6 +66,14 @@ export class OfficialZip {
     const grok = names.filter(n => path.posix.basename(n) === 'prod-grok-backend.json');
     const mistral = names.filter(n => /^chat-[^/]+\.json$/u.test(path.posix.basename(n)) && !n.split('/').some(p => p.endsWith('-files') || p === 'knowledge'));
     const chatgpt = names.filter(n => /^conversations(?:-\d+)?\.json$/u.test(path.posix.basename(n)));
+    const deepseek = names.filter(n => path.posix.basename(n) === 'chat_session_index.json');
+    if (deepseek.length) {
+      if (deepseek.length !== 1 || grok.length || mistral.length || chatgpt.length) throw new TypeError('Ambiguous official ZIP export');
+      const directory = path.posix.dirname(deepseek[0]!);
+      const sessions = path.posix.join(directory, 'chat_sessions');
+      const jsonEntries = names.filter(n => path.posix.dirname(n) === sessions && n.endsWith('.json'));
+      return {platform:'deepseek', jsonEntries, resourceBytes:this.#resourceBytes(n => path.posix.dirname(path.posix.dirname(n)) === sessions && path.posix.dirname(n).endsWith('_files'))};
+    }
     if (chatgpt.length && !grok.length && !mistral.length && new Set(chatgpt.map(n => path.posix.dirname(n))).size === 1) {
       if (chatgpt.length > 1 && chatgpt.some(n => path.posix.basename(n) === 'conversations.json')) throw new TypeError('Mixed whole and sharded ChatGPT conversations');
       const directory = path.posix.dirname(chatgpt[0]!);
@@ -93,7 +101,25 @@ export class OfficialZip {
     return parseRecordJson(new TextDecoder('utf-8', { fatal: true }).decode(await this.bytes(name, signal)));
   }
   async validatedLayout(signal?: AbortSignal): Promise<ZipLayout> {
-    const layout = this.layout(); if (layout.platform !== 'chatgpt') return layout;
+    const layout = this.layout();
+    if (layout.platform === 'deepseek') {
+      const indexName = [...this.entries.keys()].find(n=>path.posix.basename(n)==='chat_session_index.json')!;
+      const directory = path.posix.dirname(indexName);
+      const manifest = await this.metadata(path.posix.join(directory,'manifest.json'),signal);
+      if (!isJsonObject(manifest) || manifest['export_format_version']!==3)
+        throw new TypeError('不支持此 DeepSeek 导出版本。 / Unsupported DeepSeek export version.');
+      const index = await this.metadata(indexName, signal);
+      if (!Array.isArray(index)) throw new TypeError('Invalid DeepSeek session index');
+      const declared = index.map(row=>{
+        if (!isJsonObject(row) || typeof row['id']!=='string' || !/^[\w-]+$/u.test(row['id'])) throw new TypeError('Invalid DeepSeek session identifier');
+        return path.posix.join(directory,'chat_sessions',row['id']+'.json');
+      });
+      const actual = new Set(layout.jsonEntries);
+      if (new Set(declared).size!==declared.length || declared.length!==actual.size || declared.some(n=>!actual.has(n)))
+        throw new TypeError('DeepSeek 会话文件与导出清单不符。 / DeepSeek session files do not match the export index.');
+      return {...layout,jsonEntries:declared};
+    }
+    if (layout.platform !== 'chatgpt') return layout;
     const directory = path.posix.dirname(layout.jsonEntries[0]!);
     const manifest = await this.metadata(path.posix.join(directory, 'export_manifest.json'), signal);
     if (manifest === undefined) {

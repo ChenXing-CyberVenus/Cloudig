@@ -2,6 +2,7 @@ import type { InteractiveFile, InteractivePackage } from "./interactive-protocol
 
 export function previewKind(name: string, mime = ""): string | undefined {
   const extension = name.split(".").at(-1)?.toLowerCase() ?? "";
+  if (extension === "ipynb" || mime.split(";")[0] === "application/x-ipynb+json") return "ipynb";
   if (mime.startsWith("audio/") || ["mp3", "m4a", "wav", "ogg", "flac", "aac"].includes(extension)) return "audio";
   if (mime.startsWith("video/") || ["mp4", "webm", "mov", "m4v", "ogv"].includes(extension)) return "video";
   if (["pptx", "xlsx", "docx", "pdf", "glb", "md", "txt", "csv", "json", "xml", "html", "htm", "js", "ts", "py", "css", "log", "svg", "png", "jpg", "jpeg", "webp", "gif"].includes(extension)) return extension;
@@ -14,6 +15,12 @@ export function previewKind(name: string, mime = ""): string | undefined {
 }
 
 /** No stored Schema change: a reading target is selected from owned bytes. */
+export function previewImageMime(file: InteractiveFile | undefined): string | undefined {
+  if (!file) return;
+  const types: Record<string,string> = { png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",webp:"image/webp",gif:"image/gif",svg:"image/svg+xml" };
+  return types[previewKind(file.path,file.mime) ?? ""];
+}
+
 export function previewTarget(input: InteractivePackage): InteractiveFile | undefined {
   if (input.preview) return input.files.find(f => f.path === input.entry);
   if (input.source === "chat.mistral.ai_slides" && input.format === "slides" && input.data?.["presentation"]) return;

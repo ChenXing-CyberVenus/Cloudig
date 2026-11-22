@@ -28,7 +28,7 @@
     "test:doctor": "node tests/2026-07-31_Cloudig发布快照与Doctor回归-GPT-5.6-Sol.mjs",
     "test:private": "node scripts/run-regressions.mjs --suite private",
     "check:v1:types": "tsc -p tsconfig.v1.json",
-    "test:v1:records": "node --test tests/v1/records/json-token-scan.test.mts tests/v1/records/records.test.mts tests/v1/records/platform-front-ids.test.mts tests/v1/records/text-limits.test.mts tests/v1/records/compatibility.test.mts tests/v1/records/interactive.test.mts tests/v1/records/dil-program.test.mts",
+    "test:v1:records": "node --test tests/v1/records/json-token-scan.test.mts tests/v1/records/records.test.mts tests/v1/records/platform-front-ids.test.mts tests/v1/records/text-limits.test.mts tests/v1/records/compatibility.test.mts tests/v1/records/interactive.test.mts tests/v1/records/dil-program.test.mts tests/v1/records/diagram-themes.test.mts",
     "test:v1:record-storage": "node --test tests/v1/records/record-store.test.mts",
     "test:v1:record-flow": "node --test tests/v1/records/record-flow.test.mts",
     "test:v1:source-fidelity": "node --test tests/v1/records/source-fidelity.test.mts",

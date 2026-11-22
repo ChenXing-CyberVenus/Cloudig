@@ -20,7 +20,7 @@ export type AdapterManifest = Readonly<{
   version: string;
   family: string;
   routes: readonly AdapterRoute[];
-  target: "cloudig/conversation/1.0.0" | "cloudig/conversation/1.0.1" | "cloudig/conversation/1.0.2";
+  target: "cloudig/conversation/1.0.0" | "cloudig/conversation/1.0.1" | "cloudig/conversation/1.0.2" | "cloudig/conversation/1.0.3";
   update_from: readonly Readonly<{
     adapter: string;
     version: string;
@@ -42,6 +42,7 @@ export type RecordExtractionObserver = Readonly<{
 
 export type ExporterExtensions = Readonly<{
   chatgptIntelligentUi?: JsonObject;
+  chatgptSites?: JsonObject;
   geminiRichContent?: JsonObject;
   doubaoRichContent?: JsonObject;
   mistralWork?: JsonObject;

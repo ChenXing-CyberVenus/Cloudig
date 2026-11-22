@@ -130,6 +130,10 @@ function conversation(value: JsonObject, issues: ValidationIssue[], observed?: R
       if (b["type"] === "tool" && b["kind"] === "call" && b["recipient"] !== undefined && speakers.get(String(b["recipient"]))?.["role"] !== "tool") issue(issues, `${item.p}/recipient`, "Tool call target must have tool role");
       if (b["type"] === "tool" && b["kind"] === "result" && speakers.get(String(who))?.["role"] !== "tool") issue(issues, `${item.p}/speaker`, "Tool result belongs to the tool Front");
       for (const key of ["resource", "input_resource", "output_resource", "rendered"] as const) if (b[key] !== undefined && !resourceIds.has(String(b[key]))) issue(issues, `${item.p}/${key}`, "Unknown resource reference");
+      for (const [theme, id] of Object.entries(object(b["rendered_themes"]) ?? {})) if (!imageIds.has(String(id)))
+        issue(issues, `${item.p}/rendered_themes/${theme}`, "Themed diagram must reference an image resource in this Conversation");
+      if (b["rendered_themes"] !== undefined && !imageIds.has(String(b["rendered"])))
+        issue(issues, `${item.p}/rendered`, "Themed diagram default must reference an image resource in this Conversation");
       if (containerDisplay(b)) {
         const files = array(b["files"]), paths = new Set<string>();
         for (const [j, file] of files.entries()) {

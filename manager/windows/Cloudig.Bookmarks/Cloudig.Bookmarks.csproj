@@ -8,5 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Cloudig.Bookmarks.Tests" />
+    <InternalsVisibleTo Include="Cloudig.BookmarkTestInstaller" />
+    <InternalsVisibleTo Include="Cloudig.BookmarkTestInstaller.Tests" />
   </ItemGroup>
 </Project>

@@ -208,6 +208,10 @@
     filter: drop-shadow(0 12px 14px rgb(0 0 0 / 68%));
   }
   .cloudig-dialog h2 { color: var(--cloudig-seal-red); font-size: 25px; line-height: 1.25; margin: 0 0 15px; }
+  .bookmark-retry-dialog { margin: auto; pointer-events: auto; }
+  .bookmark-retry-dialog::backdrop { background: rgb(24 16 22 / 52%); }
+  .bookmark-retry-dialog footer .cloudig-button { width: auto; min-width: 115px; padding-inline: 16px; white-space: nowrap; }
+  .bookmark-retry-dialog > h2 + p { color: var(--cloudig-choice-copy-on); font-weight: 700; margin-bottom: 8px; }
   :root[data-theme="star-night"] .cloudig-dialog h2 { color: var(--cloudig-orange); }
   .cloudig-dialog > p { font-size: 16px; line-height: 1.65; margin: 0 0 20px; }
   .cloudig-dialog dl {

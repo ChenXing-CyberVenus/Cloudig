@@ -37,15 +37,17 @@ export async function scanRecordSources(root: string, options: { includeMissing?
   // 1.7 adds Zstd probing and derives Codex groups from physical observations;
   // existing 1.6 observations/capture times remain valid. Dropping that cache
   // forces every unchanged multi-GB export through a cold scan on page entry.
-  const indexPath = "appdata/indexes/sources.json", prior = await readObject(root, indexPath), currentIndex = prior["schema"] === "cloudig/source-index/1.7.0",
-    currentCapturePolicy = currentIndex || prior["schema"] === "cloudig/source-index/1.6.0",
+  const indexPath = "appdata/indexes/sources.json", prior = await readObject(root, indexPath), currentIndex = prior["schema"] === "cloudig/source-index/1.8.0",
+    hasZstdProbe = currentIndex || prior["schema"] === "cloudig/source-index/1.7.0",
+    currentCapturePolicy = hasZstdProbe || prior["schema"] === "cloudig/source-index/1.6.0",
     cached = currentCapturePolicy || ["cloudig/source-index/1.5.0", "cloudig/source-index/1.4.0", "cloudig/source-index/1.3.0", "cloudig/source-index/1.2.0", "cloudig/source-index/1.1.0"].includes(String(prior["schema"])) ? object(prior["files"]) : {}, files: JsonObject = {}, result: RecordSource[] = [];
   for (const entry of await readdir(await resolveRecordPath(root, "Inbox"), { withFileTypes: true })) {
     if (!entry.isFile() || entry.isSymbolicLink()) continue;
     const relative = `Inbox/${entry.name}`, absolute = await resolveRecordPath(root, relative), info = await lstat(absolute, { bigint: true });
     const stamp = (s: typeof info) => [s.dev, s.ino, s.size, s.mtimeNs, s.ctimeNs].join(":");
     const old = object(cached[relative]); let source: RecordSource, manifest: JsonObject | undefined;
-    const needsNewProbe = !currentIndex && /\.jsonl\.zst$/iu.test(entry.name);
+    const needsNewProbe = !hasZstdProbe && /\.jsonl\.zst$/iu.test(entry.name)
+      || !currentIndex && !old["platform"] && /\.zip$/iu.test(entry.name);
     const unchanged = !needsNewProbe && (currentCapturePolicy || old["format"] === "exporter-html") && !old["missing"] && old["path"] === relative && old["stamp"] === stamp(info) && /^[a-f0-9]{64}$/u.test(String(old["sha256"])) && Number.isSafeInteger(old["bytes"]) && ["unknown", "exporter-html", "json-container", "zip-container", "json", "jsonl"].includes(String(old["format"]));
     if (unchanged) source = old as unknown as RecordSource;
     else {
@@ -63,7 +65,7 @@ export async function scanRecordSources(root: string, options: { includeMissing?
       const payload = object(declaration?.["payload"])["format"];
       const exporterVersion = manifest?.["exporter_version"] ?? object(manifest?.["exporter"])["version"];
       const adapter = agent?.adapter ?? (platform && typeof payload === "string" ? findSourceAdapter({ format: "exporter-html", platform, payload }) : undefined);
-      const adapterId = agent?.adapter.id ?? (adapter && "manifest" in adapter ? adapter.manifest.id : adapter?.id) ?? (official ? official.platform === "claude" ? "anthropic-claude-export-json" : `${official.platform}-official-json` : undefined);
+      const adapterId = agent?.adapter.id ?? (adapter && "manifest" in adapter ? adapter.manifest.id : adapter?.id) ?? (official ? official.platform === "claude" ? "anthropic-claude-export-json" : official.platform === "deepseek" && format === "zip-container" ? "deepseek-official-zip" : `${official.platform}-official-json` : undefined);
       if (stamp(info) !== stamp(await lstat(absolute, { bigint: true }))) throw new TypeError("Source changed during list inspection");
       source = { path: relative, ...fingerprint, stamp: stamp(info), modifiedAt: new Date(Number(info.mtimeMs)).toISOString(), format: effectiveFormat,
         ...(platform ? { platform } : {}), ...(adapterId ? { adapterId } : {}), ...(declaration ? { declaration } : {}), ...(typeof exporterVersion === "string" ? { exporterVersion } : {}) };
@@ -123,7 +125,7 @@ export async function scanRecordSources(root: string, options: { includeMissing?
     try { await lstat(await resolveRecordPath(root, relative)); continue; } catch (e) { if (!missing(e)) throw e; }
     const absent = { ...old, missing: true } as unknown as RecordSource; files[relative] = absent as unknown as JsonObject; if (options.includeMissing) result.push(absent);
   }
-  const value = { schema: "cloudig/source-index/1.7.0", files };
+  const value = { schema: "cloudig/source-index/1.8.0", files };
   if (JSON.stringify(value) !== JSON.stringify(prior)) await withRecordSnapshot(root, () => writeRecordProjection(root, indexPath, JSON.stringify(value, null, 2) + "\n"));
   return result;
 }

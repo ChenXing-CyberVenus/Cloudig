@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve, relative, isAbsolute, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
 import { packBookmarkletCss } from "./bookmarklet-static-css.mjs";
@@ -12,7 +12,8 @@ const args = process.argv.slice(2);
 const useTemmlMhchem = args.includes("--temml-mhchem");
 const useTemml = args.includes("--temml") || useTemmlMhchem;
 const useKatexRuntime = args.includes("--katex-runtime");
-const positional = args.filter((arg) => !["--temml", "--temml-mhchem", "--katex-runtime"].includes(arg));
+const proofOnly = args.includes("--research-output");
+const positional = args.filter((arg) => !["--temml", "--temml-mhchem", "--katex-runtime","--research-output"].includes(arg));
 
 if (args.includes("--temml") && useTemmlMhchem) {
   console.error("--temml 与 --temml-mhchem 只能选择一个");
@@ -31,6 +32,10 @@ const temmlRuntimeMarker = "/*__OSIS_INLINE_TEMML_RUNTIME__*/";
 const katexMarker = "/*__OSIS_INLINE_KATEX_RUNTIME__*/";
 const katexCssGzipMarker = "/*__OSIS_INLINE_KATEX_CSS_GZIP_BASE64__*/";
 const bookmarkUrlCharacterBudget = 480 * 1024;
+if (proofOnly) {
+  const rel = relative(resolve(projectRoot,"tests/private"),outputPath);
+  if (!rel || isAbsolute(rel) || rel.split(sep)[0] === "..") throw Error("Research outputs belong in ignored tests/private only");
+}
 let source = readFileSync(inputPath, "utf8");
 const packedTemmlMarker = "/*__OSIS_PACK_TEMML_SYMBOLS__*/";
 const packTemmlData = source.includes(packedTemmlMarker);
@@ -51,9 +56,27 @@ if (source.includes(geminiRichMarker)) {
   source = source.replace(geminiRichMarker, () => `${markdown}\n${readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-math-delimiters.js"), "utf8")}\n${readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-gemini-preview.js"), "utf8")}\n${readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-gemini-rich-content.js"), "utf8")}`);
 }
 const intelligentUiMarker = "/*__OSIS_INLINE_CHATGPT_INTELLIGENT_UI__*/";
+const childThreadsMarker = "/*__OSIS_INLINE_CHATGPT_SUBAGENTS__*/";
+const sitesMarker="/*__OSIS_INLINE_CHATGPT_SITES__*/";
+if(source.includes(sitesMarker))source=source.replace(sitesMarker,()=>readFileSync(resolve(projectRoot,"bookmarklets/vendor/osis-chatgpt-sites.js"),"utf8"));
+const spaceFilesMarker = "/*__OSIS_INLINE_CHATGPT_SPACE_FILES__*/";
+if(source.includes(spaceFilesMarker))source=source.replace(spaceFilesMarker,()=>readFileSync(resolve(projectRoot,"bookmarklets/vendor/osis-chatgpt-space-files.js"),"utf8"));
+if(source.includes("/*__OSIS_INLINE_CHATGPT_WORK_FILES__*/")){
+  const vendor=readFileSync(resolve(projectRoot,"bookmarklets/vendor/osis-chatgpt-work-files.js"),"utf8");
+  // Keep the exact functions this source imports; never rename a method, or
+  // optimize a dynamic use whose required exports cannot be enumerated.
+  const uses=[...source.matchAll(/\bosisGptWorkFiles\b(?!\s*!==)(?:\.([\w$]+))?/g)];
+  const names=[...new Set(uses.map(m=>m[1]))];
+  const body=names.length&&names.every(k=>["records","original","scan"].includes(k))
+    ?vendor.replace("/*__OSIS_WORK_FILE_EXPORTS__*/{records,original,scan}","{"+names.join(",")+"}"):vendor;
+  source=source.replace("/*__OSIS_INLINE_CHATGPT_WORK_FILES__*/",()=>body);
+}
+if (source.includes(childThreadsMarker)) source = source.replace(childThreadsMarker, () => readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-chatgpt-subagents.js"), "utf8"));
 const useIntelligentUi = source.includes(intelligentUiMarker);
 if (useIntelligentUi) {
-  const parser = packAcornTables(readFileSync(resolve(projectRoot, "bookmarklets/vendor/acorn-parser-8.11.3.min.js"), "utf8")).source;
+  const keyMarker="/*__OSIS_PACK_ACORN_KEYS__*/";
+  const parser = packAcornTables(readFileSync(resolve(projectRoot, "bookmarklets/vendor/acorn-parser-8.11.3.min.js"), "utf8"), {sharePropertyKeys:source.includes(keyMarker)}).source;
+  source=source.replace(keyMarker,"");
   const basic = readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-chatgpt-basic-ui.js"), "utf8");
   const layout = readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-chatgpt-layout-contract.js"), "utf8");
   source = source.replace(intelligentUiMarker, () => `${parser}\n${basic}\n${layout}\n` + readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-chatgpt-intelligent-ui.js"), "utf8"));
@@ -72,6 +95,8 @@ if (useQwenTaskLists) {
   source = source.replace(qwenTaskMarker, () => `${lexer}\n${readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-qwen-task-lists.js"), "utf8")}`);
 }
 const grokMarkdownMarker = "/*__OSIS_INLINE_GROK_MARKDOWN__*/";
+const glmGeneralMarker = "/*__OSIS_INLINE_CHATGLM_GENERAL__*/";
+if (source.includes(glmGeneralMarker)) source = source.replace(glmGeneralMarker, () => readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-chatglm-general.js"), "utf8"));
 const grokBotMarker = "/*__OSIS_INLINE_GROK_BOT__*/";
 if (source.includes(grokBotMarker)) source = source.replace(grokBotMarker, () => readFileSync(resolve(projectRoot, "bookmarklets/vendor/osis-grok-bot.js"), "utf8"));
 const useGrokMarkdown = source.includes(grokMarkdownMarker);
@@ -133,7 +158,7 @@ if (useTemml) {
     ? "temml-render-mhchem-0.13.3.min.js"
     : "temml-render-0.13.3.min.js";
   const temmlRaw = readFileSync(resolve(projectRoot, "bookmarklets/vendor", temmlVendor), "utf8");
-  const packed = packTemmlData ? packTemmlSymbols(temmlRaw) : null;
+  const packed = packTemmlData ? packTemmlSymbols(temmlRaw,{shareKeys:source.includes("/*__OSIS_PACK_TEMML_KEYS__*/")}) : null;
   const temml = packed ? packed.prelude + packed.source : temmlRaw.trim();
   source = source.replace(marker, () => `${temml}\n`);
   if (source.includes(temmlRuntimeMarker)) {
@@ -186,7 +211,7 @@ try {
   // Acorn's regexp escape decoder also contains arithmetic like value%32.
   // Protect the JavaScript source, then the bookmark URL decodes it back once.
   if (useGrokMarkdown || useQwenTaskLists || useIntelligentUi) minified = minified.replace(/%([0-9a-f]{2})/gi, "%25$1");
-  if (minified.length > bookmarkUrlCharacterBudget) {
+  if (minified.length > bookmarkUrlCharacterBudget && !proofOnly) {
     throw new Error(`${basename(outputPath)} ${minified.length} characters exceeds the ${bookmarkUrlCharacterBudget}-character Chrome bookmark URL safety budget`);
   }
   writeFileSync(outputPath, minified, "utf8");

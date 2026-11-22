@@ -1,6 +1,6 @@
 {
   "schema": "cloudig/parser-history/1.0.0",
-  "current_parser": "1.1.56",
+  "current_parser": "1.1.59",
   "releases": [
     {
       "version": "1.0.0",
@@ -948,6 +948,34 @@
       "adapters": {
         "gemini-light-dom-v2": "3.0.11",
         "gemini-full-v1": "3.0.11"
+      }
+    },
+    {
+      "version": "1.1.57",
+      "date": "2026-11-16",
+      "source_commit": "9d6df12b04526087097eedfa76c1da341071c348",
+      "adapters": {
+        "claude-light-dom-v1": "3.0.15",
+        "claude-full-capture-v1": "3.0.15",
+        "claude-all-branches-v1": "3.0.15"
+      }
+    },
+    {
+      "version": "1.1.58",
+      "date": "2026-11-18",
+      "source_commit": "9e909a2deef97cd445e59419c225f6674508e7ae",
+      "adapters": {
+        "deepseek-official-zip": "1.0.0"
+      }
+    },
+    {
+      "version": "1.1.59",
+      "date": "2026-11-22",
+      "source_commit": "0e2222015de1a727e86a4dd588bc5818e69e8849",
+      "adapters": {
+        "chatgpt-light-items-v2": "3.0.13",
+        "chatgpt-full-v1": "3.0.13",
+        "chatgpt-all-branches-v1": "3.0.13"
       }
     }
   ]

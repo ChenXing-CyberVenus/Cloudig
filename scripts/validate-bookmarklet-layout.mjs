@@ -119,7 +119,7 @@ export function validateBookmarkletLayout() {
   // Preserve the cold-page candidate before native/event file ownership repair: 1382 + 6 = 1388.
   assert.equal(
     actualLegacy.length,
-    1750, // +4 byte-identical Gemini source/min freezes before task presentation correction.
+    1934, // Includes Doubao Full 1.1.7 and Light 3.6.7 before native image selection/ref handling.
     "legacy JS inventory changed without an explicit layout update"
   );
   for (const path of actualLegacy) validateStatePath(path, "legacy");

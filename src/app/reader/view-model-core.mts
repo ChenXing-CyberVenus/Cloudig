@@ -13,6 +13,11 @@ import { conversationImages } from '../../core/records/conversation-images.mts';
 import { parseFragment, type DefaultTreeAdapterTypes } from "parse5";
 import { blockCategory } from "./content-selection.mts";
 import { isSummaryContent } from "./summary-sequence.mts";
+import adapterBundle from "../../adapters/parser/contracts/adapters.json" with { type: "json" };
+
+const bookmarkRoutes = adapterBundle.adapters.flatMap(adapter => adapter.routes).filter(route => route.format === "exporter-html");
+const fullBookmarkPlatforms = new Set(bookmarkRoutes.filter(route => route.profile === "full").map(route => route.platform));
+const treeBookmarkPlatforms = new Set(bookmarkRoutes.filter(route => route.profile === "tree").map(route => route.platform));
 
 export type ReaderSessionPreferences = Readonly<{
   selectedLeaf?: string;
@@ -156,6 +161,7 @@ function resourceReferences(block: JsonObject): string[] {
   return [...new Set([
     text(block["resource"]),
     text(block["rendered"]),
+    ...(isJsonObject(block["rendered_themes"]) ? Object.values(block["rendered_themes"]).map(text) : []),
     text(block["input_resource"]),
     text(block["output_resource"]),
     ...(containerDisplay(block) ? [text(block["preview"]), ...(Array.isArray(block["files"]) ? block["files"].filter(isJsonObject).map(file => text(file["resource"])) : [])] : []),
@@ -465,6 +471,10 @@ export function buildConversationPageCore(
       models: [...("headerModels" in input.resolved ? input.resolved.headerModels ?? input.resolved.models : input.resolved.models)],
       content_time: structuredClone(input.resolved.contentTime as unknown as JsonObject),
       source_file: source["file"]!,
+      ...(source["format"] === "exporter-html" && typeof source["profile"] === "string" && fullBookmarkPlatforms.has(String(conversation["platform"])) ? {
+        bookmark_profile: source["profile"],
+        has_tree_bookmark: treeBookmarkPlatforms.has(String(conversation["platform"]))
+      } : {}),
       ...(source["captured_at"] !== undefined ? { captured_at: structuredClone(source["captured_at"]) } : {}),
       ...(isJsonObject(source["exporter"]) ? { exporter: structuredClone(source["exporter"]) } : {})
     },

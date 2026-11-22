@@ -8,6 +8,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../../manager/windows/Cloudig.BookmarkTestInstaller.Tests/QuietTestDesktop.cs" Link="QuietTestDesktop.cs" />
     <ProjectReference Include="..\Cloudig.Desktop.Core\Cloudig.Desktop.Core.csproj" />
     <ProjectReference Include="..\..\..\manager\windows\Cloudig.Bookmarks\Cloudig.Bookmarks.csproj" />
   </ItemGroup>

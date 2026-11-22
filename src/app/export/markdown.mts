@@ -382,7 +382,13 @@ export function buildConversationMarkdown(input: Readonly<{
       const rendered = text(block["rendered"])
         ? `\n\n${resourceLink(text(block["rendered"]), copy.renderedDiagram, true)}`
         : "";
-      return [`**${copy.diagram} · ${escapeLabel(format)}**\n\n`, ...body, rendered];
+      const variants = object(block["rendered_themes"]), seen = new Set([text(block["rendered"])]);
+      const alternatives = Object.entries(variants ?? {}).flatMap(([theme, id]) => {
+        if (typeof id !== "string" || seen.has(id)) return [];
+        seen.add(id);
+        return [`\n\n${resourceLink(id, `${copy.renderedDiagram} · ${theme}`, false)}`];
+      });
+      return [`**${copy.diagram} · ${escapeLabel(format)}**\n\n`, ...body, rendered, ...alternatives];
     }
     const kind = text(block["kind"]) ?? type;
     const body = [text(block["text"]), text(block["resource"]) ? resourceLink(text(block["resource"]), kind) : undefined]

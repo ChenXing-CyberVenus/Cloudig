@@ -14,6 +14,20 @@ function input(format: InteractiveFormat, entries: Record<string,string>): Inter
 function render(work: InteractivePackage): string {
   const dom = new JSDOM("<!doctype html>"), result = prepareInteractiveHtml(work, dom.window.document, (_bytes,_mime) => "blob:work/file"); dom.window.close(); return result;
 }
+test("generic binary attachments use the image extension when preparing their preview", () => {
+  const value = input("document", {"plot.png":""});
+  const work = {...value,preview:true,files:[{path:"plot.png",mime:"application/octet-stream",bytes:Uint8Array.from([137,80,78,71,255]).buffer}]};
+  const dom = new JSDOM("<!doctype html>"), mimes:string[]=[];
+  try {
+    const html = prepareInteractiveHtml(work,dom.window.document,(_bytes,mime)=>{mimes.push(mime);return "blob:work/image";});
+    assert(mimes.includes("image/png"));assert.match(html,/<img[^>]+blob:work\/image/u);
+  } finally {dom.window.close();}
+});
+test("saved notebooks show Markdown, code, text and image output without running cells", () => {
+  const notebook={cells:[{cell_type:"markdown",source:["# Measurements"]},{cell_type:"code",source:"run()",outputs:[{output_type:"stream",text:["line one\n","line two"]},{output_type:"display_data",data:{"image/png":"QUJD"}}]}]};
+  const html=render({...input("document",{"report.ipynb":JSON.stringify(notebook)}),preview:true});
+  assert.match(html,/<h1[^>]*>Measurements/u);assert.match(html,/<code>run\(\)<\/code>/u);assert.match(html,/line one\nline two/u);assert.match(html,/data:image\/png;base64,QUJD/u);
+});
 test("saved office outlines show a first page and preserve locally scrollable cells without rewriting files",()=>{
  const raw='<details class="osis-work-slide"><summary>Page 1</summary><div class="osis-rich"><h1>Original title</h1></div></details><details class="osis-work-slide"><summary>Page 2</summary>Second</details><table><tr><td colspan="2">Original wide heading</td></tr></table>';
  for(const theme of ['dawn','star-night'] as const){const work={...input('document',{'preview.html':raw}),source:'chat.mistral.ai_slides',theme},dom=new JSDOM(render(work));

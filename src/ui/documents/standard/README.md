@@ -1,5 +1,7 @@
 # Cloudig Standard · publication input
 
+2026-11-16 authorized internal update: Conversation / Library 1.0.3 adds optional native diagram theme references. The bilingual software inputs and bundled schemas are updated together; the online Standard must remain on its published version until the user authorizes the 1.0.11 publication. Only the GitHub README first-line Standard link was separately published. Prior authored Principles / Part I and historical examples remain intact.
+
 The two Markdown files began as byte-for-byte copies of the user's 2026-09-20 formal delivery package, `03_采云标准/`. Authorship and translation credits are preserved. The earlier product 1.0.2 update and the user-authorized 2026-10-16 Schema 1.0.2 correction change only the affected Conversation/Library declarations, compatibility wording and Box/Window fields; the Principles, Part I and unrelated author-final prose remain unchanged. The 1.0.0 Conversation examples are retained as readable compatibility examples. Original delivery files are not overwritten. These publication inputs, not the old review HTML layout, feed the page.
 
 `node scripts/build-standard-document.mjs` builds the two read-only publication JSON files; `--check` verifies them without rewriting. Chapter order, tables, JSON examples, prose and value levels are preserved. Icons replace redundant classification labels visually. Unlabelled subsections inherit their chapter's value; unlabelled front matter is Core and authorship is General. Existing details are Fold. No business Schema is modified.

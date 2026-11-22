@@ -5,7 +5,7 @@ import { readV1SchemaPackage } from "../../../scripts/build-v1-schema-package.mj
 
 test("release Schemas include all offline references and the current standard declaration", async () => {
   const rows = await readV1SchemaPackage(process.cwd());
-  assert.equal(rows.length, 17); // current contracts and frozen 1.0.0/1.0.1 readers
+  assert.equal(rows.length, 19); // current contracts and frozen 1.0.0/1.0.1/1.0.2 readers
   const validator = new Ajv2020({ strict: false });
   for (const row of rows) validator.addSchema(row.schema);
   for (const row of rows) assert.ok(validator.getSchema(row.schema.$id));
@@ -13,4 +13,5 @@ test("release Schemas include all offline references and the current standard de
   assert.ok(rows.some(row => row.schema.$id === "https://cloudig.local/records/conversation/1.0.0"));
   assert.ok(rows.some(row => row.schema.$id === "https://cloudig.local/records/conversation/1.0.1"));
   assert.ok(rows.some(row => row.schema.$id === "https://cloudig.local/records/conversation/1.0.2"));
+  assert.ok(rows.some(row => row.schema.$id === "https://cloudig.local/records/conversation/1.0.3"));
 });

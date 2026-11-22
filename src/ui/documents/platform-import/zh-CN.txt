@@ -4,7 +4,8 @@ DeepSeek：
 图01
 点击下载按钮。
 图02
-解压ZIP文件
+在采云选择下载的完整 ZIP，或将它复制进 Inbox，无需解压。
+仅旧版导出：解压 ZIP 文件。
 图03
 在采云导入解压后的conversations.json，或将此文件复制入Cloudig\Inbox\
 图04

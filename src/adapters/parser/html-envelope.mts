@@ -321,6 +321,9 @@ export async function readExporterEnvelope(input: Readonly<{
     const payload = await parseObject(extracted.scripts.get(payloadId), "Vendor payload", input.signal);
     const extensions: { -readonly [K in keyof ExporterExtensions]: ExporterExtensions[K] } = {};
     const declaredExtensions = isJsonObject(manifest["extensions"]) ? manifest["extensions"] : {};
+    if (platform === "chatgpt" && extracted.scripts.has("chatgpt-site-data")) {
+      extensions.chatgptSites = await parseObject(extracted.scripts.get("chatgpt-site-data"), "ChatGPT Sites", input.signal);
+    }
     const intelligent = declaredExtensions["chatgpt_intelligent_ui"];
     if (platform === "chatgpt" && isJsonObject(intelligent)) {
       if (intelligent["format"] !== "chatgpt-intelligent-ui/1.0" || intelligent["element_id"] !== "chatgpt-intelligent-ui-data") throw new TypeError("Unsupported ChatGPT Intelligent UI extension");

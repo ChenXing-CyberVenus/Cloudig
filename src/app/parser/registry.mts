@@ -17,7 +17,7 @@ import { mistralFullAdapter, mistralLightAdapter, mistralTreeAdapter } from "../
 import { claudeFullAdapter, claudeLightAdapter, claudeTreeAdapter } from "../../adapters/parser/claude-web.mts";
 import { claudeContainerAdapter } from "../../adapters/parser/claude-container.mts";
 import { agentManifest } from "../../adapters/parser/agent-json.mts";
-import { DEEPSEEK_OFFICIAL_MANIFEST } from "../../adapters/parser/deepseek-official.mts";
+import { DEEPSEEK_OFFICIAL_MANIFEST, DEEPSEEK_ZIP_MANIFEST } from "../../adapters/parser/deepseek-official.mts";
 import { QWEN_OFFICIAL_MANIFEST } from "../../adapters/parser/qwen-official.mts";
 import { GROK_OFFICIAL_MANIFEST } from "../../adapters/parser/grok-official.mts";
 import { MISTRAL_OFFICIAL_MANIFEST } from "../../adapters/parser/mistral-official.mts";
@@ -61,7 +61,7 @@ const ADAPTERS = [
   claudeFullAdapter,
   claudeTreeAdapter,
   claudeContainerAdapter,
-  ...[DEEPSEEK_OFFICIAL_MANIFEST, QWEN_OFFICIAL_MANIFEST, GROK_OFFICIAL_MANIFEST, MISTRAL_OFFICIAL_MANIFEST, CHATGPT_OFFICIAL_MANIFEST].map(manifest => ({ manifest, parse(): never { throw new TypeError("Official exports require a byte-range index and record selection"); } })),
+  ...[DEEPSEEK_OFFICIAL_MANIFEST, DEEPSEEK_ZIP_MANIFEST, QWEN_OFFICIAL_MANIFEST, GROK_OFFICIAL_MANIFEST, MISTRAL_OFFICIAL_MANIFEST, CHATGPT_OFFICIAL_MANIFEST].map(manifest => ({ manifest, parse(): never { throw new TypeError("Official exports require a byte-range index and record selection"); } })),
   ...(["cline-api", "cline-ui", "sillytavern", "kimi-code", "claude-code", "codex"] as const).map(agentManifest).map(manifest => ({ manifest, parse(): never { throw new TypeError("Agent JSON sources are parsed through the streaming record worker"); } }))
 ] as const satisfies readonly SourceAdapter[];
 
@@ -116,7 +116,7 @@ export function fallbackPayloadId(platform: string): string | undefined {
   return undefined;
 }
 
-export const PARSER_VERSION = "1.1.56";
+export const PARSER_VERSION = "1.1.59";
 
 export function adapterBundleSnapshot(): Readonly<{
   schema: "cloudig/adapter-bundle/1.0.0";

@@ -11,7 +11,7 @@ import { fileCaptureTime } from '../../app/parser/record-source.mts';
 import { indexRecordClaudeContainer, extractIndexedClaudeRecord, type RecordClaudeIndex } from './record-claude-index.mts';
 import { inspectOfficialJson, officialJsonArrayFileRange, officialJsonArrayRanges, assertOfficialRecord } from './official-json-layout.mts';
 import { parseJsonRange } from './json-array-stream.mts';
-import { extractDeepSeekOfficial, DEEPSEEK_OFFICIAL_MANIFEST, deepSeekOfficialSelector } from './deepseek-official.mts';
+import { extractDeepSeekOfficial, DEEPSEEK_OFFICIAL_MANIFEST, DEEPSEEK_ZIP_MANIFEST, deepSeekOfficialSelector, deepSeekZipNodes } from './deepseek-official.mts';
 import { extractQwenOfficial, QWEN_OFFICIAL_MANIFEST } from './qwen-official.mts';
 import { object, list, text, nativeTime, officialSelector } from './official-record.mts';
 import { extractGrokOfficial, GROK_OFFICIAL_MANIFEST, grokOfficialTime } from './grok-official.mts';
@@ -23,7 +23,7 @@ import { OfficialZip, prepareOfficialZipWorkspace, splitZipRecordSelector, zipRe
 import { createRuntimeCacheSession } from '../storage/runtime-cache.mts';
 
 export type RecordZipIndex = Readonly<{
-  schema: 'cloudig/official-zip-index/1.0.0'; platform: 'grok' | 'mistral' | 'chatgpt'; adapter_version: string; source_stamp?: string;
+  schema: 'cloudig/official-zip-index/1.0.0'; platform: 'grok' | 'mistral' | 'chatgpt' | 'deepseek'; adapter_version: string; source_stamp?: string;
   built_at: string; source: RecordClaudeIndex['source']; records: readonly JsonObject[];
   entries: Readonly<Record<string, { bytes: number; sha256: string }>>; resource_bytes: number;
   resource_bytes_by_record?: Readonly<Record<string, number>>;
@@ -201,7 +201,7 @@ async function indexOfficialZip(root: string, relative: string, options: Options
   const file = await resolveRecordPath(root, relative), zip = await OfficialZip.open(file, options.signal);
   let session: Awaited<ReturnType<typeof createRuntimeCacheSession>> | undefined;
   try {
-    const layout = await zip.validatedLayout(options.signal), manifest = manifests[layout.platform];
+    const layout = await zip.validatedLayout(options.signal), manifest = layout.platform==='deepseek' ? DEEPSEEK_ZIP_MANIFEST : manifests[layout.platform];
     let before: {bytes:number;sha256:string} | undefined;
     if (await zipSourceStamp(file) !== zip.stamp) throw new TypeError('ZIP changed; finish copying before indexing');
     if (!options.rebuild) {
@@ -242,6 +242,16 @@ async function indexOfficialZip(root: string, relative: string, options: Options
       const staged = await zip.stage(name, session.root, options.signal, bytes => options.onProgress?.({ phase: 'scan', bytes: completed + bytes, total, records: records.length }));
       entries[name] = { bytes: staged.bytes, sha256: staged.sha256 };
       completed += staged.bytes;
+      if (layout.platform==='deepseek') {
+        const range = {index:records.length, offset:0, length:staged.bytes};
+        const parsed = await parseJsonRange(staged.file,range,options.signal ? {signal:options.signal} : {});
+        const record = object(parsed.value), nodes = deepSeekZipNodes(record,path.posix.basename(name,'.json'));
+        const row = summarizeDeepSeek({...record,mapping:Object.fromEntries(nodes)},records.length+1,0,staged.bytes,parsed.fingerprint.sha256);
+        records.push({...row,selector:zipRecordSelector(name,String(row['selector']))});
+        completed += staged.bytes;
+        options.onProgress?.({phase:'record',bytes:completed,total,records:records.length});
+        continue;
+      }
       const json = layout.platform === 'chatgpt'
         ? {platform:layout.platform,range:await officialJsonArrayFileRange(staged.file, options.signal)}
         : await inspectOfficialJson(staged.file, { ...(options.signal ? { signal: options.signal } : {}), emptyPlatform: layout.platform });
@@ -284,7 +294,10 @@ async function extractZipRecord(root: string, index: RecordZipIndex, selector: s
     const parsed = await parseJsonRange(workspace.files[loc.entry]!, { offset: Number(row['offset']), length: Number(row['length']), index: Number(row['ordinal']) - 1 }, signal ? { signal } : {});
     if (parsed.fingerprint.sha256 !== row['item_sha256']) throw new TypeError('Indexed ZIP member bytes changed');
     const source = { file: path.posix.basename(loc.entry), ...index.entries[loc.entry]! }, captured = await fileCaptureTime(file, index.source.sha256);
-    const extracted = index.platform === 'mistral'
+    const attachmentPaths = new Map<JsonObject,string>();
+    const extracted = index.platform === 'deepseek'
+      ? extractDeepSeekOfficial({record:object(parsed.value), zipNodes:deepSeekZipNodes(object(parsed.value),path.posix.basename(loc.entry,'.json')),attachmentPaths,source,...(captured?{captured}:{})})
+      : index.platform === 'mistral'
       ? extractMistralOfficial({ records: mistralRecords(parsed.value), source, ...(captured ? { captured } : {}) })
       : (index.platform === 'chatgpt' ? extractChatGptOfficial : extractGrokOfficial)({ record: object(parsed.value), source, ...(captured ? { captured } : {}) });
     if (object(extracted.parsed.draft['source'])['locator'] !== loc.selector) throw new TypeError('ZIP record identity changed');
@@ -303,9 +316,9 @@ async function extractZipRecord(root: string, index: RecordZipIndex, selector: s
         }
       }
       return await embedOfficialResourceBytes(result, index.platform, async key => {
-        const name = index.platform === 'chatgpt' ? path.posix.join(path.posix.dirname(loc.entry), key + '.dat') : index.platform === 'grok' ? path.posix.join(path.posix.dirname(loc.entry), 'prod-mc-asset-server', key, 'content') : loc.entry.slice(0, -5) + '-files/' + key;
+        const name = index.platform === 'deepseek' ? path.posix.join(path.posix.dirname(path.posix.dirname(loc.entry)),key) : index.platform === 'chatgpt' ? path.posix.join(path.posix.dirname(loc.entry), key + '.dat') : index.platform === 'grok' ? path.posix.join(path.posix.dirname(loc.entry), 'prod-mc-asset-server', key, 'content') : loc.entry.slice(0, -5) + '-files/' + key;
         return zip.entries.has(name) ? zip.bytes(name, signal) : undefined;
-      }, signal);
+      }, signal, attachmentPaths);
     } finally { await zip.close(); }
   } finally { await session?.close(); }
 }

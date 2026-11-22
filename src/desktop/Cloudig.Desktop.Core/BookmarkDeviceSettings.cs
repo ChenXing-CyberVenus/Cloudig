@@ -10,7 +10,8 @@ public sealed record BookmarkDeviceSettings(
     bool PlaceFirst,
     string InstallationId,
     string ManagedFolderGuid,
-    bool PlacementPending)
+    bool PlacementPending,
+    bool AllowLiveInstall = false)
 {
     public static BookmarkDeviceSettings Default { get; } = new(
         string.Empty,

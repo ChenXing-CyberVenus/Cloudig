@@ -36,8 +36,9 @@ test('file index routes official and Agent Tool sources through the native picke
     assert.equal(root.querySelectorAll('[data-json-platform]').length, 11);
     assert.equal(root.querySelector('.archiver-json-heading h1').textContent, '导入平台文件');
     assert.deepEqual(platformJsonDefinitions.filter(d => d.available).map(d => d.id), ['chatgpt', 'claude', 'deepseek', 'grok', 'qwen', 'mistral', 'cline', 'sillytavern', 'kimi-code', 'claude-code', 'codex']);
-    assert.match(root.querySelector('.archiver-json-heading p').textContent, /选JSON.*选完整会话ZIP.*不选择文件夹/u);
-    assert.equal(root.querySelectorAll('[data-json-input="json"]').length, 4);
+    assert.match(root.querySelector('.archiver-json-heading p').textContent, /DeepSeek.*完整 ZIP.*旧版 JSON/u);
+    assert.equal(root.querySelectorAll('[data-json-input="json"]').length, 3);
+    assert.equal(root.querySelector('[data-json-input="zip-json"]').dataset.jsonPlatform,'deepseek');
     assert.equal(root.querySelectorAll('[data-json-input="jsonl"]').length, 4);
     assert.equal(root.querySelectorAll('[data-json-input="zip"]').length, 3);
     assert.equal(root.querySelectorAll('.archiver-json-desk').length, 1);
@@ -62,7 +63,7 @@ test('file index routes official and Agent Tool sources through the native picke
     view = mountPlatformJsonIndex({ root, state: { language: 'zh-CN', theme: 'dawn' }, onImport: platform => imports.push(platform), onClose: () => view.cleanup() });
     view.updateState({ language: 'en', theme: 'star-night' }); await tick();
     assert.equal(root.querySelector('.archiver-json-heading h1').textContent, 'Import Platform Files');
-    assert.match(root.querySelector('.archiver-json-heading p').textContent, /Do not extract ZIPs or select folders/u);
+    assert.match(root.querySelector('.archiver-json-heading p').textContent, /DeepSeek.*complete ZIP.*legacy JSON/u);
     for (const [platform, guide] of Object.entries(platformJsonImportGuides)) assert.equal(root.querySelector(`[data-json-platform="${platform}"] .archiver-json-import-hint`).textContent, guide.en);
     for (const platform of ['chatgpt', 'claude', 'deepseek', 'grok', 'qwen', 'mistral', 'cline', 'sillytavern', 'kimi-code', 'claude-code', 'codex']) {
       root.querySelector(`[data-json-platform="${platform}"]`).click(); await tick();

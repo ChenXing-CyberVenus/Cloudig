@@ -17,7 +17,7 @@ export const platformJsonDefinitions = Object.freeze([
 export const platformJsonImportGuides = Object.freeze({
   chatgpt: { input: 'zip', file: '*.zip', zh: '选择邮件导出的ZIP，或隐私导出的内层Conversations ZIP。不选隐私总包或Files包；无需解压。', en: 'Choose the email export ZIP or the inner Conversations ZIP from a privacy export. Not the outer privacy bundle or Files ZIP; no extraction needed.' },
   claude: { file: 'conversations.json', zh: '一个文件可包含多篇会话。', en: 'One file can contain multiple conversations.' },
-  deepseek: { file: 'conversations.json', zh: '选择会话记录文件，不选 user.json。', en: 'Choose the conversation export, not user.json.' },
+  deepseek: { input: 'zip-json', file: 'deepseek_data-*.zip', zh: '直接选择官方 ZIP。旧版可选 conversations.json。', en: 'Choose the official ZIP or a legacy conversations.json file.' },
   grok: { input: 'zip', file: '*.zip', zh: '选择官方导出的完整ZIP，无需解压。会话和附件从包内读取。', en: 'Choose the complete official ZIP. No extraction needed; conversations and attachments are read from the archive.' },
   qwen: { file: 'chat-export-*.json', zh: '一个文件可包含多篇会话。', en: 'One file can contain multiple conversations.' },
   mistral: { input: 'zip', file: 'chat-export-*.zip', zh: '选择官方导出的完整ZIP，无需解压。包内多篇会话统一列出，可逐篇或批量解析。', en: 'Choose the complete official ZIP without extracting it. Select individual conversations or parse several together.' },

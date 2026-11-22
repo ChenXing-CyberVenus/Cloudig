@@ -189,6 +189,14 @@ class ClaudeResourcePool {
   readonly #readingImages = new Map<string, ReadingImage>();
   readonly #readingFiles: Array<{ value: ReadingFile; used: boolean }> = [];
   readonly #allocated = new Map<string, string>();
+  readonly #diagramGroups = new Map<string, JsonObject[]>();
+
+  #diagramGroup(meta: JsonObject): string | undefined {
+    const diagram = object(meta["mermaid"]), owner = text(meta["message_id"]);
+    const group = text(diagram?.["group_key"]), source = text(diagram?.["source"]);
+    return owner && group && source && diagram?.["provenance"] === "native-page-render"
+      && ["light", "dark"].includes(String(diagram["theme"])) ? JSON.stringify([owner, group, source]) : undefined;
+  }
 
   constructor(context: AdapterParseContext, profile: Profile) {
     this.interactive = !!context.record;
@@ -199,6 +207,8 @@ class ClaudeResourcePool {
       const key = text(resource?.["key"]);
       if (!resource || !key || this.#metadata.has(key)) throw new TypeError("Claude resource registry is malformed");
       this.#metadata.set(key, resource);
+      const diagramGroup = this.#diagramGroup(resource);
+      if (diagramGroup) this.#diagramGroups.set(diagramGroup, [...(this.#diagramGroups.get(diagramGroup) ?? []), resource]);
       const job = text(resource["job_key"]);
       if (job) this.#metadataByJob.set(job, [...(this.#metadataByJob.get(job) ?? []), resource]);
     }
@@ -212,6 +222,30 @@ class ClaudeResourcePool {
 
   restoreReading(fragment: DefaultTreeAdapterTypes.ParentNode): void {
     this.#data.restoreReading(fragment);
+  }
+
+  /** Theme alternatives belong to the same native occurrence, not another
+   * body image. Keep each original byte stream in resources exactly once. */
+  attachDiagramThemes(messages: readonly JsonObject[]): void {
+    if (!this.interactive) return; // The retained pre-record draft contract is frozen.
+    const byId = new Map([...this.#allocated].map(([key, id]) => [id, this.#metadata.get(key)]));
+    const pending = messages.flatMap(m => values(m["content"]).filter(isJsonObject));
+    while (pending.length) {
+      const block = pending.pop()!; pending.push(...values(block["content"]).filter(isJsonObject));
+      if (block["type"] !== "diagram") continue;
+      const meta = byId.get(String(block["rendered"])), group = meta && this.#diagramGroup(meta);
+      if (!group) continue;
+      const themes: JsonObject = {};
+      for (const candidate of this.#diagramGroups.get(group) ?? []) {
+        const data = text(candidate["data_url"]) ?? this.#imageEvidence(candidate)?.dataUrl;
+        if (!data) continue;
+        const theme = String(object(candidate["mermaid"])!["theme"]);
+        const id = this.#resource(candidate, "diagram", data);
+        if (themes[theme] && themes[theme] !== id) throw new TypeError("Claude diagram occurrence has conflicting native theme images");
+        themes[theme] = id;
+      }
+      if (Object.keys(themes).length) block["rendered_themes"] = themes;
+    }
   }
 
   #meta(media: JsonObject): JsonObject | undefined {
@@ -1135,6 +1169,7 @@ async function parseClaudeWeb(context: AdapterParseContext, profile: Profile, pa
   const conversationCreatedAt = timestamp(conversation?.["created_at"]);
   const conversationUpdatedAt = timestamp(conversation?.["updated_at"]);
   const uniqueLimitations = [...new Set(limitations.map((entry) => canonicalizeJcs(entry)))].map((entry) => JSON.parse(entry) as JsonObject);
+  resources.attachDiagramThemes(messages);
   return {
     source: {
       file: context.source.file,
@@ -1171,29 +1206,29 @@ async function parseClaudeWeb(context: AdapterParseContext, profile: Profile, pa
 
 export const CLAUDE_LIGHT_MANIFEST: AdapterManifest = {
   id: "claude-light-dom-v1",
-  version: "3.0.14",
+  version: "3.0.15",
   family: "claude",
   routes: [{ format: "exporter-html", platform: "claude", payload: "osis.claude.chat-export/light-dom-v1", profile: "light" }],
-  target: "cloudig/conversation/1.0.2",
-  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13"].map(version => ({ adapter: "claude-light-dom-v1", version, action: "reparse_source" as const }))
+  target: "cloudig/conversation/1.0.3",
+  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13", "3.0.14"].map(version => ({ adapter: "claude-light-dom-v1", version, action: "reparse_source" as const }))
 };
 
 export const CLAUDE_FULL_MANIFEST: AdapterManifest = {
   id: "claude-full-capture-v1",
-  version: "3.0.14",
+  version: "3.0.15",
   family: "claude",
   routes: [{ format: "exporter-html", platform: "claude", payload: "osis.claude.chat-export/full-capture-v1", profile: "full" }],
-  target: "cloudig/conversation/1.0.2",
-  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13"].map(version => ({ adapter: "claude-full-capture-v1", version, action: "reparse_source" as const }))
+  target: "cloudig/conversation/1.0.3",
+  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13", "3.0.14"].map(version => ({ adapter: "claude-full-capture-v1", version, action: "reparse_source" as const }))
 };
 
 export const CLAUDE_TREE_MANIFEST: AdapterManifest = {
   id: "claude-all-branches-v1",
-  version: "3.0.14",
+  version: "3.0.15",
   family: "claude",
   routes: [{ format: "exporter-html", platform: "claude", payload: "osis.claude.chat-export/all-branches-v1", profile: "tree" }],
-  target: "cloudig/conversation/1.0.2",
-  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13"].map(version => ({ adapter: "claude-all-branches-v1", version, action: "reparse_source" as const }))
+  target: "cloudig/conversation/1.0.3",
+  update_from: ["2.0.0", "2.0.1", "2.0.2", "2.0.3", "2.0.4", "2.0.5", "2.0.6", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12", "3.0.13", "3.0.14"].map(version => ({ adapter: "claude-all-branches-v1", version, action: "reparse_source" as const }))
 };
 
 export const claudeLightAdapter: SourceAdapter = Object.freeze({

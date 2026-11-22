@@ -60,7 +60,7 @@ test("source-index 1.6 upgrades reuse unchanged observations and only reprobe ne
   assert.deepEqual(migrated.find(s=>s.path==="Inbox/official.json"),oldObservation,"unchanged existing formats must not be re-inspected on a compatible index upgrade");
   const zstd=migrated.find(s=>s.path==="Inbox/compressed.jsonl.zst")!;
   assert.equal(zstd.format,"jsonl");assert.equal(zstd.platform,"codex");
-  assert.equal(JSON.parse(await readFile(indexPath,"utf8")).schema,"cloudig/source-index/1.7.0");
+  assert.equal(JSON.parse(await readFile(indexPath,"utf8")).schema,"cloudig/source-index/1.8.0");
 }));
 
 test("legacy HTML histories restore completed status without parsing or rewriting originals, and keep safe reparse ownership", async () => temporary(async root => {

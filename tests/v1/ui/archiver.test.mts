@@ -53,7 +53,7 @@ test("English Archiver instructions retain word boundaries across inline transla
       if (typeof value === "string") node.textContent = value;
     }
     const paragraph = (key: string) => page.querySelector(`[data-i18n="archiver.${key}"]`)!.closest("p")!.textContent!.replace(/\s+/gu, " ").trim();
-    assert.equal(paragraph("workflowAutoLead"), "Automatic: Exit Chrome and choose Light / Full / Tree then select Install All or Install · Light to install only the bookmarklets you need.");
+    assert.equal(paragraph("workflowAutoLead"), "Automatic: Choose Light / Full / Tree then select Install All or Install · Light to install only the bookmarklets you need.");
     assert.match(paragraph("workflowManualLead"), /^Manual: Select then create a Chrome bookmark/u);
     assert.equal(paragraph("workflowSaveClaudeBefore"), values.archiver.workflowSaveClaude);
     assert.equal(paragraph("workflowImportBeforeHtml"), "Place bookmarklet HTML files or supported JSON, JSONL, JSONL.ZST or ZIP files in the Inbox folder. Do not extract ZIPs. Open Inbox");

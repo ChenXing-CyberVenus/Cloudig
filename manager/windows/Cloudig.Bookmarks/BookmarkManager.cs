@@ -59,17 +59,17 @@ public sealed class BookmarkManager
                 changelogError = FirstLine(error);
             }
         }
-        var profiles = ChromeProfileDiscovery.Discover(_userDataDirectory);
+        var profiles = ChromeProfileDiscovery.Discover(_userDataDirectory,includeEmpty:ChromeProfileDiscovery.IsChromeRunning());
         var statuses = new List<BookmarkStoreStatus>();
         foreach (var store in profiles.SelectMany(profile => profile.Stores))
         {
             try
             {
-                var json = ChromeProfileDiscovery.ReadBookmarkJson(store.Path);
+                var json = ChromeProfileDiscovery.ReadBookmarkJson(store);
                 var editor = new BookmarkFileEditor(
                     package,
                     requestedProfile: selection.RequestedProfile,
-                    target: TargetForStore(target, store.Path));
+                    target: TargetForStore(target, store.Path), backupRoot: _backupRoot);
                 var inspection = editor.Inspect(json);
                 statuses.Add(new BookmarkStoreStatus(
                     store,
@@ -145,9 +145,10 @@ public sealed class BookmarkManager
     {
         cancellationToken.ThrowIfCancellationRequested();
         var store = ResolveStore(storePath);
-        var json = ChromeProfileDiscovery.ReadBookmarkJson(store.Path);
+        var json = ChromeProfileDiscovery.ReadBookmarkJson(store);
         var document = BookmarkJson.ParseObject(json);
         ChromeBookmarkChecksums.AssertValid(document);
+        NativeBookmarkOwnership.Load(_backupRoot,target)?.Project(document["roots"]!.AsObject());
         return Task.FromResult(DescribeTarget(document, TargetForStore(target, store.Path)));
     }
 
@@ -232,7 +233,8 @@ public sealed class BookmarkManager
         bool requireChromeClosed = true,
         DateTime? utcNow = null,
         Action<int, BookmarkStore>? beforeWriteForTests = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        Action? verifyWriteAllowed = null)
     {
         var package = await BookmarkPackageLoader.LoadAsync(_manifestPath, _artifactRoot, cancellationToken);
         return await ExecuteCoreAsync(
@@ -244,7 +246,7 @@ public sealed class BookmarkManager
             requireChromeClosed,
             utcNow,
             beforeWriteForTests,
-            target);
+            target, verifyWriteAllowed);
     }
 
     private Task<BookmarkTransactionResult> ExecuteCoreAsync(
@@ -256,7 +258,7 @@ public sealed class BookmarkManager
         bool requireChromeClosed,
         DateTime? utcNow,
         Action<int, BookmarkStore>? beforeWriteForTests,
-        BookmarkInstallTarget? target)
+        BookmarkInstallTarget? target, Action? verifyWriteAllowed = null)
     {
         if (requireChromeClosed && ChromeProfileDiscovery.IsChromeRunning())
         {
@@ -299,7 +301,7 @@ public sealed class BookmarkManager
                 package,
                 selectedBookmarkIds: requestedIds,
                 requestedProfile: selection.RequestedProfile,
-                target: TargetForStore(target, selectedStores[0].Path)),
+                target: TargetForStore(target, selectedStores[0].Path), backupRoot: _backupRoot),
             _backupRoot)
         {
             BeforeWriteForTests = beforeWriteForTests
@@ -307,13 +309,32 @@ public sealed class BookmarkManager
         return Task.FromResult(transaction.Execute(
             selectedStores,
             operation,
-            utcNow ?? DateTime.UtcNow));
+            utcNow ?? DateTime.UtcNow, verifyWriteAllowed));
+    }
+
+    public async Task<(int Added,int Updated,string FolderGuid,bool PlacementPending)> UpdateOpenChromeAsync(BookmarkInstallTarget target, string requestedProfile,
+        IReadOnlyCollection<string> platformIds, CancellationToken cancellationToken)
+    {
+        var store = ResolveStore(target.StorePath);
+        var package = await BookmarkPackageLoader.LoadAsync(_manifestPath, _artifactRoot, cancellationToken);
+        var editor = new BookmarkFileEditor(package, selectedBookmarkIds: platformIds,
+            requestedProfile: requestedProfile, target: target, backupRoot: _backupRoot);
+        var selected = package.Resolve(requestedProfile).Bookmarks.Where(b=>platformIds.Contains(b.Id)).ToArray();
+        var targets = selected
+            .ToDictionary(b=>b.Definition.VariantId,b=>(BookmarkDisplayName.Format(b.Definition.Label,b.EffectiveProfile,b.Definition.Version),
+                b.Definition.Url,b.Definition.Version));
+        return await Task.Run(()=>{
+            var chrome=LiveChromeEditor.Executable();
+            var result=NativeBookmarkInstall.Ensure(store,target,_backupRoot,chrome,editor,selected,cancellationToken);
+            var updated=LiveUpdate.Execute(store,_backupRoot,chrome,()=>LiveBookmarkSnapshot.Read(store,editor.SelectLiveFolder),targets,false);
+            return (result.Added,updated.Count,result.FolderGuid,result.PlacementPending);
+        },cancellationToken);
     }
 
     private BookmarkStore ResolveStore(string storePath)
     {
         var normalized = Normalize(storePath);
-        return ChromeProfileDiscovery.Discover(_userDataDirectory)
+        return ChromeProfileDiscovery.Discover(_userDataDirectory,includeEmpty:ChromeProfileDiscovery.IsChromeRunning())
                    .SelectMany(profile => profile.Stores)
                    .FirstOrDefault(store => Normalize(store.Path).Equals(normalized, StringComparison.OrdinalIgnoreCase))
                ?? throw new InvalidOperationException("Cloudig will inspect only a Chrome bookmark store discovered in the current profile list.");

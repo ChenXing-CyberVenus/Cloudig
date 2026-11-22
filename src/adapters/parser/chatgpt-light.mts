@@ -9,12 +9,13 @@ import { parseFragment, serialize, serializeOuter, type DefaultTreeAdapterTypes 
 import { compactCapturedMath, inertHtmlEvidence } from "./inert-html.mts";
 import { chatGptNative, isChatGptNative } from "./chatgpt-native.mts";
 import { ChatGptIntelligentUi } from "./chatgpt-intelligent.mts";
+import { ChatGptWork } from "./chatgpt-work.mts";
 import { taskView, ownedTaskView } from "../../core/records/chatgpt-task.mts";
 import { isSourceSummary, prepareChatGptActivities, sourceSummaryIsDerived } from "./chatgpt-activity.mts";
 
 export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
   id: "chatgpt-light-items-v2",
-  version: "3.0.12",
+  version: "3.0.13",
   family: "chatgpt",
   routes: [{
     format: "exporter-html",
@@ -27,7 +28,7 @@ export const CHATGPT_LIGHT_MANIFEST: AdapterManifest = {
     adapter: "chatgpt-light-items-v2",
     version: "1.3.0",
     action: "reparse_source"
-  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
+  }, ...["2.0.0", "2.0.1", "3.0.0", "3.0.1", "3.0.2", "3.0.3", "3.0.4", "3.0.5", "3.0.6", "3.0.7", "3.0.8", "3.0.9", "3.0.10", "3.0.11", "3.0.12"].map(version => ({ adapter: "chatgpt-light-items-v2", version, action: "reparse_source" as const }))]
 };
 
 function object(value: JsonValue | undefined): JsonObject | undefined {
@@ -109,6 +110,18 @@ function recordedTextBody(item: JsonObject, ownerIds: readonly string[], reading
   const body = htmlElements(tree).find(node => htmlClass(node, item["kind"] === "user" ? "user-bubble" : "answer"));
   if (!body) return undefined;
   const elements = htmlElements(body);
+  // The exporter also places a static Site preview in the reading HTML.
+  // Only remove its explicit carrier when an owned structured card replaces it.
+  for (const node of elements) {
+    if (node.tagName !== "aside" || !htmlClass(node,"cloudig-site-card") || !node.parentNode) continue;
+    const marker = htmlElements(node).find(child => child.tagName === "cloudig-site");
+    const project = marker && htmlAttribute(marker,"data-project");
+    if (project && ids.some(id => resources.work.ownsSite(id,project))) {
+      const children = node.parentNode.childNodes;
+      const at = children.indexOf(node);
+      if (at >= 0) children.splice(at,1);
+    }
+  }
   if (elements.some(node => node.tagName === "img" || htmlClass(node, "attachment"))) return undefined;
   if (elements.some(node => (htmlClass(node, "osis-mermaid-card") || htmlClass(node, "writing-block")) && node.parentNode !== body)) return undefined;
   compactCapturedMath(body);
@@ -146,11 +159,14 @@ function sparseKey(values: Readonly<Record<string, JsonValue | undefined>>): Jso
 class ResourcePool {
   readonly values: JsonObject[] = [];
   readonly interactive: boolean;
+  readonly work: ChatGptWork;
   readonly intelligent: ChatGptIntelligentUi | undefined;
   readonly #byKey = new Map<string, string>();
   readonly #sourceById = new Map<string, JsonObject>();
 
-  constructor(rawResources?: JsonValue, interactive = false, intelligent?: JsonObject, scheduled: JsonObject = {}) {
+  constructor(context: AdapterParseContext, rawResources?: JsonValue) {
+    const interactive = !!context.record, intelligent = context.extensions?.chatgptIntelligentUi, scheduled = object(context.payload["scheduled_components"]) ?? {};
+    this.work = new ChatGptWork(context.payload, interactive ? context.extensions?.chatgptSites : undefined, context.record);
     this.interactive = interactive;
     this.intelligent = intelligent && interactive ? new ChatGptIntelligentUi(intelligent, part => this.addPart(part), scheduled) : undefined;
     for (const [key, raw] of objectEntries(rawResources)) {
@@ -268,7 +284,7 @@ class ResourcePool {
     }));
     return this.#allocate(`attachment\u0000${key}`, {
       kind: "file",
-      availability: raw["availability"] === "missing" ? "missing" : "metadata_only",
+      availability: raw["availability"] === "missing" || sourceText(raw["error"]) ? "missing" : "metadata_only",
       ...(sourceText(raw["name"]) ? { name: sourceText(raw["name"])! } : {}),
       ...(declaredMime ? { mime: declaredMime } : {}),
       ...(nonNegativeInteger(raw["size_bytes"]) !== undefined ? { bytes: nonNegativeInteger(raw["size_bytes"])! } : {})
@@ -573,6 +589,8 @@ function projectItem(
       const body = sourceText(item["text"]);
       if (body) result.push({ type: "html", html: `<details><summary>${escape(sourceText(item["name"]) ?? "检索来源")}</summary><pre>${escape(body)}</pre></details>` });
     }
+  } else if (kind === "subagent_activity") {
+    result.push(resources.work.activity(item, part => resources.addPart(part)));
   } else if (kind === "thinking") {
     result.push(...thoughtBlocks(item));
   } else if (kind === "recap") {
@@ -597,6 +615,7 @@ function projectItem(
     if (output || name) result.push({ type: "tool", kind: "result", ...(sourceText(item["analysis_call_id"]) ? { call: item["analysis_call_id"]! } : {}), ...(name ? { name } : {}), ...(output ? { output } : {}) });
   } else if (kind === "user" || kind === "assistant" || kind === "assistant_asset") {
     result.push(...projectParts(item, resources, limitations, mermaid, additionalOwnerIds, reading));
+    result.push(...resources.work.siteBlocks(item, part => resources.addPart(part)));
   } else {
     const text = sourceText(item["text"]);
     if (text) result.push({ type: "unknown", kind: slug(kind ?? "chatgpt-item"), text });
@@ -670,7 +689,7 @@ async function groupMessages(
       assistant.items.push(item);
       const projected = projectItem(item, resources, sources, limitations, mermaid, schedule, [], reading);
       const declaredModel = sourceText(item["model"]);
-      if (declaredModel) for (const block of projected) record?.block(block, { role: "assistant", model: declaredModel });
+      if (declaredModel && item["kind"] !== "subagent_activity") for (const block of projected) record?.block(block, { role: "assistant", model: declaredModel });
       assistant.content.push(...projected);
       for (const id of [sourceText(item["message_id"]), sourceText(item["node_id"])]) if (id) contentBySourceId.set(id, assistant.content);
       const model = sourceText(item["model"]);
@@ -737,7 +756,7 @@ function chatGptDraft(input: Readonly<{
 }
 
 export async function parseChatGptItems(context: AdapterParseContext, route: ChatGptRoute): Promise<JsonObject> {
-  const resources = new ResourcePool(undefined, !!context.record, context.extensions?.chatgptIntelligentUi, object(context.payload["scheduled_components"]) ?? {});
+  const resources = new ResourcePool(context);
   const sources = new SourcePool();
   const limitations: JsonObject[] = [];
   const items = values(context.payload["items"]);
@@ -853,7 +872,7 @@ export async function parseChatGptTree(context: AdapterParseContext, route: Chat
   if (context.payload["entry_surface"] === "scheduled_task" && Array.isArray(context.payload["items"])) {
     return parseChatGptItems(context, route);
   }
-  const resources = new ResourcePool(context.payload["resources"], !!context.record, context.extensions?.chatgptIntelligentUi, object(context.payload["scheduled_components"]) ?? {});
+  const resources = new ResourcePool(context, context.payload["resources"]);
   const sources = new SourcePool();
   const limitations: JsonObject[] = [];
   const renderedMermaid = treeRenderedMermaid(context.payload);
@@ -887,7 +906,7 @@ export async function parseChatGptTree(context: AdapterParseContext, route: Chat
     for (const item of items) {
       const projected = projectItem(item, resources, sources, limitations, mermaid, schedule, [turn.key], reading);
       const declaredModel = sourceText(item["model"]);
-      if (declaredModel) for (const block of projected) context.record?.block(block, { role: "assistant", model: declaredModel });
+      if (declaredModel && item["kind"] !== "subagent_activity") for (const block of projected) context.record?.block(block, { role: "assistant", model: declaredModel });
       content.push(...projected);
       for (const id of [sourceText(item["message_id"]), sourceText(item["node_id"])]) if (id) contentBySourceId.set(id, content);
       const model = sourceText(item["model"]);

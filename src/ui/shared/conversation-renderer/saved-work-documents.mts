@@ -119,6 +119,27 @@ function designSystemDocument(input: InteractivePackage): string {
   return shell(input, `<main class="document">${intro}<h2>${english ? "Colors" : "颜色"}</h2><table><thead><tr><th>${english ? "Name" : "名称"}</th>${themes.map(t => `<th>${escape(t["name"])}</th>`).join("")}<th>${english ? "Usage" : "用途"}</th></tr></thead><tbody>${colorRows}</tbody></table><h2>${english ? "Typography" : "文字"}</h2><table><thead><tr>${(english ? ["Style","Family","Size","Line height","Weight"] : ["样式","字体","字号","行高","字重"]).map(t => `<th>${t}</th>`).join("")}</tr></thead><tbody>${typeRows}</tbody></table>${measures}</main>`);
 }
 
+function notebookBody(raw: string, document: Document): string {
+  const string = (value: unknown) => typeof value === "string" ? value : Array.isArray(value) ? value.filter(v => typeof v === "string").join("") : "";
+  const pure = createDOMPurify(document.defaultView!);
+  try {
+    const notebook = object(JSON.parse(raw));
+    if (!Array.isArray(notebook["cells"])) return `<pre>${escape(raw)}</pre>`;
+    return rows(notebook["cells"]).map(cell => {
+      const source = string(cell["source"]);
+      const body = cell["cell_type"] === "markdown" ? markdown.render(source) : `<pre><code>${escape(source)}</code></pre>`;
+      const outputs = rows(cell["outputs"]).map(output => {
+        const data = object(output["data"]), png = string(data["image/png"]);
+        if (png && /^[a-z\d+/=\s]+$/iu.test(png)) return `<img alt="PNG" style="max-width:100%" src="data:image/png;base64,${png}">`;
+        const svg = string(data["image/svg+xml"]), html = string(data["text/html"]);
+        if (svg || html) return pure.sanitize(svg || html, { USE_PROFILES: { html: true, svg: true }, FORBID_TAGS: ["style","iframe","form","foreignObject"], FORBID_ATTR: ["style"] });
+        return `<pre>${escape(string(data["text/plain"]) || string(output["text"]) || string(output["traceback"]))}</pre>`;
+      });
+      return `<section class="notebook-cell">${body}${outputs.join("")}</section>`;
+    }).join("");
+  } catch { return `<pre>${escape(raw)}</pre>`; }
+}
+
 /** Format-specific read views. Original resources and their bytes stay intact. */
 export function savedWorkDocument(input: InteractivePackage, document: Document, raw: string): string {
   if (input.source === "kimi.com_pptd" && input.format === "slides") {
@@ -134,6 +155,7 @@ export function savedWorkDocument(input: InteractivePackage, document: Document,
     `html,body{height:100%}#cloudig-file-preview{min-height:100%;padding:20px}.office-docx-wrapper{background:transparent!important;padding:0!important}.office-docx-wrapper>section{margin:16px auto!important}.office-status{text-align:center}.office-toolbar{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px}.office-canvas{display:block;max-width:100%;height:auto;margin:auto;background:white}.office-deck{width:100%}.saved-sheet{margin:0 0 20px}.saved-sheet summary{font-weight:700;cursor:pointer;padding:12px 0}.saved-sheet-scroll{max-width:100%;overflow:auto}.saved-sheet th[scope=row]{font-size:12px;padding:0;text-align:center;background:#eee;color:#555}`);
   if (input.preview && preview) {
     const kind=previewKind(preview.path,preview.mime);
+    if (kind === "ipynb") return shell(input, `<main class="document">${notebookBody(raw,document)}</main>`, ".notebook-cell+.notebook-cell{margin-top:20px;border-top:1px solid var(--edge)}");
     if (isMediaPreview(preview)) return shell(input, `<main class="document saved-media"><${kind} controls preload="metadata" src="${escape(preview.path)}"></${kind}></main>`, `${kind==="audio"?"html,body{height:auto}main.saved-media{min-height:260px}":"html,body{height:100%}main.saved-media{min-height:100%}"}main.saved-media{display:flex;align-items:center;justify-content:center;width:100%;padding:24px 32px}.saved-media :is(audio,video){width:100%;max-height:calc(100dvh - 48px)}`);
     if (["png","jpg","jpeg","webp","gif","svg"].includes(kind??"")) return shell(input,`<main class="document"><img alt="" src="${escape(preview.path)}" style="max-width:100%;height:auto"></main>`);
     // An HTML attachment is a document, not executable work. Preserve its

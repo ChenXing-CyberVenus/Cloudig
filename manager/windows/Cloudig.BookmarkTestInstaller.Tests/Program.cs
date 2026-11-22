@@ -7,6 +7,18 @@ using Cloudig.Bookmarks;
 var projectRoot = FindProjectRoot(AppContext.BaseDirectory);
 var temporaryRoot = Path.Combine(projectRoot, "manager", ".test-temp", $"bookmark-test-installer-{Guid.NewGuid():N}");
 var assertions = 0;
+if(args.Length==2&&(args[0]=="--live-browser"||args[0]=="--editor-probe")&&OperatingSystem.IsWindows()){
+    QuietTestDesktop.Run(projectRoot,Path.GetFullPath(args[1]),temporaryRoot,args[0]=="--editor-probe");
+    return;
+}
+if(args.Length==3&&(args[0]=="--isolated-worker"||args[0]=="--isolated-editor-probe")&&OperatingSystem.IsWindows()){
+    QuietTestDesktop.RequirePrivate();
+    using var w=new StreamWriter(Path.Combine(args[2],"acceptance.txt")){AutoFlush=true};
+    Console.SetOut(w);
+    try{LiveBrowserAcceptance.Run(projectRoot,Path.Combine(args[2],"fixture"),args[1],CreateEmptyBookmarks(),args[0]=="--isolated-editor-probe");}
+    catch(Exception e){w.WriteLine(e);Environment.ExitCode=1;}
+    return;
+}
 void Check(bool condition, string message)
 {
     if (!condition) throw new InvalidOperationException(message);
@@ -237,6 +249,38 @@ try
         "installer did not dynamically load every current candidate/test .min.js file");
     Check(actualPackage.Bookmarks.All(item=>System.Text.RegularExpressions.Regex.IsMatch(item.TitleZh,@"^.+（(轻装|全量|整树)）· [0-9.]+-(Light|Full|Tree) · Cloudig$")),
         "A real handoff entry bypassed the new naming format");
+
+    // Hot-update guards that require no Chrome at all. A bogus executable makes
+    // accidental opening/writing visible instead of making the tests pass.
+    var localFile=Path.Combine(temporaryRoot,"live-guards","Default","Bookmarks");
+    Directory.CreateDirectory(Path.GetDirectoryName(localFile)!);File.WriteAllText(localFile,CreateEmptyBookmarks());
+    var guardStore=new BookmarkStore("Default","local fixture","local",localFile);
+    new BookmarkTransaction(new BookmarkTestFileEditor(package),Path.Combine(temporaryRoot,"guard-seed"))
+        .Execute([guardStore],BookmarkOperation.InstallOrRepair,fixedTime);
+    var g=LiveBookmarkSnapshot.Read(guardStore);var guardRoot=Path.Combine(temporaryRoot,"guard-backups");
+    var original=File.ReadAllBytes(localFile);var missing=Path.Combine(temporaryRoot,"never-launched.exe");
+    var noEdits=Cloudig.Bookmarks.LiveUpdate.Execute(package,guardStore,guardRoot,missing);
+    Check(noEdits==(0,null)&&!Directory.Exists(guardRoot)&&original.SequenceEqual(File.ReadAllBytes(localFile)),"live no-op touched disk or browser");
+    ExpectFailure(()=>Cloudig.Bookmarks.LiveUpdate.Execute(reducedPackage,guardStore,guardRoot,missing),"原位更新已有");
+    Check(!Directory.Exists(guardRoot)&&original.SequenceEqual(File.ReadAllBytes(localFile)),"online update attempted to add/remove slots");
+    Check(Cloudig.Bookmarks.LiveUpdate.Equivalent("javascript:/*云 */","javascript:/*%E4%BA%91%20*/")&&
+        !Cloudig.Bookmarks.LiveUpdate.Equivalent("javascript:'%2520'","javascript:'%20'"),"Chrome URL equivalence must decode exactly once");
+    var expanded="javascript:"+string.Concat(Enumerable.Repeat("%22",175000))+"%E4%BA%91%2520%23%3F%2F%0A%20";
+    var writable=Cloudig.Bookmarks.LiveUpdate.EditorSpelling(expanded);
+    Check(writable.Length<=500*1024&&writable.EndsWith("云%2520%23%3F%2F%0A%20")&&
+        Cloudig.Bookmarks.LiveUpdate.Equivalent(expanded,writable),"writable URL changed script bytes or URL delimiters");
+    ExpectFailure(()=>Cloudig.Bookmarks.LiveUpdate.EditorSpelling("javascript:"+new string('x',512001)),"未截断");
+    var group=Path.Combine(guardRoot,"Live",g.FolderGuid,"20261121T1200000000000Z-"+Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(group);
+    var items=new JsonArray();foreach(var n in g.Items)items.Add((JsonNode)new JsonObject{
+        ["guid"]=n.Guid,["slot"]=n.Slot,["index"]=n.Index,["id"]=n.Id,["old_title"]="past",["old_url"]="javascript:void(1)",
+        ["new_title"]="different from user's current title",["new_hash"]=new string('A',64),["auto"]=true});
+    var mockJournal=new JsonObject{["format"]="cloudig/live-test-bookmarks/1",["folder"]=g.FolderGuid,["items"]=items};
+    using(var file=File.Create(Path.Combine(group,"before.json.gz")))
+    using(var gz=new System.IO.Compression.GZipStream(file,System.IO.Compression.CompressionLevel.Fastest))
+    using(var w=new Utf8JsonWriter(gz))mockJournal.WriteTo(w);
+    ExpectFailure(()=>Cloudig.Bookmarks.LiveUpdate.Execute(package,guardStore,guardRoot,missing,true),"已有其他编辑");
+    Check(original.SequenceEqual(File.ReadAllBytes(localFile))&&Directory.GetFiles(guardRoot,"before.json.gz",SearchOption.AllDirectories).Length==1,"refused restore overwrote data or backup");
 }
 finally
 {

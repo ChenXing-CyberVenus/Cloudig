@@ -5,7 +5,7 @@ import { gzipSync, gunzipSync } from 'node:zlib';
 import { parse } from 'acorn';
 
 const supportedSha = 'ea1b1ca203a8bfff4ecb49db949eca7e00dc7bb3ae9e03f36df7186d3ef11161';
-export function packTemmlSymbols(source, { packStrings = true } = {}) {
+export function packTemmlSymbols(source, { packStrings = true, shareKeys = false } = {}) {
   if (createHash('sha256').update(source).digest('hex') !== supportedSha) throw Error('Unsupported Temml symbol packing input');
   const ast = parse(source, { ecmaVersion: 'latest' });
   const values = new Map(), declarations = new Map(), writes = new Set(), sequences = [];
@@ -69,9 +69,26 @@ export function packTemmlSymbols(source, { packStrings = true } = {}) {
   }
   if(packStrings)collect(parse(source,{ecmaVersion:'latest'}));
   for(const edit of literalEdits.sort((a,b)=>b.start-a.start))source=source.slice(0,edit.start)+edit.text+source.slice(edit.end);
-  const json = JSON.stringify([tables,literals]), gzip = gzipSync(Buffer.from(json), { level: 9 });
+  let keys=[];
+  if(shareKeys){
+    const uses=new Map(),changes=[];
+    walk(parse(source,{ecmaVersion:'latest'}),n=>{
+      // This SHA-pinned runtime also repeats literal initializer keys. A
+      // computed string key has the same property name and enumeration order.
+      // Never rewrite shorthand, methods, or the special __proto__ initializer.
+      const init=n.type==='Property'&&n.kind==='init'&&!n.computed&&!n.shorthand&&!n.method&&n.key.type==='Identifier'&&n.key.name!=='__proto__';
+      if(!init&&(n.type!=='MemberExpression'||n.computed||n.optional||n.property.type!=='Identifier'))return;
+      const key=init?n.key:n.property,name=key.name,start=key.start-(init?0:1);
+      if(name.length<4||source.slice(start,key.end)!==(init?'':'.')+name)return;
+      if(!uses.has(name))uses.set(name,[]);uses.get(name).push([start,key.end]);
+    });
+    keys=[...uses].filter(([k,v])=>(k.length-3)*v.length>k.length+12).map(([k])=>k);
+    for(const [i,k] of keys.entries())for(const [start,end] of uses.get(k))changes.push({start,end,text:'[osisTemmlField'+i+']'});
+    for(const e of changes.sort((a,b)=>b.start-a.start))source=source.slice(0,e.start)+e.text+source.slice(e.end);
+  }
+  const json = JSON.stringify(shareKeys?[tables,literals,keys]:[tables,literals]), gzip = gzipSync(Buffer.from(json), { level: 9 });
   if (gunzipSync(gzip).toString('utf8') !== json) throw Error('Temml symbols did not round-trip');
   gzip.fill(0, 4, 8); gzip[9] = 255;
-  const prelude = `const [osisTemmlSymbolTables,osisTemmlLiterals]=JSON.parse(await new Response(new Blob([Uint8Array.from(atob(${JSON.stringify(gzip.toString('base64'))}),c=>c.charCodeAt(0))]).stream().pipeThrough(new DecompressionStream('gzip'))).text());\n`;
+  const prelude = `const [osisTemmlSymbolTables,osisTemmlLiterals${shareKeys?', ['+keys.map((_,i)=>'osisTemmlField'+i).join(',')+']':''}]=JSON.parse(await new Response(new Blob([Uint8Array.from(atob(${JSON.stringify(gzip.toString('base64'))}),c=>c.charCodeAt(0))]).stream().pipeThrough(new DecompressionStream('gzip'))).text());\n`;
   return { source, prelude, tables, literals, registrations: tables.reduce((sum, rows) => sum+rows.length,0) };
 }

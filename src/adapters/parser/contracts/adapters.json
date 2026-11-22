@@ -1,10 +1,10 @@
 {
   "schema": "cloudig/adapter-bundle/1.0.0",
-  "parser": "1.1.56",
+  "parser": "1.1.59",
   "adapters": [
     {
       "id": "chatgpt-light-items-v2",
-      "version": "3.0.12",
+      "version": "3.0.13",
       "family": "chatgpt",
       "routes": [
         {
@@ -90,12 +90,17 @@
           "adapter": "chatgpt-light-items-v2",
           "version": "3.0.11",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-light-items-v2",
+          "version": "3.0.12",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "chatgpt-full-v1",
-      "version": "3.0.12",
+      "version": "3.0.13",
       "family": "chatgpt",
       "routes": [
         {
@@ -181,12 +186,17 @@
           "adapter": "chatgpt-full-v1",
           "version": "3.0.11",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-full-v1",
+          "version": "3.0.12",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "chatgpt-all-branches-v1",
-      "version": "3.0.12",
+      "version": "3.0.13",
       "family": "chatgpt",
       "routes": [
         {
@@ -271,6 +281,11 @@
         {
           "adapter": "chatgpt-all-branches-v1",
           "version": "3.0.11",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "chatgpt-all-branches-v1",
+          "version": "3.0.12",
           "action": "reparse_source"
         }
       ]
@@ -2193,7 +2208,7 @@
     },
     {
       "id": "claude-light-dom-v1",
-      "version": "3.0.14",
+      "version": "3.0.15",
       "family": "claude",
       "routes": [
         {
@@ -2203,7 +2218,7 @@
           "profile": "light"
         }
       ],
-      "target": "cloudig/conversation/1.0.2",
+      "target": "cloudig/conversation/1.0.3",
       "update_from": [
         {
           "adapter": "claude-light-dom-v1",
@@ -2304,12 +2319,17 @@
           "adapter": "claude-light-dom-v1",
           "version": "3.0.13",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-light-dom-v1",
+          "version": "3.0.14",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "claude-full-capture-v1",
-      "version": "3.0.14",
+      "version": "3.0.15",
       "family": "claude",
       "routes": [
         {
@@ -2319,7 +2339,7 @@
           "profile": "full"
         }
       ],
-      "target": "cloudig/conversation/1.0.2",
+      "target": "cloudig/conversation/1.0.3",
       "update_from": [
         {
           "adapter": "claude-full-capture-v1",
@@ -2425,12 +2445,17 @@
           "adapter": "claude-full-capture-v1",
           "version": "3.0.13",
           "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-full-capture-v1",
+          "version": "3.0.14",
+          "action": "reparse_source"
         }
       ]
     },
     {
       "id": "claude-all-branches-v1",
-      "version": "3.0.14",
+      "version": "3.0.15",
       "family": "claude",
       "routes": [
         {
@@ -2440,7 +2465,7 @@
           "profile": "tree"
         }
       ],
-      "target": "cloudig/conversation/1.0.2",
+      "target": "cloudig/conversation/1.0.3",
       "update_from": [
         {
           "adapter": "claude-all-branches-v1",
@@ -2545,6 +2570,11 @@
         {
           "adapter": "claude-all-branches-v1",
           "version": "3.0.13",
+          "action": "reparse_source"
+        },
+        {
+          "adapter": "claude-all-branches-v1",
+          "version": "3.0.14",
           "action": "reparse_source"
         }
       ]
@@ -2624,6 +2654,21 @@
           "format": "json-container",
           "platform": "deepseek",
           "payload": "deepseek-official-json",
+          "profile": "container"
+        }
+      ],
+      "target": "cloudig/conversation/1.0.0",
+      "update_from": []
+    },
+    {
+      "id": "deepseek-official-zip",
+      "version": "1.0.0",
+      "family": "deepseek",
+      "routes": [
+        {
+          "format": "zip-container",
+          "platform": "deepseek",
+          "payload": "deepseek-export-v3",
           "profile": "container"
         }
       ],

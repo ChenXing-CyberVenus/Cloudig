@@ -116,10 +116,10 @@ export function assembleConversationRecord(input: Readonly<{
   if (text(draft["title"])) title["original"] = draft["title"]!;
   const current = facts.current ?? text(draft["current_message"]);
   const pending = messages.flatMap(message => list(message["content"]));
-  let hasContainer = false;
-  while (pending.length) { const block = pending.pop()!; if (block["type"] === "box" || block["type"] === "window") hasContainer = true; pending.push(...list(block["content"])); }
+  let needsCurrentSchema = false;
+  while (pending.length) { const block = pending.pop()!; if (block["type"] === "box" || block["type"] === "window" || block["rendered_themes"] !== undefined) needsCurrentSchema = true; pending.push(...list(block["content"])); }
   const record: JsonObject = {
-    schema: hasContainer ? CONVERSATION_SCHEMA : previous?.["schema"] ?? LEGACY_CONVERSATION_SCHEMA, conversation_id: previous?.["conversation_id"] ?? uuidV7(Date.parse(timestamp)),
+    schema: needsCurrentSchema ? CONVERSATION_SCHEMA : previous?.["schema"] ?? LEGACY_CONVERSATION_SCHEMA, conversation_id: previous?.["conversation_id"] ?? uuidV7(Date.parse(timestamp)),
     parser: { version: input.parserVersion, adapter: { id: parsed.adapter.id, version: parsed.adapter.version } },
     lifecycle: { first_parsed_at: obj(previous?.["lifecycle"])["first_parsed_at"] ?? timestamp, last_parsed_at: timestamp, cloudig_edited_at: timestamp },
     source, platform: draft["platform"]!, ...(Object.keys(title).length ? { title } : {}),

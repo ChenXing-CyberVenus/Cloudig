@@ -106,10 +106,10 @@ export async function embedOfficialResources(extracted: ExtractedRecord, root: s
 }
 /** Source readers prove the bytes; embedding semantics are identical for ZIP
  * members and the old direct-JSON companion format. */
-export async function embedOfficialResourceBytes(extracted: ExtractedRecord, platform: string, read: (key: string) => Promise<Buffer | undefined>, signal?: AbortSignal): Promise<ExtractedRecord> {
+export async function embedOfficialResourceBytes(extracted: ExtractedRecord, platform: string, read: (key: string) => Promise<Buffer | undefined>, signal?: AbortSignal, sourcePaths?: ReadonlyMap<JsonObject,string>): Promise<ExtractedRecord> {
   const resources = list(extracted.parsed.draft['resources']);
   for (const raw of resources) {
-    signal?.throwIfAborted(); const resource = object(raw), key = officialResourceKey(platform, resource); if (!key || resource['availability'] === 'embedded') continue;
+    signal?.throwIfAborted(); const resource = object(raw), key = sourcePaths?.get(resource) ?? officialResourceKey(platform, resource); if (!key || resource['availability'] === 'embedded') continue;
     const bytes = await read(key); if (!bytes) continue;
     const detected = mediaType(bytes, text(resource['name']));
     resource['availability'] = 'embedded'; resource['mime'] = detected.mime; resource['bytes'] = bytes.length; resource['sha256'] = createHash('sha256').update(bytes).digest('hex');

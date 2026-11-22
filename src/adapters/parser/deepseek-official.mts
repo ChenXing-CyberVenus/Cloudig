@@ -15,14 +15,42 @@ const object = (v: unknown): JsonObject => isJsonObject(v) ? v : {};
 const list = (v: unknown): JsonValue[] => Array.isArray(v) ? v : [];
 const time = (v: unknown) => { const s=text(v); if(!s)return; const date=new Date(s);return Number.isFinite(date.valueOf())?date.toISOString():undefined; };
 export const deepSeekOfficialSelector = (id: string): string => createHash('sha256').update('deepseek-official\0'+id).digest('hex');
+export const DEEPSEEK_ZIP_MANIFEST: AdapterManifest = {
+  id: 'deepseek-official-zip', version: '1.0.0', family: 'deepseek',
+  routes: [{ format: 'zip-container', platform: 'deepseek', payload: 'deepseek-export-v3', profile: 'container' }],
+  target: 'cloudig/conversation/1.0.0', update_from: []
+};
+
+function nativeId(value: unknown): string {
+  if (Number.isSafeInteger(value) || typeof value === 'string' && value.length) return String(value);
+  throw new TypeError('Invalid DeepSeek message id');
+}
+
+/** Keep the export array order, including sibling branches and repeated text. */
+export function deepSeekZipNodes(record: JsonObject, sessionId: string): [string, JsonObject][] {
+  if (record['id'] !== sessionId || !Array.isArray(record['messages'])) throw new TypeError('DeepSeek session disagrees with its index');
+  const ids = new Set<string>();
+  return record['messages'].map(raw => {
+    if (!isJsonObject(raw) || !Array.isArray(raw['fragments']) || !['USER','ASSISTANT','SYSTEM','TOOL'].includes(String(raw['role'])))
+      throw new TypeError('Invalid DeepSeek session message');
+    const id = nativeId(raw['id']);
+    if (ids.has(id)) throw new TypeError('Duplicate DeepSeek message id');
+    ids.add(id);
+    const parent = raw['parent_id'];
+    return [id, {id, message: raw, ...(parent == null ? {} : {parent: nativeId(parent)})}];
+  });
+}
 
 /** Native export fragments are not bookmarklet payloads. Preserve their exact
  * trees and block order; in particular SEARCH.results has no content string. */
 export function extractDeepSeekOfficial(input: Readonly<{
   record: JsonObject; source: Readonly<{ file: string; bytes: number; sha256: string }>; captured?: CapturedSourceTime;
+  zipNodes?: [string, JsonObject][]; attachmentPaths?: Map<JsonObject, string>;
 }>): ExtractedRecord {
   const {record}=input, id=text(record['id']);
-  if(!id||!isJsonObject(record['mapping']))throw new TypeError('DeepSeek export record needs id and mapping');
+  const nodes = input.zipNodes ?? (isJsonObject(record['mapping']) ? Object.entries(record['mapping']) : undefined);
+  if(!id||!nodes)throw new TypeError('DeepSeek export record needs id and messages');
+  const blockSpeakers = new Map<JsonObject, SourceMessageFacts>();
   const messages: JsonObject[]=[], facts: SourceMessageFacts[]=[], references: JsonObject[]=[], resources: JsonObject[]=[], limitations: JsonObject[]=[], models=new Set<string>();
   const addReference=(raw: JsonValue):string=>{
     const v=object(raw), ref:JsonObject={id:`s${references.length+1}`,kind:'web'};
@@ -30,31 +58,49 @@ export function extractDeepSeekOfficial(input: Readonly<{
     if(Object.keys(ref).length===2){ref['kind']='other';ref['text']=JSON.stringify(raw);}
     references.push(ref);return String(ref['id']);
   };
-  for(const [key, value] of Object.entries(record['mapping'])) {
+  for(const [key, value] of nodes) {
     if(!isJsonObject(value))throw new TypeError('DeepSeek mapping node must be an object');
     if(value['id']!==undefined&&String(value['id'])!==key)throw new TypeError('DeepSeek mapping key and node id disagree');
     if(value['message']!==null&&!isJsonObject(value['message']))throw new TypeError('DeepSeek message is malformed');
     const raw=object(value['message']), fragments=list(raw['fragments']);
     if(value['message']!==null&&!Array.isArray(raw['fragments']))throw new TypeError('DeepSeek message fragments are missing');
-    const role=value['message']===null?'system':fragments.some(f=>object(f)['type']==='REQUEST'||object(f)['type']==='FILE')?'user':'assistant';
+    const role=input.zipNodes ? String(raw['role']).toLowerCase() : value['message']===null?'system':fragments.some(f=>object(f)['type']==='REQUEST'||object(f)['type']==='FILE')?'user':'assistant';
     const model=role==='assistant'?text(raw['model']):undefined; if(model)models.add(model);
     const parent=text(value['parent']), timestamp=time(raw['inserted_at']), content:JsonObject[]=[];
+    const appendPlatformStatus = (label: string): void => {
+      const notice: JsonObject = {type:'status',text:label};
+      blockSpeakers.set(notice,{role:'system',name:'DeepSeek'});
+      content.push(notice);
+    };
     for(const fragment of fragments) {
       if(!isJsonObject(fragment))throw new TypeError('DeepSeek fragment is not an object');
       const kind=text(fragment['type']), body=typeof fragment['content']==='string'?fragment['content']:undefined;
-      if((kind==='REQUEST'||kind==='RESPONSE')&&body!==undefined)content.push(...projectMarkdownWithDiagrams(body));
-      else if(kind==='THINK'&&body!==undefined)content.push({type:'reasoning',text:body,format:'markdown'});
+      if((kind==='REQUEST'||kind==='RESPONSE'||input.zipNodes && kind==='TEMPLATE_RESPONSE')&&body!==undefined)content.push(...projectMarkdownWithDiagrams(body));
+      else if(kind==='THINK'&&body!==undefined) {
+        const duration = fragment['elapsed_secs'];
+        content.push({type:'reasoning',text:body,format:'markdown',...(input.zipNodes && typeof duration==='number' && duration>=0 ? {duration} : {})});
+      } else if(input.zipNodes && kind==='CONTENT_RISK' && body!==undefined) {
+        appendPlatformStatus(body);
+      }
       else if(kind==='FILE'&&Array.isArray(fragment['files'])) {
         for(const f of fragment['files']) {
           if(!isJsonObject(f))throw new TypeError('DeepSeek file metadata is malformed');
           const resource:JsonObject={id:`r${resources.length+1}`,kind:'file',availability:'metadata_only'};
           if(text(f['file_name']))resource['name']=f['file_name']!;
           if(Number.isSafeInteger(f['file_size'])&&Number(f['file_size'])>=0)resource['bytes']=f['file_size']!;
+          if(input.attachmentPaths && typeof f['export_path']==='string') {
+            const prefix = `chat_sessions/${id}_files/`, member = f['export_path'];
+            if (member.startsWith(prefix) && /^[^/\\\x00-\x1f]+$/u.test(member.slice(prefix.length)) && !['.','..'].includes(member.slice(prefix.length))) {
+              input.attachmentPaths.set(resource, member);
+              if (Number.isSafeInteger(f['width']) && Number(f['width'])>0 && Number.isSafeInteger(f['height']) && Number(f['height'])>0)
+                resource['dimensions']={width:f['width']!,height:f['height']!};
+            }
+          }
           resources.push(resource);content.push({type:'attachment',resource:resource['id']!});
         }
       } else if(kind==='SEARCH'||kind==='TOOL_SEARCH') {
-        const refs=list(fragment['results']).map(addReference), query=text(fragment['query']);
-        content.push({type:'search',...(query?{query}:{}),...(refs.length?{sources:refs}:{})});
+        const refs=list(fragment['results']).map(addReference), query=text(fragment['query']) ?? (input.zipNodes ? list(fragment['queries']).filter(q=>typeof q==='string').join('\n') : undefined);
+        content.push({type:'search',...(query?{query}:{}),...(input.zipNodes && text(fragment['status']) ? {status:fragment['status']!} : {}),...(refs.length?{sources:refs}:{})});
       } else if(kind==='TOOL_OPEN') content.push({type:'tool',kind:'activity',name:'web-open',title:'Open page',...(Object.keys(fragment).length>1?{output:Object.fromEntries(Object.entries(fragment).filter(([k])=>k!=='type'))}:{})});
       else if(kind==='TIP'&&body!==undefined)content.push({type:'status',text:body});
       else {
@@ -62,14 +108,16 @@ export function extractDeepSeekOfficial(input: Readonly<{
         limitations.push({code:'official_fragment_unmapped',detail:`DeepSeek fragment ${kind??'(no type)'} retained as data`});
       }
     }
+    const status = text(raw['status']);
+    if (input.zipNodes && status && status !== 'FINISHED' && content.length) appendPlatformStatus(status);
     messages.push({id:key,...(parent?{parent}:{}),role,...(timestamp?{timestamp}:{}),content});
     facts.push({id:key,...(parent?{parent}:{}),role,...(model?{model}:{})});
   }
   const known=new Set(messages.map(m=>m['id']));
   if(facts.some(f=>f.parent&&!known.has(f.parent)))limitations.push({code:'source_parent_omitted',detail:'The native export refers to a parent absent from its mapping; no replacement edge was invented.'});
-  const current=text(record['current_node']);
+  const current=input.zipNodes && record['current_message_id']!=null ? nativeId(record['current_message_id']) : text(record['current_node']);
   const created=time(record['inserted_at']), updated=time(record['updated_at']), dates=messages.flatMap(m=>typeof m['timestamp']==='string'?[m['timestamp']]:[]).sort();
   const source:JsonObject={...input.source,format:'json-container',locator:deepSeekOfficialSelector(id),...(created?{conversation_created_at:created}:{}),...(updated?{conversation_updated_at:updated}:{})};
   const draft:JsonObject={platform:'deepseek',source,messages,...(text(record['title'])?{title:record['title']}:{}),...(models.size?{models:[...models]}:{}),...(dates.length?{message_time:{start:dates[0]!,end:dates.at(-1)!}}:{}),...(resources.length?{resources}:{}),...(references.length?{sources:references}:{}),...(limitations.length?{limitations}:{} )};
-  return {parsed:{draft,adapter:DEEPSEEK_OFFICIAL_MANIFEST,sourceFingerprint:{bytes:input.source.bytes,sha256:input.source.sha256},systemLogErrors:[]},facts:{messages:facts,...(current&&known.has(current)?{current}:{}),...(input.captured?{captured:input.captured}:{})}};
+  return {parsed:{draft,adapter:input.zipNodes ? DEEPSEEK_ZIP_MANIFEST : DEEPSEEK_OFFICIAL_MANIFEST,sourceFingerprint:{bytes:input.source.bytes,sha256:input.source.sha256},systemLogErrors:[]},facts:{messages:facts,...(blockSpeakers.size ? {blockSpeakers}:{}),...(current&&known.has(current)?{current}:{}),...(input.captured?{captured:input.captured}:{})}};
 }

@@ -18,6 +18,40 @@ const svgBytes = Buffer.from("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=
 const svgData = `data:image/svg+xml;base64,${svgBytes.toString("base64")}`;
 const fileData = `data:text/plain;base64,${Buffer.from("hello", "utf8").toString("base64")}`;
 
+test("Claude native themes bind exact occurrences across messages and retain hidden alternate bytes", async () => {
+  for (const profile of ["light", "full", "all-branches"] as const) {
+    const scope = await disposable();
+    try {
+      const format = `osis.claude.chat-export/${profile === "light" ? "light-dom" : profile === "full" ? "full-capture" : "all-branches"}-v1`;
+      const payload = fixturePayload(format), messages = payload["messages"] as JsonObject[];
+      payload["artifacts"] = []; payload["resources"] = [];
+      const first = messages[1]!; first["attachments"] = []; first["media"] = []; first["blocks"] = [];
+      const second = structuredClone(first); second["id"] = "assistant-2"; second["parent_id"] = "assistant-1"; second["index"] = 2;
+      messages.push(second); payload["active_message_ids"] = ["user-1", "assistant-1", "assistant-2"]; payload["current_leaf_message_id"] = "assistant-2";
+      const expected: string[][] = [];
+      for (const [message, occurrence] of [[first, 1], [first, 2], [second, 1]] as const) {
+        const key = `${message["id"]}-${occurrence}`, source = "graph LR; A-->B";
+        (message["blocks"] as JsonObject[]).push({type:"text",markdown:`\u0060\u0060\u0060mermaid\n${source}\n\u0060\u0060\u0060`});
+        (message["media"] as JsonObject[]).push({kind:"diagram-svg",resource_key:key,job_key:key});
+        const bytes: string[]=[];
+        for (const theme of ["light","dark"]) {
+          const data=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"><text>${key}-${theme}</text></svg>`).toString("base64"); bytes.push(data);
+          (payload["resources"] as JsonObject[]).push({key:theme==="light"?key:`${key}-dark`,job_key:key,message_id:message["id"]!,mime_type:"image/svg+xml",data_url:`data:image/svg+xml;base64,${data}`,display_eligible:theme==="light",mermaid:{theme,source,group_key:`occurrence-${occurrence}`,provenance:"native-page-render"}});
+        }
+        expected.push(bytes);
+      }
+      await writeFile(scope.file,html(manifest(profile,format),payload,""));
+      const e=await extractHtmlRecord({filePath:scope.file,temporaryRoot:scope.base});
+      const c=assembleConversationRecord({...e,parserVersion:"1.1.57",timestamp:"2026-11-16T00:00:00Z"});
+      const diagrams=((c["messages"] as JsonObject)["items"] as JsonObject[]).flatMap(m=>(m["content"] as JsonObject[]).filter(b=>b["type"]==="diagram"));
+      assert.equal(diagrams.length,3);
+      const resources=new Map((c["resources"] as JsonObject[]).map(r=>[r["id"],r]));
+      for(const [i,b] of diagrams.entries())for(const [j,theme] of ["light","dark"].entries())assert.deepEqual(resources.get((b["rendered_themes"] as JsonObject)[theme])?.["data_base64"],[expected[i]![j]]);
+      assert.equal(resources.size,6);
+    } finally { await rm(scope.base,{recursive:true,force:true}); }
+  }
+});
+
 test("Claude HTML flags retain platform identity and raw future fields across all three profiles", async () => {
   for (const profile of ["light", "full", "all-branches"] as const) {
     const scope = await disposable();
