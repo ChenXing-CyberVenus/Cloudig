@@ -14,13 +14,13 @@
 
 ## Download
 
-**[Source code · Cloudig V1.0.11](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.11)**
-
 Cloudig: Free tool to export, organize & read AI conversations from 12 web platforms
 
 **Windows x64:** [Download Cloudig V1.0.11 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.11/Cloudig-1.0.11-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
 Do not install it in `Program Files`; choose a directory with write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall it.
+
+**[Source code · Cloudig V1.0.11](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.11)**
 
 <p><strong>Reader · 破晓 Dawn</strong></p>
 <img src="docs/assets/readme/Reader-Cover-Dawn.webp" alt="Cloudig Reader Dawn" width="100%">
@@ -41,13 +41,13 @@ Do not install it in `Program Files`; choose a directory with write access. Clou
 
 ### Download
 
-**[Source code · Cloudig V1.0.11](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.11)**
-
 Cloudig: Free tool to export, organize & read AI conversations from 12 web platforms
 
 **Windows x64:** [Download Cloudig V1.0.11 DawnGlow](https://github.com/ChenXing-CyberVenus/Cloudig/releases/download/v1.0.11/Cloudig-1.0.11-Setup.exe) · [All releases](https://github.com/ChenXing-CyberVenus/Cloudig/releases)
 
 Do not install it in `Program Files`; choose a directory with write access. Cloudig remains portable after installation: copy it to back up, move it to migrate, and delete it to uninstall it.
+
+**[Source code · Cloudig V1.0.11](https://github.com/ChenXing-CyberVenus/Cloudig/tree/source-v1.0.11)**
 
 ### What Cloudig does
 
