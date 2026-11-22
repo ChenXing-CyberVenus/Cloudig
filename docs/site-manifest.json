@@ -1269,12 +1269,20 @@
       "sha256": "232dcbe9c593f13be1683ea41887dc1e5907ae923b7dd4a9d05b87ac1a2a8334"
     },
     {
+      "path": "src/core/records/schemas/compat/conversation-1.0.2.schema.json",
+      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
+    },
+    {
       "path": "src/core/records/schemas/compat/library-1.0.0.schema.json",
       "sha256": "e0e1767ec42b358d6759f298de928d24f2d76ca084cbc38e025ef1160dea0590"
     },
     {
       "path": "src/core/records/schemas/compat/library-1.0.1.schema.json",
       "sha256": "6fb5d487dd0c37188e6a1f81beeb0cc6272a38dcbaf743429f5daf46c39d379a"
+    },
+    {
+      "path": "src/core/records/schemas/compat/library-1.0.2.schema.json",
+      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
     },
     {
       "path": "src/core/records/schemas/content-time-order.schema.json",
@@ -1286,7 +1294,7 @@
     },
     {
       "path": "src/core/records/schemas/conversation.schema.json",
-      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
+      "sha256": "8d1907ac6e1417337c7ee4bfdcb01f0527f86e979f6806b5cda8d9837ef8f29d"
     },
     {
       "path": "src/core/records/schemas/identity-settings.schema.json",
@@ -1298,7 +1306,7 @@
     },
     {
       "path": "src/core/records/schemas/library.schema.json",
-      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
+      "sha256": "8530cc1ae27b6e3eacef97f65992774e814eaf3b0befda495657f3f06c673cca"
     },
     {
       "path": "src/core/records/schemas/mark.schema.json",
@@ -1554,7 +1562,7 @@
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/04-platform-official.webp",
-      "sha256": "2e107480e5b5d209b471df56d0cb7d37eabe1a756d1de2053b8c2c4f37adcda5"
+      "sha256": "646a3da718f95d3704b4e8526d823bcc5a84211ea7a4ea555ea2ec641080579e"
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/en/dawn/05-reader-cover.png",
@@ -1682,7 +1690,7 @@
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/04-platform-official.webp",
-      "sha256": "288f0cae0848696ade1086025c5c00760e3de5b59e2a4015754aaa123dcc333c"
+      "sha256": "239519f30dd726a23b60e4c4521ec4506ac86ff0ce1b5413604090dd5ba5fa57"
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/en/star-night/05-reader-cover.png",
@@ -1810,7 +1818,7 @@
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/04-platform-official.webp",
-      "sha256": "04ad0b53d2c7f3bf32311b7033dd5d1a59e54f58e2673ada0b23de5f659ffc7b"
+      "sha256": "641d8de004eea90bd117fcb398fa6aa5f7c79d925a04575e08f979df16488576"
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/dawn/05-reader-cover.png",
@@ -1938,7 +1946,7 @@
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/04-platform-official.webp",
-      "sha256": "05eb896b1fd36dbad15063e41a45370f4fd1ecdd5cda89051da7585a5da12678"
+      "sha256": "37bf23592ce2ffed15fd24721f8cd11fda1cfb440c869844f41120a453ab5f46"
     },
     {
       "path": "src/ui/shell/pages/document/assets/function-guide/zh-CN/star-night/05-reader-cover.png",
@@ -2326,11 +2334,11 @@
     },
     {
       "path": "src/ui/shell/pages/document/content/features-en.json",
-      "sha256": "25b2c8355a7697d1bf3b604d6ab04cfaa930b95f8a53a2cf566c632a48985678"
+      "sha256": "20b62feaa6e86029533e190d02573a0e17dd0414f66786ff21d54aa008e5fdbe"
     },
     {
       "path": "src/ui/shell/pages/document/content/features-zh-CN.json",
-      "sha256": "387663d1c36c7db59fffd7c75937cdb35bf409119ba5a4c160ecd18d449c5de2"
+      "sha256": "0087bf3088c9175afb39cad0940ef420d70ca1004351aa3636d2614919559330"
     },
     {
       "path": "src/ui/shell/pages/document/content/history-dialogues.json",
@@ -2358,11 +2366,11 @@
     },
     {
       "path": "src/ui/shell/pages/document/content/standard-en.json",
-      "sha256": "c41f89d94c95eb63d95b64573cd2ccfa9082b7864fde5cb3d95494f03087d897"
+      "sha256": "7eceef95548d191cab4324dbb8f91e1a3569f5dc957da3c6fa0155db8d56e262"
     },
     {
       "path": "src/ui/shell/pages/document/content/standard-zh-CN.json",
-      "sha256": "f8ba5bd43d8b52ce3ba48b840d8440a01fa779132c04bdd0228343a183cc417a"
+      "sha256": "449d4b556f4d721cbc20ae917d8c57ca8f6e1f8590ccfc124ddd6b5579dbc523"
     },
     {
       "path": "src/ui/shell/pages/document/document.css",
@@ -3176,13 +3184,13 @@
     },
     {
       "path": "docs/schemas/chatgpt-dil-source-format.md",
-      "bytes": 2860,
-      "sha256": "20b8df1728d1f85ec33f27e6b197f200e366b4df85345a4df79ec6da96b73661"
+      "bytes": 3477,
+      "sha256": "c5a319d860d35bfc08c25f2edce4613e3aef093115a75772aa83fb3c4aafc6be"
     },
     {
       "path": "docs/schemas/index.json",
-      "bytes": 4839,
-      "sha256": "4b27ac30945b3b6f40b270897fcf17cb512ec5e759d65daf09cb9d2255216b3a"
+      "bytes": 5434,
+      "sha256": "e3abec3923624358f004b6012e2041467fb57c99e19c8f6f0ebf3047747cfa45"
     },
     {
       "path": "docs/schemas/program/common.schema.json",
@@ -3230,6 +3238,11 @@
       "sha256": "232dcbe9c593f13be1683ea41887dc1e5907ae923b7dd4a9d05b87ac1a2a8334"
     },
     {
+      "path": "docs/schemas/records/compat/conversation-1.0.2.schema.json",
+      "bytes": 23501,
+      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
+    },
+    {
       "path": "docs/schemas/records/compat/library-1.0.0.schema.json",
       "bytes": 5692,
       "sha256": "e0e1767ec42b358d6759f298de928d24f2d76ca084cbc38e025ef1160dea0590"
@@ -3238,6 +3251,11 @@
       "path": "docs/schemas/records/compat/library-1.0.1.schema.json",
       "bytes": 5692,
       "sha256": "6fb5d487dd0c37188e6a1f81beeb0cc6272a38dcbaf743429f5daf46c39d379a"
+    },
+    {
+      "path": "docs/schemas/records/compat/library-1.0.2.schema.json",
+      "bytes": 5692,
+      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
     },
     {
       "path": "docs/schemas/records/content-time-order.schema.json",
@@ -3251,8 +3269,8 @@
     },
     {
       "path": "docs/schemas/records/conversation.schema.json",
-      "bytes": 23501,
-      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
+      "bytes": 24696,
+      "sha256": "8d1907ac6e1417337c7ee4bfdcb01f0527f86e979f6806b5cda8d9837ef8f29d"
     },
     {
       "path": "docs/schemas/records/identity-settings.schema.json",
@@ -3267,7 +3285,7 @@
     {
       "path": "docs/schemas/records/library.schema.json",
       "bytes": 5692,
-      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
+      "sha256": "8530cc1ae27b6e3eacef97f65992774e814eaf3b0befda495657f3f06c673cca"
     },
     {
       "path": "docs/schemas/records/mark.schema.json",
@@ -3781,8 +3799,8 @@
     },
     {
       "path": "pages/document/assets/function-guide/en/dawn/04-platform-official.webp",
-      "bytes": 173804,
-      "sha256": "2e107480e5b5d209b471df56d0cb7d37eabe1a756d1de2053b8c2c4f37adcda5"
+      "bytes": 266712,
+      "sha256": "646a3da718f95d3704b4e8526d823bcc5a84211ea7a4ea555ea2ec641080579e"
     },
     {
       "path": "pages/document/assets/function-guide/en/dawn/05-reader-cover.png",
@@ -3941,8 +3959,8 @@
     },
     {
       "path": "pages/document/assets/function-guide/en/star-night/04-platform-official.webp",
-      "bytes": 136842,
-      "sha256": "288f0cae0848696ade1086025c5c00760e3de5b59e2a4015754aaa123dcc333c"
+      "bytes": 240668,
+      "sha256": "239519f30dd726a23b60e4c4521ec4506ac86ff0ce1b5413604090dd5ba5fa57"
     },
     {
       "path": "pages/document/assets/function-guide/en/star-night/05-reader-cover.png",
@@ -4101,8 +4119,8 @@
     },
     {
       "path": "pages/document/assets/function-guide/zh-CN/dawn/04-platform-official.webp",
-      "bytes": 165604,
-      "sha256": "04ad0b53d2c7f3bf32311b7033dd5d1a59e54f58e2673ada0b23de5f659ffc7b"
+      "bytes": 249484,
+      "sha256": "641d8de004eea90bd117fcb398fa6aa5f7c79d925a04575e08f979df16488576"
     },
     {
       "path": "pages/document/assets/function-guide/zh-CN/dawn/05-reader-cover.png",
@@ -4261,8 +4279,8 @@
     },
     {
       "path": "pages/document/assets/function-guide/zh-CN/star-night/04-platform-official.webp",
-      "bytes": 129882,
-      "sha256": "05eb896b1fd36dbad15063e41a45370f4fd1ecdd5cda89051da7585a5da12678"
+      "bytes": 227040,
+      "sha256": "37bf23592ce2ffed15fd24721f8cd11fda1cfb440c869844f41120a453ab5f46"
     },
     {
       "path": "pages/document/assets/function-guide/zh-CN/star-night/05-reader-cover.png",
@@ -4746,13 +4764,13 @@
     },
     {
       "path": "pages/document/content/features-en.json",
-      "bytes": 38629,
-      "sha256": "25b2c8355a7697d1bf3b604d6ab04cfaa930b95f8a53a2cf566c632a48985678"
+      "bytes": 38673,
+      "sha256": "20b62feaa6e86029533e190d02573a0e17dd0414f66786ff21d54aa008e5fdbe"
     },
     {
       "path": "pages/document/content/features-zh-CN.json",
-      "bytes": 38300,
-      "sha256": "387663d1c36c7db59fffd7c75937cdb35bf409119ba5a4c160ecd18d449c5de2"
+      "bytes": 38369,
+      "sha256": "0087bf3088c9175afb39cad0940ef420d70ca1004351aa3636d2614919559330"
     },
     {
       "path": "pages/document/content/history-dialogues.json",
@@ -4786,13 +4804,13 @@
     },
     {
       "path": "pages/document/content/standard-en.json",
-      "bytes": 170482,
-      "sha256": "c41f89d94c95eb63d95b64573cd2ccfa9082b7864fde5cb3d95494f03087d897"
+      "bytes": 171708,
+      "sha256": "7eceef95548d191cab4324dbb8f91e1a3569f5dc957da3c6fa0155db8d56e262"
     },
     {
       "path": "pages/document/content/standard-zh-CN.json",
-      "bytes": 155013,
-      "sha256": "f8ba5bd43d8b52ce3ba48b840d8440a01fa779132c04bdd0228343a183cc417a"
+      "bytes": 156054,
+      "sha256": "449d4b556f4d721cbc20ae917d8c57ca8f6e1f8590ccfc124ddd6b5579dbc523"
     },
     {
       "path": "pages/document/document.css",

@@ -10,8 +10,8 @@
     {
       "file": "records/library.schema.json",
       "source": "src/core/records/schemas/library.schema.json",
-      "id": "https://cloudig.local/records/library/1.0.2",
-      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
+      "id": "https://cloudig.local/records/library/1.0.3",
+      "sha256": "8530cc1ae27b6e3eacef97f65992774e814eaf3b0befda495657f3f06c673cca"
     },
     {
       "file": "records/identity.schema.json",
@@ -28,8 +28,8 @@
     {
       "file": "records/conversation.schema.json",
       "source": "src/core/records/schemas/conversation.schema.json",
-      "id": "https://cloudig.local/records/conversation/1.0.2",
-      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
+      "id": "https://cloudig.local/records/conversation/1.0.3",
+      "sha256": "8d1907ac6e1417337c7ee4bfdcb01f0527f86e979f6806b5cda8d9837ef8f29d"
     },
     {
       "file": "records/mark.schema.json",
@@ -72,6 +72,18 @@
       "source": "src/core/records/schemas/compat/library-1.0.1.schema.json",
       "id": "https://cloudig.local/records/library/1.0.1",
       "sha256": "6fb5d487dd0c37188e6a1f81beeb0cc6272a38dcbaf743429f5daf46c39d379a"
+    },
+    {
+      "file": "records/compat/conversation-1.0.2.schema.json",
+      "source": "src/core/records/schemas/compat/conversation-1.0.2.schema.json",
+      "id": "https://cloudig.local/records/conversation/1.0.2",
+      "sha256": "01b6d5127f02e4530df0f6ef00504161e9c6f1b05dcfc6b9ecd45df34bc7b5bd"
+    },
+    {
+      "file": "records/compat/library-1.0.2.schema.json",
+      "source": "src/core/records/schemas/compat/library-1.0.2.schema.json",
+      "id": "https://cloudig.local/records/library/1.0.2",
+      "sha256": "249b2d8e371af778daa6fc982d3026d1aa3486c4aca0a2b80b11f1ce20d85460"
     },
     {
       "file": "program/common.schema.json",
